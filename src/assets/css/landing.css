@@ -354,11 +354,12 @@
 
 /* FOOTER SECTION */
 .footer {
-    background-color: rgba(99, 54, 221, 1);
-    border-top: 1px solid #e5e5e5;
+    /* background-color: rgba(99, 54, 221, 1); */
+    /* background-color: var(--royal-red); */
+    border-top: 1px solid var(--border-grey);
     display: grid;
     grid-template-rows: auto 3rem;
-    color: var(--light);
+    color: var(--dark);
     padding: 0;
     margin: 0;
 }
@@ -433,11 +434,11 @@
 }
 
 .f-mod-2 a {
-    color: var(--light);
+    color: var(--dark);
 }
 
 .f-mod-2 a:hover {
-    color: var(--hover-one);
+    color: black;
 }
 
 .f-mod-3 {

@@ -1,0 +1,168 @@
+@import url('config.css');
+
+.pf-main {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 28vw);
+    grid-gap: 1rem;
+    max-width: 94vw;
+    padding: 0 6%;
+    margin: 6% 0;
+}
+
+.pf-grid {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+
+}
+
+.pf-container-3 {
+    display: grid;
+    grid-template-areas:
+        "pf-one pf-two"
+        "pf-one pf-three"
+    ;
+    grid-gap: 0.25rem;
+    width: 100%;
+    height: 100%;
+
+}
+
+.pf-one {
+    grid-area: pf-one;
+    /* background: red; */
+
+}
+
+.pf-two {
+    grid-area: pf-two;
+    /* background: red; */
+}
+
+.pf-three {
+    grid-area: pf-three;
+    /* background: red; */
+}
+
+.pf-four {
+    grid-area: pf-four;
+    /* background: red; */
+}
+
+.pf-five {
+    grid-area: pf-five;
+    /* background: red; */
+}
+
+
+
+.pf-one,
+.pf-two,
+.pf-three,
+.pf-four,
+.pf-five {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pf-container-5 {
+    display: grid;
+    grid-template-areas:
+        "pf-one pf-two pf-three"
+        "pf-four pf-two pf-five"
+
+    ;
+    grid-gap: 0.25rem;
+    width: 100%;
+    height: 100%;
+}
+
+.pf-attribute {
+    /* background: red; */
+    min-height: 5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pf-attr-span {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+
+}
+
+.pf-attr-span .pf-name,
+.pf-attr-span .pf-shot-count {
+    padding: 0 1rem;
+    font-weight: bold;
+
+}
+
+.pf-attr-span .pf-name {
+    border-right: 1px solid #333;
+}
+
+.pf-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* background-size: 100% 100%; */
+
+}
+
+.pf-container-3,
+.pf-container-5,
+.pf-container-1 {
+    border-radius: 0.7rem;
+    overflow: hidden;
+}
+
+
+@media(max-width:900px) and (orientation: portrait) {
+    .pf-main {
+        grid-template-columns: 1fr;
+        grid-gap: 1rem;
+        max-width: 100vw;
+        margin: 6% 0;
+    }
+
+    .pf-container-3,
+    .pf-container-5 {
+        height: 30rem;
+
+    }
+}
+
+@media(max-width:460px) and (orientation: portrait) {
+    .pf-main {
+        grid-template-columns: 1fr;
+        grid-gap: 1rem;
+        max-width: 100vw;
+        margin: 6% 0;
+    }
+
+    .pf-container-3,
+    .pf-container-5 {
+        height: 15.625rem;
+
+    }
+}
+
+@media(max-width:800px) and (orientation: landscape) {
+    .pf-main {
+        grid-gap: 0.8rem;
+    }
+
+    .pf-attr-span {
+        font-size: 0.6rem;
+    }
+}
+
+@media(max-width:650px) and (orientation: landscape) {
+    .pf-main {
+        padding: 0 5%;
+    }
+}

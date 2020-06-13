@@ -6,8 +6,10 @@
     --hover-one: #ffaa3b;
     --hover-two: rgba(99, 54, 221, 0.7);
     --hover-three: #ff0057;
+    --sober-red: #d6aea6;
     --dark: #3a3e47;
     --light: #fff;
+    --border-grey: #e5e5e5;
     --div-underline: rgba(0, 0, 0, 0.4)
 }
 
@@ -126,7 +128,7 @@ ul {
     height: 5vh;
     border: none;
     outline: none;
-    border-bottom: 1px solid #3a3e47;
+    border-bottom: 1px solid var(--dark);
     font-size: 1rem;
     margin-right: 0.5rem;
 }

@@ -45,6 +45,7 @@ class Shot extends Component {
                         </span>
                         : ''}
                 </div>
+                
             </React.Fragment>
         )
 

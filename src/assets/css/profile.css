@@ -81,7 +81,9 @@
     white-space: nowrap;
     display: flex;
     padding: 0.5rem 0;
-    border-bottom: 1px solid #b8b4b4;
+    /* border-bottom: 1px solid #b8b4b4; */
+    border-bottom: 1px solid var(--border-grey);
+    color: var(--dark);
 
 }
 

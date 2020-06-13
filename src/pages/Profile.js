@@ -6,6 +6,8 @@ import SearchHead from '../components/SearchHead';
 import Subnav from '../components/Subnav';
 import UserAbout from '../components/UserAbout';
 import Shot from '../components/Shot';
+import Portfolio from '../components/Portfolio';
+import AddMenu from '../components/AddMenu';
 import Footer from '../components/Footer';
 
 
@@ -20,7 +22,13 @@ export default class Profile extends Component {
     render() {
         let shotList = [];
         for (let i = 0; i < 32; i++) {
-            shotList.push(<Shot key={i} id={i} onlyShot={true} currLocation={this.props.location} />)
+            shotList.push(<Shot key={i} id={i} onlyShot={true} currLocation={this.props.location}/>)
+        }
+        const portfolioList = [];
+        for (let i=0; i<10; i++){
+            portfolioList.push(<Portfolio contained={4} />)
+            portfolioList.push(<Portfolio contained={1} />)
+            portfolioList.push(<Portfolio contained={10} />)
         }
 
         return (
@@ -30,9 +38,17 @@ export default class Profile extends Component {
                 <ProfileHead />
                 <Subnav />
                 {/* <UserAbout /> */}
-                <div className="profile-shots">
+                {/* <div className="profile-shots">
                     {shotList}
-                </div>
+                    <AddMenu />
+                </div> */}
+
+                {/* <div className="profile-shots">
+                    {portfolioList}
+                    <AddMenu />
+                </div> */}
+
+                <AddMenu />
 
                 <Footer />
             </React.Fragment>
