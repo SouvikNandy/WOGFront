@@ -1,0 +1,269 @@
+@import url('config.css');
+
+.profile-top {
+    height: 60vh;
+    max-width: 100vw;
+    padding: 0 6%;
+    /* margin-top: 1rem; */
+
+}
+
+.p-cover {
+    height: 100%;
+    width: 100%;
+    background: var(--hover-two);
+    overflow: hidden;
+}
+
+.p-cover-img {
+    height: 60vh;
+    width: 94%;
+    padding-right: 6%;
+    object-fit: cover;
+    position: absolute;
+    z-index: -1;
+}
+
+.p-user {
+    display: flex;
+    height: 100%;
+    align-items: flex-end;
+    padding: 2rem;
+    z-index: 5;
+}
+
+.p-user-img {
+    height: 12rem;
+    width: 12rem;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 1rem;
+}
+
+.p-display-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 701;
+    font-size: 2rem;
+    text-align: start;
+    color: var(--light);
+    text-shadow: 1px 2px var(--dark);
+}
+
+.p-display-name .p-adj-username {
+    font-size: 1.5rem;
+    font-weight: 501;
+}
+
+.p-display-name .p-adj {
+    font-size: 1rem;
+    font-weight: 501;
+    text-shadow: 1px 1px var(--dark);
+}
+
+.p-display-name .m-fuser {
+    margin-left: 0;
+    margin-bottom: 0;
+}
+
+/* subnav */
+.profile-subnav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100vw;
+    padding: 0 6%;
+}
+
+.sub-nav {
+    width: 100%;
+    white-space: nowrap;
+    display: flex;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #b8b4b4;
+
+}
+
+.sub-nav li {
+
+    margin-right: 2rem;
+    /* font-family: 'Haas Grot Text R Web', 'Helvetica Neue', Helvetica, Arial, sans-serif; */
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.35;
+}
+
+/* profile about */
+.user-about {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    min-height: 100vh;
+    max-width: 100vw;
+    padding: 0 6%;
+    margin-bottom: 1rem;
+
+}
+
+.u-about-container {
+    position: relative;
+    max-width: 100%;
+    display: grid;
+    /* grid-template-areas: repeat(auto-fit, minmax(300px, 1fr)); */
+    /* grid-template-rows: minmax(300px, auto); */
+    grid-auto-flow: dense;
+    grid-gap: 10px;
+    grid-template-areas:
+        "u-bio u-des"
+        "u-skills u-team"
+        "u-skills u-social";
+}
+
+.u-bio {
+    grid-area: u-bio;
+    grid-column: 1/2;
+}
+
+.u-skills {
+    grid-area: u-skills;
+}
+
+.u-des {
+    grid-area: u-des;
+}
+
+.u-team {
+    grid-area: u-team
+}
+
+.u-social {
+    grid-area: u-social
+}
+
+.u-about-container .u-box {
+    background: #b8b4b4;
+    padding: 1.25rem;
+    display: grid;
+    font-size: 1rem;
+    /* max-width: 300px; */
+
+}
+
+.u-social .btn-anc .icons {
+    height: 1.8rem;
+    width: 1.8rem;
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+}
+
+.u-social .btn-anc :hover {
+    color: black;
+}
+
+.u-social .icons :hover {
+    color: black;
+}
+
+.u-social .btn-anc .only-right-m {
+    margin-left: 0;
+}
+
+.u-des ul {
+    padding: 0;
+    line-height: 1.8;
+}
+
+/* PROFILE SHOTS */
+.profile-shots {
+    padding: 0 6%;
+    margin: 0;
+    display: grid;
+    max-width: 100vw;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-column-gap: 0.8rem;
+    margin-bottom: 1rem;
+    /* background: #333; */
+    /* grid-row-gap: 0.5rem; */
+    /* background: violet; */
+
+}
+
+/* media queries */
+
+@media(max-width: 900px) {
+    .p-user {
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .p-display-name {
+        text-align: center;
+    }
+
+    .sub-nav {
+        overflow-x: scroll;
+    }
+
+    .u-about-container {
+        grid-template-areas:
+            "u-bio"
+            "u-des"
+            "u-skills"
+            "u-team"
+            "u-social";
+    }
+
+
+}
+
+@media (max-width: 500px) and (orientation: portrait) {
+
+    .p-display-name {
+        font-size: 1.5rem;
+    }
+
+    .p-display-name .p-adj-username,
+    .p-display-name .p-adj {
+        font-size: 0.8rem;
+    }
+
+    .p-display-name .m-fuser {
+        font-size: 0.8rem;
+    }
+
+
+    .profile-shots {
+        padding: 0 2%;
+        grid-template-columns: repeat(3, 31vw);
+        grid-column-gap: 0.3rem;
+
+    }
+
+    .profile-shots .shot-preview-alt {
+        margin: 0.2rem 0;
+        grid-template-rows: 10rem;
+        border-radius: 0.7rem;
+    }
+
+}
+
+@media (max-width: 400px) and (orientation: portrait) {
+    .p-user-img {
+        height: 10rem;
+        width: 10rem;
+    }
+
+    .profile-shots .shot-preview-alt {
+        grid-template-rows: 8rem;
+    }
+
+}
+
+@media (max-width: 350px) and (orientation: portrait) {
+    .p-user-img {
+        height: 9rem;
+        width: 9rem;
+    }
+}
