@@ -104,43 +104,5 @@ export class Landing extends Component {
     }
 }
 
-
-// class Shot extends Component {
-//     render() {
-//         let imageArr = [w1, w2, w3, pl2];
-//         const selectedImg = imageArr[Math.floor(Math.random() * imageArr.length)];
-//         return (
-//             <React.Fragment>
-//                 <div className="shot-preview">
-//                     <Link className="sp-img"
-//                         key={this.props.id}
-//                         to={{
-//                             pathname: `/shot-view/${this.props.id}`,
-//                             // This is the trick! This link sets
-//                             // the `background` in location state.
-//                             state: { modal: true, currLocation: this.props.currLocation }
-//                         }}>
-
-//                         <img src={selectedImg} alt="" />
-//                     </Link>
-//                     <span className="attribution-user">
-//                         <a className="user-preview">
-//                             <img src={selectedImg} alt="" />
-//                             <span className="display-name">Dmytry @eushevy</span>
-//                         </a>
-
-//                         <a className="like-comment-share-preview">
-//                             <FaHeart className="icons" /><span>100</span>
-//                             <FaComment className="icons" /><span>100</span>
-//                         </a>
-//                     </span>
-//                 </div>
-//             </React.Fragment>
-//         )
-
-//     }
-
-// }
-
 export default Landing
 
