@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Swiper from "swiper";
 
 import "swiper/css/swiper.css";
-import "../assets/css/cambtn.css";
+import "../assets/css/addpost.css";
 import { FaCameraRetro, FaPlus } from 'react-icons/fa';
 import { AiFillCloseCircle, AiOutlineFileAdd } from 'react-icons/ai';
 
@@ -23,8 +23,8 @@ export class AddPost extends Component {
     render() {
         return (
             <React.Fragment>
-                {this.state.isModalOpen ? <AddDocumentForm showModal={this.showModal} /> : ''}
-                {/* <AddDocumentForm showModal={this.showModal} /> */}
+                {/* {this.state.isModalOpen ? <AddDocumentForm showModal={this.showModal} /> : ''} */}
+                <AddDocumentForm showModal={this.showModal} />
                 <button className="camera-cover" onClick={this.showModal}>
                     <FaCameraRetro className="camera-icon" />
                     <FaPlus className="cam-plus" />
@@ -43,7 +43,10 @@ class AddDocumentForm extends Component {
         FileList: [],
         portfolioName: '',
         description: '',
-        members: ['user1', 'user2', 'user3', "user4", "user5", "user6"]
+        members: ['user1', 'user2', 'user3', "user4", "user5", "user6",'user1', 'user2', 'user3', "user4", "user5", "user6",
+        'user1', 'user2', 'user3', "user4", "user5", "user6",'user1', 'user2', 'user3', "user4", "user5", "user6"
+                ],
+
     }
 
     onFileSelect = (e) => {
@@ -85,13 +88,24 @@ class AddDocumentForm extends Component {
         document.getElementById("img-upload-form").reset();
     }
 
-
     render() {
         let memberlist = [];
         let allMembers = [];
+        let existingList = [];
         if (this.state.members.length > 5) {
             allMembers = this.state.members.slice(0, 5);
-            allMembers.push("Show All")
+            allMembers.push("Show All (" + this.state.members.length +") ")
+            // add all members to show
+            this.state.members.map((item, index) =>{
+                existingList.push(
+                    <span className="item-span" key={index}>
+                        <span>{item}</span>
+                        <AiFillCloseCircle className="close-img " onClick={this.onRemoveMember.bind(this, index)} />
+
+                    </span>)
+                return existingList
+                    
+            })
         }
         else {
             allMembers = this.state.members;
@@ -99,10 +113,12 @@ class AddDocumentForm extends Component {
 
         allMembers.map((item, index) => {
 
-            if (item === "Show All") {
+            if (item.includes("Show All")) {
                 memberlist.push(
-                    <span className="item-span" key={index}>
+                    <span className="item-span item-span-anc" key={index}>
+                        <span class="tooltiptext">{existingList}</span>
                         {item}
+                        
                     </span>
                 )
             }
@@ -115,9 +131,7 @@ class AddDocumentForm extends Component {
                     </span>)
 
             }
-
         })
-
         return (
             <React.Fragment>
                 <div className="doc-form">
@@ -129,10 +143,19 @@ class AddDocumentForm extends Component {
 
                         </section>
                         <section className="doc-body">
-                            <label>Portfolio Name <span className="imp-field">*</span> </label>
-                            <input type="text" id="fname" name="fname" onChange={this.onChange} required />
+                            <div className="pf-loc">
+                                <span className="pf-div">
+                                    <label>Portfolio Name <span className="imp-field">*</span> </label>
+                                    <input type="text" id="portfolioName" name="portfolioName" onChange={this.onChange} required />
+                                </span>
+                                <span className="loc-div">
+                                    <label>Add Location <span className="imp-field"></span></label>
+                                    <input type="text" id="location" name="location" placeholder="Search Location" />
+                                </span>
+                            </div>
+                            
                             <label>Description</label>
-                            <textarea type="text" id="lname" name="lname" onChange={this.onChange} />
+                            <textarea type="text" id="description" name="description" onChange={this.onChange} />
                             <label>Members / Contributes</label>
                             {this.state.members.length > 0 ?
                                 <div className="member-list">
@@ -141,7 +164,7 @@ class AddDocumentForm extends Component {
                                 :
                                 ''
                             }
-                            <input type="text" id="memo" name="memo" />
+                            <input type="text" id="memo" name="memo" placeholder="Search Members / Contributes" />
                             <label>Attachments <span className="imp-field">*</span> </label>
                             {this.state.FileList.length > 0 ?
                                 <UploadedSlider

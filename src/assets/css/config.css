@@ -161,8 +161,34 @@ ul {
 
 .imp-field {
     color: red;
-    font-size: 1.2rem;
+    font-size: 1rem;
 
+}
+
+.tooltiptext {
+    visibility: hidden;
+    background: var(--dark);
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    max-height: 30vh;
+    max-width: 30vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--dark) transparent transparent transparent;
 }
 
 @media(max-width:700px) {
