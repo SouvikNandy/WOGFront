@@ -228,6 +228,7 @@ class UploadedSlider extends Component {
         const previewList = [];
         var currUrl = this.props.uploadedFilePreviewList.map((file, index) =>
             <div className="swiper-slide" key={index}>
+                {/* <span class="tooltiptext"><img className="uploaded-preview-img-big" src={URL.createObjectURL(file)}></img></span> */}
                 <AiFillCloseCircle className="close-img" onClick={this.props.onFileDeselect.bind(this, index)} />
                 <img className="uploaded-preview-img" src={URL.createObjectURL(file)}></img>
             </div>

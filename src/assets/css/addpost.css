@@ -276,16 +276,27 @@
 }
 
 .item-span-anc .tooltiptext {
-    transition: .75s ease-in-out 2s;
+    transition: .75s ease-in-out 1s;
 }
-
-
 
 .item-span-anc:hover .tooltiptext {
     visibility: visible;
     transition: .25s ease-in-out 0s;
 }
 
+/* .uploaded-preview-img-big {
+    height: 20vh;
+    width: 20vw;
+    object-fit: cover;
+    z-index: 50;
+}
+
+.uploaded-preview .swiper-slide .tooltiptext {
+    position: absolute;
+    visibility: visible;
+    overflow: hidden;
+    
+} */
 
 @media (max-width: 900px) {
     .camera-cover {
