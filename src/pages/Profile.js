@@ -7,7 +7,7 @@ import Subnav from '../components/Subnav';
 import UserAbout from '../components/UserAbout';
 import Shot from '../components/Shot';
 import Portfolio from '../components/Portfolio';
-import AddMenu from '../components/AddMenu';
+import AddPost from '../components/AddPost';
 import Footer from '../components/Footer';
 
 
@@ -22,10 +22,10 @@ export default class Profile extends Component {
     render() {
         let shotList = [];
         for (let i = 0; i < 32; i++) {
-            shotList.push(<Shot key={i} id={i} onlyShot={true} currLocation={this.props.location}/>)
+            shotList.push(<Shot key={i} id={i} onlyShot={true} currLocation={this.props.location} />)
         }
         const portfolioList = [];
-        for (let i=0; i<10; i++){
+        for (let i = 0; i < 10; i++) {
             portfolioList.push(<Portfolio contained={4} />)
             portfolioList.push(<Portfolio contained={1} />)
             portfolioList.push(<Portfolio contained={10} />)
@@ -40,15 +40,15 @@ export default class Profile extends Component {
                 {/* <UserAbout /> */}
                 {/* <div className="profile-shots">
                     {shotList}
-                    <AddMenu />
+                    <AddPost />
                 </div> */}
 
                 {/* <div className="profile-shots">
                     {portfolioList}
-                    <AddMenu />
+                    <AddPost />
                 </div> */}
 
-                <AddMenu />
+                <AddPost />
 
                 <Footer />
             </React.Fragment>

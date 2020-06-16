@@ -93,7 +93,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* margin-top: 1rem; */
+    border-bottom: 1px solid var(--border-grey);
 
 }
 
@@ -108,8 +108,8 @@
 .img-upload-form .doc-body textarea {
     display: block;
     width: 100%;
-    margin-top: 0.4rem;
-    margin-bottom: 0.4rem;
+    margin-top: 0.2rem;
+    margin-bottom: 0;
     padding: 0.4rem;
     padding-left: 0;
     font-size: 1rem;
@@ -148,16 +148,13 @@
     align-items: center;
     justify-content: center;
     font-size: 1rem;
+    font-weight: bold;
 }
 
 #file-count span {
     padding: 0 0.5rem;
 }
 
-
-.img-upload-form .doc-btn {
-    flex: 1
-}
 
 .uploaded-preview {
     width: 100%;
@@ -210,8 +207,40 @@
     position: relative;
     float: right;
     color: var(--hover-two);
-    /* top: 0.1rem; */
-    /* color: rgb(99, 54, 221); */
+    cursor: pointer;
+
+}
+
+.img-upload-form .doc-btn {
+    flex: 1;
+    width: 80%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.doc-btn .apply-btn {
+    width: 10vw;
+    margin-left: 0;
+}
+
+/* Add member */
+.member-list {
+    width: 100%;
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.member-list .item-span {
+    background: var(--border-grey);
+    border-radius: 0.2rem;
+    margin: 0.3rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 0.2rem;
 
 }
 

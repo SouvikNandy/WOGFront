@@ -76,6 +76,20 @@ ul {
     color: var(--hover-one);
 }
 
+.apply-btn {
+    background: var(--hover-two);
+    color: #fff;
+}
+
+.cancel-btn {
+    background: var(--border-grey);
+    /* color: #fff; */
+}
+
+.cancel-btn:hover {
+    background: var(--dark);
+}
+
 .icons {
     opacity: 0.3;
 }
@@ -143,6 +157,12 @@ ul {
 .srch-icon {
     height: 1rem;
     width: 1rem;
+}
+
+.imp-field {
+    color: red;
+    font-size: 1.2rem;
+
 }
 
 @media(max-width:700px) {
