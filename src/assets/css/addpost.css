@@ -303,4 +303,13 @@
         bottom: 1.2rem;
         right: 1.2rem;
     }
+
+    .doc-form .img-upload-form {
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        border-radius: 0;
+    }
+
+
 }

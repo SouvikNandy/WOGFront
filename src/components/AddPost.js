@@ -93,7 +93,7 @@ class AddDocumentForm extends Component {
         let allMembers = [];
         let existingList = [];
         if (this.state.members.length > 5) {
-            allMembers = this.state.members.slice(0, 5);
+            allMembers = this.state.members.slice(0, 3);
             allMembers.push("Show All (" + this.state.members.length +") ")
             // add all members to show
             this.state.members.map((item, index) =>{
@@ -224,7 +224,7 @@ class UploadedSlider extends Component {
         });
     }
     render() {
-        console.log(this.props);
+        // console.log(this.props);
         const previewList = [];
         var currUrl = this.props.uploadedFilePreviewList.map((file, index) =>
             <div className="swiper-slide" key={index}>
