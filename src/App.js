@@ -3,7 +3,9 @@ import { BrowserRouter as Router, Switch, Route, useLocation, useHistory } from 
 import Landing from './pages/Landing';
 import Login from './pages/Login';
 import ShotModalView from './components/ShotModalView';
+import Example from './components/FloatingNotifications';
 import Profile from './pages/Profile';
+import {NotificationContainer} from 'react-notifications';
 
 
 export default class App extends Component {
@@ -14,9 +16,10 @@ export default class App extends Component {
 
           <ShotModalUrl />
 
-
+          <NotificationContainer/>
         </div>
       </Router>
+      
 
     );
   }
@@ -42,6 +45,7 @@ function ShotModalUrl() {
         <Route exact path="/signin/" render={props => (<Login signInReq={true} />)} />
         <Route exact path="/profile/" component={Profile} />
         <Route exact path="/shot-view/:id" component={ShotModalView} />
+        <Route exact path="/example/" component={Example} />
         <Route> NOT FOUND</Route>
       </Switch>
       {isModal

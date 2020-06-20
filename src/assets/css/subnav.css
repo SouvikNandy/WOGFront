@@ -1,0 +1,30 @@
+@import url('config.css');
+
+/* subnav */
+.profile-subnav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100vw;
+    padding: 0 6%;
+}
+
+.sub-nav {
+    width: 100%;
+    white-space: nowrap;
+    display: flex;
+    padding: 0.5rem 0;
+    /* border-bottom: 1px solid #b8b4b4; */
+    border-bottom: 1px solid var(--border-grey);
+    color: var(--dark);
+
+}
+
+.sub-nav li {
+
+    margin-right: 2rem;
+    /* font-family: 'Haas Grot Text R Web', 'Helvetica Neue', Helvetica, Arial, sans-serif; */
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.35;
+}

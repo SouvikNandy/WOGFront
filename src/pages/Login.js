@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { FaUser } from "react-icons/fa";
 import '../assets/css/login.css';
-// Images for shot
-// import w1 from "../assets/images/wedding1.jpg";
 
 export class Login extends Component {
     render() {
@@ -59,6 +57,12 @@ class SignUp extends Component {
                 <form className="login-form">
                     <div className="form-group f-flex">
                         <input type="text" placeholder="Name" required />
+                        <select name="i-am" id="i-am">
+                            <option className="i-am-option" value="individual">I'm an Individual</option>
+                            <option className="i-am-option" value="team">I'm a Team</option>
+                        </select>
+                    </div>
+                    <div className="form-group">
                         <input type="text" placeholder="Username" required />
                     </div>
                     <div className="form-group">

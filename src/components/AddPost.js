@@ -92,8 +92,11 @@ class AddDocumentForm extends Component {
         let memberlist = [];
         let allMembers = [];
         let existingList = [];
-        if (this.state.members.length > 5) {
-            allMembers = this.state.members.slice(0, 3);
+        let maxCouunt = window.innerWidth > 1100? 5: 3;
+        console.log(window.innerWidth);
+
+        if (this.state.members.length > maxCouunt) {
+            allMembers = this.state.members.slice(0, maxCouunt);
             allMembers.push("Show All (" + this.state.members.length +") ")
             // add all members to show
             this.state.members.map((item, index) =>{
@@ -116,7 +119,7 @@ class AddDocumentForm extends Component {
             if (item.includes("Show All")) {
                 memberlist.push(
                     <span className="item-span item-span-anc" key={index}>
-                        <span class="tooltiptext">{existingList}</span>
+                        <span className="tooltiptext">{existingList}</span>
                         {item}
                         
                     </span>

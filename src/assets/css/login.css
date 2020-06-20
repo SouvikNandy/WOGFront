@@ -31,7 +31,8 @@
     margin: 1rem 0;
 }
 
-.form-group input {
+.form-group input,
+.form-group select {
     display: block;
     border-radius: 0.3rem;
     width: 100%;
@@ -40,6 +41,7 @@
     padding: 0.4rem;
     font-size: 1.2rem;
     border: 1px solid #ccc;
+    outline-color: var(--hover-one);
 
 }
 
@@ -48,10 +50,17 @@
     justify-content: space-between;
 }
 
-.f-flex input {
+.f-flex input,
+.f-flex select {
     display: inline-block;
     width: 48%;
     margin: 0;
+    font-size: 1rem;
+}
+
+
+select .i-am-option::after {
+    outline-color: var(--hover-one);
 }
 
 @media (max-width:900px) {
@@ -81,7 +90,8 @@
 
 
 
-    .form-group input {
+    .form-group input,
+    .form-group select {
         width: 80vw;
         margin-top: 0.4rem;
         margin-bottom: 0.4rem;

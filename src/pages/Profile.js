@@ -37,12 +37,16 @@ export default class Profile extends Component {
                 {/* profile top section */}
                 <ProfileHead />
                 <Subnav />
+                {/* USER ABOUT */}
                 {/* <UserAbout /> */}
-                {/* <div className="profile-shots">
+
+                {/* SHOT LIST */}
+                <div className="profile-shots">
                     {shotList}
                     <AddPost />
-                </div> */}
-
+                </div>
+                
+                {/* PORTFOLIOS */}
                 {/* <div className="profile-shots">
                     {portfolioList}
                     <AddPost />
