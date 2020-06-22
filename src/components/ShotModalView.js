@@ -28,6 +28,15 @@ let sampleShot = {
         "comments": 3
     },
     "is_liked": false,
+    "portfolio_name": "Lorem Ipsum",
+    "tags": [
+        {"id": 1, "username": "user1", "profile_pic": w1},
+        {"id": 2, "username": "user1", "profile_pic": w1},
+        {"id": 3, "username": "user1", "profile_pic": w1},
+        {"id": 4, "username": "user1", "profile_pic": w1},
+        {"id": 5, "username": "user1", "profile_pic": w1},
+        {"id": 6, "username": "user1", "profile_pic": w1},
+    ]
 }
 
 
@@ -53,22 +62,59 @@ export class ShotModalView extends Component {
         updatedshot.responsecounts.likes--;
         this.setState({ shot: updatedshot })
     }
+
+    getUploadedDate = (secondsVal) =>{
+        let dt = new Date(0);
+        dt.setUTCSeconds(secondsVal);
+        return dt.toDateString()
+    }
     
     render() {
-        console.log("ShotModalView", this.props);
+
+        let tagList = [];
+        if (this.state.shot.tags.length > 3){
+            let tagUsers =  this.state.shot.tags
+            let remainingTagsCount = tagUsers.length - 3
+            for(let i=0; i<3; i++){
+                tagList.push(<span key={tagUsers[i].id}><img className="tag-img" src={tagUsers[i].profile_pic} alt={tagUsers[i].username}/></span>)
+            }
+            tagList.push(<span className="tag-img-count">+{remainingTagsCount}</span>)
+        }
+        
+        else{
+            this.state.shot.tags.map(ele => {
+                tagList.push(<span key={ele.id}><img className="tag-img" src={ele.profile_pic} alt={ele.username}/></span>)
+                return ele
+            })
+        }
+        
+
+        tagList.push(<button className="btn-anc review-tags">Review all tags</button>)
+
+
         return (
             <React.Fragment>
                 <div className="bg-modal">
                     <div className="modal-content-grid">
                         {/* Modal Image */}
                         <section className="modal-imgbox">
-                            <div className="m-options">
+                            <div className="m-options fade-down">
                                 <div className="m-options-menu">
                                         <GoBack activeIcon={true} />
                                 </div>
-
                             </div>
                             <img alt={this.state.shot.user.profileimg} className="m-shot-img" src={this.state.shot.user.profileimg}></img>
+                            <div className="m-img-attribute fade-up">
+                                <span className="p-attr-name">
+                                    <span className="m-display-name">
+                                        {this.state.shot.portfolio_name}<br />
+                                        <span className="m-adj">uploaded on: {this.getUploadedDate(this.state.shot.created_at)} </span>
+                                    </span>
+                                </span>
+                                <span className="p-attr-tags">
+                                        {tagList}
+                                </span>
+                            </div>
                         </section>
                         {/* Modal User */}
                         <section className="modal-user">
