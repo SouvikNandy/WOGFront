@@ -13,18 +13,10 @@ import Shot from '../components/Shot';
 export class Landing extends Component {
     state = {
         navLinks: [
-            {
-                label: "Home", link: '/', active: true
-            },
-            {
-                label: "Explore", link: '/', active: false
-            },
-            {
-                label: "Register", link: '/signup/', active: false
-            },
-            {
-                label: "Login", link: '/signin/', active: false
-            },
+            { key: 1, label: "Home", link: '/', isActive: true },
+            { key: 2, label: "Explore", link: '/', isActive: false},
+            { key: 3, label: "Register", link: '/signup/', isActive: false},
+            { key: 4, label: "Login", link: '/signin/', isActive: false},
         ]
     }
 
@@ -46,6 +38,21 @@ export class Landing extends Component {
         });
     }
 
+    selectMenu = (key) =>{
+        this.setState({
+            navLinks: this.state.navLinks.map(item=>{
+                if(key=== item.key){
+                    item.isActive = true;
+                }
+                else{
+                    item.isActive = false;
+                }
+                return item
+            })
+        })
+
+    }
+
     render() {
         let shotList = [];
         let reviewList = [];
@@ -62,7 +69,7 @@ export class Landing extends Component {
 
         return (
             <React.Fragment>
-                <Navbar key="nvlinks" navLinks={this.state.navLinks} _path="home" />
+                <Navbar key="nvlinks" navLinks={this.state.navLinks} selectMenu={this.selectMenu} />
                 <div className="landing-layout">
                     {/* hero section */}
                     <section className="hero" id="hero-top">
