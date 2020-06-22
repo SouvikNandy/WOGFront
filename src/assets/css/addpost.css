@@ -320,7 +320,8 @@
     .doc-form .img-upload-form label,
     .doc-form .img-upload-form input,
     .doc-form .img-upload-form select,
-    .doc-form .img-upload-form textarea {
+    .doc-form .img-upload-form textarea,
+    .select-doc .file-count {
         font-size: 0.8rem;
     }
 
@@ -333,4 +334,9 @@
         max-width: 100vw;
         font-size: 0.6rem;
     }
+
+    .doc-btn .apply-btn {
+        width: 30vw;
+    }
+
 }

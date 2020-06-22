@@ -184,7 +184,7 @@ class AddDocumentForm extends Component {
                                 {this.state.FileList.length > 0 ?
                                     <span id="file-count">
                                         <AiOutlineFileAdd />
-                                        <span >{this.state.FileList.length} files selected (add more)</span>
+                                        <span>{this.state.FileList.length} files selected (add more)</span>
                                     </span>
                                     :
                                     <span id="file-count">
