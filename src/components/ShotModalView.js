@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+// import { withRouter } from 'react-router-dom';
 import '../assets/css/shotmodalview.css';
 
-import { FaPlus, FaAngleLeft } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 
 // Images for shot
 import w1 from "../assets/images/wedding1.jpg";
 import ModalLikes from './ModalLikes';
 import ModalComments from './ModalComments';
+import GoBack from "../components/GoBack";
 
 
 let sampleShot = {
@@ -52,12 +53,7 @@ export class ShotModalView extends Component {
         updatedshot.responsecounts.likes--;
         this.setState({ shot: updatedshot })
     }
-
-    gotoPrev = (e) => {
-        e.stopPropagation();
-        this.props.history.goBack()
-    }
-
+    
     render() {
         console.log("ShotModalView", this.props);
         return (
@@ -68,8 +64,7 @@ export class ShotModalView extends Component {
                         <section className="modal-imgbox">
                             <div className="m-options">
                                 <div className="m-options-menu">
-                                    <button className="btn-anc" onClick={this.gotoPrev}>
-                                        <FaAngleLeft className="icons-active" /></button>
+                                        <GoBack activeIcon={true} />
                                 </div>
 
                             </div>
@@ -127,5 +122,5 @@ export class ShotModalView extends Component {
 
 
 
-// export default ShotModalView;
-export default withRouter(ShotModalView);
+export default ShotModalView;
+// export default withRouter(ShotModalView);

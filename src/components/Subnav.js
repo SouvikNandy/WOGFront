@@ -29,6 +29,7 @@ export default class Subnav extends Component {
                 </li>
                 )
             }
+            return true
         })
 
         return (
@@ -41,12 +42,5 @@ export default class Subnav extends Component {
             </React.Fragment>
         )
     }
-    // navList.push(<li>Shots <span>100</span></li>)
-    // navList.push(<li>Portfolio <span>100</span></li>)
-    // navList.push(<li>Tags <span>100</span></li>)
-    // navList.push(<li>Followers <span>100</span></li>)
-    // navList.push(<li>Following <span>100</span></li>)
-    // navList.push(<li>About</li>)
-
     
 }

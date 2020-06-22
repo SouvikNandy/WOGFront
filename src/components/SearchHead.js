@@ -1,15 +1,16 @@
 import React from 'react';
 import "../assets/css/config.css";
-import { FaAngleLeft } from "react-icons/fa";
 
 import { GrSearchAdvanced } from "react-icons/gr";
+
+import GoBack from "../components/GoBack";
 
 export default function SearchHead() {
     return (
         <React.Fragment>
             <div className="srch-box">
                 <div className="back-div">
-                    <button className="btn-anc"><FaAngleLeft className="icons" /></button>
+                    <GoBack />
                 </div>
                 <div className="search-div">
                     <input type="text" placeholder="Search Shots/Events/People ..." />

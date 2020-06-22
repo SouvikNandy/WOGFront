@@ -19,6 +19,10 @@ const createNotification = (type, title="title", message="message") => {
             alert('callback');
           });
           break;
+        default:
+          NotificationManager.info(message);
+          break;
+
       }
     };
   };
