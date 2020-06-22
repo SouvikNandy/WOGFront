@@ -191,13 +191,13 @@
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-.swiper-container {
+.reviews-section .swiper-container {
     width: 90vw;
     height: 90%;
     position: relative;
 }
 
-.swiper-slide {
+.reviews-section .swiper-slide {
     position: relative;
     text-align: center;
     font-size: 1.12rem;
@@ -207,12 +207,12 @@
     border-radius: 0.7rem;
 }
 
-.swiper-slide-active {
+.reviews-section .swiper-slide-active {
     transform: scale(1.06);
 }
 
-.swiper-button-next,
-.swiper-button-prev {
+.reviews-section .swiper-button-next,
+.reviews-section .swiper-button-prev {
     font-weight: bold;
     color: var(--hover-two);
 }
@@ -461,8 +461,8 @@
 /* potrait tablet, e-readers, kindle */
 @media(max-width: 800px) {
 
-    .swiper-button-next,
-    .swiper-button-prev {
+    .reviews-section .swiper-button-next,
+    .reviews-section .swiper-button-prev {
         display: none;
     }
 
@@ -485,7 +485,7 @@
 /* potrait on phones */
 @media(max-width: 650px) {
 
-    .swiper-slide {
+    .reviews-section .swiper-slide {
         width: 70vw;
     }
 
@@ -502,12 +502,12 @@
         grid-template-rows: 80vh auto 150vh auto;
     }
 
-    .swiper-button-next,
-    .swiper-button-prev {
+    .reviews-section .swiper-button-next,
+    .reviews-section .swiper-button-prev {
         display: none;
     }
 
-    .swiper-slide {
+    .reviews-section .swiper-slide {
         width: 50vw;
         height: 110vh;
     }
