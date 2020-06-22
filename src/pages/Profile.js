@@ -19,6 +19,32 @@ import pl2 from "../assets/images/people/2.jpg";
 
 
 export default class Profile extends Component {
+    state = {
+        subNavList:[
+            {"key": 1, "title": "Shots", "count": 100, "isActive":true},
+            {"key": 2, "title": "Portfolios", "count": 100, "isActive":false},
+            {"key": 3, "title": "Tags", "count": 100, "isActive":false},
+            {"key": 4, "title": "Followers", "count": 100, "isActive":false},
+            {"key": 5, "title": "Following", "count": 100, "isActive":false},
+            {"key": 6, "title": "About", "isActive":false},
+        ]
+    }
+    
+    selectSubMenu = (key) =>{
+        this.setState({
+            subNavList: this.state.subNavList.map(item=>{
+                if(key=== item.key){
+                    item.isActive = true;
+                }
+                else{
+                    item.isActive = false;
+                }
+                return item
+            })
+        })
+
+    }
+
     render() {
         let shotList = [];
         for (let i = 0; i < 32; i++) {
@@ -36,24 +62,49 @@ export default class Profile extends Component {
                 <SearchHead />
                 {/* profile top section */}
                 <ProfileHead />
-                <Subnav />
-                {/* USER ABOUT */}
-                {/* <UserAbout /> */}
+                <Subnav subNavList={this.state.subNavList} selectSubMenu={this.selectSubMenu} />
 
-                {/* SHOT LIST */}
-                <div className="profile-shots">
-                    {shotList}
-                    <AddPost />
-                </div>
-                
-                {/* PORTFOLIOS */}
-                {/* <div className="profile-shots">
-                    {portfolioList}
-                    <AddPost />
-                </div> */}
+                {this.state.subNavList.map(item => {
+                    if(item.title === "Shots" && item.isActive === true){
+                        // SHOT LIST
+                        return(
+                            <div className="profile-shots">
+                                {shotList}
+                                <AddPost />
+                            </div>
+                        )
+                    }
+                    else if (item.title === "Portfolios" && item.isActive === true){
+                        // PORTFOLIOS
+                        return(
+                            <div className="profile-portfolio-grid">
+                                {portfolioList}
+                                <AddPost />
+                            </div>
+                        )
+                    }
+                    else if (item.title === "Tags" && item.isActive === true){
+                        // TAG LIST
+                        return(
+                            <div className="profile-shots">
+                                {shotList}
+                            </div>
+                        )
+                        
+                    }
+                    else if (item.title === "Followers" && item.isActive === true){
+                        return (<React.Fragment></React.Fragment>)
+                    }
+                    else if (item.title === "Following" && item.isActive === true){
+                        return (<React.Fragment></React.Fragment>)
+                    }
 
-                <AddPost />
-
+                    else if (item.title === "About" && item.isActive === true){
+                        // USER ABOUT
+                        return (<UserAbout />)
+                    }
+                    
+                })}
                 <Footer />
             </React.Fragment>
         )

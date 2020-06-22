@@ -161,6 +161,19 @@
     /* background: violet; */
 
 }
+.profile-portfolio-grid {
+    padding: 0 6%;
+    margin: 0;
+    display: grid;
+    max-width: 100vw;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-column-gap: 0.8rem;
+    margin-bottom: 1rem;
+    /* background: #333; */
+    /* grid-row-gap: 0.5rem; */
+    /* background: violet; */
+
+}
 
 /* media queries */
 

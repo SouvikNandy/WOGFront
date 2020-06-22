@@ -206,7 +206,8 @@
 
 .uploaded-preview .swiper-button-prev:after,
 .uploaded-preview .swiper-button-next:after {
-    font-size: 2rem;
+    font-size: 1rem;
+    color: var(--hover-two);
     font-weight: bold;
 }
 
@@ -312,4 +313,24 @@
     }
 
 
+}
+
+@media(max-width: 500px) {
+
+    .doc-form .img-upload-form label,
+    .doc-form .img-upload-form input,
+    .doc-form .img-upload-form select,
+    .doc-form .img-upload-form textarea {
+        font-size: 0.8rem;
+    }
+
+    .member-list .item-span {
+        font-size: 0.6rem;
+    }
+
+    .item-span-anc .tooltiptext {
+        max-height: 50vh;
+        max-width: 100vw;
+        font-size: 0.6rem;
+    }
 }

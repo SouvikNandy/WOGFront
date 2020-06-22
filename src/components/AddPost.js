@@ -23,12 +23,15 @@ export class AddPost extends Component {
     render() {
         return (
             <React.Fragment>
-                {/* {this.state.isModalOpen ? <AddDocumentForm showModal={this.showModal} /> : ''} */}
-                <AddDocumentForm showModal={this.showModal} />
+                {this.state.isModalOpen ? <AddDocumentForm showModal={this.showModal} />
+                :
                 <button className="camera-cover" onClick={this.showModal}>
                     <FaCameraRetro className="camera-icon" />
                     <FaPlus className="cam-plus" />
                 </button>
+                }
+                {/* <AddDocumentForm showModal={this.showModal} /> */}
+                
 
             </React.Fragment>
         );

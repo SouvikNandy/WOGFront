@@ -318,7 +318,7 @@
 
 .m-cmt-description {
     flex: 8;
-    background: var(--hover-one);
+    background: var(--border-grey);
     /* red; */
     padding: 0.2rem 0.5rem;
     border-radius: 0.5rem;
