@@ -137,6 +137,7 @@ class AddDocumentForm extends Component {
                     </span>)
 
             }
+            return true
         })
         return (
             <React.Fragment>
@@ -236,7 +237,7 @@ class UploadedSlider extends Component {
             <div className="swiper-slide" key={index}>
                 {/* <span class="tooltiptext"><img className="uploaded-preview-img-big" src={URL.createObjectURL(file)}></img></span> */}
                 <AiFillCloseCircle className="close-img" onClick={this.props.onFileDeselect.bind(this, index)} />
-                <img className="uploaded-preview-img" src={URL.createObjectURL(file)}></img>
+                <img className="uploaded-preview-img" alt="" src={URL.createObjectURL(file)}></img>
             </div>
 
         );

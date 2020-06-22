@@ -103,7 +103,7 @@ export default class Profile extends Component {
                         // USER ABOUT
                         return (<UserAbout />)
                     }
-                    
+                    return <React.Fragment></React.Fragment>
                 })}
                 <Footer />
             </React.Fragment>

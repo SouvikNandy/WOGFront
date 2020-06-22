@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import '../assets/css/shotmodalview.css';
 
 import { FaHeart, FaPaperPlane, FaRegHeart, FaRegComment, FaRegPaperPlane } from "react-icons/fa";
