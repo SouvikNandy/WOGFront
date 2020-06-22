@@ -33,15 +33,15 @@ class Shot extends Component {
                     </Link>
                     {!this.props.onlyShot ?
                         <span className="attribution-user">
-                            <a className="user-preview">
+                            <span className="user-preview">
                                 <img src={selectedImg} alt="" />
                                 <span className="display-name">Dmytry @eushevy</span>
-                            </a>
+                            </span>
 
-                            <a className="like-comment-share-preview">
+                            <span className="like-comment-share-preview">
                                 <FaHeart className="icons" /><span>100</span>
                                 <FaComment className="icons" /><span>100</span>
-                            </a>
+                            </span>
                         </span>
                         : ''}
                 </div>

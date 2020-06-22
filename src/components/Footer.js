@@ -1,5 +1,6 @@
 import React from 'react';
 import '../assets/css/landing.css';
+import { Link } from 'react-router-dom';
 import { FaHeart, FaFacebookSquare, FaInstagram, FaYoutubeSquare } from "react-icons/fa";
 
 export default function Footer() {
@@ -22,17 +23,17 @@ export default function Footer() {
                     <div className="f-mod-2">
                         <ul>
                             <h4>Information</h4>
-                            <li><a href="#">About</a></li>
-                            <li><a href="#">Privacy</a></li>
-                            <li><a href="#">Terms</a></li>
-                            <li><a href="#">Guidelines</a></li>
+                            <li><Link className="link" to={"/"}>About</Link></li>
+                            <li><Link className="link" to={"/"}>Privacy</Link></li>
+                            <li><Link className="link" to={"/"}>Terms</Link></li>
+                            <li><Link className="link" to={"/"}>Guidelines</Link></li>
                         </ul>
                         <ul>
                             <h4>Reach Us</h4>
-                            <li><a href="#">Contact us</a></li>
-                            <li><a href="#">FAQ</a></li>
-                            <li><a href="#">Community</a></li>
-                            <li><a href="#">Add a Feedback</a></li>
+                            <li><Link className="link" to={"/"}>Contact us</Link></li>
+                            <li><Link className="link" to={"/"}>FAQ</Link></li>
+                            <li><Link className="link" to={"/"}>Community</Link></li>
+                            <li><Link className="link" to={"/"}>Add a Feedback</Link></li>
                         </ul>
                     </div>
                     <div className="f-mod-3">

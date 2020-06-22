@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Swiper from "swiper";
 import "swiper/css/swiper.css";
@@ -8,14 +9,15 @@ import Footer from '../components/Footer';
 import Shot from '../components/Shot';
 
 
+
 export class Landing extends Component {
     state = {
         navLinks: [
             {
-                label: "Home", link: '#', active: false
+                label: "Home", link: '/', active: true
             },
             {
-                label: "Explore", link: '#', active: false
+                label: "Explore", link: '/', active: false
             },
             {
                 label: "Register", link: '/signup/', active: false
@@ -76,9 +78,9 @@ export class Landing extends Component {
                         <div className="shots-reminder">
                             <p className="s-lead">Create Developer profile/portfolio, share posts and get help form other developers</p>
                             <div className="s-buttons">
-                                <a href="/signup/" className="btn">Sign up</a>
+                                <Link to={"/signup/"} className="btn" >Sign up</Link>
                                 <span>or</span>
-                                <a href="/signin/" className="btn">Login</a>
+                                <Link to={"/signin/"} className="btn" >Login</Link>
                             </div>
                         </div>
 

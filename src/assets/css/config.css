@@ -33,6 +33,12 @@ ul {
     list-style: none;
 }
 
+.link {
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--dark);
+}
+
 .center {
     display: flex;
     justify-content: center;

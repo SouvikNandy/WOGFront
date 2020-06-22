@@ -73,13 +73,13 @@ export class ShotModalView extends Component {
                         {/* Modal User */}
                         <section className="modal-user">
                             <span className="m-attribution-user">
-                                <a className="m-user-preview">
+                                <span className="m-user-preview">
                                     <img className="m-user-img" src={w1} alt="" />
                                     <span className="m-display-name">
                                         {this.state.shot.user.name} @{this.state.shot.user.username}<br />
                                         <span className="m-adj">{this.state.shot.user.designation}</span>
                                     </span>
-                                </a>
+                                </span>
                             </span>
                             <span className="m-follow">
                                 <button className="btn m-fuser">< FaPlus /> Follow</button>

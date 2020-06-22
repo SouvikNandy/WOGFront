@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FaUser } from "react-icons/fa";
 import '../assets/css/login.css';
+import { Link } from 'react-router-dom';
 
 export class Login extends Component {
     render() {
@@ -40,7 +41,7 @@ class SignIn extends Component {
                     <input type="submit" value="Sign In" className="btn btn-primary" />
                 </form>
                 <p className="my-1">
-                    Don't have an account? <a href="/signup/"> Create One</a>
+                    Don't have an account? <Link className="link" to={"/signup/"}> Create One</Link>
                 </p>
             </React.Fragment>
         )
@@ -77,7 +78,7 @@ class SignUp extends Component {
                     <input type="submit" value="Create Account" className="btn btn-primary" />
                 </form>
                 <p className="my-1">
-                    Already have an account?<a href="/signin/"> Sign In</a>
+                    Already have an account?<Link className="link" to={"/signin/"}> Sign In</Link>
                 </p>
             </React.Fragment>
         )
