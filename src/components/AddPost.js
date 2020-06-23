@@ -5,6 +5,7 @@ import "swiper/css/swiper.css";
 import "../assets/css/addpost.css";
 import { FaCameraRetro, FaPlus } from 'react-icons/fa';
 import { AiFillCloseCircle, AiOutlineFileAdd } from 'react-icons/ai';
+import SideBar from "./SideBar";
 
 
 
@@ -43,6 +44,9 @@ export class AddPost extends Component {
 
 class AddDocumentForm extends Component {
     state = {
+        // other states
+        showSideView: true,
+        // form data
         FileList: [],
         portfolioName: '',
         description: '',
@@ -141,7 +145,7 @@ class AddDocumentForm extends Component {
         })
         return (
             <React.Fragment>
-                <div className="doc-form">
+                <div className={this.state.showSideView?"doc-form side-width": "doc-form full-width"}>
                     <form className="img-upload-form" id="img-upload-form" onSubmit={this.onPostSubmit}>
                         <section className="doc-head">
                             <div className="top-logo">
@@ -194,8 +198,18 @@ class AddDocumentForm extends Component {
                                     </span>
 
                                 }
-
+                                
                             </div>
+
+                            <div className="check-t-c">
+                                <input type="checkbox" className="check-box" />
+                                <span className="t-c-line">I have read and accepted the following 
+                                    <button className="btn-anc t-c-highlight"> Terms and Conditions</button>
+                                </span>
+                                
+                            </div>
+
+                            
 
                         </section>
                         <section className="doc-btn">
@@ -206,6 +220,14 @@ class AddDocumentForm extends Component {
                         </section>
                     </form>
                 </div>
+                {this.state.showSideView?
+                <div className="form-side-bar-view">
+                    <SideBar />
+                </div>
+                :
+                ""
+                }
+                
             </React.Fragment >
         )
     }

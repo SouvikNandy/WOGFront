@@ -1,0 +1,54 @@
+@import url('config.css');
+
+.side-bar {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0.8rem 0.5rem;
+    overflow-y: scroll;
+}
+
+.side-bar-head {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    /* border-bottom: 1px solid var(--border-grey); */
+}
+
+.side-bar-head .close-btn {
+    flex: 1;
+    height: 2rem;
+    width: 2rem;
+    border-radius: 50%;
+    color: var(--dark);
+    /* padding: 0.2rem; */
+    display: flex;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0;
+}
+
+.side-bar-head .close-btn:hover {
+    color: var(--hover-two);
+}
+
+.side-bar-head .search-btn {
+    height: 2rem;
+    width: 2rem;
+}
+
+.side-bar-head .search-div input {
+    width: 90%;
+}
+
+.slide-bar-head .srch-bar {
+    flex: 15
+}
+
+.side-bar-content {
+    flex: 10
+}

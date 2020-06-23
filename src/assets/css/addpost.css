@@ -36,7 +36,6 @@
 .doc-form {
     position: fixed;
     height: 100vh;
-    width: 100vw;
     top: 0;
     left: 0;
     background: rgba(0, 0, 0, 0.7);
@@ -45,6 +44,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.full-width {
+    width: 100vw;
+}
+
+.side-width {
+    width: 80vw;
 }
 
 .doc-form .img-upload-form {
@@ -285,19 +292,43 @@
     transition: .25s ease-in-out 0s;
 }
 
-/* .uploaded-preview-img-big {
-    height: 20vh;
-    width: 20vw;
-    object-fit: cover;
-    z-index: 50;
+.check-t-c {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
 }
 
-.uploaded-preview .swiper-slide .tooltiptext {
-    position: absolute;
-    visibility: visible;
-    overflow: hidden;
-    
-} */
+.check-t-c input {
+    flex: 1;
+    padding-left: 0;
+    margin-left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.check-t-c .t-c-line {
+    flex: 20;
+    font-size: 0.8rem;
+}
+
+.check-t-c .t-c-line .t-c-highlight {
+    color: var(--hover-two);
+    margin-left: 0.2rem;
+    font-weight: bold;
+}
+
+
+.form-side-bar-view {
+    height: 100vh;
+    width: 30vw;
+    background: var(--light);
+    position: fixed;
+    right: 0;
+    top: 0;
+}
 
 @media (max-width: 900px) {
     .camera-cover {
