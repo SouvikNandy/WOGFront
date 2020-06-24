@@ -16,7 +16,7 @@ class Shot extends Component {
         let imageArr = [w1, w2, w3, pl2];
         const selectedImg = imageArr[Math.floor(Math.random() * imageArr.length)];
         let shotClass = this.props.onlyShot ? "shot-preview-alt" : "shot-preview"
-        console.log(shotClass)
+        // console.log(shotClass)
         return (
             <React.Fragment>
                 <div className={shotClass}>

@@ -9,6 +9,7 @@ import w1 from "../assets/images/wedding1.jpg";
 import ModalLikes from './ModalLikes';
 import ModalComments from './ModalComments';
 import GoBack from "../components/GoBack";
+import { UserFlat } from './UserView';
 
 
 let sampleShot = {
@@ -71,11 +72,14 @@ export class ShotModalView extends Component {
     
     render() {
 
+        let maxCount = window.innerWidth > 700? 3: 2;
+        console.log("innerWidth", window.innerWidth, window.innerWidth > 700);
+
         let tagList = [];
-        if (this.state.shot.tags.length > 3){
+        if (this.state.shot.tags.length > maxCount){
             let tagUsers =  this.state.shot.tags
-            let remainingTagsCount = tagUsers.length - 3
-            for(let i=0; i<3; i++){
+            let remainingTagsCount = tagUsers.length - maxCount
+            for(let i=0; i<maxCount; i++){
                 tagList.push(<span key={tagUsers[i].id}><img className="tag-img" src={tagUsers[i].profile_pic} alt={tagUsers[i].username}/></span>)
             }
             tagList.push(<span className="tag-img-count">+{remainingTagsCount}</span>)
@@ -120,11 +124,7 @@ export class ShotModalView extends Component {
                         <section className="modal-user">
                             <span className="m-attribution-user">
                                 <span className="m-user-preview">
-                                    <img className="m-user-img" src={w1} alt="" />
-                                    <span className="m-display-name">
-                                        {this.state.shot.user.name} @{this.state.shot.user.username}<br />
-                                        <span className="m-adj">{this.state.shot.user.designation}</span>
-                                    </span>
+                                    <UserFlat />
                                 </span>
                             </span>
                             <span className="m-follow">

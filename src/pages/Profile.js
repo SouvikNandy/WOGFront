@@ -52,9 +52,9 @@ export default class Profile extends Component {
         }
         const portfolioList = [];
         for (let i = 0; i < 10; i++) {
-            portfolioList.push(<Portfolio contained={4} />)
-            portfolioList.push(<Portfolio contained={1} />)
-            portfolioList.push(<Portfolio contained={10} />)
+            portfolioList.push(<Portfolio key={i} contained={4} />)
+            portfolioList.push(<Portfolio key={i} contained={1} />)
+            portfolioList.push(<Portfolio key={i} contained={10} />)
         }
 
         return (

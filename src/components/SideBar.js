@@ -9,11 +9,11 @@ export class SideBar extends Component{
         return(
             <div className="side-bar">
                 <section className="side-bar-head">
-                    <AiOutlineCloseCircle className="close-btn"/>
+                    <AiOutlineCloseCircle className="close-btn" onClick={this.props.displaySideView.bind(this, {sureVal: false})}/>
                     <SearchBar className="srch-bar"/>
                 </section>
                 <section className="side-bar-content">
-                    Content here
+                    {this.props.content}
                 </section>
             </div>
         )

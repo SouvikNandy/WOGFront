@@ -1,0 +1,17 @@
+@import url('config.css');
+
+.user-flat-div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 8vh;
+    width: 100%;
+    background: var(--light);
+
+}
+
+.user-flat-div .m-display-name {
+    color: var(--dark);
+    margin-left: 0.8rem;
+    line-height: 1.2;
+}

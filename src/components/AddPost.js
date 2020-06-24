@@ -6,11 +6,14 @@ import "../assets/css/addpost.css";
 import { FaCameraRetro, FaPlus } from 'react-icons/fa';
 import { AiFillCloseCircle, AiOutlineFileAdd } from 'react-icons/ai';
 import SideBar from "./SideBar";
+import { TagUser } from './TagUser';
 
 
+// Images for shot
+import w1 from "../assets/images/wedding1.jpg";
 
 
-
+// Add post button
 export class AddPost extends Component {
     state = {
         isModalOpen: false
@@ -30,9 +33,7 @@ export class AddPost extends Component {
                     <FaCameraRetro className="camera-icon" />
                     <FaPlus className="cam-plus" />
                 </button>
-                }
-                {/* <AddDocumentForm showModal={this.showModal} /> */}
-                
+                }                
 
             </React.Fragment>
         );
@@ -42,18 +43,46 @@ export class AddPost extends Component {
 }
 
 
+// Document Form
 class AddDocumentForm extends Component {
     state = {
         // other states
-        showSideView: true,
+        showSideView: false,
+        sideViewContent: [],
         // form data
         FileList: [],
         portfolioName: '',
         description: '',
-        members: ['user1', 'user2', 'user3', "user4", "user5", "user6",'user1', 'user2', 'user3', "user4", "user5", "user6",
-        'user1', 'user2', 'user3', "user4", "user5", "user6",'user1', 'user2', 'user3', "user4", "user5", "user6"
-                ],
+        members: [
+            {"id": 1, "name":"First Last", "username": "user1", "profile_pic": w1, "designation": "photographer"},
+            {"id": 2, "name":"First Last", "username": "user2", "profile_pic": w1, "designation": "photographer"},
+            {"id": 3, "name":"First Last", "username": "user3", "profile_pic": w1, "designation": "photographer"},
+            {"id": 4, "name":"First Last", "username": "user4", "profile_pic": w1, "designation": "photographer"},
+            {"id": 5, "name":"First Last", "username": "user5", "profile_pic": w1, "designation": "photographer"},
+            {"id": 6, "name":"First Last", "username": "user6", "profile_pic": w1, "designation": "photographer"},
+            {"id": 7, "name":"First Last", "username": "user7", "profile_pic": w1, "designation": "photographer"},
+            {"id": 8, "name":"First Last", "username": "user8", "profile_pic": w1, "designation": "photographer"},
+            {"id": 9, "name":"First Last", "username": "user9", "profile_pic": w1, "designation": "photographer"},
+            {"id": 10, "name":"First Last", "username": "user10", "profile_pic": w1, "designation": "photographer"}
+        ],
 
+    }
+
+    displaySideView = ({content, sureVal}) =>{
+        let stateVal = !this.state.showSideView
+        if (sureVal){
+            stateVal = sureVal
+        }
+
+        this.setState({
+            showSideView: stateVal 
+        })
+
+        if(content){
+            this.setState({
+                sideViewContent: content
+            })
+        }
     }
 
     onFileSelect = (e) => {
@@ -73,8 +102,13 @@ class AddDocumentForm extends Component {
 
     onRemoveMember = (idx) => {
         this.setState({
-            members: [...this.state.members.filter((item, index) => index !== idx)]
+            members: [...this.state.members.filter(item => item.id !== idx)]
         });
+
+        this.setState({
+            sideViewContent: [...this.state.sideViewContent.filter(item => item.props.data.id !== idx)]
+        });
+
     }
 
     onChange = (e) => this.setState({
@@ -100,19 +134,13 @@ class AddDocumentForm extends Component {
         let allMembers = [];
         let existingList = [];
         let maxCouunt = window.innerWidth > 1100? 5: 3;
-        console.log(window.innerWidth);
 
         if (this.state.members.length > maxCouunt) {
             allMembers = this.state.members.slice(0, maxCouunt);
             allMembers.push("Show All (" + this.state.members.length +") ")
             // add all members to show
-            this.state.members.map((item, index) =>{
-                existingList.push(
-                    <span className="item-span" key={index}>
-                        <span>{item}</span>
-                        <AiFillCloseCircle className="close-img " onClick={this.onRemoveMember.bind(this, index)} />
-
-                    </span>)
+            this.state.members.map( item =>{
+                existingList.push(<TagUser key={item.id} data={item} onRemoveMember={this.onRemoveMember}/>)
                 return existingList
                     
             })
@@ -121,28 +149,27 @@ class AddDocumentForm extends Component {
             allMembers = this.state.members;
         }
 
-        allMembers.map((item, index) => {
+        allMembers.map(item => {
 
-            if (item.includes("Show All")) {
+            if (typeof item === 'string' && item.includes("Show All")) {
                 memberlist.push(
-                    <span className="item-span item-span-anc" key={index}>
-                        <span className="tooltiptext">{existingList}</span>
+                    <span className="item-span item-span-anc" key={item.id} onClick={this.displaySideView.bind(this, {content:existingList, sureVal: true})}>
                         {item}
-                        
                     </span>
                 )
             }
             else {
                 memberlist.push(
-                    <span className="item-span" key={index}>
-                        <span>{item}</span>
-                        <AiFillCloseCircle className="close-img " onClick={this.onRemoveMember.bind(this, index)} />
+                    <span className="item-span" key={item.id}>
+                        <span>{item.username}</span>
+                        <AiFillCloseCircle className="close-btn close-img " onClick={this.onRemoveMember.bind(this, item.id)} />
 
                     </span>)
 
             }
             return true
         })
+
         return (
             <React.Fragment>
                 <div className={this.state.showSideView?"doc-form side-width": "doc-form full-width"}>
@@ -180,7 +207,10 @@ class AddDocumentForm extends Component {
                             {this.state.FileList.length > 0 ?
                                 <UploadedSlider
                                     uploadedFilePreviewList={this.state.FileList}
-                                    onFileDeselect={this.onFileDeselect} />
+                                    onFileDeselect={this.onFileDeselect}
+                                    displaySideView={this.displaySideView}
+                                    prevshowSideView={this.state.showSideView}
+                                    />
                                 :
                                 ""
                             }
@@ -204,7 +234,7 @@ class AddDocumentForm extends Component {
                             <div className="check-t-c">
                                 <input type="checkbox" className="check-box" />
                                 <span className="t-c-line">I have read and accepted the following 
-                                    <button className="btn-anc t-c-highlight"> Terms and Conditions</button>
+                                    <button className="btn-anc t-c-highlight" onClick={this.displaySideView.bind(this, {content: <TandCTemplate />})}> Terms and Conditions</button>
                                 </span>
                                 
                             </div>
@@ -222,7 +252,7 @@ class AddDocumentForm extends Component {
                 </div>
                 {this.state.showSideView?
                 <div className="form-side-bar-view">
-                    <SideBar />
+                    <SideBar displaySideView={this.displaySideView} content={this.state.sideViewContent}/>
                 </div>
                 :
                 ""
@@ -233,6 +263,9 @@ class AddDocumentForm extends Component {
     }
 }
 
+
+
+// Document form image Slider
 
 class UploadedSlider extends Component {
     componentDidMount() {
@@ -252,14 +285,17 @@ class UploadedSlider extends Component {
             },
         });
     }
+
+    getSidebarDisplayImg = (curUrl) =>{
+        return <img className="side-bar-display-img" alt="" src={URL.createObjectURL(curUrl)} />
+    }
     render() {
-        // console.log(this.props);
         const previewList = [];
         var currUrl = this.props.uploadedFilePreviewList.map((file, index) =>
             <div className="swiper-slide" key={index}>
-                {/* <span class="tooltiptext"><img className="uploaded-preview-img-big" src={URL.createObjectURL(file)}></img></span> */}
-                <AiFillCloseCircle className="close-img" onClick={this.props.onFileDeselect.bind(this, index)} />
-                <img className="uploaded-preview-img" alt="" src={URL.createObjectURL(file)}></img>
+                <AiFillCloseCircle className="close-btn close-img" onClick={this.props.onFileDeselect.bind(this, index)} />
+                <img className="uploaded-preview-img" alt="" src={URL.createObjectURL(file)} 
+                onClick={this.props.displaySideView.bind(this, {content: this.getSidebarDisplayImg(file), sureVal: true})}></img>
             </div>
 
         );
@@ -282,5 +318,29 @@ class UploadedSlider extends Component {
             </React.Fragment>
         )
     }
+}
+
+
+
+function TandCTemplate(){
+    return(
+        <React.Fragment>
+            <h3>Terms and Conditions</h3>
+            <p>These terms and conditions outline the rules and regulations for the use of Company Name's Website, located at Website.com.<br/>
+            By accessing this website we assume you accept these terms and conditions. Do not continue to use Website Name if you do not agree to take all of the terms and conditions stated on this page.<br/>
+            The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all Agreements: “Client”, “You” and “Your” refers to you, the person log on this website and compliant to the Company's terms and conditions. “The Company”, “Ourselves”, “We”, “Our” and “Us”, refers to our Company. “Party”, “Parties”, or “Us”, refers to both the Client and ourselves. All terms refer to the offer, acceptance and consideration of payment necessary to undertake the process of our assistance to the Client in the most appropriate manner for the express purpose of meeting the Client's needs in respect of provision of the Company's stated services, in accordance with and subject to, prevailing law of Netherlands. Any use of the above terminology or other words in the singular, plural, capitalization and/or he/she or they, are taken as interchangeable and therefore as referring to same.<br/>
+            </p>
+            <h4>Cookies</h4>
+            <p>
+            
+                We employ the use of cookies. By accessing Website Name, you agreed to use cookies in agreement with the Company Name's Privacy Policy.
+
+                Most interactive websites use cookies to let us retrieve the user's details for each visit. Cookies are used by our website to enable the functionality of certain areas to make it easier for people visiting our website. Some of our affiliate/advertising partners may also use cookies.
+
+                License
+                Unless otherwise stated, Company Name and/or its licensors own the intellectual property rights for all material on Website Name. All intellectual property rights are reserved. You may access this from Website Name for your own personal use subjected to restrictions set in these terms and conditions.
+            </p>
+        </React.Fragment>
+    )
 }
 export default AddPost;

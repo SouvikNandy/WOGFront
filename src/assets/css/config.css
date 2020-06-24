@@ -173,6 +173,12 @@ ul {
 
 }
 
+.close-btn{
+    position: relative;
+    color: var(--hover-two);
+    cursor: pointer;
+}
+
 .tooltiptext {
     visibility: hidden;
     background: var(--dark);
@@ -251,12 +257,64 @@ ul {
             rgba(0, 0, 0, 0.4) 100%);
 }
 
+.tag-img{
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.m-display-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 501;
+    font-size: 0.8rem;
+    text-align: start;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+.m-display-name .m-adj {
+    font-size: 0.7rem;
+    font-weight: 300;
+}
+
+.form-side-bar-view {
+    height: 100vh;
+    width: 30vw;
+    background: var(--light);
+    position: fixed;
+    right: 0;
+    top: 0;
+    transition: width 0.4s;
+}
+
+.side-bar-display-img{
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+@media(max-width:900px){
+    .form-side-bar-view {
+        width: 100vw;
+    }
+}
+
 @media(max-width:700px) {
     .back-div .btn-anc {
         font-size: 1.8rem;
     }
 
     .search-btn {
+        height: 1.8rem;
+        width: 1.8rem;
+    }
+}
+
+@media (max-width: 600px){
+    .tag-img{
         height: 1.8rem;
         width: 1.8rem;
     }
