@@ -7,6 +7,7 @@
     flex-direction: column;
     padding: 0.8rem 0.5rem;
     overflow-y: scroll;
+    transition: width 0.4s
 }
 
 .side-bar-head {
@@ -87,4 +88,14 @@
 .tag-user-div .close-btn{
     height: 2rem;
     width: 2rem;
+}
+
+@media(max-height: 500px) and (orientation: landscape){
+    .tag-user-div .tag-div-btn{
+        height: 1.5rem;
+        width: 1.5rem;
+    }
+    .side-bar-content{
+        line-height: 1.2;
+    }
 }

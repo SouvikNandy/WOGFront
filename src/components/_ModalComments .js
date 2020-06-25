@@ -43,9 +43,9 @@ export class ModalComments extends Component {
             }
         ]
     }
-    componentDidMount() {
-        console.log("mounted", this.props.post_id);
-    }
+    // componentDidMount() {
+    //     console.log("mounted", this.props.post_id);
+    // }
 
     doLike = (id) => {
         // api call to like comment

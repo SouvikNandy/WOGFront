@@ -14,10 +14,10 @@ export class ModalComments extends CommentsBase {
         rootCommentBox: null
     }
 
-    componentDidMount() {
-        console.log("mounted", this.props.post_id);
+    // componentDidMount() {
+    //     console.log("mounted", this.props.post_id);
 
-    }
+    // }
 
     addOnlyReplies = (commnetId, dataSet) => {
         this.state.data.map(item => {

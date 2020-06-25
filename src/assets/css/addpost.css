@@ -46,16 +46,6 @@
     align-items: center;
 }
 
-.full-width {
-    width: 100vw;
-    transition: width 0.4s
-}
-
-.side-width {
-    width: 75vw;
-    transition: width 0.4s
-}
-
 .doc-form .img-upload-form {
     height: 90vh;
     width: 45vw;

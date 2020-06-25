@@ -46,9 +46,10 @@ export class AddPost extends Component {
 // Document Form
 class AddDocumentForm extends Component {
     state = {
-        // other states
+        // sidebar states
         showSideView: false,
         sideViewContent: [],
+        
         // form data
         FileList: [],
         portfolioName: '',
@@ -172,7 +173,7 @@ class AddDocumentForm extends Component {
 
         return (
             <React.Fragment>
-                <div className={this.state.showSideView?"doc-form side-width": "doc-form full-width"}>
+                <div className={this.state.showSideView?"doc-form with-side-width": "doc-form full-width"}>
                     <form className="img-upload-form" id="img-upload-form" onSubmit={this.onPostSubmit}>
                         <section className="doc-head">
                             <div className="top-logo">
@@ -251,11 +252,11 @@ class AddDocumentForm extends Component {
                     </form>
                 </div>
                 {this.state.showSideView?
-                <div className="form-side-bar-view">
+                <div className="form-side-bar-view side-bar-view-active">
                     <SideBar displaySideView={this.displaySideView} content={this.state.sideViewContent}/>
                 </div>
                 :
-                ""
+                <div className="form-side-bar-view"></div>
                 }
                 
             </React.Fragment >

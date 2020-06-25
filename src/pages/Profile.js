@@ -48,13 +48,13 @@ export default class Profile extends Component {
     render() {
         let shotList = [];
         for (let i = 0; i < 32; i++) {
-            shotList.push(<Shot key={i} id={i} onlyShot={true} currLocation={this.props.location} />)
+            shotList.push(<Shot key={"s"+i} id={i} onlyShot={true} currLocation={this.props.location} />)
         }
-        const portfolioList = [];
+        let portfolioList = [];
         for (let i = 0; i < 10; i++) {
-            portfolioList.push(<Portfolio key={i} contained={4} />)
-            portfolioList.push(<Portfolio key={i} contained={1} />)
-            portfolioList.push(<Portfolio key={i} contained={10} />)
+            portfolioList.push(<Portfolio key={"p4"+ i} contained={4} />)
+            portfolioList.push(<Portfolio key={"p1"+ i} contained={1} />)
+            portfolioList.push(<Portfolio key={"p10"+ i} contained={10} />)
         }
 
         return (
@@ -64,11 +64,11 @@ export default class Profile extends Component {
                 <ProfileHead />
                 <Subnav subNavList={this.state.subNavList} selectSubMenu={this.selectSubMenu} />
 
-                {this.state.subNavList.map(item => {
+                {this.state.subNavList.map((item, index) => {
                     if(item.title === "Shots" && item.isActive === true){
                         // SHOT LIST
                         return(
-                            <div className="profile-shots">
+                            <div key={item.title} className="profile-shots">
                                 {shotList}
                                 <AddPost />
                             </div>
@@ -77,7 +77,7 @@ export default class Profile extends Component {
                     else if (item.title === "Portfolios" && item.isActive === true){
                         // PORTFOLIOS
                         return(
-                            <div className="profile-portfolio-grid">
+                            <div key={item.title} className="profile-portfolio-grid">
                                 {portfolioList}
                                 <AddPost />
                             </div>
@@ -86,24 +86,24 @@ export default class Profile extends Component {
                     else if (item.title === "Tags" && item.isActive === true){
                         // TAG LIST
                         return(
-                            <div className="profile-shots">
+                            <div key={item.title} className="profile-shots">
                                 {shotList}
                             </div>
                         )
                         
                     }
                     else if (item.title === "Followers" && item.isActive === true){
-                        return (<React.Fragment></React.Fragment>)
+                        return (<React.Fragment key={item.title}></React.Fragment>)
                     }
                     else if (item.title === "Following" && item.isActive === true){
-                        return (<React.Fragment></React.Fragment>)
+                        return (<React.Fragment key={item.title}></React.Fragment>)
                     }
 
                     else if (item.title === "About" && item.isActive === true){
                         // USER ABOUT
-                        return (<UserAbout />)
+                        return (<UserAbout key={item.title}/>)
                     }
-                    return <React.Fragment></React.Fragment>
+                    return <React.Fragment key={index}></React.Fragment>
                 })}
                 <Footer />
             </React.Fragment>

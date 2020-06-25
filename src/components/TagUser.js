@@ -7,16 +7,17 @@ import { AiFillCloseCircle } from 'react-icons/ai';
 
 export class TagUser extends Component{
     render(){
+        let data = this.props.data 
         return(
             <div className="tag-user-div">
                 <span className="user-f">
-                    <UserFlat data={this.props.data}/>
+                    <UserFlat data={data}/>
                 </span>
                 
                 {/* <span className="m-follow">
                     <button className="btn m-fuser">< FaPlus /> Follow</button>
                 </span> */}
-                <AiFillCloseCircle className="close-btn" onClick={this.props.onRemoveMember.bind(this, this.props.data.id)}/>
+                <AiFillCloseCircle className="close-btn tag-div-btn" onClick={this.props.onRemoveMember.bind(this, data.id)}/>
             </div>
         )
     }
