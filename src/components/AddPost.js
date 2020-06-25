@@ -103,10 +103,7 @@ class AddDocumentForm extends Component {
 
     onRemoveMember = (idx) => {
         this.setState({
-            members: [...this.state.members.filter(item => item.id !== idx)]
-        });
-
-        this.setState({
+            members: [...this.state.members.filter(item => item.id !== idx)],
             sideViewContent: [...this.state.sideViewContent.filter(item => item.props.data.id !== idx)]
         });
 

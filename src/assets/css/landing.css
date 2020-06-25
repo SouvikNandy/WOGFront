@@ -75,6 +75,7 @@
     grid-template-rows: 15.5rem;
     grid-gap: 5px;
     border-radius: 0.7rem;
+    max-width: 17vw;
 }
 
 .sp-img {

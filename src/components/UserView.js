@@ -1,6 +1,7 @@
 import React from 'react';
 
 import "../assets/css/userview.css";
+import w1 from "../assets/images/wedding1.jpg";
 
 
 export function UserFlat(props){
@@ -17,4 +18,44 @@ export function UserFlat(props){
 }
 
 
-export default {UserFlat} 
+export function FollowUserCube(props){
+    const ele = {"id": 1, "name":"First Last", "username": "user1", "profile_pic": w1, "designation": "photographer"}
+    const is_following = false
+    return(
+        <div className="user-cube-div">
+            <div className="cube-grid">
+                <div className="cube-user-attr">
+                    <div key={ele.id}><img className="cube-user-img " src={ele.profile_pic} alt={ele.username}/></div>
+                    <span className="m-display-name">
+                        {ele.name}
+                        <span className="m-adj">{ele.username}</span>
+                        <span className="m-adj">{ele.designation}</span>
+                    </span>
+                </div>
+                <div className="cube-user-prof">
+                    {is_following?
+                    <div className="cu-prof-details">
+                        <div className="cu-portfolio">
+                            <span className="cu-p-title">Shots</span>
+                            <span className="cu-p-content">10</span>
+                        </div>
+                        <div className="cu-tags">
+                        <span className="cu-p-title">Tags</span>
+                            <span className="cu-p-content">10</span>
+                        </div>
+                        <div className="cu-followers">
+                        <span className="cu-p-title">Followers</span>
+                            <span className="cu-p-content">10</span>
+                        </div>
+                    </div>
+                    :
+                    "Follow User"}
+                    
+                </div>
+                
+            </div>
+        </div>
+    )
+}
+
+export default {UserFlat, FollowUserCube} 

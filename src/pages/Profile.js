@@ -9,6 +9,7 @@ import Shot from '../components/Shot';
 import Portfolio from '../components/Portfolio';
 import AddPost from '../components/AddPost';
 import Footer from '../components/Footer';
+import {FollowUserCube} from '../components/UserView';
 
 
 // Images for shot
@@ -56,6 +57,11 @@ export default class Profile extends Component {
             portfolioList.push(<Portfolio key={"p1"+ i} contained={1} />)
             portfolioList.push(<Portfolio key={"p10"+ i} contained={10} />)
         }
+        let Followers = [];
+        for (let i = 0; i < 1; i++) {
+            Followers.push(<FollowUserCube key={"fl"+ i} />)
+
+        }
 
         return (
             <React.Fragment>
@@ -93,7 +99,11 @@ export default class Profile extends Component {
                         
                     }
                     else if (item.title === "Followers" && item.isActive === true){
-                        return (<React.Fragment key={item.title}></React.Fragment>)
+                        return (
+                        <div key={item.title} className="profile-shots">
+                                {Followers}
+                        </div>
+                        )
                     }
                     else if (item.title === "Following" && item.isActive === true){
                         return (<React.Fragment key={item.title}></React.Fragment>)

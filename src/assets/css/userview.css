@@ -15,3 +15,96 @@
     margin-left: 0.8rem;
     line-height: 1.2;
 }
+
+.user-cube-div {
+    /* background: red; */
+    padding: 0;
+    margin: 0.5rem 0;
+    display: grid;
+    grid-template-rows: 15.5rem;
+    grid-gap: 5px;
+    border-radius: 0.7rem;
+    max-width: 17vw;
+    border: 1px solid var(--border-grey);
+}
+
+.user-cube-div .cube-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.cube-grid .cube-user-attr{
+    flex: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 90%;
+    border-bottom: 1px solid var(--border-grey);
+}
+
+.cube-grid .cube-user-img {
+    height: 6rem;
+    width: 6rem;
+    display: block;
+    border-radius: 50%;
+}
+
+.cube-grid .m-display-name{
+    margin-top: 0.5rem;
+    /* line-height: 1; */
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.cube-grid .m-display-name .m-adj{
+    font-size: 0.8rem;
+}
+
+.cube-grid .cube-user-prof{
+    flex: 1;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cube-user-prof .cu-prof-details{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cube-user-prof .cu-prof-details .cu-portfolio,
+.cube-user-prof .cu-prof-details .cu-tags,
+.cube-user-prof .cu-prof-details .cu-followers{
+    min-width: 4vw;
+    padding: 0.5rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.cube-user-prof .cu-prof-details .cu-portfolio,
+.cube-user-prof .cu-prof-details .cu-tags{
+    border-right: 1px solid var(--border-grey);
+}
+
+.cu-prof-details .cu-p-title{
+    font-size: 1rem;
+    font-weight: bold;
+    display: block;
+    color: var(--dark);
+}
+
+.cu-prof-details .cu-p-content{
+    margin-top: 0.2rem;
+    font-size: 0.9rem;
+}
