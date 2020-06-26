@@ -1,6 +1,8 @@
 import React from 'react';
 
 import "../assets/css/userview.css";
+
+import { FaPlus } from "react-icons/fa";
 import w1 from "../assets/images/wedding1.jpg";
 
 
@@ -20,7 +22,7 @@ export function UserFlat(props){
 
 export function FollowUserCube(props){
     const ele = {"id": 1, "name":"First Last", "username": "user1", "profile_pic": w1, "designation": "photographer"}
-    const is_following = false
+    const is_following = props.isFollowing? true: false
     return(
         <div className="user-cube-div">
             <div className="cube-grid">
@@ -49,7 +51,7 @@ export function FollowUserCube(props){
                         </div>
                     </div>
                     :
-                    "Follow User"}
+                    <button className="btn m-fuser">< FaPlus /> Follow</button>}
                     
                 </div>
                 

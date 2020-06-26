@@ -57,10 +57,20 @@ export default class Profile extends Component {
             portfolioList.push(<Portfolio key={"p1"+ i} contained={1} />)
             portfolioList.push(<Portfolio key={"p10"+ i} contained={10} />)
         }
-        let Followers = [];
-        for (let i = 0; i < 1; i++) {
-            Followers.push(<FollowUserCube key={"fl"+ i} />)
 
+        let tagList = [];
+        for (let i = 0; i < 32; i++) {
+            tagList.push(<Shot key={"t"+i} id={i} currLocation={this.props.location} />)
+        }
+
+        let Followers = [];
+        for (let i = 0; i < 10; i++) {
+            Followers.push(<FollowUserCube key={"fl"+ i}  isFollowing={false}/>)
+        }
+
+        let Following = [];
+        for (let i = 0; i < 10; i++) {
+            Following.push(<FollowUserCube key={"flw"+ i}  isFollowing={true}/>)
         }
 
         return (
@@ -92,21 +102,34 @@ export default class Profile extends Component {
                     else if (item.title === "Tags" && item.isActive === true){
                         // TAG LIST
                         return(
-                            <div key={item.title} className="profile-shots">
-                                {shotList}
-                            </div>
+                            <React.Fragment key={item.title}>
+                                <div className="profile-tags-selector">
+                                    <span className="tag-selector-span tag-s-1">Approved</span>
+                                    <span className="tag-selector-span">Requests</span>
+                                </div>
+                                <div className="profile-shots">
+                                    {tagList}
+                                </div>
+
+                            </React.Fragment>
+
+                            
                         )
                         
                     }
                     else if (item.title === "Followers" && item.isActive === true){
                         return (
-                        <div key={item.title} className="profile-shots">
+                        <div key={item.title} className="profile-portfolio-grid">
                                 {Followers}
                         </div>
                         )
                     }
                     else if (item.title === "Following" && item.isActive === true){
-                        return (<React.Fragment key={item.title}></React.Fragment>)
+                        return (
+                            <div key={item.title} className="profile-portfolio-grid">
+                                    {Following}
+                            </div>
+                            )
                     }
 
                     else if (item.title === "About" && item.isActive === true){

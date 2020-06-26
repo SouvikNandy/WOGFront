@@ -64,7 +64,14 @@ ul {
 
 .btn:hover {
     color: var(--light);
-    opacity: 0.7;
+    /* opacity: 0.7; */
+}
+
+.btn:active {
+    transform: scale(0.98);
+    /* Scaling button to 0.98 to its original size */
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    /* Lowering the shadow */
 }
 
 .btn-anc {
@@ -80,6 +87,13 @@ ul {
 
 .btn-anc:hover {
     color: var(--hover-one);
+}
+
+.btn-anc:active {
+    transform: scale(0.98);
+    /* Scaling button to 0.98 to its original size */
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    /* Lowering the shadow */
 }
 
 .apply-btn {
@@ -339,16 +353,17 @@ ul {
     }
 }
 
-@media(max-height: 500px) and (orientation: landscape){
-    .tag-img{
+@media(max-height: 500px) and (orientation: landscape) {
+    .tag-img {
         height: 1.5rem;
         width: 1.5rem;
     }
-    .m-display-name{
+
+    .m-display-name {
         font-size: 0.7rem
     }
 
-    .m-display-name .m-adj{
+    .m-display-name .m-adj {
         font-size: 0.5rem;
     }
 }

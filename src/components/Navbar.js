@@ -20,7 +20,7 @@ export class Navbar extends Component {
         let linksMarkup = this.props.navLinks.map(obj => {
             return (
                 <li className="menu-list-item" key={obj.key}>
-                    {obj.active?
+                    {obj.isActive?
                     <Link className="menu-link menu-link--active" to={obj.link}>{obj.label}</Link>
                     :
                     <Link className="menu-link" to={obj.link} 

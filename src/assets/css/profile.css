@@ -161,6 +161,7 @@
     /* background: violet; */
 
 }
+
 .profile-portfolio-grid {
     padding: 0 6%;
     margin: 0;
@@ -175,6 +176,26 @@
 
 }
 
+.profile-tags-selector {
+    height: 5vh;
+    margin: 0 6%;
+    border-bottom: 1px solid var(--border-grey);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tag-selector-span{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--dark);
+}
+
+.tag-s-1{
+    border-right: 1px solid var(--border-grey);
+}
 /* media queries */
 
 @media(max-width: 900px) {
