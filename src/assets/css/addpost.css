@@ -253,34 +253,6 @@
     justify-content: flex-start;
 }
 
-.item-span {
-    background: var(--border-grey);
-    border-radius: 0.2rem;
-    margin: 0.3rem;
-    font-size: 0.8rem;
-    font-weight: bold;
-    padding: 0.2rem;
-
-}
-
-.item-span-anc {
-    cursor: pointer;
-}
-
-.item-span-anc .tooltiptext {
-    bottom: 52vh;
-    left: 40vw;
-}
-
-.item-span-anc .tooltiptext {
-    transition: .75s ease-in-out 1s;
-}
-
-.item-span-anc:hover .tooltiptext {
-    visibility: visible;
-    transition: .25s ease-in-out 0s;
-}
-
 .check-t-c {
     display: flex;
     align-items: flex-start;

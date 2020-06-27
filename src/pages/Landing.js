@@ -8,7 +8,9 @@ import Reviews from '../components/Reviews';
 import Footer from '../components/Footer';
 import Shot from '../components/Shot';
 
-
+// Images for shot
+import w1 from "../assets/images/wedding1.jpg";
+import pl2 from "../assets/images/people/2.jpg";
 
 export class Landing extends Component {
     state = {
@@ -17,7 +19,24 @@ export class Landing extends Component {
             { key: 2, label: "Explore", link: '/', isActive: false},
             { key: 3, label: "Register", link: '/signup/', isActive: false},
             { key: 4, label: "Login", link: '/signin/', isActive: false},
-        ]
+        ],
+        userShot : [
+            {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
+            {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
+            {id: 3, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
+            {id: 4, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
+            {id: 5, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1},
+            {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
+            {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
+            {id: 3, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
+            {id: 4, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
+            {id: 5, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1},
+            {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
+            {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
+            {id: 3, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
+            {id: 4, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
+            {id: 5, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}
+        ],
     }
 
     componentDidMount() {
@@ -57,9 +76,11 @@ export class Landing extends Component {
         let shotList = [];
         let reviewList = [];
         let currLocation = this.props.location
-        for (let i = 0; i < 32; i++) {
-            shotList.push(<Shot key={i} id={i} currLocation={currLocation} />)
-        }
+        
+        this.state.userShot.map(ele => 
+            {shotList.push(<Shot key={ele.key} id={ele} data={ele} currLocation={currLocation} />)
+            return ele
+        })
 
         for (let i = 0; i < 10; i++) {
             reviewList.push(<div className="swiper-slide" key={i}><Reviews key={i} /></div>)
