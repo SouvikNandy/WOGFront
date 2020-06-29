@@ -218,140 +218,22 @@
     color: var(--hover-two);
 }
 
-.rev-grid {
-    display: grid;
-    margin: 0;
-    padding: 0;
-    width: inherit;
-    height: inherit;
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr;
-    grid-gap: 0.25rem;
-}
-
-.rev-top {
-    background: var(--hover-two);
-    border-radius: 0.7rem;
-    overflow: hidden;
+.visit-review{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    float: right;
+    color: var(--hover-two);
+    margin-right: 1rem;
+    /* font-size: rem; */
+    font-weight: bold;
 
 }
 
-.rev-top img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    /* background-position: center; */
+.visit-review .link{
+    color: var(--hover-two)
 }
-
-.rev-box {
-    position: relative;
-    padding: 2.5rem;
-    transition: 0.5s;
-    text-align: center;
-    background: var(--light);
-    border-radius: 0.7rem;
-
-}
-
-.rev-box:hover {
-    background: var(--hover-three);
-
-}
-
-.rev-box p {
-    position: relative;
-    width: inherit;
-    height: 14vh;
-    top: 0.5rem;
-    margin: 0;
-    padding: 0;
-    transition: 0.5s;
-    /* white-space: normal; */
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.rev-box h4 {
-    margin: 1.25rem 0 0;
-    padding: 0;
-    transition: 0.5s;
-    font-size: 1.1rem;
-    font-weight: 700;
-    line-height: 1.25rem;
-    text-transform: uppercase;
-    color: var(--hover-three);
-}
-
-.rev-box h4 span {
-    font-weight: 600;
-    font-size: 0.875rem;
-    color: #c5c5c5;
-    transition: 0.5s;
-}
-
-.rev-box:hover p,
-.rev-box:hover h4,
-.rev-box:hover h4 span {
-    color: var(--light);
-}
-
-.rev-box .rev-imgbox {
-    position: absolute;
-    top: -4.8rem;
-    left: 50%;
-    transform: translateX(-50%);
-    width: inherit;
-    height: inherit;
-    border-radius: 50%;
-    overflow: hidden;
-}
-
-.rev-box .rev-imgbox img {
-    width: 8rem;
-    height: 8rem;
-    object-fit: cover;
-}
-
-.rev-box:before {
-    content: '';
-    position: absolute;
-    top: 1.25rem;
-    right: 1.25rem;
-    width: 3.75rem;
-    height: 3.75rem;
-    background: url("../images/icons/quotes-vector.png");
-    background-size: cover;
-    opacity: 0.3;
-    pointer-events: none;
-    transition: 0.5s;
-}
-
-.rev-box:hover::before {
-    opacity: 1;
-    transform: translateY(-3.6rem)
-}
-
-.rev-box:after {
-    content: '';
-    position: absolute;
-    bottom: 1.25rem;
-    left: 1.25rem;
-    width: 3.75rem;
-    height: 3.75rem;
-    background: url("../images/icons/quotes-vector.png");
-    background-size: cover;
-    opacity: 0.3;
-    pointer-events: none;
-    transition: 0.5s;
-    transform: rotate(180deg) translateY(0rem)
-}
-
-.rev-box:hover::after {
-    opacity: 1;
-    transform: rotate(180deg) translateY(-3.6rem)
-}
-
-
 
 /* FOOTER SECTION */
 .footer {
@@ -458,6 +340,8 @@
     vertical-align: middle;
     text-align: center;
 }
+
+
 
 /* potrait tablet, e-readers, kindle */
 @media(max-width: 800px) {

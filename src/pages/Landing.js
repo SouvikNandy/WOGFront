@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import Swiper from "swiper";
-import "swiper/css/swiper.css";
 import '../assets/css/landing.css';
-import Reviews from '../components/Reviews';
+import {ReviewSwiper} from '../components/Reviews';
 import Footer from '../components/Footer';
 import Shot from '../components/Shot';
+import { FaAngleRight } from "react-icons/fa";
 
 // Images for shot
 import w1 from "../assets/images/wedding1.jpg";
@@ -39,24 +38,6 @@ export class Landing extends Component {
         ],
     }
 
-    componentDidMount() {
-        new Swiper('.swiper-container', {
-            slidesPerView: "auto",
-            spaceBetween: 30,
-            centeredSlides: true,
-            grabCursor: true,
-            loop: true,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-        });
-    }
-
     selectMenu = (key) =>{
         this.setState({
             navLinks: this.state.navLinks.map(item=>{
@@ -74,19 +55,13 @@ export class Landing extends Component {
 
     render() {
         let shotList = [];
-        let reviewList = [];
+        // let reviewList = [];
         let currLocation = this.props.location
         
         this.state.userShot.map(ele => 
             {shotList.push(<Shot key={ele.key} id={ele} data={ele} currLocation={currLocation} />)
             return ele
         })
-
-        for (let i = 0; i < 10; i++) {
-            reviewList.push(<div className="swiper-slide" key={i}><Reviews key={i} /></div>)
-        }
-
-
 
         return (
             <React.Fragment>
@@ -115,16 +90,16 @@ export class Landing extends Component {
                     </section>
                     {/* review section */}
                     <section className="reviews-section" id="reviews">
-                        <div className="swiper-container">
-                            <div className="swiper-wrapper">
-                                {reviewList}
-                            </div>
-
-                            <div className="swiper-pagination"></div>
-                            <div className="swiper-button-next"></div>
-                            <div className="swiper-button-prev"></div>
-                        </div>
+                        <ReviewSwiper />
+                        <span className="visit-review">
+                            <Link className="link" to={'/reviews'}>
+                                <span>Read all Reviews</span>
+                                <FaAngleRight />
+                            </Link>
+                            
+                            </span>
                     </section>
+                    
                     <Footer />
 
                 </div>

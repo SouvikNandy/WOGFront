@@ -33,7 +33,7 @@ export default function Footer() {
                             <li><Link className="link" to={"/"}>Contact us</Link></li>
                             <li><Link className="link" to={"/"}>FAQ</Link></li>
                             <li><Link className="link" to={"/"}>Community</Link></li>
-                            <li><Link className="link" to={"/"}>Add a Feedback</Link></li>
+                            <li><Link className="link" to={"/reviews/"}>Add a Feedback</Link></li>
                         </ul>
                     </div>
                     <div className="f-mod-3">

@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import ShotModalView from './components/ShotModalView';
 import Example from './components/FloatingNotifications';
 import Profile from './pages/Profile';
+import AddReviews from './pages/AddReview';
 import {NotificationContainer} from 'react-notifications';
 
 
@@ -45,6 +46,7 @@ function ShotModalUrl() {
         <Route exact path="/signin/" render={props => (<Login signInReq={true} />)} />
         <Route exact path="/profile/" component={Profile} />
         <Route exact path="/shot-view/:id" component={ShotModalView} />
+        <Route exact path="/reviews/" component={AddReviews} />
         <Route exact path="/example/" component={Example} />
         <Route> NOT FOUND</Route>
       </Switch>

@@ -1,0 +1,203 @@
+@import url('config.css');
+
+/* Review-Block */
+.rev-grid {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    width: inherit;
+    height: inherit;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr;
+    grid-gap: 0.25rem;
+}
+
+.rev-top {
+    background: var(--hover-two);
+    border-radius: 0.7rem;
+    overflow: hidden;
+
+}
+
+.rev-top img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* background-position: center; */
+}
+
+.rev-box {
+    position: relative;
+    padding: 2.5rem;
+    transition: 0.5s;
+    text-align: center;
+    background: var(--light);
+    border-radius: 0.7rem;
+
+}
+
+.rev-box:hover {
+    background: var(--hover-three);
+
+}
+
+.rev-box p {
+    position: relative;
+    width: inherit;
+    height: 14vh;
+    top: 0.5rem;
+    margin: 0;
+    padding: 0;
+    transition: 0.5s;
+    /* white-space: normal; */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rev-box h4 {
+    margin: 1.25rem 0 0;
+    padding: 0;
+    transition: 0.5s;
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.25rem;
+    text-transform: uppercase;
+    color: var(--hover-three);
+}
+
+.rev-box h4 span {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #c5c5c5;
+    transition: 0.5s;
+}
+
+.rev-box:hover p,
+.rev-box:hover h4,
+.rev-box:hover h4 span {
+    color: var(--light);
+}
+
+.rev-box .rev-imgbox {
+    position: absolute;
+    top: -4.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: inherit;
+    height: inherit;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.rev-box .rev-imgbox img {
+    width: 8rem;
+    height: 8rem;
+    object-fit: cover;
+}
+
+.rev-box:before {
+    content: '';
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 3.75rem;
+    height: 3.75rem;
+    background: url("../images/icons/quotes-vector.png");
+    background-size: cover;
+    opacity: 0.3;
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+.rev-box:hover::before {
+    opacity: 1;
+    transform: translateY(-3.6rem)
+}
+
+.rev-box:after {
+    content: '';
+    position: absolute;
+    bottom: 1.25rem;
+    left: 1.25rem;
+    width: 3.75rem;
+    height: 3.75rem;
+    background: url("../images/icons/quotes-vector.png");
+    background-size: cover;
+    opacity: 0.3;
+    pointer-events: none;
+    transition: 0.5s;
+    transform: rotate(180deg) translateY(0rem)
+}
+
+.rev-box:hover::after {
+    opacity: 1;
+    transform: rotate(180deg) translateY(-3.6rem)
+}
+
+/* Review Curved */
+
+.review-container{
+    padding: 0 6%;
+}
+.review-box{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 1rem;
+
+}
+
+.rev-curved{
+    display: flex;
+    max-width: 52%;
+    justify-content: center;
+    align-items: center;
+}
+
+.rev-curved-alt{
+    display: flex;
+    max-width: 48vw;
+    justify-content: center;
+    align-items: center;
+    float: right
+}
+
+.rev-curved-imgbox{
+    flex: 1
+}
+
+.rev-curved-imgbox img{
+    height: 7rem;
+    width: 7rem;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.rev-curved-context{
+    flex: 6;
+    background: var(--border-grey);
+    /* height: 100%; */
+    margin: 0.5rem;
+    padding: 0 2rem;
+    min-height: 8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0 2rem;
+}
+
+.review-box:nth-child(even){
+    justify-content: flex-end;
+}
+
+.review-box:nth-child(even) .rev-curved-context{
+    background: var(--dark);
+    color: var(--light);
+}
+
+.rev-curved-context:hover,
+.review-box:nth-child(even) .rev-curved-context:hover{
+    background: var(--hover-two);
+    color: var(--light);
+}
