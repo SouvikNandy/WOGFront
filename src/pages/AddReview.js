@@ -19,7 +19,7 @@ export class AddReview extends Component{
         this.state.reviews.map(ele =>{
             revList.push(
                 <div className="review-box" key={ele.id}>
-                        <ReviewCurved data={this.state.reviews[0]}/>
+                        <ReviewCurved data={ele}/>
                     </div>
             )
             return ele

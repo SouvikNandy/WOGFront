@@ -4,6 +4,7 @@ import "swiper/css/swiper.css";
 import '../assets/css/review.css';
 import pl1 from "../assets/images/wedding1.jpg"
 import pl2 from "../assets/images/people/2.jpg";
+import { FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
 
 export function ReviewBlock(props) {
     let data = props.data
@@ -38,7 +39,9 @@ export function ReviewCurved(props){
                     <img src={data.profile_pic} alt="" />
                 </div>
                 <div className="rev-curved-context">
-                {data.review}
+                    <FaQuoteLeft  className="quotes-icon quote-left"/>
+                    {data.review}
+                    <FaQuoteRight className="quotes-icon quote-right" />
                 </div>
             </div>
         </React.Fragment>

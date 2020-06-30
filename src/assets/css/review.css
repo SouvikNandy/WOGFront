@@ -135,7 +135,6 @@
 }
 
 /* Review Curved */
-
 .review-container{
     padding: 0 6%;
 }
@@ -144,7 +143,7 @@
     width: 100%;
     align-items: center;
     justify-content: flex-start;
-    padding: 0 1rem;
+    padding: 0.8rem 1rem;
 
 }
 
@@ -153,14 +152,6 @@
     max-width: 52%;
     justify-content: center;
     align-items: center;
-}
-
-.rev-curved-alt{
-    display: flex;
-    max-width: 48vw;
-    justify-content: center;
-    align-items: center;
-    float: right
 }
 
 .rev-curved-imgbox{
@@ -177,27 +168,62 @@
 .rev-curved-context{
     flex: 6;
     background: var(--border-grey);
-    /* height: 100%; */
     margin: 0.5rem;
     padding: 0 2rem;
     min-height: 8rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 0 2rem;
+    border-radius: 2rem 0;
+    cursor: default;
+}
+.quotes-icon{
+    width: 3.75rem;
+    height: 3.75rem;
+    margin: 1rem;
+}
+
+.quote-left{
+    align-self: flex-start;
+}
+
+.quote-right{
+    align-self: flex-end;
 }
 
 .review-box:nth-child(even){
     justify-content: flex-end;
 }
 
+.review-box:nth-child(even) .rev-curved{
+    flex-direction: row-reverse;
+}
+
 .review-box:nth-child(even) .rev-curved-context{
+    border-radius: 0 2rem;
     background: var(--dark);
     color: var(--light);
 }
+
+
 
 .rev-curved-context:hover,
 .review-box:nth-child(even) .rev-curved-context:hover{
     background: var(--hover-two);
     color: var(--light);
+}
+
+@media(max-width:800px){
+    .rev-curved{
+        max-width: 100%;
+    }
+
+    .rev-curved-imgbox img{
+        height: 6rem;
+        width: 6rem;
+    }
+
+    .rev-curved-context{
+        max-width: 80%;
+    }
 }
