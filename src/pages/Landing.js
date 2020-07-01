@@ -4,12 +4,9 @@ import Navbar from '../components/Navbar';
 import '../assets/css/landing.css';
 import {ReviewSwiper} from '../components/Reviews';
 import Footer from '../components/Footer';
-import Shot from '../components/Shot';
+// import Shot from '../components/Shot';
 import { FaAngleRight } from "react-icons/fa";
-
-// Images for shot
-import w1 from "../assets/images/wedding1.jpg";
-import pl2 from "../assets/images/people/2.jpg";
+import ShotPalette from '../components/Shot';
 
 export class Landing extends Component {
     state = {
@@ -18,23 +15,6 @@ export class Landing extends Component {
             { key: 2, label: "Explore", link: '/', isActive: false},
             { key: 3, label: "Register", link: '/signup/', isActive: false},
             { key: 4, label: "Login", link: '/signin/', isActive: false},
-        ],
-        userShot : [
-            {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
-            {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
-            {id: 3, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
-            {id: 4, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
-            {id: 5, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1},
-            {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
-            {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
-            {id: 3, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
-            {id: 4, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
-            {id: 5, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1},
-            {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
-            {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
-            {id: 3, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
-            {id: 4, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
-            {id: 5, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}
         ],
     }
 
@@ -54,15 +34,7 @@ export class Landing extends Component {
     }
 
     render() {
-        let shotList = [];
-        // let reviewList = [];
         let currLocation = this.props.location
-        
-        this.state.userShot.map(ele => 
-            {shotList.push(<Shot key={ele.key} id={ele} data={ele} currLocation={currLocation} />)
-            return ele
-        })
-
         return (
             <React.Fragment>
                 <Navbar key="nvlinks" navLinks={this.state.navLinks} selectMenu={this.selectMenu} />
@@ -76,7 +48,7 @@ export class Landing extends Component {
                         <div className="shots-head"></div>
 
                         <div className="shots-portfolio">
-                            {shotList}
+                            <ShotPalette currLocation={currLocation}/>
                         </div>
                         <div className="shots-reminder">
                             <p className="s-lead">Create Developer profile/portfolio, share posts and get help form other developers</p>

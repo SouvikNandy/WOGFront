@@ -49,18 +49,18 @@ export default class Profile extends Component {
         ],
         userTag:{
             approved : [
-                {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
-                {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
-                {id: 3, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
-                {id: 4, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
-                {id: 5, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}
+                {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 
+                {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
+                {id: 3, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
+                {id: 4, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 
+                {id: 5, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}
             ],
             requests: [
-                {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
-                {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
-                {id: 3, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
-                {id: 4, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
-                {id: 5, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}
+                {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 
+                {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
+                {id: 3, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
+                {id: 4, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 
+                {id: 5, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}
             ]
         },
         userFollower:[
@@ -159,7 +159,7 @@ export default class Profile extends Component {
                 let getSelectedTab = this.state.tagNavOptions.filter(ele => ele.isActive === true)[0]
                 // getSelectedTab.toLowerCase()
                 getSelectedTab = getSelectedTab.title.toLowerCase();
-                console.log("selected tab ", getSelectedTab);
+                // console.log("selected tab ", getSelectedTab);
 
                 if (getSelectedTab === "approved"){
                     this.state.userTag[getSelectedTab].map(ele => 

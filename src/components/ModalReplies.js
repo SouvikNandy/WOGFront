@@ -3,7 +3,7 @@ import CommentsBase from './CommentsBase';
 import CommentCubes from './CommentCubes';
 import AddComment from './AddComment';
 import { FaAngleLeft } from "react-icons/fa";
-
+import { animateScroll } from "react-scroll";
 
 export class ModalReplies extends CommentsBase {
 
@@ -20,6 +20,18 @@ export class ModalReplies extends CommentsBase {
         this.setState({ data: [...this.state.data, ...this.props.reply_stack] })
         // this.setState({ count: this.setState.count + 1 })
 
+    }
+
+    componentDidUpdate(){
+        this.scrollToBottom();
+    }
+
+    scrollToBottom() {
+        animateScroll.scrollToBottom({
+          containerId: "m-reply-content",
+          delay: 1,
+          duration:2,
+        });
     }
 
     addComment = (comment, parent) => {
@@ -58,9 +70,10 @@ export class ModalReplies extends CommentsBase {
         return (
             <React.Fragment>
                 <div className="m-reply-div">
-                    <div className={replyContainerClassName}>
+                    <div className={replyContainerClassName} id="m-reply-content">
                         <div className="m-comment-head">
                             <div className="m-hide-reply-btn">
+                                
                                 <button className="btn-anc" onClick={this.props.showReplyList.bind(this)}>
                                     <FaAngleLeft className="icons-active" /></button>
                             </div>

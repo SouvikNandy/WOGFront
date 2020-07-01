@@ -39,8 +39,15 @@ export function ReviewCurved(props){
                     <img src={data.profile_pic} alt="" />
                 </div>
                 <div className="rev-curved-context">
+                    
                     <FaQuoteLeft  className="quotes-icon quote-left"/>
-                    {data.review}
+                    <div>
+                        <h4 className="rev-u-name">{data.name}
+                        <span className="rev-u-adj">{data.designation}</span>
+                        </h4>
+                        {data.review}
+                    </div>
+                    
                     <FaQuoteRight className="quotes-icon quote-right" />
                 </div>
             </div>

@@ -4,6 +4,8 @@ import CommentCubes from './CommentCubes';
 import AddComment from './AddComment';
 import '../assets/css/shotmodalview.css';
 
+import { animateScroll } from "react-scroll";
+
 
 
 export class ModalComments extends CommentsBase {
@@ -14,10 +16,18 @@ export class ModalComments extends CommentsBase {
         rootCommentBox: null
     }
 
-    // componentDidMount() {
-    //     console.log("mounted", this.props.post_id);
 
-    // }
+    componentDidUpdate(){
+        this.scrollToBottom();
+    }
+
+    scrollToBottom() {
+        animateScroll.scrollToBottom({
+          containerId: "m-comments-view",
+          delay: 1,
+          duration:2,
+        });
+    }
 
     addOnlyReplies = (commnetId, dataSet) => {
         this.state.data.map(item => {
@@ -69,8 +79,8 @@ export class ModalComments extends CommentsBase {
         let totalComments = this.state.data.length > this.state.commentLimit ?
             <button className="btn-anc" onClick={this.ShowAllComments}>Show all {this.state.data.length} comments</button> :
             this.state.data.length > 0 ?
-                <span>{this.state.data.length} comments</span> :
-                <span>No comments</span>
+                <span className="count-txt">{this.state.data.length} comments</span> :
+                <span className="count-txt">No comments</span>
 
         return (
             <React.Fragment>

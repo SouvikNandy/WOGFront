@@ -11,7 +11,7 @@ const ModalLikes = (props) => {
         <React.Fragment>
             <div className="m-likes-action">
                 <button className="btn-anc">{likeBtn}</button>
-                <button className="btn-anc"><FaRegComment className="icons" /></button>
+                <button className="btn-anc" onClick={feedCommentBox}><FaRegComment className="icons" /></button>
                 <button className="btn-anc"><FaRegPaperPlane className="icons" /></button>
             </div>
             <div className="m-likes-preview">
@@ -22,5 +22,8 @@ const ModalLikes = (props) => {
     )
 }
 
+const feedCommentBox = () => {
+    document.getElementById("m-add-cmnt").select();
+}
 
 export default ModalLikes;

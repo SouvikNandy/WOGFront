@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 export class Login extends Component {
     render() {
         const selectedComp = this.props.signInReq === true ? <SignIn /> : <SignUp />;
-        console.log("is Login", this.props.isLogin);
+        // console.log("is Login", this.props.isLogin);
         return (
             <React.Fragment>
                 <div className="login-layout">

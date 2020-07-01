@@ -169,13 +169,24 @@
     flex: 6;
     background: var(--border-grey);
     margin: 0.5rem;
-    padding: 0 2rem;
+    padding: 0.8rem 2rem;
     min-height: 8rem;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 2rem 0;
     cursor: default;
+}
+
+.rev-curved-context .rev-u-name{
+    margin: 0;
+    margin-bottom: 0.5rem;
+}
+.rev-curved-context .rev-u-name .rev-u-adj{
+    display: block;
+    font-size: 0.7rem;
+    font-weight: normal;
+
 }
 .quotes-icon{
     width: 3.75rem;

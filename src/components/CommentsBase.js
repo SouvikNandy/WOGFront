@@ -12,7 +12,7 @@ class CommentsBase extends Component {
     doLike = (item) => {
         // api call to like comment
         // also increase the count
-        console.log("do like called", item);
+        // console.log("do like called", item);
         this.setState({
             data: this.state.data.map(comment => {
                 if (comment.id === item.id) {
@@ -58,13 +58,13 @@ class CommentsBase extends Component {
 
     addComment = (comment, parent) => {
         let newcomment = this.constructComment(comment, parent);
-        console.log("new comment base ", newcomment);
+        // console.log("new comment base ", newcomment);
         if (newcomment.parent !== null) {
-            console.log("inside parent !=null ", this);
+            // console.log("inside parent !=null ", this);
             this.setState({
                 data: this.state.data.map(item => {
                     if (item.id === newcomment.parent) {
-                        console.log(item.id, "matched");
+                        // console.log(item.id, "matched");
                         item.reply_count++;
                         item.reply_stack.push(newcomment);
                     }

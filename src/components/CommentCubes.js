@@ -15,7 +15,7 @@ export class CommentCubes extends Component {
     }
 
     updateRepliesCount = (count) => {
-        console.log("update Replies count called with ", count)
+        // console.log("update Replies count called with ", count)
         this.setState({ repliesCount: count })
     }
 
