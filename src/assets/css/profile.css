@@ -196,6 +196,10 @@
     width: 50%;
 }
 
+.tag-req{
+    max-width: 20vw;
+}
+
 .tag-decision{
     /* background: red; */
     height: 5vh;
@@ -239,6 +243,13 @@
     }
 
 
+}
+
+
+@media(max-width: 800px){
+    .tag-req{
+        max-width: 100vw;
+    }
 }
 
 @media (max-width: 500px) and (orientation: portrait) {

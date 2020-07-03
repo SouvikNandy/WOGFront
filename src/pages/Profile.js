@@ -6,7 +6,7 @@ import { AiFillCloseCircle } from 'react-icons/ai';
 import SearchHead from '../components/SearchHead';
 import Subnav from '../components/Subnav';
 import UserAbout from '../components/UserAbout';
-import Shot from '../components/Shot';
+import {Shot, ShotPalette} from '../components/Shot';
 import Portfolio from '../components/Portfolio';
 import AddPost from '../components/AddPost';
 import Footer from '../components/Footer';
@@ -16,6 +16,7 @@ import {FollowUserCube} from '../components/UserView';
 // Images for shot
 import w1 from "../assets/images/wedding1.jpg";
 import pl2 from "../assets/images/people/2.jpg";
+// import ShotPalette from '../components/Shot';
 
 
 
@@ -23,16 +24,16 @@ import pl2 from "../assets/images/people/2.jpg";
 export default class Profile extends Component {
     state = {
         subNavList:[
-            {"key": "sm-1", "title": "Shots", "count": 100, "isActive":true},
-            {"key": "sm-2", "title": "Portfolios", "count": 100, "isActive":false},
-            {"key": "sm-3", "title": "Tags", "count": 100, "isActive":false},
-            {"key": "sm-4", "title": "Followers", "count": 100, "isActive":false},
-            {"key": "sm-5", "title": "Following", "count": 100, "isActive":false},
+            {"key": "sm-1", "title": "Shots", "count": true, "isActive":true},
+            {"key": "sm-2", "title": "Portfolios", "count": true, "isActive":false},
+            {"key": "sm-3", "title": "Tags", "count": true, "isActive":false},
+            {"key": "sm-4", "title": "Followers", "count": true, "isActive":false},
+            {"key": "sm-5", "title": "Following", "count": true, "isActive":false},
             {"key": "sm-6", "title": "About", "isActive":false},
         ],
         tagNavOptions:[
-            {key: "tn-1", "title": "Approved", "count": 100, "isActive": true},
-            {key: "tn-2", "title": "Requests", "count": 10, "isActive": false}
+            {key: "tn-1", "title": "Approved", "count": true, "isActive": true},
+            {key: "tn-2", "title": "Requests", "count": true, "isActive": false}
         ],
         userShot : [
             {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
@@ -90,6 +91,34 @@ export default class Profile extends Component {
             
         }
     }
+
+    getMenuCount = (key) =>{
+        switch (key) {
+            case "Shots":
+                return this.state.userShot.length;
+            case "Portfolios":
+                return this.state.userPortFolio.length;
+            case "Tags":
+                // default is approved tag values
+                return this.state.userTag.approved.length;
+            case "Followers":
+                return this.state.userFollower.length;
+            case "Following":
+                return this.state.userFollowing.length;
+            case "Approved":
+                // approved tags
+                return this.state.userTag.approved.length;
+            case "Requests":
+                // requested tags
+                return this.state.userTag.requests.length;
+            
+            default:
+                return 0
+    
+        }
+        
+
+    }
     
     selectSubMenu = (key) =>{
         // select a submenu
@@ -121,10 +150,57 @@ export default class Profile extends Component {
         })
 
     }
+    
+    likeTagRequestShot = (idx) => {
+        // api call to update likes
+        // also increase the count
+
+        let updatedUserTag = {...this.state.userTag}
+
+        updatedUserTag.requests.map(ele => ele.id === idx? ele.is_liked=true : '') 
+
+        this.setState({
+            userTag: updatedUserTag
+        })
+    }
+
+    unLikeTagRequestShot = (idx) => {
+        // api call to update likes
+        // also decrease the count
+
+        let updatedUserTag = {...this.state.userTag}
+
+        updatedUserTag.requests.map(ele => ele.id === idx? ele.is_liked=false : '')
+        
+        this.setState({
+            userTag: updatedUserTag
+        })
+    }
+
+    approveTag = (idx) =>{
+        let newUsertag = {...this.state.userTag};
+        //  get item
+        let item = newUsertag.requests.filter(ele=> ele.id===idx)[0];
+        // remove from request list
+        newUsertag.requests = [...newUsertag.requests.filter(ele=> ele.id!== idx)]
+        // add to approve list
+        item.id = Math.floor(Date.now() / 1000);
+        newUsertag.approved.push(item);
+        // update state
+        this.setState({ userTag: newUsertag})
+       
+    }
+    rejectTage = (idx) =>{
+        let newUsertag = {...this.state.userTag};
+        // remove from request list
+        newUsertag.requests = [...newUsertag.requests.filter(ele=> ele.id!== idx)]
+        // update state
+        this.setState({ userTag: newUsertag})
+    }
 
     getCompomentData = () =>{
         let resultList = [];
-        let resultBlock = ''
+        let resultBlock = '';
         resultBlock = this.state.subNavList.map((item, index) => {
             if(item.title === "Shots" && item.isActive === true){
                 // SHOTS
@@ -162,34 +238,31 @@ export default class Profile extends Component {
                 // console.log("selected tab ", getSelectedTab);
 
                 if (getSelectedTab === "approved"){
-                    this.state.userTag[getSelectedTab].map(ele => 
-                        {resultList.push(<Shot key={ele.id} id={ele} data={ele} currLocation={this.props.location} />)
-                        return ele
-                    })
-
+                    resultList = <ShotPalette shotData={this.state.userTag[getSelectedTab]} currLocation={this.props.location}/>
+                    
                 }
                 else{
                     this.state.userTag[getSelectedTab].map(ele => 
                         {resultList.push(
-                            <div>
+                            <div className="tag-req" key={ele.id}>
                                 <div className="tag-decision">
-                                    <FaCheckCircle className="tag-decision-btn"/>
-                                    <AiFillCloseCircle className="tag-decision-btn" />
+                                    <FaCheckCircle className="tag-decision-btn" onClick={this.approveTag.bind(this, ele.id)}/>
+                                    <AiFillCloseCircle className="tag-decision-btn" onClick={this.rejectTage.bind(this, ele.id)} />
                                 </div>
-                                <Shot key={ele.id} id={ele} data={ele} currLocation={this.props.location} />
+                                <Shot  id={ele} data={ele} currLocation={this.props.location} likeShot={this.likeTagRequestShot} 
+                                unLikeShot={this.unLikeTagRequestShot}/>
                             </div>
                         
                         )
                         return ele
                     })
-
                 }
 
                 
                 return(
                     <React.Fragment key={item.title}>
                         <div className="profile-tags-selector">
-                            <Subnav subNavList={this.state.tagNavOptions} selectSubMenu={this.selectTagNavMenu} />
+                            <Subnav subNavList={this.state.tagNavOptions} selectSubMenu={this.selectTagNavMenu} getMenuCount={this.getMenuCount}/>
                         </div>
                         <div className="profile-portfolio-grid">
                             {resultList}
@@ -239,7 +312,7 @@ export default class Profile extends Component {
                 <SearchHead />
                 {/* profile top section */}
                 <ProfileHead data={this.state.userAbout}/>
-                <Subnav subNavList={this.state.subNavList} selectSubMenu={this.selectSubMenu} />
+                <Subnav subNavList={this.state.subNavList} selectSubMenu={this.selectSubMenu}  getMenuCount={this.getMenuCount}/>
                 {/* result Component */}
                 {resultBlock}
                 <Footer />

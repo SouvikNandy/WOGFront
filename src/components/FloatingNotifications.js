@@ -2,7 +2,34 @@ import React from 'react';
 import 'react-notifications/lib/notifications.css';
 import {NotificationManager} from 'react-notifications';
 
-const createNotification = (type, title="title", message="message") => {
+
+export const createFloatingNotification = (type, title="title", message="message") => {
+  
+  switch (type) {
+    case 'info':
+      NotificationManager.info(message);
+      return;
+    case 'success':
+      NotificationManager.success(message, title);
+      return;
+    case 'warning':
+      NotificationManager.warning(message, title, 3000);
+      return;
+    case 'error':
+      NotificationManager.error(message, title, 5000);
+      return;
+    default:
+      NotificationManager.info(message);
+      return;
+  }
+};
+
+
+
+
+
+const createNotificationBtnClick = (type, title="title", message="message") => {
+  
     return () => {
       switch (type) {
         case 'info':
@@ -15,6 +42,7 @@ const createNotification = (type, title="title", message="message") => {
           NotificationManager.warning(message, title, 3000);
           break;
         case 'error':
+
           NotificationManager.error(message, title, 5000, () => {
             alert('callback');
           });
@@ -35,19 +63,19 @@ class Example extends React.Component {
     return (
       <div>
         <button className='btn btn-info'
-          onClick={createNotification('info')}>Info
+          onClick={createNotificationBtnClick('info')}>Info
         </button>
         <hr/>
         <button className='btn btn-success'
-          onClick={createNotification('success')}>Success
+          onClick={createNotificationBtnClick('success')}>Success
         </button>
         <hr/>
         <button className='btn btn-warning'
-          onClick={createNotification('warning')}>Warning
+          onClick={createNotificationBtnClick('warning')}>Warning
         </button>
         <hr/>
         <button className='btn btn-danger'
-          onClick={createNotification('error')}>Error
+          onClick={createNotificationBtnClick('error')}>Error
         </button>
  
         {/* <NotificationContainer/> */}

@@ -9,9 +9,9 @@ import { FaHeart, FaComment } from "react-icons/fa";
 import w1 from "../assets/images/wedding1.jpg";
 import pl2 from "../assets/images/people/2.jpg";
 
-class ShotPalette extends Component {
+export class ShotPalette extends Component {
     state = {
-        userShot : [
+        Shots : [
             {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 
             {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
             {id: 3, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
@@ -30,11 +30,21 @@ class ShotPalette extends Component {
         ],
     }
 
+    componentDidMount(){
+        // if shotData rreceived add in state else call api
+        // console.log("received", this.props.shotData);
+        if(this.props.shotData){
+            this.setState({
+                Shots: this.props.shotData
+            })
+        }
+    }
+
     likeShot = (idx) => {
         // api call to update likes
         // also increase the count
         this.setState({
-            userShot: this.state.userShot.map(ele =>{
+            Shots: this.state.Shots.map(ele =>{
                 if(ele.id === idx){
                     ele.is_liked = true;
                     ele.likes++;
@@ -48,7 +58,7 @@ class ShotPalette extends Component {
         // api call to update likes
         // also decrease the count
         this.setState({
-            userShot: this.state.userShot.map(ele =>{
+            Shots: this.state.Shots.map(ele =>{
                 if(ele.id === idx){
                     ele.is_liked = false;
                     ele.likes--;
@@ -60,7 +70,7 @@ class ShotPalette extends Component {
 
     render(){
         let shotList = [];
-        this.state.userShot.map(ele => 
+        this.state.Shots.map(ele => 
             {shotList.push(<Shot key={ele.id}  id={ele} data={ele} onlyShot={this.props.onlyShot} 
                 currLocation={this.props.currLocation} likeShot={this.likeShot} unLikeShot={this.unLikeShot} />)
             return ele
@@ -74,7 +84,7 @@ class ShotPalette extends Component {
     }
 }
 
-class Shot extends Component {
+export class Shot extends Component {
     render() {
         let data = this.props.data
         let shotClass = this.props.onlyShot ? "shot-preview-alt" : "shot-preview"

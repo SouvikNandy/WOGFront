@@ -65,6 +65,7 @@
     grid-template-rows: 15.5rem 1.75rem;
     grid-gap: 5px;
     border-radius: 0.7rem;
+    max-width: 20vw;
 }
 
 .shot-preview-alt {
@@ -75,7 +76,7 @@
     grid-template-rows: 15.5rem;
     grid-gap: 5px;
     border-radius: 0.7rem;
-    max-width: 17vw;
+    max-width: 20vw;
 }
 
 .sp-img {
@@ -150,6 +151,10 @@
     opacity: 0.3;
 }
 
+
+.like-comment-share-preview .icons{
+    cursor: pointer;
+}
 /* .icons:hover {
     color: var(--hover-one);
     opacity: 1;
@@ -366,7 +371,7 @@
             'f-mod-3';
     }
 
-    .shot-preview-alt{
+    .shot-preview-alt, .shot-preview{
         max-width: 100vw;
     }
 }

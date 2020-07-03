@@ -126,6 +126,10 @@ class AddDocumentForm extends Component {
         this.setState(newState);
         document.getElementById("img-upload-form").reset();
     }
+    chooseOptions =() =>{
+        this.setState({showSideView: true})
+
+    }
 
     render() {
         let memberlist = [];
@@ -186,7 +190,7 @@ class AddDocumentForm extends Component {
                                 </span>
                                 <span className="loc-div">
                                     <label>Add Location <span className="imp-field"></span></label>
-                                    <input type="text" id="location" name="location" placeholder="Search Location" />
+                                    <input type="text" id="location" name="location" placeholder="Search Location" onSelect={this.chooseOptions}/>
                                 </span>
                             </div>
                             

@@ -17,7 +17,7 @@ export default class Subnav extends Component {
                 navList.push(<li className={sliderClass} key={item.key}
                 onClick={this.props.selectSubMenu.bind(this, item.key)}>
                 {item.title} 
-                <span className="sub-count">{item.count}</span>
+                <span className="sub-count">{this.props.getMenuCount(item.title)}</span>
                 </li>
                 )
             }

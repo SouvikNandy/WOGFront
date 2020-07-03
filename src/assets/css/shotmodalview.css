@@ -20,7 +20,7 @@
     background: #fff;
     max-height: 100%;
     max-width: 80vw;
-    transition: width 0.4s;
+    transition: width 0.2s;
     grid-template-areas:
         'modal-imgbox modal-user'
         'modal-imgbox modal-about-img'
@@ -32,7 +32,7 @@
     max-width: 50vw !important;
     display: grid;
     grid-gap: 0;
-    transition: width 0.4s;
+    transition: width 0.2s;
 }
 
 .m-options {

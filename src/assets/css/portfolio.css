@@ -13,6 +13,7 @@
     display: flex;
     flex-direction: column;
     cursor: pointer;
+    max-width: 20vw;
 
 }
 
@@ -149,6 +150,9 @@
         height: 15.625rem;
 
     }
+    .pf-grid{
+        max-width: 100vw;
+    }
 }
 
 @media(max-width:800px) and (orientation: landscape) {
@@ -159,10 +163,17 @@
     .pf-attr-span {
         font-size: 0.6rem;
     }
+
+    .pf-grid{
+        max-width: 100vw;
+    }
 }
 
 @media(max-width:650px) and (orientation: landscape) {
     .pf-main {
         padding: 0 5%;
+    }
+    .pf-grid{
+        max-width: 100vw;
     }
 }
