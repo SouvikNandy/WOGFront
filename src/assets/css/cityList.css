@@ -1,11 +1,13 @@
 @import url('config.css');
 
-.city-block{
-    display: block;
+.city-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     color: var(--dark);
     border-bottom: 1px solid var(--border-grey);
     width: 100%;
-    min-height: 4vh;
+    min-height: 5vh;
     font-weight: 500;
-    /* font-weight: bold; */
+    margin-left: 0.5rem;
 }

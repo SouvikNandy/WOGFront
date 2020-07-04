@@ -7,6 +7,7 @@ import { FaCameraRetro, FaPlus } from 'react-icons/fa';
 import { AiFillCloseCircle, AiOutlineFileAdd } from 'react-icons/ai';
 import SideBar from "./SideBar";
 import { TagUser } from './TagUser';
+import CityList from '../components/CityList';
 
 
 // Images for shot
@@ -127,7 +128,10 @@ class AddDocumentForm extends Component {
         document.getElementById("img-upload-form").reset();
     }
     chooseOptions =() =>{
-        this.setState({showSideView: true})
+        this.setState({
+            showSideView: true,
+            sideViewContent: <CityList />
+        })
 
     }
 

@@ -2,7 +2,7 @@ import cities from "../utility/cities.json";
 import React, { Component } from 'react'
 import "../assets/css/cityList.css";
 
-export class cityList extends Component {
+export class CityList extends Component {
     render() {
         console.log(cities);
         return (
@@ -17,5 +17,5 @@ export class cityList extends Component {
     }
 }
 
-export default cityList
+export default CityList
 
