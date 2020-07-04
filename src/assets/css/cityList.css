@@ -1,0 +1,11 @@
+@import url('config.css');
+
+.city-block{
+    display: block;
+    color: var(--dark);
+    border-bottom: 1px solid var(--border-grey);
+    width: 100%;
+    min-height: 4vh;
+    font-weight: 500;
+    /* font-weight: bold; */
+}

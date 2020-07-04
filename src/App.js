@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Switch, Route, useLocation } from 'react-route
 import Landing from './pages/Landing';
 import Login from './pages/Login';
 import ShotModalView from './components/ShotModalView';
-import Example from './components/FloatingNotifications';
+// import Example from './components/FloatingNotifications';
+import Cities from './components/cityList';
 import Profile from './pages/Profile';
 import AddReviews from './pages/AddReview';
 import {NotificationContainer} from 'react-notifications';
@@ -47,7 +48,7 @@ function ShotModalUrl() {
         <Route exact path="/profile/" component={Profile} />
         <Route exact path="/shot-view/:id" component={ShotModalView} />
         <Route exact path="/reviews/" component={AddReviews} />
-        <Route exact path="/example/" component={Example} />
+        <Route exact path="/example/" component={Cities} />
         <Route> NOT FOUND</Route>
       </Switch>
       {isModal
