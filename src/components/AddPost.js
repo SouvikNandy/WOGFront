@@ -7,7 +7,7 @@ import { FaCameraRetro, FaPlus } from 'react-icons/fa';
 import { AiFillCloseCircle, AiOutlineFileAdd } from 'react-icons/ai';
 import SideBar from "./SideBar";
 import { TagUser } from './TagUser';
-import CityList from '../components/CityList';
+import IndianCityList from '../components/IndianCityList';
 
 
 // Images for shot
@@ -49,7 +49,12 @@ class AddDocumentForm extends Component {
     state = {
         // sidebar states
         showSideView: false,
+        sideBarHead: true,
+        searchBarRequired: false,
         sideViewContent: [],
+
+        // diabled fields
+        disabledFields: [],
         
         // form data
         FileList: [],
@@ -77,7 +82,10 @@ class AddDocumentForm extends Component {
         }
 
         this.setState({
-            showSideView: stateVal 
+            showSideView: stateVal,
+            sideBarHead: true,
+            
+
         })
 
         if(content){
@@ -85,6 +93,26 @@ class AddDocumentForm extends Component {
                 sideViewContent: content
             })
         }
+
+        // on close clear diabled fields
+        this.clearDisabledFields();
+        
+    }
+
+    clearDisabledFields = () =>{
+        if (this.state.disabledFields){
+            this.state.disabledFields.map(name =>{
+                document.getElementById(name).disabled = false
+                return name
+            })
+    
+            this.setState({
+                // on close also clear the diasble fields
+                disabledFields: []
+            })
+
+        }
+        
     }
 
     onFileSelect = (e) => {
@@ -128,11 +156,19 @@ class AddDocumentForm extends Component {
         document.getElementById("img-upload-form").reset();
     }
     chooseOptions =() =>{
+        // clear previous disabled
+        this.clearDisabledFields();
+
+        // display content in sidebaer with searchable content 
+        document.getElementById('location').disabled = true;
         this.setState({
             showSideView: true,
-            sideViewContent: <CityList />
+            sideBarHead: false,
+            sideViewContent: <IndianCityList 
+            displaySideView={this.displaySideView} searchPlaceHolder={"Find a location ..."} 
+            populateOnDestinationID={'location'}/>,
+            disabledFields: ['location'],
         })
-
     }
 
     render() {
@@ -159,7 +195,7 @@ class AddDocumentForm extends Component {
 
             if (typeof item === 'string' && item.includes("Show All")) {
                 memberlist.push(
-                    <span className="item-span item-span-anc" key={item.id} onClick={this.displaySideView.bind(this, {content:existingList, sureVal: true})}>
+                    <span className="item-span item-span-anc" key="ShowAll" onClick={this.displaySideView.bind(this, {content:existingList, sureVal: true})}>
                         {item}
                     </span>
                 )
@@ -258,7 +294,9 @@ class AddDocumentForm extends Component {
                 </div>
                 {this.state.showSideView?
                 <div className="form-side-bar-view side-bar-view-active">
-                    <SideBar displaySideView={this.displaySideView} content={this.state.sideViewContent}/>
+                    <SideBar displaySideView={this.displaySideView} content={this.state.sideViewContent} 
+                    searchPlaceHolder={this.state.searchPlaceHolder} sideBarHead={this.state.sideBarHead}
+                    searchBarRequired={this.state.searchBarRequired}/>
                 </div>
                 :
                 <div className="form-side-bar-view"></div>
@@ -268,7 +306,6 @@ class AddDocumentForm extends Component {
         )
     }
 }
-
 
 
 // Document form image Slider

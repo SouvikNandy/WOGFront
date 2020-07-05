@@ -1,7 +1,7 @@
 import React from 'react';
 
 import "../assets/css/userview.css";
-
+import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 // import w1 from "../assets/images/wedding1.jpg";
 
@@ -9,13 +9,13 @@ import { FaPlus } from "react-icons/fa";
 export function UserFlat(props){
         const ele = props.data
         return(
-            <div className="user-flat-div">
+            <Link className="link user-flat-div" to={{pathname: `/profile/${ele.username}`}}>
                 <span key={ele.id}><img className="tag-img" src={ele.profile_pic} alt={ele.username}/></span>
                 <span className="m-display-name">
                     {ele.name} @{ele.username}<br />
                     <span className="m-adj">{ele.designation}</span>
                 </span>
-            </div>
+            </Link>
         )
 }
 
@@ -27,14 +27,14 @@ export function FollowUserCube(props){
     return(
         <div className="user-cube-div">
             <div className="cube-grid">
-                <div className="cube-user-attr">
+                <Link className="link cube-user-attr" to={{pathname: `/profile/${ele.username}`}}>
                     <div key={ele.id}><img className="cube-user-img " src={ele.profile_pic} alt={ele.username}/></div>
                     <span className="m-display-name">
                         {ele.name}
                         <span className="m-adj">@{ele.username}</span>
                         <span className="m-adj">{ele.designation}</span>
                     </span>
-                </div>
+                </Link>
                 <div className="cube-user-prof">
                     {is_following?
                     <div className="cu-prof-details">

@@ -104,10 +104,10 @@ export class Shot extends Component {
                     </Link>
                     {!this.props.onlyShot ?
                         <span className="attribution-user">
-                            <span className="user-preview">
+                            <Link className="link user-preview" to={{pathname: `/profile/${data.username}`}}>
                                 <img src={data.profile_pic} alt="" />
                                 <span className="display-name">{data.name} @{data.username}</span>
-                            </span>
+                            </Link>
 
                             <span className="like-comment-share-preview">
                                 {data.is_liked?

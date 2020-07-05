@@ -2,12 +2,14 @@
 
 .city-block {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    /* flex-direction: column; */
+    /* justify-content: center; */
+    align-items: center;
     color: var(--dark);
     border-bottom: 1px solid var(--border-grey);
     width: 100%;
     min-height: 5vh;
     font-weight: 500;
     margin-left: 0.5rem;
+    cursor: pointer;
 }

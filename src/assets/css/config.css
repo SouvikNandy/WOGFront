@@ -311,6 +311,11 @@ ul {
     cursor: pointer;
 }
 
+.invisible{
+    opacity: 0;
+    visibility: 0;
+}
+
 @media(max-width:900px) {
     .side-bar-view-active {
         width: 100vw;
