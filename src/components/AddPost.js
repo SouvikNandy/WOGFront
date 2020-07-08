@@ -8,10 +8,7 @@ import { AiFillCloseCircle, AiOutlineFileAdd } from 'react-icons/ai';
 import SideBar from "./SideBar";
 import { TagUser } from './TagUser';
 import IndianCityList from '../components/IndianCityList';
-
-
-// Images for shot
-import w1 from "../assets/images/wedding1.jpg";
+import FriendList from './FriendList';
 
 
 // Add post button
@@ -60,18 +57,7 @@ class AddDocumentForm extends Component {
         FileList: [],
         portfolioName: '',
         description: '',
-        members: [
-            {"id": 1, "name":"First Last", "username": "user1", "profile_pic": w1, "designation": "photographer"},
-            {"id": 2, "name":"First Last", "username": "user2", "profile_pic": w1, "designation": "photographer"},
-            {"id": 3, "name":"First Last", "username": "user3", "profile_pic": w1, "designation": "photographer"},
-            {"id": 4, "name":"First Last", "username": "user4", "profile_pic": w1, "designation": "photographer"},
-            {"id": 5, "name":"First Last", "username": "user5", "profile_pic": w1, "designation": "photographer"},
-            {"id": 6, "name":"First Last", "username": "user6", "profile_pic": w1, "designation": "photographer"},
-            {"id": 7, "name":"First Last", "username": "user7", "profile_pic": w1, "designation": "photographer"},
-            {"id": 8, "name":"First Last", "username": "user8", "profile_pic": w1, "designation": "photographer"},
-            {"id": 9, "name":"First Last", "username": "user9", "profile_pic": w1, "designation": "photographer"},
-            {"id": 10, "name":"First Last", "username": "user10", "profile_pic": w1, "designation": "photographer"}
-        ],
+        taggedMembers: [],
 
     }
 
@@ -132,7 +118,7 @@ class AddDocumentForm extends Component {
 
     onRemoveMember = (idx) => {
         this.setState({
-            members: [...this.state.members.filter(item => item.id !== idx)],
+            taggedMembers: [...this.state.taggedMembers.filter(item => item.id !== idx)],
             sideViewContent: [...this.state.sideViewContent.filter(item => item.props.data.id !== idx)]
         });
 
@@ -150,48 +136,52 @@ class AddDocumentForm extends Component {
             FileList: [],
             portfolioName: '',
             description: '',
-            members: []
+            taggedMembers: []
         }
         this.setState(newState);
         document.getElementById("img-upload-form").reset();
     }
-    chooseOptions =() =>{
+    chooseOptions =(fieldID, content) =>{
         // clear previous disabled
         this.clearDisabledFields();
 
         // display content in sidebaer with searchable content 
-        document.getElementById('location').disabled = true;
+        document.getElementById(fieldID).disabled = true;
         this.setState({
             showSideView: true,
             sideBarHead: false,
-            sideViewContent: <IndianCityList 
-            displaySideView={this.displaySideView} searchPlaceHolder={"Find a location ..."} 
-            populateOnDestinationID={'location'}/>,
-            disabledFields: ['location'],
+            sideViewContent: content,
+            disabledFields: [fieldID],
         })
+    }
+
+    tagMembers = (record) =>{
+        this.setState({
+            taggedMembers : [...this.state.taggedMembers, record]
+        })
+
     }
 
     render() {
         let memberlist = [];
-        let allMembers = [];
+        let alltaggedMembers = [];
         let existingList = [];
-        let maxCouunt = window.innerWidth > 1100? 5: 3;
-
-        if (this.state.members.length > maxCouunt) {
-            allMembers = this.state.members.slice(0, maxCouunt);
-            allMembers.push("Show All (" + this.state.members.length +") ")
-            // add all members to show
-            this.state.members.map( item =>{
+        let maxCouunt = window.innerWidth > 1100? 4: 3;
+        if (this.state.taggedMembers.length > maxCouunt) {
+            alltaggedMembers = this.state.taggedMembers.slice(0, maxCouunt);
+            alltaggedMembers.push("Show All (" + this.state.taggedMembers.length +") ")
+            // add all taggedMembers to show
+            this.state.taggedMembers.map( item =>{
                 existingList.push(<TagUser key={item.id} data={item} onRemoveMember={this.onRemoveMember}/>)
                 return existingList
                     
             })
         }
         else {
-            allMembers = this.state.members;
+            alltaggedMembers = this.state.taggedMembers;
         }
 
-        allMembers.map(item => {
+        alltaggedMembers.map(item => {
 
             if (typeof item === 'string' && item.includes("Show All")) {
                 memberlist.push(
@@ -230,21 +220,38 @@ class AddDocumentForm extends Component {
                                 </span>
                                 <span className="loc-div">
                                     <label>Add Location <span className="imp-field"></span></label>
-                                    <input type="text" id="location" name="location" placeholder="Search Location" onSelect={this.chooseOptions}/>
+                                    <input type="text" id="location" name="location" placeholder="Search Location" 
+                                    onSelect={this.chooseOptions.bind(
+                                        this, 
+                                        'location',
+                                        <IndianCityList 
+                                            displaySideView={this.displaySideView} searchPlaceHolder={"Find a location ..."} 
+                                            populateOnDestinationID={'location'}
+                                        />
+                                    )}/>
                                 </span>
                             </div>
                             
                             <label>Description</label>
                             <textarea type="text" id="description" name="description" onChange={this.onChange} />
                             <label>Members / Contributes</label>
-                            {this.state.members.length > 0 ?
+                            {this.state.taggedMembers.length > 0 ?
                                 <div className="member-list">
                                     {memberlist}
                                 </div>
                                 :
                                 ''
                             }
-                            <input type="text" id="memo" name="memo" placeholder="Search Members / Contributes" />
+                            <input type="text" id="memo" name="memo" placeholder="Search Members / Contributes" 
+                            onSelect={this.chooseOptions.bind(
+                                this, 
+                                'memo',
+                                <FriendList 
+                                    displaySideView={this.displaySideView} searchPlaceHolder={"Search For Friends ..."} 
+                                    populateOnDestinationID={'memo'} tagMembers={this.tagMembers}
+                                    cuttentTags={this.state.taggedMembers.map(ele => ele.id )}
+                                />
+                            )}/>
                             <label>Attachments <span className="imp-field">*</span> </label>
                             {this.state.FileList.length > 0 ?
                                 <UploadedSlider
