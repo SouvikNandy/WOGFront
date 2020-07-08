@@ -65,12 +65,12 @@ export default class Profile extends Component {
             ]
         },
         userFollower:[
-            {"id": 1, "name":"John Doe", "username": "jhndoe", "profile_pic": w1, "designation": "photographer"},
-            {"id": 2, "name":"Jenny Doe", "username": "jennydoe", "profile_pic": pl2, "designation": "photographer"}
+            {"id": 1, "name":"John Doe", "username": "jhndoe", "profile_pic": w1, "designation": "photographer", "isFollowing": false},
+            {"id": 2, "name":"Jenny Doe", "username": "jennydoe", "profile_pic": pl2, "designation": "photographer", "isFollowing": false}
         ],
         userFollowing:[
-            {"id": 1, "name":"John Doe", "username": "jhndoe", "profile_pic": w1, "designation": "photographer"},
-            {"id": 2, "name":"Jenny Doe", "username": "jennydoe", "profile_pic": pl2, "designation": "photographer"}
+            {"id": 11, "name":"John Doe", "username": "jhndoe", "profile_pic": w1, "designation": "photographer", "isFollowing": true},
+            {"id": 12, "name":"Jenny Doe", "username": "jennydoe", "profile_pic": pl2, "designation": "photographer", "isFollowing": true}
         ],
         userAbout:{
             // profile top
@@ -190,12 +190,20 @@ export default class Profile extends Component {
         this.setState({ userTag: newUsertag})
        
     }
-    rejectTage = (idx) =>{
+    rejectTag = (idx) =>{
         let newUsertag = {...this.state.userTag};
         // remove from request list
         newUsertag.requests = [...newUsertag.requests.filter(ele=> ele.id!== idx)]
         // update state
         this.setState({ userTag: newUsertag})
+    }
+
+    startFollowing =(record) =>{
+        record.isFollowing = true;
+        console.log(record);
+        this.setState({
+            userFollowing: [...this.state.userFollowing, record]
+        })
     }
 
     getCompomentData = () =>{
@@ -247,7 +255,7 @@ export default class Profile extends Component {
                             <div className="tag-req" key={ele.id}>
                                 <div className="tag-decision">
                                     <FaCheckCircle className="tag-decision-btn" onClick={this.approveTag.bind(this, ele.id)}/>
-                                    <AiFillCloseCircle className="tag-decision-btn" onClick={this.rejectTage.bind(this, ele.id)} />
+                                    <AiFillCloseCircle className="tag-decision-btn" onClick={this.rejectTag.bind(this, ele.id)} />
                                 </div>
                                 <Shot  id={ele} data={ele} currLocation={this.props.location} likeShot={this.likeTagRequestShot} 
                                 unLikeShot={this.unLikeTagRequestShot}/>
@@ -275,7 +283,7 @@ export default class Profile extends Component {
             else if (item.title === "Followers" && item.isActive === true){
                 // Followers
                 this.state.userFollower.map(ele => 
-                    {resultList.push(<FollowUserCube key={ele.id} data={ele} isFollowing={false}/>)
+                    {resultList.push(<FollowUserCube key={ele.id} data={ele} isFollowing={ele.isFollowing} startFollowing={this.startFollowing}/>)
                     return ele
                 })
                 return (
@@ -286,7 +294,7 @@ export default class Profile extends Component {
             }
             else if (item.title === "Following" && item.isActive === true){
                 this.state.userFollowing.map(ele => 
-                    {resultList.push(<FollowUserCube key={ele.id} data={ele} isFollowing={true}/>)
+                    {resultList.push(<FollowUserCube key={ele.id} data={ele} isFollowing={ele.isFollowing}/>)
                     return ele
                 })
                 return (
