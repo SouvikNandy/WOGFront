@@ -19,22 +19,29 @@ export function UserFlat(props){
         )
 }
 
+export function UserCube(props){
+    let ele = props.data;
+    return(
+            <Link className="link cube-user-attr" to={{pathname: `/profile/${ele.username}`}}>
+                <div key={ele.id}><img className="cube-user-img " src={ele.profile_pic} alt={ele.username}/></div>
+                <span className="m-display-name">
+                    {ele.name}
+                    <span className="m-adj">@{ele.username}</span>
+                    <span className="m-adj">{ele.designation}</span>
+                </span>
+            </Link>
+    )
+
+}
 
 export function FollowUserCube(props){
     // const ele = {"id": 1, "name":"First Last", "username": "user1", "profile_pic": w1, "designation": "photographer"}
-    const ele = props.data
+    const ele = props.data;
     const is_following = props.isFollowing? true: false
     return(
         <div className="user-cube-div">
             <div className="cube-grid">
-                <Link className="link cube-user-attr" to={{pathname: `/profile/${ele.username}`}}>
-                    <div key={ele.id}><img className="cube-user-img " src={ele.profile_pic} alt={ele.username}/></div>
-                    <span className="m-display-name">
-                        {ele.name}
-                        <span className="m-adj">@{ele.username}</span>
-                        <span className="m-adj">{ele.designation}</span>
-                    </span>
-                </Link>
+                <UserCube data={ele} />
                 <div className="cube-user-prof">
                     {is_following?
                     <div className="cu-prof-details">
@@ -61,4 +68,4 @@ export function FollowUserCube(props){
     )
 }
 
-export default {UserFlat, FollowUserCube} 
+export default {UserFlat, UserCube,  FollowUserCube} 
