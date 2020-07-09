@@ -4,7 +4,7 @@
     display: grid;
     margin: 0;
     padding: 0;
-    grid-template-rows: 60vh 30vh auto auto;
+    grid-template-rows: 60vh 35vh auto auto;
     grid-template-columns: repeat(auto-fit, 1fr);
 
 }
@@ -44,65 +44,72 @@
     width: 100%;
 }
 
-.explore-container .e-head-content .srch-box input{
+.explore-container .e-head-content .srch-box input {
     padding: 1rem
 }
 
- .e-head-suggestions{
+.e-head-suggestions {
     width: 80%;
     display: flex;
     justify-content: flex-start;
 }
 
-.e-head-suggestions .e-fixed-sug{
+.e-head-suggestions .e-fixed-sug {
     height: 100%;
     padding-right: 0.5rem;
     border-right: 1.5px solid var(--light);
 }
 
-.e-head-suggestions .e-floating-sug{
+.e-head-suggestions .e-floating-sug {
     height: 100%;
     padding-left: 0.5rem;
 }
 
-.e-head-suggestions .item-span{
+.e-head-suggestions .item-span {
     padding: 0.4rem 0.6rem;
     margin: 0 0.5rem;
-    background: rgba(255,255,255, 1);
+    background: rgba(255, 255, 255, 1);
     box-shadow: 1px 2px rgba(0, 0, 0, 0.4);
     cursor: pointer;
 }
 
-.e-head-suggestions .item-span:hover{
+.e-head-suggestions .item-span:hover {
     background: var(--hover-one);
     /* color: rgba(255,255,255, 1); */
 }
 
-@media(max-width: 1250px){
-    .e-head-suggestions .e-fixed-sug{
+.explore-container .featured-slider {
+    max-width: 98vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media(max-width: 1250px) {
+    .e-head-suggestions .e-fixed-sug {
         display: none;
     }
 }
 
-@media(max-width: 1000px){
-    .explore-container .e-head-content{
+@media(max-width: 1000px) {
+    .explore-container .e-head-content {
         width: 90%;
     }
-    
-    .e-head-suggestions .e-floating-sug .item-span{
+
+    .e-head-suggestions .e-floating-sug .item-span {
         font-size: 0.8rem;
     }
 }
 
-@media(max-width: 650px){
-    .e-head-suggestions .e-floating-sug .item-span{
+@media(max-width: 650px) {
+    .e-head-suggestions .e-floating-sug .item-span {
         font-size: 0.5rem;
         padding: 0.2rem 0.2rem;
     }
 }
 
-@media(max-width: 400px){
-    .e-head-suggestions .e-floating-sug .item-span{
+@media(max-width: 400px) {
+    .e-head-suggestions .e-floating-sug .item-span {
         font-size: 0.4rem;
     }
 }

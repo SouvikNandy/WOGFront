@@ -7,6 +7,7 @@ import {Shot} from '../components/Shot';
 import w1 from "../assets/images/wedding1.jpg";
 import pl2 from "../assets/images/people/2.jpg";
 import Footer from '../components/Footer';
+import FeatureSlider from '../components/FeatureSlider';
 
 
 export class Explore extends Component {
@@ -54,7 +55,7 @@ export class Explore extends Component {
                 </section>
                 {/* Featured Slider */}
                 <section className="featured-slider">
-
+                    <FeatureSlider />
                 </section>
                 <section className="explore-shots">
                     <div className="profile-shots">

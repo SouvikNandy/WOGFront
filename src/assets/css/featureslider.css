@@ -1,0 +1,44 @@
+@import url('config.css');
+
+.featured-container {
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.featured-container .swiper-container {
+    width: 90%;
+    height: 90%;
+    position: relative;
+    background: var(--dark);
+    
+}
+
+.featured-container .swiper-slide {
+    position: relative;
+    text-align: center;
+    font-size: 1.12rem;
+    width: 20vw;
+    height: 80%;
+    top: 1rem;
+}
+
+.featured-content-div{
+    background: var(--light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.featured-container .swiper-slide-active {
+    transform: scale(1.08);
+}
+
+.featured-container .swiper-button-next,
+.featured-container .swiper-button-prev {
+    font-weight: bold;
+    color: var(--hover-two);
+}
