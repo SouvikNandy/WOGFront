@@ -7,6 +7,7 @@ import ShotModalView from './components/ShotModalView';
 import Profile from './pages/Profile';
 import AddReviews from './pages/AddReview';
 import {NotificationContainer} from 'react-notifications';
+import Explore from './pages/Explore';
 
 
 export default class App extends Component {
@@ -47,6 +48,7 @@ function ShotModalUrl() {
         <Route exact path="/profile/:username" component={Profile} />
         <Route exact path="/shot-view/:id" component={ShotModalView} />
         <Route exact path="/reviews/" component={AddReviews} />
+        <Route exact path="/explore/" component={Explore} />
         <Route> NOT FOUND</Route>
       </Switch>
       {isModal

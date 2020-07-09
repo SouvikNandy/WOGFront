@@ -2,7 +2,7 @@
 
 :root {
     --logo: url('../images/icons/demo-logo.png');
-    --shadow: 0 1px 5px rgba(104, 104, 104, 0.8);
+    --shadow: 0 1px 5px rgba(56, 56, 56, 0.8);
     --hover-one: #ffaa3b;
     --hover-two: rgba(99, 54, 221, 0.7);
     --hover-three: #ff0057;
