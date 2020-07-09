@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {ReviewCurved} from "../components/Reviews";
 import "../assets/css/addpost.css";
+import "../assets/css/review.css";
 import { FaPencilAlt, FaPlus } from 'react-icons/fa';
 import pl1 from "../assets/images/wedding1.jpg";
 import pl2 from "../assets/images/people/2.jpg";
@@ -19,10 +20,11 @@ export class AddReviewBTN extends Component {
     render() {
         return (
             <React.Fragment>
-                {this.state.isModalOpen ? <AddReviewForm showModal={this.showModal} />
+                {this.state.isModalOpen ? <AddReviewForm showModal={this.showModal} addNewReview={this.props.addNewReview}/>
                 :
                 <button className="camera-cover" onClick={this.showModal}>
                     <FaPencilAlt className="camera-icon" />
+                    <FaPlus className="cam-plus-below" />
                 </button>
                 }    
 
@@ -42,6 +44,25 @@ class AddReviewForm extends Component{
         [e.target.name]: e.target.value
 
     });
+
+    createReviewObj =() =>{
+        let newRev = {id: Math.floor(Date.now() / 1000), name: this.state.name, username: "Anonymous user", designation: "Anonymous user", profile_pic: pl2, review:this.state.review, cover_pic: pl1}
+        return newRev
+    }
+
+    onPostSubmit = (e) =>{
+        e.preventDefault();
+        // add the review to review list
+        this.props.addNewReview(this.createReviewObj());
+        // reset state and form 
+        this.setState({
+            name: '',
+            review: ''
+        });
+        document.getElementById("review-upload-form").reset();
+        this.props.showModal();
+        
+    }
     
     render(){
         return(
@@ -55,10 +76,12 @@ class AddReviewForm extends Component{
 
                         </section>
                         <section className="doc-body">
-                            <label>Name</label>
-                            <input type="text" id="rev-user-name" name="name" onChange={this.onChange} />
-                            <label>Description</label>
-                            <textarea type="text" id="user-rev" name="revire" onChange={this.onChange} required/>
+                            <div className="rev-doc-body">
+                                <label>Name</label>
+                                <input type="text" id="rev-user-name" name="name" onChange={this.onChange} />
+                                <label>Description<span className="imp-field">*</span></label>
+                                <textarea type="text" id="user-rev" name="review" onChange={this.onChange} required/>
+                            </div>
 
                         </section>
                         <section className="doc-btn">
@@ -86,12 +109,19 @@ export class AddReview extends Component{
             {id: 5, name: "John Doe", username: "johndoe", designation: "Creative Director", profile_pic: pl2, review:"where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.", cover_pic: pl1},
         ]
     }
+
+    addNewReview = (record) =>{
+        this.setState({
+            reviews: [...this.state.reviews, record]
+        })
+    }
     render(){
+        console.log("all reviews", this.state.reviews)
         let revList = [];
         this.state.reviews.map(ele =>{
             revList.push(
                 <div className="review-box" key={ele.id}>
-                        <ReviewCurved data={ele}/>
+                        <ReviewCurved key={ele.id} data={ele}/>
                     </div>
             )
             return ele
@@ -101,7 +131,7 @@ export class AddReview extends Component{
                 <div className="review-container">
                     {revList}
                 </div>
-                <AddReviewBTN />
+                <AddReviewBTN addNewReview = {this.addNewReview}/>
             </React.Fragment>
         )
     }

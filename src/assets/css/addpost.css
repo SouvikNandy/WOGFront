@@ -32,6 +32,12 @@
     /* border: 2px solid black; */
 }
 
+.camera-cover .cam-plus-below {
+    position: absolute;
+    top: 1.30rem;
+    right: 0.3rem;
+}
+
 /* DOCUMENT FORM */
 .doc-form {
     position: fixed;
@@ -118,6 +124,7 @@
     border-bottom: 1px solid var(--dark);
     line-height: 1;
     margin-bottom: 1rem;
+    resize: none;
 }
 
 .doc-body .pf-loc {
@@ -141,6 +148,7 @@
     width: 100%;
 
 }
+
 
 .select-doc {
     width: 100%;
