@@ -10,7 +10,6 @@
 }
 
 .explore-hero {
-    height: 50vh;
     position: relative;
     background: url("../images/wedding1.jpg") no-repeat center center/cover;
     grid-column: 1/2;
@@ -111,5 +110,21 @@
 @media(max-width: 400px) {
     .e-head-suggestions .e-floating-sug .item-span {
         font-size: 0.4rem;
+    }
+}
+
+
+@media (max-height: 500px) and (orientation: landscape){
+    .explore-container {
+        grid-template-rows: 80vh 60vh auto auto;
+    
+    }
+
+    .e-head-content{
+        height: 40vh !important;
+    }
+
+    .e-head-content .srch-box{
+        margin-bottom: 1rem;
     }
 }
