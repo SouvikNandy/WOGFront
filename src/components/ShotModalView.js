@@ -194,9 +194,9 @@ export class ShotModalView extends Component {
                         <section className="modal-imgbox">
                             {this.props.slider?
                             <div className="image-overlay">
-                                <AiFillLeftCircle  className ="slide-btn" />
+                                <AiFillLeftCircle  className ="slide-btn" onClick={this.props.getPrev}/>
                                 
-                                <AiFillRightCircle className ="slide-btn" />
+                                <AiFillRightCircle className ="slide-btn" onClick={this.props.getNext}/>
                             </div>
                             :
                             ""

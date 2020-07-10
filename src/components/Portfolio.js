@@ -21,10 +21,28 @@ export class Portfolio extends Component{
         
 
     }
+    getPrev = () =>{
+        let result = this.props.data.shot.prev()
+        console.log("prev", result)
+    }
+
+    getNext = () =>{
+        let result = this.props.data.shot.next()
+        console.log("next", result)
+    }
 
     render(){
         let data = this.props.data;
         let contained = data.shot.length;
+        if (contained > 1){
+            Array.prototype.next = function() {
+                return this[++this.current];
+            };
+            Array.prototype.prev = function() {
+                return this[--this.current];
+            };
+            Array.prototype.current = 0;
+        }
     return(
         <React.Fragment>
             <div className="pf-grid">
@@ -60,7 +78,8 @@ export class Portfolio extends Component{
             </div>
             {this.state.showModal?
                 
-                <ShotModalView openModalView={this.openModalView} slider={this.state.sliderRequired}/>
+                <ShotModalView openModalView={this.openModalView} slider={this.state.sliderRequired} 
+                getNext={this.getNext} getPrev={this.getPrev} />
                 
                 :
                 ""
