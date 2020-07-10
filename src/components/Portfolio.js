@@ -6,7 +6,7 @@ import ShotModalView from './ShotModalView';
 export class Portfolio extends Component{
     state = {
         showModal: false,
-        sliderRequired: false
+        sliderRequired: false,
     }
 
     openModalView = (slider=false) =>{
@@ -18,30 +18,33 @@ export class Portfolio extends Component{
         else{
             this.setState({showModal: !this.state.showModal})
         }
-        
 
     }
+
+    iterifyArr = (arr) => {
+        let cur = 0;
+        arr.next = (function () { return (++cur >= this.length) ? false : this[cur]; });
+        arr.prev = (function () { return (--cur < 0) ? false : this[cur]; });
+        return arr;
+    };
+
     getPrev = () =>{
-        let result = this.props.data.shot.prev()
-        console.log("prev", result)
+        let result = this.props.data.shot.prev();
+        console.log("prev", result);
+        return result
     }
 
     getNext = () =>{
-        let result = this.props.data.shot.next()
-        console.log("next", result)
+        let result = this.props.data.shot.next();
+        console.log("next", result);
+        return result
     }
 
     render(){
         let data = this.props.data;
         let contained = data.shot.length;
         if (contained > 1){
-            Array.prototype.next = function() {
-                return this[++this.current];
-            };
-            Array.prototype.prev = function() {
-                return this[--this.current];
-            };
-            Array.prototype.current = 0;
+            this.iterifyArr(this.props.data.shot)
         }
     return(
         <React.Fragment>
@@ -78,7 +81,7 @@ export class Portfolio extends Component{
             </div>
             {this.state.showModal?
                 
-                <ShotModalView openModalView={this.openModalView} slider={this.state.sliderRequired} 
+                <ShotModalView openModalView={this.openModalView} slider={this.state.sliderRequired} totalShotCount={contained}
                 getNext={this.getNext} getPrev={this.getPrev} />
                 
                 :

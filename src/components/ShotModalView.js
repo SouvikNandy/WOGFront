@@ -67,7 +67,10 @@ export class ShotModalView extends Component {
         // sidebar states
         showSideView: false,
         sideViewContent: [],
-        sideBarFullScreen: false
+        sideBarFullScreen: false,
+
+        // slider count management
+        currIndex: 0
     }
 
     doLike = () => {
@@ -143,6 +146,41 @@ export class ShotModalView extends Component {
         });
 
     }
+
+    getNextShot =() =>{
+        if (this.state.currIndex >= this.props.totalShotCount-1){
+            return 
+        }
+        let updatedShot = {...this.state.shot};
+        let content = this.props.getNext();
+        if (!content){
+            return
+        }
+        updatedShot.uploaded_content = content;
+        this.setState({ 
+            shot: updatedShot,
+            currIndex : this.state.currIndex + 1,
+        })
+
+    }
+
+    getPrevShot =() =>{
+        if (!this.state.currIndex> 0){
+            return
+        }
+
+        let updatedShot = {...this.state.shot};
+        let content = this.props.getPrev();
+        if (!content){
+            return
+        }
+        updatedShot.uploaded_content = content;
+        this.setState({ 
+            shot: updatedShot,
+            currIndex : this.state.currIndex - 1,
+        })
+
+    }
     
     render() {
         // console.log("props", this.props);
@@ -194,9 +232,9 @@ export class ShotModalView extends Component {
                         <section className="modal-imgbox">
                             {this.props.slider?
                             <div className="image-overlay">
-                                <AiFillLeftCircle  className ="slide-btn" onClick={this.props.getPrev}/>
+                                <AiFillLeftCircle  className ="slide-btn" onClick={this.getPrevShot}/>
                                 
-                                <AiFillRightCircle className ="slide-btn" onClick={this.props.getNext}/>
+                                <AiFillRightCircle className ="slide-btn" onClick={this.getNextShot}/>
                             </div>
                             :
                             ""

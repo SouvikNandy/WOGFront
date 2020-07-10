@@ -11,6 +11,7 @@ import Portfolio from '../components/Portfolio';
 import AddPost from '../components/AddPost';
 import Footer from '../components/Footer';
 import {FollowUserCube} from '../components/UserView';
+import {generateId} from '../utility/Utility.js';
 
 
 // Images for shot
@@ -190,7 +191,7 @@ export default class Profile extends Component {
         // remove from request list
         newUsertag.requests = [...newUsertag.requests.filter(ele=> ele.id!== idx)]
         // add to approve list
-        item.id = Math.floor(Date.now() / 1000);
+        item.id = generateId();
         newUsertag.approved.push(item);
         // update state
         this.setState({ userTag: newUsertag})

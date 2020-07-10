@@ -3,6 +3,8 @@ import {ReviewCurved} from "../components/Reviews";
 import "../assets/css/addpost.css";
 import "../assets/css/review.css";
 import { FaPencilAlt, FaPlus } from 'react-icons/fa';
+import {generateId} from '../utility/Utility.js';
+
 import pl1 from "../assets/images/wedding1.jpg";
 import pl2 from "../assets/images/people/2.jpg";
 
@@ -46,7 +48,7 @@ class AddReviewForm extends Component{
     });
 
     createReviewObj =() =>{
-        let newRev = {id: Math.floor(Date.now() / 1000), name: this.state.name, username: "Anonymous user", designation: "Anonymous user", profile_pic: pl2, review:this.state.review, cover_pic: pl1}
+        let newRev = {id: generateId(), name: this.state.name, username: "Anonymous user", designation: "Anonymous user", profile_pic: pl2, review:this.state.review, cover_pic: pl1}
         return newRev
     }
 
