@@ -19,7 +19,7 @@ export default class SearchBar extends Component {
       }
 
     render(){
-        const placeHolder = this.props.searchPlaceHolder? this.props.searchPlaceHolder : "Search Shots/Events/People ...";
+        const placeHolder = this.props.searchPlaceHolder? this.props.searchPlaceHolder : "Search Shots/People/Places ...";
         let outerDivClass = this.props.searchBarRequired ===false ? "search-div invisible": "search-div"
         return (
             <div className={outerDivClass}>

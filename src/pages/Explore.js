@@ -40,8 +40,8 @@ export class Explore extends Component {
                             <SearchHead />
                             <div className="e-head-suggestions">
                                 <div className="e-fixed-sug">
-                                    <span key={"ef1"} className="item-span">People</span>
-                                    <span key={"ef2"} className="item-span">Events</span>
+                                    <span key={"ef1"} className="item-span">Shots</span>
+                                    <span key={"ef2"} className="item-span">People</span>
                                     <span key={"ef3"} className="item-span">Places</span>
                                 </div>
                                 <div className="e-floating-sug">
@@ -51,7 +51,12 @@ export class Explore extends Component {
                                     <span key={"efl4"} className="item-span">Freelancers</span>
                                 </div>
                             </div>
+                            <div className="search-results">
+                                {/* show search results here */}
+                            
+                            </div>
                         </div>
+                        
                 </section>
                 {/* Featured Slider */}
                 <section className="featured-slider">

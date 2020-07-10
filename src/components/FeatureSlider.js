@@ -47,7 +47,7 @@ export class FeatureSlider extends Component {
         let outputList = [];
         for(let i=0; i<20; i++){
             outputList.push(
-                <div className="swiper-slide">
+                <div key={i} className="swiper-slide">
                     <FeatureTab />
                 </div>
             )

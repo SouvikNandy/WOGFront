@@ -342,8 +342,8 @@ function ProfileHead(props) {
                         <span className="p-display-name">{data.name}<br />
                             <span className="p-adj-username">@{data.username}</span><br />
                             <span className="p-adj">{data.deisgnantion}</span><br />
-                            <button className="btn m-fuser">< FaPlus /> Follow</button>
-                            <button className="btn m-fuser">< FaPaperPlane /> Message</button>
+                            <button className="btn m-fuser">< FaPlus className="ico"/> Follow</button>
+                            <button className="btn m-fuser">< FaPaperPlane className="ico"/> Message</button>
                         </span>
                     </div>
                 </div>
