@@ -7,6 +7,7 @@
     /* background: transparent; */
     position: fixed;
     top: 0;
+    left: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -86,7 +87,7 @@
 .m-img-attribute .p-attr-tags {
     flex: 1;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     justify-content: flex-end;
     padding: 0 1.2rem;
 }
@@ -135,12 +136,34 @@
 }
 
 
+.modal-imgbox .image-overlay {
+    height: 100%;
+    width: 45vw;
+    background: transparent;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-imgbox .image-overlay .slide-btn {
+    height: 3rem;
+    width: 3rem;
+    cursor: pointer;
+    opacity: 0.4;
+    margin: 0.5rem;
+}
+
+.modal-imgbox .image-overlay .slide-btn:hover {
+    opacity: 1;
+    /* color: var(--hover-two); */
+}
+
 .modal-imgbox .m-shot-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     cursor: zoom-in
-
 }
 
 
@@ -307,11 +330,12 @@
     height: 66vh;
 }
 
-.count-txt{
+.count-txt {
     font-size: 0.8rem;
     font-weight: bold;
     margin: 0 0.5rem;
 }
+
 .m-post-comment {
     flex: 2;
     grid-area: post-comment;
@@ -513,6 +537,12 @@
         width: 100%;
     }
 
+    .modal-imgbox .image-overlay {
+        width: 100%;
+        height: 50vh;
+    }
+
+
     /* Modal Image */
     .modal-imgbox {
         height: 50vh;
@@ -649,32 +679,38 @@
     }
 }
 
-@media(max-width:340px){
+@media(max-width:340px) {
     .modal-user .m-follow .m-fuser {
         font-size: 0.6rem;
     }
 }
-@media(max-height: 500px) and (orientation: landscape){
+
+@media(max-height: 500px) and (orientation: landscape) {
+
     .m-img-attribute .p-attr-tags .tag-img,
     .m-img-attribute .p-attr-tags .tag-img-count {
         height: 1.5rem;
         width: 1.5rem;
         font-size: 0.5rem;
     }
+
     .m-img-attribute .p-attr-name .m-display-name {
         font-size: 0.8rem;
     }
+
     .m-img-attribute .p-attr-name .m-display-name .m-adj {
         font-size: 0.5rem;
     }
-    .m-img-attribute .p-attr-tags .review-tags{
+
+    .m-img-attribute .p-attr-tags .review-tags {
         font-size: 0.5rem;
     }
-    .m-img-attribute .p-attr-name{
+
+    .m-img-attribute .p-attr-name {
         line-height: 0;
     }
 
-    .m-comments{
+    .m-comments {
         font-size: 0.8rem;
     }
 }

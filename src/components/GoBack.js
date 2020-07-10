@@ -13,7 +13,7 @@ export class GoBack extends Component{
         let iconClass = this.props.activeIcon? 'icons-active' : 'icons'
         return(
             <React.Fragment>
-                <button className="btn-anc" onClick={this.gotoPrev}>
+                <button className="btn-anc" onClick={this.props.clickMethod? this.props.clickMethod: this.gotoPrev}>
                     <FaAngleLeft className={iconClass} />
                 </button>
             </React.Fragment>

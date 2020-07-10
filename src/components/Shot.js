@@ -92,7 +92,7 @@ export class Shot extends Component {
             <React.Fragment>
                 <div className={shotClass}>
                     <Link className="sp-img"
-                        key={data.key}
+                        key={data.id}
                         to={{
                             pathname: `/shot-view/${data.id}`,
                             // This is the trick! This link sets

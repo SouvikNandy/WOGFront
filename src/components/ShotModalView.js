@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import '../assets/css/shotmodalview.css';
 
 import { FaPlus } from "react-icons/fa";
+import { AiFillLeftCircle, AiFillRightCircle } from "react-icons/ai";
+
 import ModalLikes from '../components/ModalLikes';
 import ModalComments from '../components/ModalComments';
 import GoBack from "../components/GoBack";
@@ -143,6 +145,7 @@ export class ShotModalView extends Component {
     }
     
     render() {
+        // console.log("props", this.props);
 
         // console.log("utility method", isSameUser({sourceID: 1, currID: this.state.shot.user.id}))
 
@@ -189,9 +192,19 @@ export class ShotModalView extends Component {
                     <div className={this.state.showSideView?"modal-content-grid modal-grid-only-img": "modal-content-grid"}>
                         {/* Modal Image */}
                         <section className="modal-imgbox">
+                            {this.props.slider?
+                            <div className="image-overlay">
+                                <AiFillLeftCircle  className ="slide-btn" />
+                                
+                                <AiFillRightCircle className ="slide-btn" />
+                            </div>
+                            :
+                            ""
+                            }
+                            
                             <div className="m-options fade-down">
                                 <div className="m-options-menu">
-                                        <GoBack activeIcon={true} />
+                                        <GoBack activeIcon={true} clickMethod={this.props.openModalView} />
                                 </div>
                             </div>
                             {/* preview image */}
@@ -253,7 +266,9 @@ export class ShotModalView extends Component {
 
                 {this.state.showSideView?
                 <div className={this.state.sideBarFullScreen?"form-side-bar-view side-bar-view-active full-width": "form-side-bar-view side-bar-view-active"}>
-                    <SideBar displaySideView={this.displaySideView} content={this.state.sideViewContent}/>
+                    <SideBar displaySideView={this.displaySideView} content={this.state.sideViewContent}
+                    sideBarHead={true}
+                    searchBarRequired={false} onClick={this.sidebarEmptyClick}/>
                 </div>
                 :
                 <div className="form-side-bar-view"></div>

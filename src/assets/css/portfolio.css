@@ -121,6 +121,14 @@
     overflow: hidden;
 }
 
+.floating-p-modal{
+    display: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background: red;
+}
 
 @media(max-width:900px) and (orientation: portrait) {
     .pf-main {

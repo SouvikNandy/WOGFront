@@ -43,9 +43,15 @@ export default class Profile extends Component {
             {id: 5, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}
         ],
         userPortFolio :[
-            {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1]}, {id: 2, name:"p2", shot: [w1]}, {id: 3, name:"p3", shot: [w1, pl2, w1, pl2, pl2, w1]}, 
-            {id: 4, name:"p4", shot: [w1, pl2, w1]}, {id: 5, name:"p5", shot: [w1, pl2, w1, pl2, pl2, w1]}, {id: 6, name:"p6", shot: [w1]}, 
-            {id: 7, name:"p7", shot: [w1]}, {id: 8, name:"p8", shot: [w1, pl2, w1, pl2 ]}, {id: 9, name:"p9", shot: [w1, pl2, w1, pl2, pl2, w1]}, 
+            {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1]}, 
+            {id: 2, name:"p2", shot: [w1]}, 
+            {id: 3, name:"p3", shot: [w1, pl2, w1, pl2, pl2, w1]}, 
+            {id: 4, name:"p4", shot: [w1, pl2, w1]}, 
+            {id: 5, name:"p5", shot: [w1, pl2, w1, pl2, pl2, w1]}, 
+            {id: 6, name:"p6", shot: [w1]}, 
+            {id: 7, name:"p7", shot: [w1]}, 
+            {id: 8, name:"p8", shot: [w1, pl2, w1, pl2 ]}, 
+            {id: 9, name:"p9", shot: [w1, pl2, w1, pl2, pl2, w1]}, 
             {id: 10, name:"p10", shot: [w1, pl2, w1, pl2, pl2, w1]}
         ],
         userTag:{
