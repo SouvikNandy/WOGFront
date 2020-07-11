@@ -9,7 +9,12 @@ import SideBar from "./SideBar";
 import { TagUser } from './TagUser';
 import IndianCityList from '../components/IndianCityList';
 import FriendList from './FriendList';
+import imageCompression from 'browser-image-compression';
+import { createFloatingNotification } from '../components/FloatingNotifications';
 
+
+// video thumbnail
+import videoThumbnail from '../assets/images/icons/video-thumbnail.jpg'
 
 // Add post button
 export class AddPost extends Component {
@@ -102,11 +107,55 @@ class AddDocumentForm extends Component {
     }
 
     onFileSelect = (e) => {
-        let prevFiles = this.state.FileList;
+        // console.log("on file selects", e.target.files, e.target.files.length);
+        let resultList = [];
+        for (let i=0; i < e.target.files.length; i++){
+            let file = e.target.files[i];
+            // console.log("selected file", file)
+            // check if file in video or image
+            if (!file.type.startsWith("image/") && !file.type.startsWith("video/")){
+                createFloatingNotification("error", "Invalid File type!", "Please make sure to upload images/videos only.");
+                continue;
+            }
+            if(file.type.startsWith("image/") && file.size/1024 > 500 ){
+                let options = {
+                    maxSizeMB: 0.8,
+                    maxWidthOrHeight: 1920,
+                    useWebWorker: true
+                }
+                let currentClass = this;
+                console.log(`originalFile size ${file.size / 1024 } KB`);
+                // compress image
+                imageCompression(file, options)
+                  .then(function (compressedFile) {
+                    // console.log('compressedFile ', compressedFile instanceof Blob); // true
+                    console.log(`compressedFile size ${compressedFile.size / 1024 } KB`); // smaller than maxSizeMB
+                    console.log('compressedFile ', compressedFile); 
+                    console.log("this",this);
+                    currentClass.setState({
+                        FileList: [...currentClass.state.FileList, compressedFile]
+                    });
+                  })
+                  .catch(function (error) {
+                    console.log(error.message);
+                  }) 
+            }
+
+            else{
+                // images below 500kb or videos
+                resultList.push(file);
+            }
+        }
+
+        console.log("updateing statees with previous files")
         this.setState({
-            FileList: [...prevFiles, ...e.target.files]
+            FileList: [...this.state.FileList, ...resultList]
         });
-        // console.log(e.target.files)
+    }
+
+    addFileToState = (result) =>{
+
+
     }
 
     onFileDeselect = (idx) => {
@@ -336,19 +385,33 @@ class UploadedSlider extends Component {
         });
     }
 
-    getSidebarDisplayImg = (curUrl) =>{
-        return <img className="side-bar-display-img" alt="" src={URL.createObjectURL(curUrl)} />
+    getSidebarDisplayImg = (fileObj) =>{
+        if (fileObj.type.startsWith("image/")){
+            return <img className="side-bar-display-img" alt="" src={URL.createObjectURL(fileObj)} />
+        }
+        else{
+            return <video className="side-bar-display-img" alt="" src={URL.createObjectURL(fileObj)} controls autoPlay />
+        }
+        
     }
     render() {
         const previewList = [];
-        var currUrl = this.props.uploadedFilePreviewList.map((file, index) =>
-            <div className="swiper-slide" key={index}>
-                <AiFillCloseCircle className="close-btn close-img" onClick={this.props.onFileDeselect.bind(this, index)} />
-                <img className="uploaded-preview-img" alt="" src={URL.createObjectURL(file)} 
-                onClick={this.props.displaySideView.bind(this, {content: this.getSidebarDisplayImg(file), sureVal: true})}></img>
-            </div>
+        let currUrl = this.props.uploadedFilePreviewList.map((file, index) =>{
+            return(
+                <div className="swiper-slide" key={index}>
+                    <AiFillCloseCircle className="close-btn close-img" onClick={this.props.onFileDeselect.bind(this, index)} />
+                    {file.type.startsWith("image/") ?
+                    <img className="uploaded-preview-img" alt="" src={URL.createObjectURL(file)} 
+                    onClick={this.props.displaySideView.bind(this, {content: this.getSidebarDisplayImg(file), sureVal: true})}></img>
+                    :
+                    <img className="uploaded-preview-img" alt="" src={videoThumbnail} 
+                    onClick={this.props.displaySideView.bind(this, {content: this.getSidebarDisplayImg(file), sureVal: true})}></img>
+                    }
+                
+                </div>
 
-        );
+            )
+        });
         previewList.push(currUrl);
 
         return (
