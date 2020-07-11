@@ -12,7 +12,7 @@ import pl2 from "../assets/images/people/2.jpg";
 export class ShotPalette extends Component {
     state = {
         Shots : [
-            {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 
+            {id: 1, shot: w1, name: "John Doe", username: "johndoe11111", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 
             {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
             {id: 3, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
             {id: 4, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 

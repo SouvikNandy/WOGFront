@@ -65,7 +65,7 @@ export class Landing extends Component {
                         <ReviewSwiper />
                         <span className="visit-review">
                             <Link className="link" to={'/reviews'}>
-                                <span>Read all Reviews</span>
+                                <span>Take Me To Reviews</span>
                                 <FaAngleRight />
                             </Link>
                             

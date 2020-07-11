@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../assets/css/shotmodalview.css';
 
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaCheckDouble } from "react-icons/fa";
 import { AiFillLeftCircle, AiFillRightCircle } from "react-icons/ai";
 
 import ModalLikes from '../components/ModalLikes';
@@ -24,6 +24,7 @@ let sampleShot = {
         "username": "1amSid",
         "profile_pic": w1,
         "designation": "Creative Director",
+        "is_following": false,
     },
     "uploaded_content": w1,
     "created_at": 1589028744,
@@ -89,6 +90,15 @@ export class ShotModalView extends Component {
         updatedshot.is_liked = false;
         updatedshot.responsecounts.likes--;
         this.setState({ shot: updatedshot })
+    }
+
+    followUser = () =>{
+        // follow unfollow user
+        let prevShot = this.state.shot;
+        prevShot.user.is_following = !prevShot.user.is_following;
+        this.setState({
+            shot: prevShot
+        })
     }
 
     getUploadedDate = (secondsVal) =>{
@@ -276,7 +286,13 @@ export class ShotModalView extends Component {
                                 </span>
                             </span>
                             <span className="m-follow">
-                                <button className="btn m-fuser">< FaPlus /> Follow</button>
+                                {this.state.shot.user.is_following?
+                                <button className="btn green-btn m-fuser" onClick={this.followUser}>
+                                    < FaCheckDouble /> Following</button>
+                                :
+                                <button className="btn m-fuser" onClick={this.followUser}>< FaPlus /> Follow</button>
+                                }
+                                
                             </span>
                         </section>
                         {/* Modal about uploaded image */}

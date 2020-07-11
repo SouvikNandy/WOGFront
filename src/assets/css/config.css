@@ -144,6 +144,9 @@ ul {
     color: black;
 }
 
+.green-btn{
+    background: #47d147;
+}
 .search-div {
     flex: 10;
     display: flex;

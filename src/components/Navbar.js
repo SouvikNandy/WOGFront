@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import '../assets/css/navbar.css';
-import { FaBars } from "react-icons/fa";
+import { FaAlignRight } from "react-icons/fa";
 
 export class Navbar extends Component {
     state ={
@@ -44,7 +44,7 @@ export class Navbar extends Component {
                                 {linksMarkup}
                             </ul>
                         </div>
-                        <button className="btn-anc" id="iconbar" onClick={this.displayResponsiveView}><FaBars /></button>
+                        <button className="btn-anc" id="iconbar" onClick={this.displayResponsiveView}><FaAlignRight /></button>
                     </nav>
                 </div>
 
