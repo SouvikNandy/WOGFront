@@ -98,7 +98,7 @@ export class ShotModalView extends Component {
     }
 
     getSidebarDisplayImg = (imageObj) =>{
-        return <img className="side-bar-display-img" alt="" src={imageObj} />
+        return (<div className="side-bar-full-img"><img className="side-bar-display-img" alt="" src={imageObj} /></div>)
     }
 
     displayFullSizeImagePreview = (imageObj) =>{
@@ -233,7 +233,11 @@ export class ShotModalView extends Component {
                             {this.props.slider?
                             <div className="image-overlay">
                                 <AiFillLeftCircle  className ="slide-btn" onClick={this.getPrevShot}/>
-                                
+                                <div className="slide-middle-view"
+                                // onclick event to show full size picture
+                                onClick={this.displayFullSizeImagePreview.bind(
+                                this, this.getSidebarDisplayImg(this.state.shot.uploaded_content))}
+                                ></div>
                                 <AiFillRightCircle className ="slide-btn" onClick={this.getNextShot}/>
                             </div>
                             :
@@ -250,7 +254,7 @@ export class ShotModalView extends Component {
                             src={this.state.shot.uploaded_content}
 
                             // onclick event to show full size picture
-                            onClick={this.displayFullSizeImagePreview.bind(this, this.getSidebarDisplayImg(w1))}
+                            onClick={this.displayFullSizeImagePreview.bind(this, this.getSidebarDisplayImg(this.state.shot.uploaded_content))}
                             ></img>
                             <div className="m-img-attribute fade-up">
                                 <span className="p-attr-name">

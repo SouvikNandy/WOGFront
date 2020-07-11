@@ -147,6 +147,7 @@
 }
 
 .modal-imgbox .image-overlay .slide-btn {
+    flex: 1;
     height: 3rem;
     width: 3rem;
     cursor: pointer;
@@ -157,6 +158,13 @@
 .modal-imgbox .image-overlay .slide-btn:hover {
     opacity: 1;
     /* color: var(--hover-two); */
+}
+
+.modal-imgbox .image-overlay .slide-middle-view{
+    flex: 8;
+    height: 100%;
+    cursor: zoom-in;
+    /* background-color: red; */
 }
 
 .modal-imgbox .m-shot-img {
