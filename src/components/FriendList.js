@@ -19,7 +19,8 @@ export class FriendList extends Component {
             {"id": 10, "name":"Eve Mendis", "username": "evemendis", "profile_pic": w1, "designation": "photographer"}
 
         ],
-        output: []
+        output: [],
+        tagged_users: []
     }
 
     findFriends = (value) =>{
@@ -30,7 +31,7 @@ export class FriendList extends Component {
             return true
         }
         
-        let matchedRecords = this.state.allFriends.filter(item => !this.props.cuttentTags.includes(item.id) && (item.name.toLowerCase().startsWith(phase) || item.username.toLowerCase().startsWith(phase)));
+        let matchedRecords = this.state.allFriends.filter(item => !this.props.currentTags.includes(item.id) && (item.name.toLowerCase().startsWith(phase) || item.username.toLowerCase().startsWith(phase)));
         this.setState({
             output: [...matchedRecords]
         })
@@ -45,14 +46,26 @@ export class FriendList extends Component {
 
         this.setState({
             allFriends : [...this.state.allFriends.filter(ele => ele.id!==idx)],
-            output: [...this.state.output.filter(ele=> ele.id!==idx)]
+            output: [...this.state.output.filter(ele=> ele.id!==idx)],
+            tagged_users: [...this.state.tagged_users, record]
         });
         
     }
-    componentDidMount(){
-        //console.log(this.props.cuttentTags)
+    onRemoveMember = (idx) =>{
+        let record = this.state.tagged_users.filter(ele => ele.id===idx)[0];
         this.setState({
-            output: this.state.allFriends.filter(item=> !this.props.cuttentTags.includes(item.id) ).slice(1,15)
+            tagged_users: this.state.tagged_users.filter(ele => ele.id!==idx),
+            allFriends : [...this.state.allFriends, record],
+            output: [...this.state.output, record],
+        })
+        this.props.onRemoveMember(idx, true);
+        
+    }
+
+    componentDidMount(){
+        this.setState({
+            tagged_users: this.props.currentTags,
+            output: this.state.allFriends.filter(item=> !this.props.currentTagIDs.includes(item.id) ).slice(0,15)
         })
     }
 
@@ -64,8 +77,11 @@ export class FriendList extends Component {
                 displaySideView={this.props.displaySideView} 
                 searchPlaceHolder={this.props.searchPlaceHolder}
                 searchOnChange={this.findFriends}
-                searchBarId={this.props.searchBarId}
+                focusSearchBar={true}
                 />
+                {this.state.tagged_users.map(item =>(
+                    <TagUser key={item.id} data={item} onRemoveMember={this.onRemoveMember}/>
+                ))}
                 {this.state.output.map(item =>(
                     <TagUser key={item.id} data={item} onAddMember={this.onAddMember}/>
                 ))}

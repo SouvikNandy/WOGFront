@@ -90,6 +90,10 @@
     width: 2rem;
 }
 
+.tag-user-div .add-fill{
+    color: var(--success-color);
+}
+
 @media(max-height: 500px) and (orientation: landscape){
     .tag-user-div .tag-div-btn{
         height: 1.5rem;

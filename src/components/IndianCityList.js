@@ -23,6 +23,8 @@ export class IndianCityList extends Component {
             let content = city.stateName? city.name+ ', '+ city.stateName : city.name ;
             document.getElementById(populateDestId).value = content;
         }
+        // after selecting close sidebar
+        this.props.displaySideView({sureVal: false});
 
     }
     findPlaces = (value) =>{
@@ -54,7 +56,7 @@ export class IndianCityList extends Component {
                 displaySideView={this.props.displaySideView} 
                 searchPlaceHolder={this.props.searchPlaceHolder}
                 searchOnChange={this.findPlaces}
-                searchBarId={this.props.searchBarId}
+                focusSearchBar={true}
                 />
                 {this.state.output.map(city =>(
                     

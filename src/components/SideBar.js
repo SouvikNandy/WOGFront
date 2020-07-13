@@ -30,7 +30,7 @@ export class SideBarHead extends Component{
                 <AiOutlineCloseCircle className="close-btn" onClick={this.props.displaySideView.bind(this, {sureVal: false})}/>
                 
                 <SearchBar className="srch-bar" searchPlaceHolder={this.props.searchPlaceHolder} 
-                id={this.props.searchBarId? this.props.searchBarId : "default-search-bar"}
+                focusSearchBar ={this.props.focusSearchBar}
                 searchOnChange={this.props.searchOnChange} searchBarRequired={this.props.searchBarRequired}/>
             </section>
         )

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import "../assets/css/sidebar.css";
 import {UserFlat} from "../components/UserView";
-import { AiFillCloseCircle, AiFillPlusCircle } from 'react-icons/ai';
+import { AiFillCloseCircle, AiFillPlusCircle} from 'react-icons/ai';
 import { FaPlus } from 'react-icons/fa';
 
 export class TagUser extends Component{
@@ -28,7 +28,7 @@ export class TagUser extends Component{
                     ""
                 }
                 {this.props.onAddMember?
-                    <AiFillPlusCircle className="close-btn tag-div-btn" onClick={this.props.onAddMember.bind(this, data.id)}/>
+                    <AiFillPlusCircle className="close-btn tag-div-btn add-fill" onClick={this.props.onAddMember.bind(this, data.id)}/>
                     :
                     ""
                 }

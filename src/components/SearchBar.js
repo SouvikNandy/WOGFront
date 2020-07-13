@@ -7,6 +7,12 @@ import { GrSearchAdvanced } from "react-icons/gr";
 export default class SearchBar extends Component {
     timer = 0;
 
+    componentDidMount(){
+        if(this.props.focusSearchBar){
+            document.getElementById("search-box").focus();
+        }
+    }
+
     handleChange = (evt) => {
         // send 500ms after user stops typing
         let val = evt.target.value;
@@ -17,6 +23,7 @@ export default class SearchBar extends Component {
           }
         }, 500);
       }
+      
 
     render(){
         const placeHolder = this.props.searchPlaceHolder? this.props.searchPlaceHolder : "Search Shots/People/Places ...";
@@ -24,9 +31,9 @@ export default class SearchBar extends Component {
         return (
             <div className={outerDivClass}>
                 {this.props.searchOnChange?
-                <input type="text" placeholder={placeHolder} onChange={this.handleChange}/>
+                <input type="text" placeholder={placeHolder} onChange={this.handleChange} id="search-box"/>
                 :
-                <input type="text" placeholder={placeHolder} />
+                <input type="text" placeholder={placeHolder} id="search-box-default"/>
                 }
                 
                 <button className="btn-anc search-btn"><GrSearchAdvanced className="srch-icon" /></button>

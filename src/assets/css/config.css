@@ -10,7 +10,8 @@
     --dark: #3a3e47;
     --light: #fff;
     --border-grey: #e5e5e5;
-    --div-underline: rgba(0, 0, 0, 0.4)
+    --div-underline: rgba(0, 0, 0, 0.4);
+    --success-color : #47d147;
 }
 
 * {
@@ -145,7 +146,7 @@ ul {
 }
 
 .green-btn{
-    background: #47d147;
+    background: var(--success-color);
 }
 .search-div {
     flex: 10;

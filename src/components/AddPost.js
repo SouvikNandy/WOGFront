@@ -165,11 +165,19 @@ class AddDocumentForm extends Component {
 
     }
 
-    onRemoveMember = (idx) => {
-        this.setState({
-            taggedMembers: [...this.state.taggedMembers.filter(item => item.id !== idx)],
-            sideViewContent: [...this.state.sideViewContent.filter(item => item.props.data.id !== idx)]
-        });
+    onRemoveMember = (idx, removeTagOnly=false) => {
+        if(removeTagOnly===true){
+            this.setState({
+                taggedMembers: [...this.state.taggedMembers.filter(item => item.id !== idx)],
+            });
+        }
+        else{
+            this.setState({
+                taggedMembers: [...this.state.taggedMembers.filter(item => item.id !== idx)],
+                sideViewContent: [...this.state.sideViewContent.filter(item => item.props.data.id !== idx)]
+            });
+        }
+        
 
     }
 
@@ -202,8 +210,6 @@ class AddDocumentForm extends Component {
             sideViewContent: content,
             disabledFields: [fieldID],
         })
-        // focus selective search
-        // document.getElementById("selective-search").focus()
     }
 
     tagMembers = (record) =>{
@@ -245,7 +251,7 @@ class AddDocumentForm extends Component {
                 memberlist.push(
                     <span className="item-span" key={item.id}>
                         <span>{item.username}</span>
-                        <AiFillCloseCircle className="close-btn close-img " onClick={this.onRemoveMember.bind(this, item.id)} />
+                        <AiFillCloseCircle className="close-btn close-img " onClick={this.onRemoveMember.bind(this, item.id, true)} />
 
                     </span>)
 
@@ -277,7 +283,7 @@ class AddDocumentForm extends Component {
                                         'location',
                                         <IndianCityList 
                                             displaySideView={this.displaySideView} searchPlaceHolder={"Find a location ..."} 
-                                            populateOnDestinationID={'location'} searchBarId={"selective-search"}
+                                            populateOnDestinationID={'location'}
                                         />
                                     )}/>
                                 </span>
@@ -300,8 +306,9 @@ class AddDocumentForm extends Component {
                                 <FriendList 
                                     displaySideView={this.displaySideView} searchPlaceHolder={"Search For Friends ..."} 
                                     populateOnDestinationID={'memo'} tagMembers={this.tagMembers}
-                                    searchBarId={"selective-search"}
-                                    cuttentTags={this.state.taggedMembers.map(ele => ele.id )}
+                                    currentTags={this.state.taggedMembers}
+                                    currentTagIDs={this.state.taggedMembers.map(ele => ele.id )}
+                                    onRemoveMember={this.onRemoveMember}
                                 />
                             )}/>
                             <label>Attachments <span className="imp-field">*</span> </label>
