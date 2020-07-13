@@ -64,6 +64,7 @@ export class FriendList extends Component {
                 displaySideView={this.props.displaySideView} 
                 searchPlaceHolder={this.props.searchPlaceHolder}
                 searchOnChange={this.findFriends}
+                searchBarId={this.props.searchBarId}
                 />
                 {this.state.output.map(item =>(
                     <TagUser key={item.id} data={item} onAddMember={this.onAddMember}/>

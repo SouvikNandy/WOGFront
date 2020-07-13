@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import "../assets/css/cityList.css";
 import { SideBarHead } from "./SideBar";
 
+import {FaMapMarkerAlt} from 'react-icons/fa';
+
 
 export class IndianCityList extends Component {
     state ={
@@ -52,12 +54,13 @@ export class IndianCityList extends Component {
                 displaySideView={this.props.displaySideView} 
                 searchPlaceHolder={this.props.searchPlaceHolder}
                 searchOnChange={this.findPlaces}
+                searchBarId={this.props.searchBarId}
                 />
                 {this.state.output.map(city =>(
                     
                     <div key={city.id} className="city-block" 
                     onClick={this.selectPlace.bind(this, city, this.props.populateOnDestinationID)}>
-                        {city.name} {city.stateName? <span>, {city.stateName}</span>:""}
+                        <FaMapMarkerAlt className="map-icon" /> {city.name} {city.stateName? <span>, {city.stateName}</span>:""}
                     </div>
                 ))}
             </React.Fragment>

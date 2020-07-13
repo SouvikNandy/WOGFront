@@ -202,6 +202,8 @@ class AddDocumentForm extends Component {
             sideViewContent: content,
             disabledFields: [fieldID],
         })
+        // focus selective search
+        // document.getElementById("selective-search").focus()
     }
 
     tagMembers = (record) =>{
@@ -275,7 +277,7 @@ class AddDocumentForm extends Component {
                                         'location',
                                         <IndianCityList 
                                             displaySideView={this.displaySideView} searchPlaceHolder={"Find a location ..."} 
-                                            populateOnDestinationID={'location'}
+                                            populateOnDestinationID={'location'} searchBarId={"selective-search"}
                                         />
                                     )}/>
                                 </span>
@@ -298,6 +300,7 @@ class AddDocumentForm extends Component {
                                 <FriendList 
                                     displaySideView={this.displaySideView} searchPlaceHolder={"Search For Friends ..."} 
                                     populateOnDestinationID={'memo'} tagMembers={this.tagMembers}
+                                    searchBarId={"selective-search"}
                                     cuttentTags={this.state.taggedMembers.map(ele => ele.id )}
                                 />
                             )}/>
