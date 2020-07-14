@@ -11,12 +11,13 @@ import Portfolio from '../components/Portfolio';
 import AddPost from '../components/AddPost';
 import Footer from '../components/Footer';
 import {FollowUserCube} from '../components/UserView';
-import {generateId} from '../utility/Utility.js';
+import {generateId, isSelfUser} from '../utility/Utility.js';
 
 
 // Images for shot
 import w1 from "../assets/images/wedding1.jpg";
 import pl2 from "../assets/images/people/2.jpg";
+import DummyShots from '../components/DummyShots';
 // import ShotPalette from '../components/Shot';
 
 
@@ -39,36 +40,21 @@ export default class Profile extends Component {
         userShot : [
             {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
             {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
-            {id: 3, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
-            {id: 4, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
-            {id: 5, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}
+
         ],
         userPortFolio :[
             {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1]}, 
             {id: 2, name:"p2", shot: [w1]}, 
-            {id: 3, name:"p3", shot: [w1, pl2, w1, pl2, pl2, w1]}, 
-            {id: 4, name:"p4", shot: [w1, pl2, w1]}, 
-            {id: 5, name:"p5", shot: [w1, pl2, w1, pl2, pl2, w1]}, 
-            {id: 6, name:"p6", shot: [w1]}, 
-            {id: 7, name:"p7", shot: [w1]}, 
-            {id: 8, name:"p8", shot: [w1, pl2, w1, pl2 ]}, 
-            {id: 9, name:"p9", shot: [w1, pl2, w1, pl2, pl2, w1]}, 
-            {id: 10, name:"p10", shot: [w1, pl2, w1, pl2, pl2, w1]}
+            {id: 3, name:"p4", shot: [w1, pl2, w1]}, 
         ],
         userTag:{
             approved : [
                 {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 
                 {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
-                {id: 3, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
-                {id: 4, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 
-                {id: 5, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}
             ],
             requests: [
                 {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 
                 {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
-                {id: 3, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
-                {id: 4, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 
-                {id: 5, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}
             ]
         },
         userFollower:[
@@ -86,6 +72,7 @@ export default class Profile extends Component {
             "deisgnantion": "photographer",
             "profile_pic": pl2,
             "cover_pic": w1,
+            "isFollowing": false,
 
             // about
             "joined": "Feb 15, 2020",
@@ -207,10 +194,27 @@ export default class Profile extends Component {
 
     startFollowing =(record) =>{
         record.isFollowing = true;
-        console.log(record);
+        if (isSelfUser(2,1)){
+            this.setState({
+                userFollowing: [...this.state.userFollowing, record]
+            })
+        }
+    }
+
+    stopFollowing =(record) =>{
+        record.isFollowing = false;
         this.setState({
-            userFollowing: [...this.state.userFollowing, record]
+            userFollowing: this.state.userFollowing.filter(ele => ele.id!==record.id) 
         })
+    }
+
+    padDummyShot = (resultList, len, maxlen=5) =>{
+        if (len < maxlen){
+            for(let i =0; i< maxlen - len ; i++){
+                resultList.push(<DummyShots />)
+            }
+        }
+        return resultList
     }
 
     getCompomentData = () =>{
@@ -223,6 +227,7 @@ export default class Profile extends Component {
                         {resultList.push(<Shot key={ele.id} id={ele} onlyShot={true} data={ele} currLocation={this.props.location} />)
                         return ele
                     })
+                resultList = this.padDummyShot(resultList, this.state.userShot.length, 5)
                 return(
                     <div key={item.title} className="profile-shots">
                         {resultList}
@@ -236,6 +241,7 @@ export default class Profile extends Component {
                     {resultList.push(<Portfolio key={ele.id} data={ele} currLocation={this.props.location}  />)
                     return ele
                 })
+                resultList = this.padDummyShot(resultList, this.state.userPortFolio.length, 5)
                 return(
                     <div key={item.title} className="profile-portfolio-grid">
                         {resultList}
@@ -254,7 +260,6 @@ export default class Profile extends Component {
 
                 if (getSelectedTab === "approved"){
                     resultList = <ShotPalette shotData={this.state.userTag[getSelectedTab]} currLocation={this.props.location}/>
-                    
                 }
                 else{
                     this.state.userTag[getSelectedTab].map(ele => 
@@ -271,6 +276,7 @@ export default class Profile extends Component {
                         )
                         return ele
                     })
+                    resultList = this.padDummyShot(resultList, this.state.userTag[getSelectedTab].length, 5)
                 }
 
                 
@@ -290,9 +296,11 @@ export default class Profile extends Component {
             else if (item.title === "Followers" && item.isActive === true){
                 // Followers
                 this.state.userFollower.map(ele => 
-                    {resultList.push(<FollowUserCube key={ele.id} data={ele} isFollowing={ele.isFollowing} startFollowing={this.startFollowing}/>)
+                    {resultList.push(<FollowUserCube key={ele.id} data={ele} isFollowing={ele.isFollowing} 
+                        startFollowing={this.startFollowing} stopFollowing={this.stopFollowing} />)
                     return ele
                 })
+                resultList = this.padDummyShot(resultList, this.state.userFollower.length, 5)
                 return (
                 <div key={item.title} className="profile-portfolio-grid">
                         {resultList}
@@ -301,9 +309,11 @@ export default class Profile extends Component {
             }
             else if (item.title === "Following" && item.isActive === true){
                 this.state.userFollowing.map(ele => 
-                    {resultList.push(<FollowUserCube key={ele.id} data={ele} isFollowing={ele.isFollowing}/>)
+                    {resultList.push(<FollowUserCube key={ele.id} data={ele} isFollowing={ele.isFollowing} 
+                        stopFollowing={this.stopFollowing} />)
                     return ele
                 })
+                resultList = this.padDummyShot(resultList, this.state.userFollowing.length, 5)
                 return (
                     <div key={item.title} className="profile-portfolio-grid">
                             {resultList}

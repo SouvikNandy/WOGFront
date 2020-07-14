@@ -327,6 +327,18 @@ ul {
     visibility: 0;
 }
 
+.dummy-shot-container{
+    padding: 0;
+    margin: 0.5rem 0;
+    display: grid;
+    grid-template-rows: 15.5rem;
+    grid-gap: 5px;
+    border-radius: 0.7rem;
+    max-width: 50vw;
+    overflow: hidden;
+    background: transparent;
+}
+
 @media(max-width:900px) {
     .side-bar-view-active {
         width: 100vw;

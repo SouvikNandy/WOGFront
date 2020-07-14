@@ -1,0 +1,9 @@
+{
+    "dev": {
+        "BACKEND_HOST" : "http://localhost:9000/"
+    },
+
+    "prod": {
+        "BACKEND_HOST" : "http://localhost:9000/"
+    }
+}

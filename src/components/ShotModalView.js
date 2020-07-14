@@ -11,7 +11,7 @@ import { UserFlat } from '../components/UserView';
 import TagUser from '../components/TagUser';
 import SideBar from '../components/SideBar';
 
-// import {isSameUser} from '../utility/Utility'
+// import {isSelfUser} from '../utility/Utility'
 
 // Images for shot
 import w1 from "../assets/images/wedding1.jpg";
@@ -195,7 +195,7 @@ export class ShotModalView extends Component {
     render() {
         // console.log("props", this.props);
 
-        // console.log("utility method", isSameUser({sourceID: 1, currID: this.state.shot.user.id}))
+        // console.log("utility method", isSelfUser({1, this.state.shot.user.id}))
 
         let maxCount = window.innerWidth > 700? 3: 2;
 

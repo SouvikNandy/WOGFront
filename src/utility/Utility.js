@@ -1,8 +1,7 @@
+import setup from '../setup.json'
 
-
-export const isSameUser = (sourceID, currID) =>{
-    // return sourceID === currID? true : false
-    return true
+export const isSelfUser = (sourceID, targetID) =>{
+    return sourceID === targetID? true : false
 }
 
 export const generateId = () =>{
@@ -10,5 +9,8 @@ export const generateId = () =>{
     return Math.floor(Date.now() / 1000) + Math.random().toString(36).substring(7)
 }
 
+export const getBackendHOST = (env='dev') =>{
+    return setup[env]["BACKEND_HOST"]
+}
 
-export default {isSameUser, generateId}
+export default {isSelfUser, generateId, getBackendHOST}

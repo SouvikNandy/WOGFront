@@ -3,6 +3,8 @@ import { FaUser } from "react-icons/fa";
 import '../assets/css/login.css';
 import { Link } from 'react-router-dom';
 import { createFloatingNotification } from '../components/FloatingNotifications';
+import { getBackendHOST } from '../utility/Utility';
+import axios from 'axios';
 
 export class Login extends Component {
     render() {
@@ -38,24 +40,32 @@ class SignIn extends Component {
             return false
         }
         if (!this.state.password){
-            createFloatingNotification("error", "Authentication failed!", "Invalid email or password");
+            createFloatingNotification("error", "Authentication failed!", "Please provide a valid password");
             return false
         }
-        // check if login is valid
-        createFloatingNotification("error", "Authentication failed!", "Invalid email or password");
-        return false
-
+        let backendHost = getBackendHOST();
+        console.log("backend Host", backendHost)
+        let url  = backendHost + 'api/v1/user-authentication/';
+        axios.post(url, { email: this.state.email, password: this.state.password })
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                this.setState({ email: '', password:'' });
+                // form reset doesnot clear hidden field values
+                document.getElementById("login-form").reset();
+                createFloatingNotification("success", "Successful Login", res.data.message);
+            })
+            .catch(err =>{
+                console.log(err.response);
+                createFloatingNotification("error", "Authentication failed!", err.response.data.message);
+            })
+            
     }
 
     onSubmit = (e) => {
         e.preventDefault();
-        let _validation = this.validateData();
-        if(_validation === false){
-            return
-        }
-        this.setState({ email: '', password:'' });
-        // form reset doesnot clear hidden field values
-        document.getElementById("login-form").reset();
+        this.validateData();
+
     }
 
     onChange = (e) => this.setState({
@@ -153,14 +163,14 @@ class SignUp extends Component {
                 <p className="lead"><FaUser />Create Your Account</p>
                 <form className="login-form" id="signup-form" onSubmit={this.onSubmit}>
                     <div className="form-group f-flex">
-                        <input type="text" placeholder="Name" name="name" onChange={this.onChange} required />
+                        <input type="text" placeholder="Username" name="Username" onChange={this.onChange} required />
                         <select name="i-am" id="i-am">
                             <option className="i-am-option" value="individual">I'm an Individual</option>
                             <option className="i-am-option" value="team">I'm a Team</option>
                         </select>
                     </div>
                     <div className="form-group">
-                        <input type="text" placeholder="Username" name="username" onChange={this.onChange} required />
+                        <input type="text" placeholder="Name" name="Name" onChange={this.onChange} required />
                     </div>
                     <div className="form-group">
                         <input type="email" placeholder="Email" name="email" onChange={this.onChange} required />

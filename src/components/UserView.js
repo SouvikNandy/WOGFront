@@ -26,8 +26,16 @@ export function UserCube(props){
                 <div key={ele.id}><img className="cube-user-img " src={ele.profile_pic} alt={ele.username}/></div>
                 <span className="m-display-name">
                     {ele.name}
-                    <span className="m-adj">@{ele.username}</span>
-                    <span className="m-adj">{ele.designation}</span>
+                    {props.showRemoveBtn? 
+                        <div className="unfollow-div">
+                            <button className="btn m-fuser" onClick={() => props.stopFollowing(ele)}> Remove </button>
+                        </div>
+                    :   
+                        <React.Fragment>
+                            <span className="m-adj">@{ele.username}</span>
+                            <span className="m-adj">{ele.designation}</span>
+                        </React.Fragment> 
+                    }
                 </span>
             </Link>
     )
@@ -35,13 +43,12 @@ export function UserCube(props){
 }
 
 export function FollowUserCube(props){
-    // const ele = {"id": 1, "name":"First Last", "username": "user1", "profile_pic": w1, "designation": "photographer"}
     const ele = props.data;
     const is_following = props.isFollowing? true: false
     return(
         <div className="user-cube-div">
             <div className="cube-grid">
-                <UserCube data={ele} />
+                <UserCube data={ele} showRemoveBtn={is_following? true: false} stopFollowing={props.stopFollowing}/>
                 <div className="cube-user-prof">
                     {is_following?
                     <div className="cu-prof-details">
