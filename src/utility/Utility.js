@@ -22,4 +22,6 @@ export const notifyMultipleErrorMsg = (headingText, msgObj) =>{
 
 }
 
+
+
 export default {isSelfUser, generateId, getBackendHOST}

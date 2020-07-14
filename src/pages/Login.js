@@ -47,9 +47,8 @@ class SignIn extends Component {
         let url  = backendHost + 'api/v1/user-authentication/';
         axios.post(url, { email: this.state.email, password: this.state.password })
             .then(res => {
-                this.setState({ email: '', password:'' });
-                // form reset doesnot clear hidden field values
                 document.getElementById("login-form").reset();
+                this.setState({ email: '', password:'' });
                 createFloatingNotification("success", "Successful Login", res.data.message);
             })
             .catch(err =>{
@@ -103,7 +102,9 @@ class SignUp extends Component {
         username:"",
         email: "",
         password : "",
-        confirmPassword: ""
+        confirmPassword: "",
+
+        signupSuccesful : false
     }
 
     validateData=()=>{
@@ -142,17 +143,27 @@ class SignUp extends Component {
             password: this.state.password
         })
             .then(res => {
+                document.getElementById("signup-form").reset();
+                this.setState({
+                    name:"",
+                    username:"",
+                    email: "",
+                    password : "",
+                    confirmPassword: "",
+                    signupSuccesful : true
+                })
                 createFloatingNotification("success", "Successful Signup", res.data.message);
-                return <Redirect to='/signin' />
+                return true
             })
             .catch(err =>{
-                console.log(err.response);
+                console.log(err);
                 if(typeof err.response.data.message !=="string"){
                     notifyMultipleErrorMsg("Signup failed!", err.response.data.message);
                 }
                 else{
                     createFloatingNotification("error", "Signup failed!", err.response.data.message);
                 }
+                return false
             })
 
     }
@@ -167,6 +178,9 @@ class SignUp extends Component {
 
     });
     render() {
+        if (this.state.signupSuccesful){
+            return <Redirect to='/signin/' />
+        }
         return (
             <React.Fragment>
                 <h1 className="large text-primary">Sign up</h1>
