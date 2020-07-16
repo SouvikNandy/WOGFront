@@ -1,19 +1,25 @@
 @import url('config.css');
 
 .nav-container {
-    display: grid;
+    /* display: grid; */
+    display: flex;
     margin: 0;
     padding: 0;
-    grid-template-rows: repeat(auto-fit, 1fr);
+    /* grid-template-rows: repeat(auto-fit, 1fr); */
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    border-bottom: 1px solid var(--border-grey);
+    z-index: 1;
+    
 }
 
 
 
 .menu {
-    /* background-color: white; */
-    /* box-shadow: 0px 2px 24px 0px rgba(0, 0, 0, 0.15); */
-    /* border-radius: 8px; */
-    background: rgba(255, 255, 255, 0);
+    /* background: rgba(255, 255, 255, 0); */
     width: 47rem;
     height: 5rem;
     display: flex;
@@ -100,69 +106,83 @@
 }
 
 
+/* NAV AFTER LOGIN */
 
+.nav-icon{
+    height: 1.5rem;
+    width: 1.5rem;
+    margin: 0.5rem;
+    color: var(--dark);
+}
+
+
+.chat-icon-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: inherit;
+    
+}
+
+.chat-icon-div .chat-icon-circle{
+    background-color: var(--border-grey);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    height: 2rem;
+    width: 2rem;
+    border-radius: 50%;
+}
+.chat-icon-div .chat-icon-circle:hover{
+    background-color: var(--hover-one);
+}
+
+.notify-btn{
+    /* background: var(--hover-one); */
+    border-radius: 50%;
+    color: #FD1D1D
+    
+}
 
 /* MEDIA QUERIES */
 /* tablets, landscape, low-resulation laptop and dektop */
 @media(max-width : 990px) {
-    .menu {
-        display: block;
-        width: 99vw;
-        text-align: center;
+    .menu{
+        max-width: 100vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        margin: 0;
+        padding: 0;
     }
 
-    /* .menu-logo {
-        position: relative;
-    } */
-
-    .menu-right {
-        /* visibility: hidden; */
-        display: none;
+    .menu-right{
+        display: flex;
+        padding-left: 1rem;
+        padding-bottom: 0.2rem;
+        display: flex;
+        justify-content: center;
+    }
+    .menu-list-item .menu-link{
+        font-size: 0.8rem;
+        min-width: 15vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .menu-link--active{
+        border: none;
+        border-bottom: 5px solid var(--hover-one);
     }
 
-    #iconbar {
-        visibility: visible;
+    .chat-icon-div{
+        position: absolute;
+        right: 0.5rem;
+        top: 0.5rem;
+        height: 1.5rem;
+        width: 1.5rem;
     }
 
-    .menu-right-res {
-        width: 100%;
-        /* height: 70vh; */
-        background: rgba(255, 255, 255, 0.9);
-        position: relative;
-
-    }
-
-    .menu-right-res ul {
-        visibility: visible;
-        width: 100%;
-        height: 100%;
-    }
-
-    .menu-list-item {
-        display: block;
-        height: 10%;
-        width: 100%;
-        text-align: center;
-
-    }
-
-    .menu-link {
-        display: block;
-        padding: 1rem 0;
-    }
-
-    .menu-link--active {
-        border-top: var(--light);
-        border-left: 4px solid var(--hover-one);
-    }
-
+    
 }
-
-/* potrait tablet, e-readers, kindle */
-@media(max-width: 800px) {}
-
-/* smart phones, android, landscape iphone */
-@media(max-width: 600px) {}
-
-/* potrait on phones */
-@media(max-width: 480px) {}

@@ -37,7 +37,10 @@ export class Landing extends Component {
         let currLocation = this.props.location
         return (
             <React.Fragment>
-                <Navbar key="nvlinks" navLinks={this.state.navLinks} selectMenu={this.selectMenu} />
+                <div className="landig-nav">
+                    <Navbar key="nvlinks" navLinks={this.state.navLinks} selectMenu={this.selectMenu} />
+                </div>
+                
                 <div className="landing-layout">
                     {/* hero section */}
                     <section className="hero" id="hero-top">

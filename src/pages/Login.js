@@ -3,7 +3,7 @@ import { FaUser } from "react-icons/fa";
 import '../assets/css/login.css';
 import { Link, Redirect } from 'react-router-dom';
 import { createFloatingNotification } from '../components/FloatingNotifications';
-import { getBackendHOST, notifyMultipleErrorMsg } from '../utility/Utility';
+import { getBackendHOST, handleErrorResponse, saveInStorage, storeAuthToken, retrieveAuthToken, silentRefresh } from '../utility/Utility';
 import axios from 'axios';
 
 export class Login extends Component {
@@ -47,17 +47,19 @@ class SignIn extends Component {
         let url  = backendHost + 'api/v1/user-authentication/';
         axios.post(url, { email: this.state.email, password: this.state.password })
             .then(res => {
+                // store token in localstorage
+                storeAuthToken(res.data.token.access);
+                saveInStorage("refresh_token", res.data.token.refresh);
+                // activate silent refresh
+                silentRefresh();
+                
+                // reset 
                 document.getElementById("login-form").reset();
                 this.setState({ email: '', password:'' });
                 createFloatingNotification("success", "Successful Login", res.data.message);
             })
             .catch(err =>{
-                if(typeof err.response.data.message !=="string"){
-                    notifyMultipleErrorMsg("Authentication failed!", err.response.data.message);
-                }
-                else{
-                    createFloatingNotification("error", "Authentication failed!", err.response.data.message);
-                }
+                handleErrorResponse(err, "Authentication failed!");
             })
             
     }
@@ -131,7 +133,6 @@ class SignUp extends Component {
 
         }
 
-
         let backendHost = getBackendHOST();
         let user_type = document.getElementById('i-am')==="team"? "T": "I";
         let url  = backendHost + 'api/v1/user-registration/';
@@ -153,17 +154,9 @@ class SignUp extends Component {
                     signupSuccesful : true
                 })
                 createFloatingNotification("success", "Successful Signup", res.data.message);
-                return true
             })
             .catch(err =>{
-                console.log(err);
-                if(typeof err.response.data.message !=="string"){
-                    notifyMultipleErrorMsg("Signup failed!", err.response.data.message);
-                }
-                else{
-                    createFloatingNotification("error", "Signup failed!", err.response.data.message);
-                }
-                return false
+                handleErrorResponse(err, "Signup failed!");
             })
 
     }
@@ -178,6 +171,7 @@ class SignUp extends Component {
 
     });
     render() {
+        console.log("reteived auth Token", retrieveAuthToken());
         if (this.state.signupSuccesful){
             return <Redirect to='/signin/' />
         }

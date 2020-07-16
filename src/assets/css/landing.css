@@ -1,5 +1,12 @@
 @import url('config.css');
 
+.landig-nav{
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
 .landing-layout {
     display: grid;
     margin: 0;
@@ -16,7 +23,6 @@
     grid-column: 1/2;
     width: 100%;
     height: inherit;
-    /* z-index: -5; */
 }
 
 

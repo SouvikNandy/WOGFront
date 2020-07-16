@@ -3,7 +3,7 @@ import '../assets/css/profile.css';
 import { FaPlus, FaPaperPlane , FaCheckCircle} from "react-icons/fa";
 import { AiFillCloseCircle } from 'react-icons/ai';
 // import { AiOutlineHome, AiOutlineSearch, AiOutlineBell, AiOutlineBulb } from "react-icons/ai";
-import SearchHead from '../components/SearchHead';
+// import SearchHead from '../components/SearchHead';
 import Subnav from '../components/Subnav';
 import UserAbout from '../components/UserAbout';
 import {Shot, ShotPalette} from '../components/Shot';
@@ -11,15 +11,14 @@ import Portfolio from '../components/Portfolio';
 import AddPost from '../components/AddPost';
 import Footer from '../components/Footer';
 import {FollowUserCube} from '../components/UserView';
+import {UserNavBar} from "../components/Navbar";
+import DummyShots from '../components/DummyShots';
 import {generateId, isSelfUser} from '../utility/Utility.js';
 
 
 // Images for shot
 import w1 from "../assets/images/wedding1.jpg";
 import pl2 from "../assets/images/people/2.jpg";
-import DummyShots from '../components/DummyShots';
-// import ShotPalette from '../components/Shot';
-
 
 
 
@@ -211,7 +210,7 @@ export default class Profile extends Component {
     padDummyShot = (resultList, len, maxlen=5) =>{
         if (len < maxlen){
             for(let i =0; i< maxlen - len ; i++){
-                resultList.push(<DummyShots />)
+                resultList.push(<DummyShots  key={"DS"+ i }/>)
             }
         }
         return resultList
@@ -334,7 +333,8 @@ export default class Profile extends Component {
         let resultBlock = this.getCompomentData()
         return (
             <React.Fragment>
-                <SearchHead />
+                {/* <SearchHead /> */}
+                <UserNavBar />
                 {/* profile top section */}
                 <ProfileHead data={this.state.userAbout}/>
                 <Subnav subNavList={this.state.subNavList} selectSubMenu={this.selectSubMenu}  getMenuCount={this.getMenuCount}/>

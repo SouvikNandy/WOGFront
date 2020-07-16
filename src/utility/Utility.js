@@ -1,27 +1,184 @@
 import setup from '../setup.json';
-import { createFloatingNotification } from '../components/FloatingNotifications';
+import {
+    createFloatingNotification
+} from '../components/FloatingNotifications';
+import axios from 'axios';
 
-export const isSelfUser = (sourceID, targetID) =>{
-    return sourceID === targetID? true : false
+// AUTH TOKEN MANAGEMENT
+let inMemoryToken = null;
+
+export const storeAuthToken = (token) => {
+    let jwt_decoded = parseJwt(token);
+    jwt_decoded["access"] = token;
+    inMemoryToken = jwt_decoded
+    // console.log("inmemory token stored", inMemoryToken);
 }
 
-export const generateId = () =>{
+export const retrieveAuthToken = () => {
+    let token = inMemoryToken? inMemoryToken.access : null
+    return token
+}
+
+
+export const silentRefresh = () => {
+    if (inMemoryToken) {
+        // console.log("inMemoryToken exists! ")
+        let expiry = inMemoryToken.exp
+        let cur_ms = getCurrentTimeInMS();
+
+        let diff = expiry - cur_ms
+        // if diff is less than one minutes
+        if (diff < 60) {
+            // console.log("diff is less than one minutes, setting token directly");
+            refreshToken().then(res =>{
+                if (res !== false){
+                    silentRefresh();
+                }
+                else{
+                    return false
+                }
+                
+            })
+            
+        } 
+        else {
+            // console.log("refresh token each in " + diff +" seconds");
+            setInterval(() => {
+                refreshToken().then(res =>{
+                    if (res !== false){
+                        silentRefresh();
+                    }
+                    else{
+                        return false
+                    }
+                })
+            }, diff * 1000)
+
+        }
+    } else {
+        let ref_token = retrieveFromStorage("refresh_token");
+        if (ref_token) {
+            refreshToken().then(res =>{
+                if (res !== false){
+                    silentRefresh();
+                }
+                else{
+                    return false
+                }
+            }
+            );
+            
+        
+            
+        } 
+        else {
+            console.log("silentRefresh called but no ref_token found.")
+        }
+    }
+
+}
+
+async function refreshToken () {
+    let url = getBackendHOST() + 'api/v1/refresh-token/';
+    let response = await axios.post(url, {
+            refresh: retrieveFromStorage("refresh_token")
+        })
+    if (response.status === 200){
+        storeAuthToken(response.data.access);
+        return response.data.access
+    }
+    else{
+        handleErrorResponse(response, "Please Sign In Again!");
+        return false
+    }
+}
+
+
+// REUASBLE methods
+export const isSelfUser = (sourceID, targetID) => {
+    return sourceID === targetID ? true : false
+}
+
+export const getCurrentTimeInMS = () => {
+    return Math.floor(Date.now() / 1000);
+}
+
+export const generateId = () => {
     // return current timestamp + random string as id
-    return Math.floor(Date.now() / 1000) + Math.random().toString(36).substring(7)
+    return getCurrentTimeInMS() + Math.random().toString(36).substring(7)
 }
 
-export const getBackendHOST = (env='dev') =>{
+export const getBackendHOST = (env = 'dev') => {
     return setup[env]["BACKEND_HOST"]
 }
 
-export const notifyMultipleErrorMsg = (headingText, msgObj) =>{
-    Object.keys(msgObj).map(key=>{
+
+// LOCAL STORAGE MANAGEMENT
+export const saveInStorage = (key, value) => {
+    localStorage.setItem(key, value);
+    return true
+}
+
+export const retrieveFromStorage = (key) => {
+    if (key in localStorage) {
+        return localStorage.getItem(key);
+    } else {
+        return null
+    }
+
+}
+
+// Error handling and notifier
+export const notifyMultipleErrorMsg = (headingText, msgObj) => {
+    Object.keys(msgObj).map(key => {
         createFloatingNotification("error", headingText, msgObj[key]);
         return key
     })
 
 }
 
+export const handleErrorResponse = (error, notifierKey) => {
+    let errorResponse = '';
+    let errDefaultMsg = "Excuse us! We are facing some issues. Will be back in sometime."
+    if (error.response && error.response.data) {
+        // error occurred/reported from response
+        if (typeof error.response.data.message !== "string") {
+            notifyMultipleErrorMsg(notifierKey, error.response.data.message);
+        } else {
+            createFloatingNotification("error", notifierKey, error.response.data.message);
+        }
+    } else if (error.request) {
+        // error occurred while requesting
+        errorResponse = error.request.message || error.request.statusText;
+        console.log("error occurred while requesting", errorResponse);
+
+        createFloatingNotification("error", notifierKey, errDefaultMsg);
+    } else {
+        errorResponse = error.message;
+        console.log("error occurred ", errDefaultMsg);
+        createFloatingNotification("error", notifierKey, errDefaultMsg);
+    }
+}
 
 
-export default {isSelfUser, generateId, getBackendHOST}
+// JWT DECODE
+export const parseJwt = (token) => {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+};
+
+export default {
+    isSelfUser,
+    generateId,
+    getBackendHOST,
+    storeAuthToken,
+    retrieveAuthToken,
+    saveInStorage,
+    retrieveFromStorage,
+    silentRefresh
+}

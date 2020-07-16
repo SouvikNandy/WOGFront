@@ -8,10 +8,15 @@ import Profile from './pages/Profile';
 import AddReviews from './pages/AddReview';
 import {NotificationContainer} from 'react-notifications';
 import Explore from './pages/Explore';
+import {silentRefresh} from './utility/Utility'
 
 
 export default class App extends Component {
+  componentDidMount(){
+    silentRefresh();
+  }
   render() {
+    
     return (
       <Router>
         <div className="App">
@@ -19,6 +24,7 @@ export default class App extends Component {
           <ShotModalUrl />
 
           <NotificationContainer/>
+          
         </div>
       </Router>
       

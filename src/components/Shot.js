@@ -15,19 +15,6 @@ export class ShotPalette extends Component {
         Shots : [
             {id: 1, shot: w1, name: "John Doe", username: "johndoe11111", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 
             {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
-            // {id: 3, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
-            // {id: 4, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 
-            // {id: 5, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false},
-            // {id: 6, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 
-            // {id: 7, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
-            // {id: 8, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
-            // {id: 9, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 
-            // {id: 10, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false},
-            // {id: 11, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 
-            // {id: 12, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
-            // {id: 13, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
-            // {id: 14, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 
-            // {id: 15, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}
         ],
     }
 
@@ -44,7 +31,7 @@ export class ShotPalette extends Component {
     padDummyShot = (resultList, len, maxlen=5) =>{
         if (len < maxlen){
             for(let i =0; i< maxlen - len ; i++){
-                resultList.push(<DummyShots />)
+                resultList.push(<DummyShots key={ "DS"+ i } />)
             }
         }
         return resultList
