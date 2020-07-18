@@ -37,23 +37,23 @@ export default class Profile extends Component {
             {key: "tn-2", "title": "Requests", "count": true, "isActive": false}
         ],
         userShot : [
-            {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
-            {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
+            {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: pl2}, 
+            {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: w1}, 
 
         ],
         userPortFolio :[
-            {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1]}, 
-            {id: 2, name:"p2", shot: [w1]}, 
-            {id: 3, name:"p4", shot: [w1, pl2, w1]}, 
+            {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1], likes: 100, comments: 100, shares:0,}, 
+            {id: 2, name:"p2", shot: [w1], likes: 100, comments: 100, shares:0,}, 
+            {id: 3, name:"p4", shot: [w1, pl2, w1], likes: 100, comments: 100, shares:0,}, 
         ],
         userTag:{
             approved : [
-                {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 
-                {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
+                {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: pl2, is_liked: false}, 
+                {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: w1, is_liked: false}, 
             ],
             requests: [
-                {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 
-                {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
+                {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: pl2, is_liked: false}, 
+                {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: w1, is_liked: false}, 
             ]
         },
         userFollower:[
@@ -169,6 +169,30 @@ export default class Profile extends Component {
             userTag: updatedUserTag
         })
     }
+    likePortfolio = (idx) =>{
+        this.setState({
+            userPortFolio: this.state.userPortFolio.map(ele =>{
+                if(ele.id === idx){
+                    ele.is_liked = true;
+                    ele.likes++;
+                }
+                return ele
+            })
+        })
+
+    }
+    unLikePortfolio = (idx) =>{
+        this.setState({
+            userPortFolio: this.state.userPortFolio.map(ele =>{
+                if(ele.id === idx){
+                    ele.is_liked = false;
+                    ele.likes--;
+                }
+                return ele
+            })
+        })
+
+    }
 
     approveTag = (idx) =>{
         let newUsertag = {...this.state.userTag};
@@ -237,7 +261,8 @@ export default class Profile extends Component {
             else if (item.title === "Portfolios" && item.isActive === true){
                 // PORTFOLIOS
                 this.state.userPortFolio.map(ele => 
-                    {resultList.push(<Portfolio key={ele.id} data={ele} currLocation={this.props.location}  />)
+                    {resultList.push(<Portfolio key={ele.id} data={ele} currLocation={this.props.location} 
+                        likePortfolio={this.likePortfolio} unLikePortfolio={this.unLikePortfolio} />)
                     return ele
                 })
                 resultList = this.padDummyShot(resultList, this.state.userPortFolio.length, 5)

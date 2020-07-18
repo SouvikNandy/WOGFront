@@ -8,7 +8,8 @@ import Profile from './pages/Profile';
 import AddReviews from './pages/AddReview';
 import {NotificationContainer} from 'react-notifications';
 import Explore from './pages/Explore';
-import {silentRefresh} from './utility/Utility'
+import {silentRefresh} from './utility/Utility';
+import UserLoggedInView from "./pages/UserLoggedInView";
 
 
 export default class App extends Component {
@@ -55,6 +56,7 @@ function ShotModalUrl() {
         <Route exact path="/shot-view/:id" component={ShotModalView} />
         <Route exact path="/reviews/" component={AddReviews} />
         <Route exact path="/explore/" component={Explore} />
+        <Route exact path="/user-view/" component={UserLoggedInView} />
         <Route> NOT FOUND</Route>
       </Switch>
       {isModal

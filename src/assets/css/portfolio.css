@@ -90,15 +90,17 @@
 
 .pf-attr-span {
     display: flex;
-    justify-content: space-between;
+    flex: 2;
+    justify-content: flex-start;
     align-items: center;
     font-size: 0.8rem;
+    overflow: hidden;
 
 }
 
 .pf-attr-span .pf-name,
 .pf-attr-span .pf-shot-count {
-    padding: 0 1rem;
+    padding: 0 0.5rem;
     font-weight: bold;
 
 }

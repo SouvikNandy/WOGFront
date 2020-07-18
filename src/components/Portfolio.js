@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../assets/css/portfolio.css';
 import ShotModalView from './ShotModalView';
+import { ShotFooterLikePreview } from '../components/Shot';
 
 
 export class Portfolio extends Component{
@@ -30,13 +31,11 @@ export class Portfolio extends Component{
 
     getPrev = () =>{
         let result = this.props.data.shot.prev();
-        console.log("prev", result);
         return result
     }
 
     getNext = () =>{
         let result = this.props.data.shot.next();
-        console.log("next", result);
         return result
     }
 
@@ -76,6 +75,7 @@ export class Portfolio extends Component{
                         <div className="pf-name">{data.name}</div>
                         <div className="pf-shot-count">Shots {contained}</div>
                     </span>
+                    <ShotFooterLikePreview data={data} unLikeShot={this.props.unLikePortfolio} likeShot={this.props.likePortfolio} />
                     
                 </div>
             </div>

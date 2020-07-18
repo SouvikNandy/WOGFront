@@ -4,7 +4,7 @@ import DummyShots from '../components/DummyShots';
 
 
 import { Link } from "react-router-dom";
-import { FaHeart, FaComment } from "react-icons/fa";
+import { FaHeart, FaPaperPlane } from "react-icons/fa";
 
 // Images for shot
 import w1 from "../assets/images/wedding1.jpg";
@@ -13,8 +13,8 @@ import pl2 from "../assets/images/people/2.jpg";
 export class ShotPalette extends Component {
     state = {
         Shots : [
-            {id: 1, shot: w1, name: "John Doe", username: "johndoe11111", likes: 100, comments: 100, profile_pic: pl2, is_liked: false}, 
-            {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1, is_liked: false}, 
+            {id: 1, shot: w1, name: "John Doe", username: "johndoe11111", likes: 100, comments: 100, shares:0, profile_pic: pl2, is_liked: false}, 
+            {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: w1, is_liked: false}, 
         ],
     }
 
@@ -107,20 +107,8 @@ export class Shot extends Component {
                                 <img src={data.profile_pic} alt="" />
                                 <span className="display-name">{data.name} @{data.username}</span>
                             </Link>
-
-                            <span className="like-comment-share-preview">
-                                {data.is_liked?
-                                    <React.Fragment>
-                                        <FaHeart className="icons icons-active" onClick={this.props.unLikeShot.bind(this, data.id)}/><span>{data.likes}</span>
-                                    </React.Fragment>
-                                    :
-                                    <React.Fragment>
-                                        <FaHeart className="icons" onClick={this.props.likeShot.bind(this, data.id)}/><span>{data.likes}</span>
-                                    </React.Fragment>                                
-                                }
-                                
-                                <FaComment className="icons" /><span>{data.comments}</span>
-                            </span>
+                            <ShotFooterLikePreview data={data} unLikeShot={this.props.unLikeShot} likeShot={this.props.likeShot}/>
+                            
                         </span>
                         : ''}
                 </div>
@@ -130,6 +118,28 @@ export class Shot extends Component {
 
     }
 
+}
+
+export class ShotFooterLikePreview extends Component{
+    render(){
+        let data = this.props.data;
+        return(
+            <span className="like-comment-share-preview">
+                {data.is_liked?
+                    <React.Fragment>
+                        <FaHeart className="icons icons-active" onClick={this.props.unLikeShot.bind(this, data.id)}/><span>{data.likes}</span>
+                    </React.Fragment>
+                    :
+                    <React.Fragment>
+                        <FaHeart className="icons" onClick={this.props.likeShot.bind(this, data.id)}/><span>{data.likes}</span>
+                    </React.Fragment>                                
+                }
+                
+                <FaPaperPlane className="icons" /><span>{data.shares}</span>
+            </span>
+        )
+    }
+    
 }
 
 export default ShotPalette;
