@@ -70,6 +70,9 @@ export class Portfolio extends Component{
                 </div>
 
                 }
+                {this.props.onlyShots?
+                ""
+                :
                 <div className="pf-attribute">
                     <span className="pf-attr-span">
                         <div className="pf-name">{data.name}</div>
@@ -78,6 +81,8 @@ export class Portfolio extends Component{
                     <ShotFooterLikePreview data={data} unLikeShot={this.props.unLikePortfolio} likeShot={this.props.likePortfolio} />
                     
                 </div>
+                }
+                
             </div>
             {this.state.showModal?
                 

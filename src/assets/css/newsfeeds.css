@@ -148,12 +148,61 @@
 }
 
 
-
 .nf-feeds{
-    flex: 3
+    flex: 3;
+    margin-left: 15vw;
+    min-height: 95vh;
+    background-color: var(--border-grey);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+
+.nf-post-conatiner{
+    width: 80%;
+    background-color: var(--light);
+    margin-top: 1.5rem;
+    padding: 0.8rem 1rem;
+}
+
+.nf-post-conatiner:last-child{
+    margin-bottom: 1.5rem;
+}
+
+.nf-post-conatiner .nfp-user-preview{
+    width: 100%;
+}
+
+.nf-post-conatiner .nfp-likes-mod{
+    height: 6vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nfp-details .cmnt-count {
+    font-size: 0.8rem;
+    color: var(--dark);
+    font-weight: bold;
+    padding: 0.2rem 0;
+}
+
+.nfp-comments{
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.nfp-comments .short-comment{
+    width: 90%;
+    border-radius: 0.9rem;
+    padding: 0.4rem;
+    resize: none;
+    font-size: 0.8rem;
+    outline: none;
+}
 .nf-rest{
     flex: 1.5;
-    background: var(--border-grey);
+    /* background: var(--border-grey); */
 }

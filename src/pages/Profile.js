@@ -169,6 +169,7 @@ export default class Profile extends Component {
             userTag: updatedUserTag
         })
     }
+    
     likePortfolio = (idx) =>{
         this.setState({
             userPortFolio: this.state.userPortFolio.map(ele =>{
