@@ -5,27 +5,43 @@
     width: 100%;
     display: flex;
 }
+/* LEFT SIDE MENU */
 
 .nf-user-menu{
     flex: 0.8;
-    background: var(--border-grey);
     border-right: 1px solid var(--border-grey);
     height: 95vh;
+    width: 15vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 0 1.2rem;
-    /* position: sticky;
-    top: 5rem; */
+    position: fixed;
+    left: 0;
+    background: url("../images/mountainFog.jpg") no-repeat center center/cover;    
+}
+
+
+.nf-user-menu-overlay{
+    position: absolute;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    -moz-backdrop-filter: blur(8px);
+    -o-backdrop-filter: blur(8px);
+    -ms-backdrop-filter: blur(8px);
 }
 
 .nf-user-menu .nf-user-edit{
+    z-index: 1;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     flex: 1.2;
-    border-bottom: 1px solid var(--dark);
+    border-bottom: 1px solid var(--border-grey);
     
 }
 
@@ -33,23 +49,32 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    /* background: red;
+    border: 1px solid black; */
+
 }
 .nf-user-menu .nf-user-edit .nf-user-img .edit-pic{
-    height: 100%;
+    position: absolute;
+    background: rgba(0,0,0,0.7);
+    height: 1.5rem;
+    width: 1.5rem;
+    top: 7vh;
+    left: 8vw;
+    border-radius: 50%;
     display: flex;
-    align-items: flex-end;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
 }
 .nf-user-edit .cam-icon{
-    position: relative;
-    /* color: var(--hover-one); */
-    margin: 0;
-    left: -0.6rem;
-    cursor: pointer;
+    color: var(--light);
+    font-size: 0.8rem;
 }
 
 .nf-user-img .cube-user-img{
-    height: 5rem;
-    width: 5rem;
+    height: 4.2rem;
+    width: 4.2rem;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -57,14 +82,14 @@
 
 
 .nf-user-menu .m-display-name{
-    margin: 0.5rem 0;
+    margin: 0.4rem 0;
     display: flex;
     flex-direction: column;
-    font-size: 0.9rem
+    font-size: 0.8rem
 }
 
 .nf-user-menu .edit-btn{
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     margin: 0;
     display: flex;
     align-items: center;
@@ -72,20 +97,54 @@
     /* margin-bottom: 0.8rem; */
 }
 .nf-user-menu .edit-btn .ico{
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     margin-right: 0.2rem;
     font-weight: bold;
 
 }
 .nf-user-menu .m-display-name .m-adj{
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     /* padding: 0.2rem 0; */
     line-height: 1.2;
 }
 
 
 .nf-user-menu .nf-user-menulist{
-    flex: 3
+    flex: 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 1;
+}
+
+
+.nf-user-menulist .nf-menu-tokens{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0.6rem 0;
+    height: 3vh;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.nf-user-menulist .nf-menu-tokens:hover{
+    color: var(--hover-one);
+}
+
+.nf-user-menulist .nf-menu-tokens .ico{
+    margin-right: 0.5rem;
+}
+
+.nf-user-menulist .nf-upper-tokens{
+    flex: 2.5;
+    max-height: 70vh;
+
+}
+
+.nf-user-menulist .nf-lower-tokens{
+    flex: 1;
+    border-top: 1px solid var(--border-grey);
 }
 
 
