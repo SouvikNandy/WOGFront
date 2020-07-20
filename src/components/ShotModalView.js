@@ -35,6 +35,7 @@ let sampleShot = {
         "comments": 3
     },
     "is_liked": false,
+    "isSaved": false,
     "portfolio_name": "Lorem Ipsum",
     "tags": [
         {"id": 1, "name":"First Last", "username": "user1", "profile_pic": w1, "designation": "photographer"},
@@ -191,6 +192,18 @@ export class ShotModalView extends Component {
         })
 
     }
+
+    savePost = () =>{
+        var shot = { ...this.state.shot };
+        if(!shot.isSaved){
+            shot.isSaved = true;
+        }
+        else{
+            shot.isSaved = !shot.isSaved;
+        }
+        this.setState({ shot });
+
+    }
     
     render() {
         // console.log("props", this.props);
@@ -309,6 +322,8 @@ export class ShotModalView extends Component {
                                     doLike={this.doLike}
                                     doUnLike={this.doUnLike}
                                     isLiked={this.state.shot.is_liked}
+                                    isSaved={this.state.shot.isSaved}
+                                    savePost={this.savePost}
                                     responsecounts={this.state.shot.responsecounts} />
 
                             </div>

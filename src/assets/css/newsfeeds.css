@@ -147,6 +147,7 @@
     border-top: 1px solid var(--border-grey);
 }
 
+/* Feeds section */
 
 .nf-feeds{
     flex: 3;
@@ -163,7 +164,7 @@
     width: 80%;
     background-color: var(--light);
     margin-top: 1.5rem;
-    padding: 0.8rem 1rem;
+    padding: 0.8rem 1.2rem;
 }
 
 .nf-post-conatiner:last-child{

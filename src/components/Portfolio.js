@@ -49,16 +49,16 @@ export class Portfolio extends Component{
         <React.Fragment>
             <div className="pf-grid">
                 {contained < 5?
-                (contained < 3)?
-                    <div className="pf-container-1" onClick={contained >1 ? this.openModalView.bind(this, true) : this.openModalView.bind(this,false)}>
-                        <div className="pf-one"><img className="pf-img" src={data.shot[0]} alt="1"></img></div>
-                    </div>
-                    :
-                    <div className="pf-container-3" onClick={this.openModalView.bind(this, true)}>
-                        <div className="pf-one"><img className="pf-img" src={data.shot[0]} alt="1"></img></div>
-                        <div className="pf-two"><img className="pf-img" src={data.shot[1]} alt="1"></img></div>
-                        <div className="pf-three"><img className="pf-img" src={data.shot[2]} alt="1"></img></div>
-                    </div>
+                    (contained < 3)?
+                        <div className="pf-container-1" onClick={contained >1 ? this.openModalView.bind(this, true) : this.openModalView.bind(this,false)}>
+                            <div className="pf-one"><img className="pf-img" src={data.shot[0]} alt="1"></img></div>
+                        </div>
+                        :
+                        <div className="pf-container-3" onClick={this.openModalView.bind(this, true)}>
+                            <div className="pf-one"><img className="pf-img" src={data.shot[0]} alt="1"></img></div>
+                            <div className="pf-two"><img className="pf-img" src={data.shot[1]} alt="1"></img></div>
+                            <div className="pf-three"><img className="pf-img" src={data.shot[2]} alt="1"></img></div>
+                        </div>
                 
                 :
                 <div className="pf-container-5" onClick={this.openModalView.bind(this, true)}>

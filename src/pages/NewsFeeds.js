@@ -90,13 +90,31 @@ export class NewFeedPalette extends Component{
         feeds:[
             {
                 user:{"id": 1, "name":"John Doe", "username": "johndoe", "profile_pic": w1, "designation": "photographer"},
-                portfolio: {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1], likes: 100, comments: 100, shares:0}, 
+                portfolio: {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1], likes: 100, comments: 100, shares:0},
+                
             },
             {
                 user:{"id": 1, "name":"John Doe", "username": "johndoe", "profile_pic": w1, "designation": "photographer"},
                 portfolio: {id: 2, name:"p1", shot: [w1], likes: 100, comments: 100, shares:0}, 
             },
         ]
+    }
+
+    savePost = (idx) =>{
+        this.setState({
+            feeds: this.state.feeds.map(ele =>{
+                if(ele.portfolio.id === idx){
+                    if(!ele.portfolio.isSaved){
+                        console.log("if cond")
+                        ele.portfolio.isSaved = true;
+                    }
+                    else{
+                        ele.portfolio.isSaved = !ele.portfolio.isSaved;
+                    }
+                }
+                return ele
+            })
+        })
     }
 
     likePortfolio = (idx) =>{
@@ -123,11 +141,26 @@ export class NewFeedPalette extends Component{
         })
 
     }
+    addComment = (idx) =>{
+        this.setState({
+            feeds: this.state.feeds.map(ele =>{
+                if(ele.portfolio.id === idx){
+                    
+                    ele.portfolio.comments++;
+                }
+                return ele
+            })
+        })
+
+        
+
+    }
     render(){
         let feedList = [];
         this.state.feeds.map(ele=>{
-            feedList.push(<NewsFeedPost data={ele} currLocation={this.props.location}
-                likePortfolio={this.likePortfolio} unLikePortfolio={this.unLikePortfolio}/>)
+            feedList.push(<NewsFeedPost key={ele.portfolio.id} data={ele} currLocation={this.props.location}
+                likePortfolio={this.likePortfolio} unLikePortfolio={this.unLikePortfolio}
+                savePost={this.savePost} addComment={this.addComment}/>)
             
             return ele
 
@@ -142,6 +175,18 @@ export class NewFeedPalette extends Component{
 
 
 export class NewsFeedPost extends Component{
+
+    feedCommentBox = (eleID) => {
+        document.getElementById(eleID).select();
+    }
+    addComment = (eleID) =>{
+        let divID = "short-comment-"+ eleID;
+        let ele = document.getElementById(divID);
+        console.log(ele.value);
+        document.getElementById(divID).value = "";
+        this.props.addComment(eleID);
+    }
+    
     render(){
         let user = this.props.data.user;
         let pf = this.props.data.portfolio;
@@ -154,7 +199,7 @@ export class NewsFeedPost extends Component{
                 <div className="nfp-user-preview">
                     <UserFlat data={user}/>
                 </div>
-                <div className="nfp-portfolio-preview">
+                <div className="nfp-portfolio-preview" >
                     <Portfolio key={pf.id} data={pf} currLocation={this.props.location} onlyShots={true} />
                 </div>
                 <div className="nfp-likes-mod">
@@ -162,6 +207,9 @@ export class NewsFeedPost extends Component{
                         doLike={this.props.likePortfolio.bind(this, pf.id)}
                         doUnLike={this.props.unLikePortfolio.bind(this, pf.id)}
                         isLiked={pf.is_liked}
+                        isSaved={pf.isSaved}
+                        savePost={this.props.savePost.bind(this, pf.id)}
+                        feedCommentBox={this.feedCommentBox.bind(this, "short-comment-"+ pf.id )}
                         responsecounts={responsecounts} />
                 </div>
                 <div className="nfp-details">
@@ -173,8 +221,8 @@ export class NewsFeedPost extends Component{
 
                 </div>
                 <div className="nfp-comments">
-                    <textarea className="short-comment" placeholder="Add a comment..."></textarea>
-                    <button className="btn">Post</button>
+                    <textarea className="short-comment" placeholder="Add a comment..." id={"short-comment-"+ pf.id}></textarea>
+                    <button className="btn" onClick={this.addComment.bind(this, pf.id)}>Post</button>
                 </div>
 
             </div>
