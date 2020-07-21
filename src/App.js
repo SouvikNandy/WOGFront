@@ -9,6 +9,7 @@ import AddReviews from './pages/AddReview';
 import {NotificationContainer} from 'react-notifications';
 import Explore from './pages/Explore';
 import {silentRefresh} from './utility/Utility';
+// import {PrivateRoute} from './utility/PrivateRoute';
 import UserLoggedInView from "./pages/UserLoggedInView";
 
 
@@ -57,6 +58,7 @@ function ShotModalUrl() {
         <Route exact path="/reviews/" component={AddReviews} />
         <Route exact path="/explore/" component={Explore} />
         <Route exact path="/user-view/" component={UserLoggedInView} />
+        {/* <PrivateRoute path="/user-view/" component={UserLoggedInView} /> */}
         <Route> NOT FOUND</Route>
       </Switch>
       {isModal

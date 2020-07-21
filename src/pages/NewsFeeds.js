@@ -78,7 +78,13 @@ export class NewsFeeds extends Component {
                 <div className="nf-feeds">
                     <NewFeedPalette currLocation={this.props.location}/>
                 </div>
-                <div className="nf-rest"></div>
+                <div className="nf-rest">
+                    <div className="nf-suggestions">
+                        
+                    </div>
+                    <div className="nf-sponsers"></div>
+                    <div className="nf-explore-more"></div>
+                </div>
                 
             </div>
         )

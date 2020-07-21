@@ -30,7 +30,10 @@ export default class Profile extends Component {
             {"key": "sm-3", "title": "Tags", "count": true, "isActive":false},
             {"key": "sm-4", "title": "Followers", "count": true, "isActive":false},
             {"key": "sm-5", "title": "Following", "count": true, "isActive":false},
-            {"key": "sm-6", "title": "About", "isActive":false},
+            {"key": "sm-6", "title": "Saved", "count": true, "isActive":false},
+            {"key": "sm-7", "title": "About", "isActive":false},
+            {"key": "sm-8", "title": "Reviews", "count": true, "isActive":false},
+            
         ],
         tagNavOptions:[
             {key: "tn-1", "title": "Approved", "count": true, "isActive": true},
@@ -82,7 +85,8 @@ export default class Profile extends Component {
             // team
             "teams" : [w1, pl2, w1, pl2]
             
-        }
+        },
+        userSaved: [],
     }
 
     getMenuCount = (key) =>{
@@ -230,6 +234,10 @@ export default class Profile extends Component {
         this.setState({
             userFollowing: this.state.userFollowing.filter(ele => ele.id!==record.id) 
         })
+    }
+
+    saveShot = () =>{
+        
     }
 
     padDummyShot = (resultList, len, maxlen=5) =>{

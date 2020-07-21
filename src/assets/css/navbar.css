@@ -145,6 +145,16 @@
     
 }
 
+@media(min-width: 900px){
+    .left-menu{
+        opacity: 0;
+        visibility: 0;
+        cursor: default
+    }
+
+}
+
+
 /* MEDIA QUERIES */
 /* tablets, landscape, low-resulation laptop and dektop */
 @media(max-width : 990px) {
@@ -166,7 +176,7 @@
     }
     .menu-list-item .menu-link{
         font-size: 0.8rem;
-        min-width: 15vw;
+        min-width: 12vw;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -186,3 +196,28 @@
 
     
 }
+
+@media (max-width:900px){
+
+    .menu-list-item .menu-link{
+        max-width: 15vw;
+
+    }
+    .nav-icon{
+        height: 1.2rem;
+        width: 1.2rem;
+        margin: 0.2rem;
+
+    }
+
+    .chat-icon-div{
+        height: 1.5rem;
+        width: 1.5rem;
+    }
+    .chat-icon-div .chat-icon-circle{
+        height: 1.5rem;
+        width: 1.5rem;
+    }
+    
+}
+

@@ -6,7 +6,9 @@ import { FaRegUserCircle, FaRegPaperPlane } from "react-icons/fa";
 import { MdWallpaper } from "react-icons/md";
 import { FiBell } from "react-icons/fi";
 import { GrSearchAdvanced } from "react-icons/gr";
+import {AiOutlineAlignLeft} from 'react-icons/ai';
 import SideBar from "../components/SideBar";
+
 
 
 export class Navbar extends Component {
@@ -77,6 +79,7 @@ export class UserNavBar extends Component{
 
     componentDidMount(){
         let navLinks =  [
+            { key: 0, label: this.getLabel("leftmenu"), link: '#', isActive: false},
             { key: 1, label: this.getLabel("feeds"), link: '#', isActive: true },
             { key: 2, label: this.getLabel("explore"), link: '/explore/', isActive: false},
             { key: 3, label: this.getLabel("notification"), link: '#', isActive: false, sidebarViewAvailable: true},
@@ -98,6 +101,8 @@ export class UserNavBar extends Component{
                 return <FiBell className="nav-icon"/>;
             case "profile":
                 return <FaRegUserCircle className="nav-icon"/>;
+            case "leftmenu":
+                return <AiOutlineAlignLeft className="nav-icon left-menu" />
             
             default:
                 return "WOG"

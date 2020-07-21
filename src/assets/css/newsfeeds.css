@@ -207,3 +207,36 @@
     flex: 1.5;
     /* background: var(--border-grey); */
 }
+
+
+@media (max-width: 900px){
+    .nf-container{
+        overflow: hidden;
+    }
+    .nf-container .nf-user-menu{
+        display: none !important;
+        height: 100%;
+        width: 0vw !important;
+        overflow: hidden;
+    }
+
+    .nf-user-menu .nf-user-menu-overlay{
+        width: 0 !important;
+    }
+
+    .nf-container .nf-feeds{
+        width: 100%;
+        margin-left: 0;
+
+
+    }
+
+    .nf-container .nf-feeds .nf-post-conatiner{
+        width: 100%;
+    }
+
+    .nf-container .nf-rest{
+        display: none;
+    }
+
+}
