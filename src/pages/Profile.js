@@ -368,7 +368,12 @@ export default class Profile extends Component {
         return (
             <React.Fragment>
                 {/* <SearchHead /> */}
+                {this.props.showNav?
                 <UserNavBar />
+                :
+                ""
+                }
+                
                 {/* profile top section */}
                 <ProfileHead data={this.state.userAbout}/>
                 <Subnav subNavList={this.state.subNavList} selectSubMenu={this.selectSubMenu}  getMenuCount={this.getMenuCount}/>

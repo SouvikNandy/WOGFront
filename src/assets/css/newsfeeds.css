@@ -9,7 +9,7 @@
 
 .nf-user-menu{
     flex: 0.8;
-    border-right: 1px solid var(--border-grey);
+    /* border-right: 1px solid var(--border-grey); */
     height: 95vh;
     width: 15vw;
     display: flex;
@@ -209,15 +209,37 @@
 }
 
 
-@media (max-width: 900px){
+@media(max-width: 1100px){
+    .nf-user-menu{
+        width: 20vw;
+        border: none;
+    }
+    .nf-feeds{
+        margin-left: 20vw;
+    }
+    .nf-user-menu .nf-user-edit .nf-user-img .edit-pic{
+        left:11vw
+    }
+}
+@media(max-width: 900px){
+    .nf-container .nf-rest{
+        display: none;
+    }
+    .nf-container .nf-feeds .nf-post-conatiner{
+        width: 90%;
+    }
+
+    .nf-container .nf-feeds .nf-post-conatiner .pf-grid{
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 800px){
     .nf-container{
         overflow: hidden;
     }
     .nf-container .nf-user-menu{
         display: none !important;
-        height: 100%;
-        width: 0vw !important;
-        overflow: hidden;
     }
 
     .nf-user-menu .nf-user-menu-overlay{
@@ -235,8 +257,6 @@
         width: 100%;
     }
 
-    .nf-container .nf-rest{
-        display: none;
-    }
+    
 
 }

@@ -6,8 +6,9 @@ import { FaRegUserCircle, FaRegPaperPlane } from "react-icons/fa";
 import { MdWallpaper } from "react-icons/md";
 import { FiBell } from "react-icons/fi";
 import { GrSearchAdvanced } from "react-icons/gr";
-import {AiOutlineAlignLeft} from 'react-icons/ai';
+import {AiOutlineAlignRight, AiOutlineAlignLeft} from 'react-icons/ai';
 import SideBar from "../components/SideBar";
+import {NewsFeedUserMenu} from "../pages/NewsFeeds" 
 
 
 
@@ -17,12 +18,7 @@ export class Navbar extends Component {
             return (
                 <li className="menu-list-item" key={obj.key}>
                     {obj.isActive?
-                    obj.sidebarViewAvailable?
-                        <Link className="menu-link menu-link--active" to={obj.link}
-                        onClick={this.props.displaySideView}
-                        >{obj.label}</Link>
-                        :
-                        <Link className="menu-link menu-link--active" to={obj.link}>{obj.label}</Link>
+                    <Link className="menu-link menu-link--active" to={obj.link}>{obj.label}</Link>
                     :
                     <Link className="menu-link" to={obj.link} 
                     onClick={this.props.selectMenu.bind(this, obj.key)}>
@@ -69,21 +65,21 @@ export class UserNavBar extends Component{
     state = {
         navLinks: [],
         // sidebar required for keys
-        sideBarRequiredFor :[3],
+        sideBarRequiredFor :[6],
         // sidebar states
         showSideView: false,
-        sideBarHead: true,
+        sideBarHead: false,
         searchBarRequired: false,
         sideViewContent: [],
     }
 
     componentDidMount(){
         let navLinks =  [
-            { key: 0, label: this.getLabel("leftmenu"), link: '#', isActive: false},
-            { key: 1, label: this.getLabel("feeds"), link: '#', isActive: true },
-            { key: 2, label: this.getLabel("explore"), link: '/explore/', isActive: false},
-            { key: 3, label: this.getLabel("notification"), link: '#', isActive: false, sidebarViewAvailable: true},
-            { key: 4, label: this.getLabel("profile"), link: '#', isActive: false},
+            { key: 1, name: "feeds", label: this.getLabel("feeds"), link: '#', isActive: true },
+            { key: 2, name: "explore", label: this.getLabel("explore"), link: '/explore/', isActive: false},
+            { key: 3, name: "notification", label: this.getLabel("notification"), link: '#', isActive: false},
+            { key: 4, name: "profile", label: this.getLabel("profile"), link: '#', isActive: false},
+            { key: 6, name: "leftmenu", label: this.getLabel("leftmenu"), link: '#', isActive: false},
         ]
         this.setState({
             navLinks: navLinks
@@ -102,7 +98,7 @@ export class UserNavBar extends Component{
             case "profile":
                 return <FaRegUserCircle className="nav-icon"/>;
             case "leftmenu":
-                return <AiOutlineAlignLeft className="nav-icon left-menu" />
+                return <AiOutlineAlignRight className="nav-icon left-menu" />
             
             default:
                 return "WOG"
@@ -111,23 +107,47 @@ export class UserNavBar extends Component{
 
     }
 
+    sideNFMenu = () =>{
+        return(
+            <div className="side-nfuser-menu">
+                <AiOutlineAlignLeft className="nav-icon hide-left-menu" onClick={this.displaySideView}/>
+                <NewsFeedUserMenu />
+                </div>
+        )
+    }
+
     selectMenu = (key) =>{
-        let showSideView = false
         if (this.state.sideBarRequiredFor.includes(key)){
-            showSideView = true
+            if (key === 6 && window.innerWidth < 800){
+                this.setState({
+                    showSideView: true,
+                    sideViewContent: this.sideNFMenu()
+                })
+
+            }
+            
         }
-        this.setState({
-            navLinks: this.state.navLinks.map(item=>{
+        else{
+            this.state.navLinks.map(item=> {
                 if(key=== item.key){
-                    item.isActive = true;
-                }
-                else{
-                    item.isActive = false;
+                    this.props.showContent(item.name);
                 }
                 return item
-            }),
-            showSideView: showSideView
-        })
+            })
+            this.setState({
+                navLinks: this.state.navLinks.map(item=>{
+                    if(key=== item.key){
+                        item.isActive = true;
+                    }
+                    else{
+                        item.isActive = false;
+                    }
+                    return item
+                })
+            })
+            
+        }
+        
 
     }
     displaySideView = ({content, sureVal}) =>{
@@ -140,7 +160,6 @@ export class UserNavBar extends Component{
             showSideView: stateVal,
             sideBarHead: true,
             
-
         })
 
         if(content){
