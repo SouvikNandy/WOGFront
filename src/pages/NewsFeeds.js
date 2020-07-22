@@ -23,13 +23,7 @@ export class NewsFeeds extends Component {
                 <div className="nf-feeds">
                     <NewFeedPalette currLocation={this.props.location}/>
                 </div>
-                <div className="nf-rest">
-                    <div className="nf-suggestions">
-                        
-                    </div>
-                    <div className="nf-sponsers"></div>
-                    <div className="nf-explore-more"></div>
-                </div>
+                <NewsFeedSuggestions />
                 
             </div>
         )
@@ -92,6 +86,20 @@ export function NewsFeedUserMenu(){
 
                 </div>
             </div>
+        </div>
+
+    )
+}
+
+
+export function NewsFeedSuggestions (){
+    return(
+        <div className="nf-rest">
+            <div className="nf-suggestions">
+                
+            </div>
+            <div className="nf-sponsers"></div>
+            <div className="nf-explore-more"></div>
         </div>
 
     )
