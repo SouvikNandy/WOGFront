@@ -120,6 +120,7 @@ export class NewFeedPalette extends Component{
         ]
     }
 
+
     savePost = (idx) =>{
         this.setState({
             feeds: this.state.feeds.map(ele =>{

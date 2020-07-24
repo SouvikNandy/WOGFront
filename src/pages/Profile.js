@@ -3,7 +3,7 @@ import '../assets/css/profile.css';
 import { FaPlus, FaPaperPlane , FaCheckCircle} from "react-icons/fa";
 import { AiFillCloseCircle } from 'react-icons/ai';
 // import { AiOutlineHome, AiOutlineSearch, AiOutlineBell, AiOutlineBulb } from "react-icons/ai";
-// import SearchHead from '../components/SearchHead';
+import SearchHead from '../components/SearchHead';
 import Subnav from '../components/Subnav';
 import UserAbout from '../components/UserAbout';
 import {Shot, ShotPalette} from '../components/Shot';
@@ -11,7 +11,7 @@ import Portfolio from '../components/Portfolio';
 import AddPost from '../components/AddPost';
 import Footer from '../components/Footer';
 import {FollowUserCube} from '../components/UserView';
-import {UserNavBar} from "../components/Navbar";
+// import {UserNavBar} from "../components/Navbar";
 import DummyShots from '../components/DummyShots';
 import {generateId, isSelfUser} from '../utility/Utility.js';
 
@@ -32,7 +32,7 @@ export default class Profile extends Component {
             {"key": "sm-5", "title": "Following", "count": true, "isActive":false},
             {"key": "sm-6", "title": "Saved", "count": true, "isActive":false},
             {"key": "sm-7", "title": "About", "isActive":false},
-            {"key": "sm-8", "title": "Reviews", "count": true, "isActive":false},
+            {"key": "sm-8", "title": "Reviews", "isActive":false},
             
         ],
         tagNavOptions:[
@@ -86,7 +86,12 @@ export default class Profile extends Component {
             "teams" : [w1, pl2, w1, pl2]
             
         },
-        userSaved: [],
+        userSaved: [
+            {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1], likes: 100, comments: 100, shares:0,}, 
+            {id: 2, name:"p2", shot: [w1], likes: 100, comments: 100, shares:0,}, 
+            {id: 3, name:"p4", shot: [w1, pl2, w1], likes: 100, comments: 100, shares:0,},
+            {id: 3, name:"p4", shot: [w1, pl2, w1, pl2], likes: 100, comments: 100, shares:0,},
+        ],
     }
 
     getMenuCount = (key) =>{
@@ -108,7 +113,8 @@ export default class Profile extends Component {
             case "Requests":
                 // requested tags
                 return this.state.userTag.requests.length;
-            
+            case "Saved":
+                return this.state.userSaved.length;
             default:
                 return 0
     
@@ -239,6 +245,13 @@ export default class Profile extends Component {
     saveShot = () =>{
         
     }
+    removeFromSaved = (idx) =>{
+        this.setState({
+            userSaved : this.state.userSaved.filter(ele=> ele.id!==idx)
+        })
+
+
+    }
 
     padDummyShot = (resultList, len, maxlen=5) =>{
         if (len < maxlen){
@@ -358,6 +371,30 @@ export default class Profile extends Component {
                 // USER ABOUT
                 return (<UserAbout key={item.title} data={this.state.userAbout}/>)
             }
+
+            else if(item.title === "Saved" && item.isActive === true){
+                // Saved
+                this.state.userSaved.map(ele => 
+                    {resultList.push(
+                        <div className="tag-req saved-content" key={ele.id}>
+                            <div className="tag-decision">
+                                <AiFillCloseCircle className="tag-decision-btn" onClick={this.removeFromSaved.bind(this, ele.id)} />
+                            </div>
+                            <Portfolio key={ele.id} data={ele} currLocation={this.props.location} onlyShots={true} />
+
+                        </div>
+                    )
+                    return ele
+                })
+                resultList = this.padDummyShot(resultList, this.state.userSaved.length, 5)
+                return(
+                    <div key={item.title} className="profile-portfolio-grid">
+                        {resultList}
+                    </div>
+                )
+                
+
+            }
             return <React.Fragment key={"default "+ index}></React.Fragment>
         })
         return resultBlock
@@ -368,10 +405,10 @@ export default class Profile extends Component {
         return (
             <React.Fragment>
                 {/* <SearchHead /> */}
-                {this.props.showNav?
-                <UserNavBar />
-                :
+                {this.props.showNav === false?
                 ""
+                :
+                <SearchHead />
                 }
                 
                 {/* profile top section */}

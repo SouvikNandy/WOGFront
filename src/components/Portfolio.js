@@ -51,22 +51,40 @@ export class Portfolio extends Component{
                 {contained < 5?
                     (contained < 3)?
                         <div className="pf-container-1" onClick={contained >1 ? this.openModalView.bind(this, true) : this.openModalView.bind(this,false)}>
-                            <div className="pf-one"><img className="pf-img" src={data.shot[0]} alt="1"></img></div>
+                            <div className="pf-one"><img className="pf-img" src={data.shot[0]} alt=""></img></div>
                         </div>
                         :
                         <div className="pf-container-3" onClick={this.openModalView.bind(this, true)}>
-                            <div className="pf-one"><img className="pf-img" src={data.shot[0]} alt="1"></img></div>
-                            <div className="pf-two"><img className="pf-img" src={data.shot[1]} alt="1"></img></div>
-                            <div className="pf-three"><img className="pf-img" src={data.shot[2]} alt="1"></img></div>
+                            <div className="pf-one"><img className="pf-img" src={data.shot[0]} alt=""></img></div>
+                            <div className="pf-two"><img className="pf-img" src={data.shot[1]} alt=""></img></div>
+                            <div className="pf-three">
+                                {contained>3?
+                                <div className="count-overlay">
+                                    <div className="more-count">+{contained - 3}</div>
+                                </div>
+                                :
+                                ""
+                                }
+                                <img className="pf-img" src={data.shot[2]} alt=""></img>
+                            </div>
                         </div>
                 
                 :
                 <div className="pf-container-5" onClick={this.openModalView.bind(this, true)}>
-                    <div className="pf-one"><img className="pf-img" src={data.shot[0]} alt="1"></img></div>
-                    <div className="pf-two"><img className="pf-img" src={data.shot[1]} alt="1"></img></div>
-                    <div className="pf-three"><img className="pf-img" src={data.shot[2]} alt="1"></img></div>
-                    <div className="pf-four"><img className="pf-img" src={data.shot[3]} alt="1"></img></div>
-                    <div className="pf-five"><img className="pf-img" src={data.shot[4]} alt="1"></img></div>
+                    <div className="pf-one"><img className="pf-img" src={data.shot[0]} alt=""></img></div>
+                    <div className="pf-two"><img className="pf-img" src={data.shot[1]} alt=""></img></div>
+                    <div className="pf-three"><img className="pf-img" src={data.shot[2]} alt=""></img></div>
+                    <div className="pf-four"><img className="pf-img" src={data.shot[3]} alt=""></img></div>
+                    <div className="pf-five">
+                        {contained>5?
+                            <div className="count-overlay">
+                                <div className="more-count">+{contained - 5}</div>
+                            </div>
+                            :
+                            ""
+                        }
+                        <img className="pf-img" src={data.shot[4]} alt=""></img>
+                    </div>
                 </div>
 
                 }

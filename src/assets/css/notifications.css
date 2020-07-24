@@ -1,1 +1,46 @@
-@import url('config.css')
+@import url('config.css');
+.noti-cube{
+    width: 70%;
+    margin-top: 0.8rem;
+    background: var(--light);
+    padding: 0.8rem;
+    display: flex;
+    align-items: center;
+}
+
+.noti-cube:last-child{
+    margin-bottom: 0.8rem;
+}
+.noti-content{
+    flex: 2;
+    margin: 0 0.5rem
+    
+}
+.noti-content .m-display-name{
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+}
+
+.noti-content .noti-body{
+    font-size: 0.9rem;
+}
+
+.noti-cube .noti-options{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.noti-cube .noti-options .close-btn{
+    font-size: 1.2rem;
+}
+
+@media (max-width: 800px){
+    .noti-cube{
+        width: 95%;
+        margin-top: 0.5rem;
+    }
+    .noti-cube:last-child{
+        margin-bottom: 0.5rem;
+    }
+}

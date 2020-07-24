@@ -201,6 +201,10 @@
     max-width: 20vw;
 }
 
+.saved-content{
+    margin-bottom: 0.8rem;
+
+}
 .tag-decision {
     /* background: red; */
     height: 5vh;

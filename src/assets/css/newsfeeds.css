@@ -147,6 +147,10 @@
     border-top: 1px solid var(--border-grey);
 }
 
+.nfp-portfolio-preview .pf-container-3, .pf-container-5, .pf-container-1{
+    height: 20rem !important;
+}
+
 /* Feeds section */
 
 .nf-feeds{
