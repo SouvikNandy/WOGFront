@@ -129,7 +129,8 @@
 }
 
 .nf-user-menulist .nf-menu-tokens:hover{
-    color: var(--hover-one);
+    /* color: var(--hover-one); */
+    font-weight: bold !important;
 }
 
 .nf-user-menulist .nf-menu-tokens .ico{
@@ -147,8 +148,10 @@
     border-top: 1px solid var(--border-grey);
 }
 
-.nfp-portfolio-preview .pf-container-3, .pf-container-5, .pf-container-1{
-    height: 20rem !important;
+.nf-post-conatiner .pf-container-3, 
+.nf-post-conatiner .pf-container-5, 
+.nf-post-conatiner .pf-container-1{
+    height: 20rem ;
 }
 
 /* Feeds section */

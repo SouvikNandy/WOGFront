@@ -18,7 +18,7 @@ export class NewsFeeds extends Component {
         return (
             
             <div className="nf-container">
-                <NewsFeedUserMenu />
+                <NewsFeedUserMenu {...this.props}/>
                 
                 <div className="nf-feeds">
                     <NewFeedPalette currLocation={this.props.location}/>
@@ -30,7 +30,7 @@ export class NewsFeeds extends Component {
     }
 }
 
-export function NewsFeedUserMenu(){
+export function NewsFeedUserMenu(props){
     return(
         <div className="nf-user-menu">
             <div className="nf-user-menu-overlay"></div>
@@ -64,7 +64,7 @@ export function NewsFeedUserMenu(){
                         <AiOutlineStar className="ico" />
                         <span>Ratings & Reviews</span>
                     </div>
-                    <div className="nf-menu-tokens">
+                    <div className="nf-menu-tokens" onClick={props.showuserSaved}>
                         <BsBookmarks className="ico" />
                         <span>Saved</span>
                     </div>

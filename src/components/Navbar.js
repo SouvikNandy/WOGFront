@@ -74,13 +74,15 @@ export class UserNavBar extends Component{
     }
 
     componentDidMount(){
+        console.log("props", this.props)
         let navLinks =  [
-            { key: 1, name: "feeds", label: this.getLabel("feeds"), link: '#', isActive: true },
+            { key: 1, name: "feeds", label: this.getLabel("feeds"), link: '#', isActive: this.props.activeUserNav? false: true  },
             { key: 2, name: "explore", label: this.getLabel("explore"), link: '/explore/', isActive: false},
             { key: 3, name: "notification", label: this.getLabel("notification"), link: '#', isActive: false},
-            { key: 4, name: "profile", label: this.getLabel("profile"), link: '#', isActive: false},
+            { key: 4, name: "profile", label: this.getLabel("profile"), link: '#', isActive: this.props.activeUserNav==="profile"? true: false},
             { key: 6, name: "leftmenu", label: this.getLabel("leftmenu"), link: '#', isActive: false},
         ]
+
         this.setState({
             navLinks: navLinks
         })

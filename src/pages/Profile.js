@@ -35,6 +35,7 @@ export default class Profile extends Component {
             {"key": "sm-8", "title": "Reviews", "isActive":false},
             
         ],
+
         tagNavOptions:[
             {key: "tn-1", "title": "Approved", "count": true, "isActive": true},
             {key: "tn-2", "title": "Requests", "count": true, "isActive": false}
@@ -90,8 +91,25 @@ export default class Profile extends Component {
             {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1], likes: 100, comments: 100, shares:0,}, 
             {id: 2, name:"p2", shot: [w1], likes: 100, comments: 100, shares:0,}, 
             {id: 3, name:"p4", shot: [w1, pl2, w1], likes: 100, comments: 100, shares:0,},
-            {id: 3, name:"p4", shot: [w1, pl2, w1, pl2], likes: 100, comments: 100, shares:0,},
+            {id: 4, name:"p4", shot: [w1, pl2, w1, pl2], likes: 100, comments: 100, shares:0,},
         ],
+    }
+
+    componentDidMount(){
+        if(this.props.activeMenu){
+            this.setState({
+                subNavList: this.state.subNavList.map(ele=>{
+                    if(ele.title.toLowerCase()=== this.props.activeMenu.toLowerCase()){
+                        ele.isActive = true;
+                    }
+                    else{
+                        ele.isActive = false
+                    }
+                    return ele
+                })
+            })
+
+        }
     }
 
     getMenuCount = (key) =>{

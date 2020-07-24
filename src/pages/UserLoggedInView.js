@@ -6,19 +6,28 @@ import Notifications from '../components/Notifications'
 
 export class UserLoggedInView extends Component {
     state = {
-        selectedContent: null
+        selectedContent: null,
+        selectedUserNav: null
     }
 
     componentDidMount(){
         this.setState({
-            selectedContent: <NewsFeeds />
+            selectedContent: <NewsFeeds showuserSaved={this.showuserSaved}/>
         })
     }
+
+    showuserSaved = () =>{
+        this.setState({
+            selectedUserNav: "profile",
+            selectedContent: <Profile  showNav={false} activeMenu={"Saved"}/>
+        })
+    }
+
     showContent =(key) =>{
         console.log("selected key", key);
         switch (key){
             case "feeds":
-                this.setState({selectedContent: <NewsFeeds />})
+                this.setState({selectedContent: <NewsFeeds showuserSaved={this.showuserSaved}/>})
                 return
             case "notification":
                     this.setState({selectedContent: <Notifications />})
@@ -34,7 +43,7 @@ export class UserLoggedInView extends Component {
     render() {
         return (
             <React.Fragment>
-                <UserNavBar showContent={this.showContent}/>
+                <UserNavBar showContent={this.showContent} activeUserNav={this.state.selectedUserNav}/>
                 {this.state.selectedContent}
             </React.Fragment>
         )
