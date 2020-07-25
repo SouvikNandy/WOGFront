@@ -9,23 +9,25 @@ import { FaPlus } from "react-icons/fa";
 export function UserFlat(props){
         const ele = props.data
         return(
-            <Link className="link user-flat-div" to={{pathname: `/profile/${ele.username}`}}>
-                <span key={ele.id}><img className="tag-img" src={ele.profile_pic} alt={ele.username}/></span>
-                <span className="m-display-name">
+            <div className="user-flat-div" >
+                <Link to={{pathname: `/profile/${ele.username}`}} className="link" key={ele.id}>
+                    <img className="tag-img" src={ele.profile_pic} alt={ele.username}/></Link>
+                <Link className="link m-display-name" to={{pathname: `/profile/${ele.username}`}}>
                     {ele.name} @{ele.username}<br />
                     <span className="m-adj">{ele.designation}</span>
-                </span>
-            </Link>
+                </Link>
+            </div>
         )
 }
 
 export function UserCube(props){
     let ele = props.data;
     return(
-            <Link className="link cube-user-attr" to={{pathname: `/profile/${ele.username}`}}>
-                <div key={ele.id}><img className="cube-user-img " src={ele.profile_pic} alt={ele.username}/></div>
+            <div className="cube-user-attr">
+                <Link className="link" key={ele.id} to={{pathname: `/profile/${ele.username}`}}>
+                    <img className="cube-user-img " src={ele.profile_pic} alt={ele.username}/></Link>
                 <span className="m-display-name">
-                    {ele.name}
+                    <Link to={{pathname: `/profile/${ele.username}`}} className="link">{ele.name}</Link>
                     {props.showRemoveBtn? 
                         <div className="unfollow-div">
                             <button className="btn m-fuser" onClick={() => props.stopFollowing(ele)}> Remove </button>
@@ -37,7 +39,7 @@ export function UserCube(props){
                         </React.Fragment> 
                     }
                 </span>
-            </Link>
+            </div>
     )
 
 }
@@ -75,4 +77,25 @@ export function FollowUserCube(props){
     )
 }
 
-export default {UserFlat, UserCube,  FollowUserCube} 
+
+export function FollowUserCubeAlt(props){
+    const ele = props.data;
+    const is_following = props.isFollowing? true: false
+    return(
+        <div className="user-cube-div">
+            <div className="cube-grid">
+                <UserCube data={ele} showRemoveBtn={false}/>
+                <div className="cube-user-prof">
+                    {is_following?
+                    <button className="btn m-fuser dark-btn" onClick={() => props.stopFollowing(ele)}> Remove</button>
+                    :
+                    <button className="btn m-fuser" onClick={() => props.startFollowing(ele)}>< FaPlus /> Follow</button>}
+                    
+                </div>
+                
+            </div>
+        </div>
+
+    )
+}
+export default {UserFlat, UserCube,  FollowUserCube, FollowUserCubeAlt} 

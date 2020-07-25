@@ -11,7 +11,7 @@ export class Notifications extends Component {
     render() {
         return (
             <div className="nf-container">
-                <NewsFeedUserMenu />
+                <NewsFeedUserMenu {...this.props}/>
                 
                 <div className="nf-feeds">
                     <NotificationPalette />

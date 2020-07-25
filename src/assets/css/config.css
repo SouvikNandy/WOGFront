@@ -149,6 +149,11 @@ ul {
 .green-btn{
     background: var(--success-color);
 }
+
+.dark-btn{
+    background-color: var(--dark);
+    color: var(--light);
+}
 .search-div {
     flex: 10;
     display: flex;

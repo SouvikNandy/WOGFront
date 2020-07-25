@@ -1,0 +1,13 @@
+@import url('config.css');
+
+.nf-container .discover-people-container{
+    width: 98%;
+    height: 100%;
+    background: var(--light);
+}
+
+.nf-container .profile-portfolio-grid{
+    max-width: 100%;
+    padding: 0 0.5rem;
+    background: var(--light);
+}

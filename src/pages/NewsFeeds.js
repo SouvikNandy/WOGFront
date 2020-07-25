@@ -56,15 +56,15 @@ export function NewsFeedUserMenu(props){
                         <BsClockHistory className="ico" />
                         <span>Your Activities</span>
                     </div>
-                    <div className="nf-menu-tokens">
+                    <div className="nf-menu-tokens" onClick={()=> props.showContent("discover-people")}>
                         <AiOutlineUsergroupAdd className="ico" />
                         <span>Discover People</span>
                     </div>
-                    <div className="nf-menu-tokens">
+                    <div className="nf-menu-tokens" onClick={()=> props.showContent("profile-reviews")}>
                         <AiOutlineStar className="ico" />
                         <span>Ratings & Reviews</span>
                     </div>
-                    <div className="nf-menu-tokens" onClick={props.showuserSaved}>
+                    <div className="nf-menu-tokens" onClick={()=> props.showContent("profile-saved")}>
                         <BsBookmarks className="ico" />
                         <span>Saved</span>
                     </div>

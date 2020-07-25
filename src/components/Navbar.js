@@ -18,9 +18,9 @@ export class Navbar extends Component {
             return (
                 <li className="menu-list-item" key={obj.key}>
                     {obj.isActive?
-                    <Link className="menu-link menu-link--active" to={obj.link}>{obj.label}</Link>
+                    <Link className="menu-link menu-link--active" to={obj.link} id={obj.id?obj.id: ""}>{obj.label}</Link>
                     :
-                    <Link className="menu-link" to={obj.link} 
+                    <Link className="menu-link" to={obj.link} id={obj.id?obj.id: ""}
                     onClick={this.props.selectMenu.bind(this, obj.key)}>
                     {obj.label}
                     </Link>
@@ -74,13 +74,17 @@ export class UserNavBar extends Component{
     }
 
     componentDidMount(){
-        console.log("props", this.props)
+        let selectedMenu = this.props.selectedMenu;
+        //console.log("selected menu", selectedMenu);
         let navLinks =  [
-            { key: 1, name: "feeds", label: this.getLabel("feeds"), link: '#', isActive: this.props.activeUserNav? false: true  },
-            { key: 2, name: "explore", label: this.getLabel("explore"), link: '/explore/', isActive: false},
-            { key: 3, name: "notification", label: this.getLabel("notification"), link: '#', isActive: false},
-            { key: 4, name: "profile", label: this.getLabel("profile"), link: '#', isActive: this.props.activeUserNav==="profile"? true: false},
-            { key: 6, name: "leftmenu", label: this.getLabel("leftmenu"), link: '#', isActive: false},
+            { key: 1, name: "feeds", id: "m-feeds", label: this.getLabel("feeds"), link: '#', 
+            isActive: selectedMenu && selectedMenu!=="feeds"? false: true  },
+            { key: 2, name: "explore", id: "m-explore", label: this.getLabel("explore"), link: '/explore/', isActive: false},
+            { key: 3, name: "notification", id: "m-notification",  label: this.getLabel("notification"), link: '#', 
+            isActive: selectedMenu==="notification"? true: false},
+            { key: 4, name: "profile", id: "m-profile", label: this.getLabel("profile"), link: '#', 
+            isActive: selectedMenu==="profile"? true: false},
+            { key: 6, name: "leftmenu", id: "m-leftmenu",  label: this.getLabel("leftmenu"), link: '#', isActive: false},
         ]
 
         this.setState({
@@ -104,7 +108,6 @@ export class UserNavBar extends Component{
             
             default:
                 return "WOG"
-    
         }
 
     }
