@@ -1,0 +1,22 @@
+@import url('config.css');
+
+.no-content-div{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.no-content-icon{
+    height: 8rem;
+    width: 8rem;
+    color: var(--border-grey);
+
+}
+
+.no-content-text{
+    color: var(--dark);
+    font-size: 1.2rem;
+}

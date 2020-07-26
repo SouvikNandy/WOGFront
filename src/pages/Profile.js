@@ -14,11 +14,12 @@ import {FollowUserCube} from '../components/UserView';
 // import {UserNavBar} from "../components/Navbar";
 import DummyShots from '../components/DummyShots';
 import {generateId, isSelfUser} from '../utility/Utility.js';
-
+import NoContent from '../components/NoContent';
 
 // Images for shot
 import w1 from "../assets/images/wedding1.jpg";
 import pl2 from "../assets/images/people/2.jpg";
+import UserReview from '../components/UserReview';
 
 
 
@@ -41,32 +42,32 @@ export default class Profile extends Component {
             {key: "tn-2", "title": "Requests", "count": true, "isActive": false}
         ],
         userShot : [
-            {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: pl2}, 
-            {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: w1}, 
+            // {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: pl2}, 
+            // {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: w1}, 
 
         ],
         userPortFolio :[
-            {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1], likes: 100, comments: 100, shares:0,}, 
-            {id: 2, name:"p2", shot: [w1], likes: 100, comments: 100, shares:0,}, 
-            {id: 3, name:"p4", shot: [w1, pl2, w1], likes: 100, comments: 100, shares:0,}, 
+            // {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1], likes: 100, comments: 100, shares:0,}, 
+            // {id: 2, name:"p2", shot: [w1], likes: 100, comments: 100, shares:0,}, 
+            // {id: 3, name:"p4", shot: [w1, pl2, w1], likes: 100, comments: 100, shares:0,}, 
         ],
         userTag:{
             approved : [
-                {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: pl2, is_liked: false}, 
-                {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: w1, is_liked: false}, 
+                // {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: pl2, is_liked: false}, 
+                // {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: w1, is_liked: false}, 
             ],
             requests: [
-                {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: pl2, is_liked: false}, 
-                {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: w1, is_liked: false}, 
+                // {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: pl2, is_liked: false}, 
+                // {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: w1, is_liked: false}, 
             ]
         },
         userFollower:[
-            {"id": 1, "name":"John Doe", "username": "jhndoe", "profile_pic": w1, "designation": "photographer", "isFollowing": false},
-            {"id": 2, "name":"Jenny Doe", "username": "jennydoe", "profile_pic": pl2, "designation": "photographer", "isFollowing": false}
+            // {"id": 1, "name":"John Doe", "username": "jhndoe", "profile_pic": w1, "designation": "photographer", "isFollowing": false},
+            // {"id": 2, "name":"Jenny Doe", "username": "jennydoe", "profile_pic": pl2, "designation": "photographer", "isFollowing": false}
         ],
         userFollowing:[
-            {"id": 11, "name":"John Doe", "username": "jhndoe", "profile_pic": w1, "designation": "photographer", "isFollowing": true},
-            {"id": 12, "name":"Jenny Doe", "username": "jennydoe", "profile_pic": pl2, "designation": "photographer", "isFollowing": true}
+            // {"id": 11, "name":"John Doe", "username": "jhndoe", "profile_pic": w1, "designation": "photographer", "isFollowing": true},
+            // {"id": 12, "name":"Jenny Doe", "username": "jennydoe", "profile_pic": pl2, "designation": "photographer", "isFollowing": true}
         ],
         userAbout:{
             // profile top
@@ -88,10 +89,10 @@ export default class Profile extends Component {
             
         },
         userSaved: [
-            {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1], likes: 100, comments: 100, shares:0,}, 
-            {id: 2, name:"p2", shot: [w1], likes: 100, comments: 100, shares:0,}, 
-            {id: 3, name:"p4", shot: [w1, pl2, w1], likes: 100, comments: 100, shares:0,},
-            {id: 4, name:"p4", shot: [w1, pl2, w1, pl2], likes: 100, comments: 100, shares:0,},
+            // {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1], likes: 100, comments: 100, shares:0,}, 
+            // {id: 2, name:"p2", shot: [w1], likes: 100, comments: 100, shares:0,}, 
+            // {id: 3, name:"p4", shot: [w1, pl2, w1], likes: 100, comments: 100, shares:0,},
+            // {id: 4, name:"p4", shot: [w1, pl2, w1, pl2], likes: 100, comments: 100, shares:0,},
         ],
     }
 
@@ -135,10 +136,7 @@ export default class Profile extends Component {
                 return this.state.userSaved.length;
             default:
                 return 0
-    
         }
-        
-
     }
     
     selectSubMenu = (key) =>{
@@ -154,7 +152,6 @@ export default class Profile extends Component {
                 return item
             })
         })
-
     }
 
     selectTagNavMenu = (key) =>{
@@ -169,7 +166,6 @@ export default class Profile extends Component {
                 return item
             })
         })
-
     }
     
     likeTagRequestShot = (idx) => {
@@ -208,8 +204,8 @@ export default class Profile extends Component {
                 return ele
             })
         })
-
     }
+
     unLikePortfolio = (idx) =>{
         this.setState({
             userPortFolio: this.state.userPortFolio.map(ele =>{
@@ -280,32 +276,61 @@ export default class Profile extends Component {
         return resultList
     }
 
+    getNoContentDiv = (msg)=>{
+        return(
+            <div className="no-content-render">
+                <NoContent message={msg} />
+            </div>
+        )
+
+    }
+
     getCompomentData = () =>{
         let resultList = [];
         let resultBlock = '';
         resultBlock = this.state.subNavList.map((item, index) => {
             if(item.title === "Shots" && item.isActive === true){
                 // SHOTS
-                this.state.userShot.map(ele => 
+                if (this.state.userShot.length === 0){
+                    let msg = "No shots yet !!!"
+                    resultList = this.getNoContentDiv(msg);
+                    return(
+                        <div key={item.title} className="profile-portfolio-grid">
+                            {resultList}
+                            <AddPost />
+                        </div>
+                    )
+                }
+                else{
+                    this.state.userShot.map(ele => 
                         {resultList.push(<Shot key={ele.id} id={ele} onlyShot={true} data={ele} currLocation={this.props.location} />)
                         return ele
                     })
-                resultList = this.padDummyShot(resultList, this.state.userShot.length, 5)
-                return(
-                    <div key={item.title} className="profile-shots">
-                        {resultList}
-                        <AddPost />
-                    </div>
-                )
+                    resultList = this.padDummyShot(resultList, this.state.userShot.length, 5)
+                    return(
+                        <div key={item.title} className="profile-shots">
+                            {resultList}
+                            <AddPost />
+                        </div>
+                    )
+                }
+                
             }
             else if (item.title === "Portfolios" && item.isActive === true){
                 // PORTFOLIOS
-                this.state.userPortFolio.map(ele => 
-                    {resultList.push(<Portfolio key={ele.id} data={ele} currLocation={this.props.location} 
-                        likePortfolio={this.likePortfolio} unLikePortfolio={this.unLikePortfolio} />)
-                    return ele
-                })
-                resultList = this.padDummyShot(resultList, this.state.userPortFolio.length, 5)
+                if (this.state.userPortFolio.length === 0){
+                    let msg = "No portfolios have been created !!!"
+                    resultList = this.getNoContentDiv(msg)
+                }
+                else{
+                    this.state.userPortFolio.map(ele => 
+                        {resultList.push(<Portfolio key={ele.id} data={ele} currLocation={this.props.location} 
+                            likePortfolio={this.likePortfolio} unLikePortfolio={this.unLikePortfolio} />)
+                        return ele
+                    })
+                    resultList = this.padDummyShot(resultList, this.state.userPortFolio.length, 5)
+                }
+                
                 return(
                     <div key={item.title} className="profile-portfolio-grid">
                         {resultList}
@@ -323,24 +348,40 @@ export default class Profile extends Component {
                 // console.log("selected tab ", getSelectedTab);
 
                 if (getSelectedTab === "approved"){
-                    resultList = <ShotPalette shotData={this.state.userTag[getSelectedTab]} currLocation={this.props.location}/>
+                    if(this.state.userTag[getSelectedTab].length === 0){
+                        let msg = "No tags made it upto here !!!"
+                        resultList = this.getNoContentDiv(msg)
+
+                    }
+                    else{
+                        resultList = <ShotPalette shotData={this.state.userTag[getSelectedTab]} currLocation={this.props.location}/>
+                    }
                 }
                 else{
-                    this.state.userTag[getSelectedTab].map(ele => 
-                        {resultList.push(
-                            <div className="tag-req" key={ele.id}>
-                                <div className="tag-decision">
-                                    <FaCheckCircle className="tag-decision-btn" onClick={this.approveTag.bind(this, ele.id)}/>
-                                    <AiFillCloseCircle className="tag-decision-btn" onClick={this.rejectTag.bind(this, ele.id)} />
+                    if(this.state.userTag[getSelectedTab].length === 0){
+                        let msg = "No tag requests received !!!"
+                        resultList = this.getNoContentDiv(msg)
+
+                    }
+                    else{
+                        this.state.userTag[getSelectedTab].map(ele => 
+                            {resultList.push(
+                                <div className="tag-req" key={ele.id}>
+                                    <div className="tag-decision">
+                                        <FaCheckCircle className="tag-decision-btn" onClick={this.approveTag.bind(this, ele.id)}/>
+                                        <AiFillCloseCircle className="tag-decision-btn" onClick={this.rejectTag.bind(this, ele.id)} />
+                                    </div>
+                                    <Shot  id={ele} data={ele} currLocation={this.props.location} likeShot={this.likeTagRequestShot} 
+                                    unLikeShot={this.unLikeTagRequestShot}/>
                                 </div>
-                                <Shot  id={ele} data={ele} currLocation={this.props.location} likeShot={this.likeTagRequestShot} 
-                                unLikeShot={this.unLikeTagRequestShot}/>
-                            </div>
-                        
-                        )
-                        return ele
-                    })
-                    resultList = this.padDummyShot(resultList, this.state.userTag[getSelectedTab].length, 5)
+                            
+                            )
+                            return ele
+                        })
+                        resultList = this.padDummyShot(resultList, this.state.userTag[getSelectedTab].length, 5)
+
+                    }
+                    
                 }
 
                 
@@ -359,12 +400,20 @@ export default class Profile extends Component {
             }
             else if (item.title === "Followers" && item.isActive === true){
                 // Followers
-                this.state.userFollower.map(ele => 
-                    {resultList.push(<FollowUserCube key={ele.id} data={ele} isFollowing={ele.isFollowing} 
-                        startFollowing={this.startFollowing} stopFollowing={this.stopFollowing} />)
-                    return ele
-                })
-                resultList = this.padDummyShot(resultList, this.state.userFollower.length, 5)
+                if(this.state.userFollower.length === 0){
+                    let msg = "No followers yet !!!"
+                    resultList = this.getNoContentDiv(msg)
+
+                }
+                else{
+                    this.state.userFollower.map(ele => 
+                        {resultList.push(<FollowUserCube key={ele.id} data={ele} isFollowing={ele.isFollowing} 
+                            startFollowing={this.startFollowing} stopFollowing={this.stopFollowing} />)
+                        return ele
+                    })
+                    resultList = this.padDummyShot(resultList, this.state.userFollower.length, 5)
+                }
+                
                 return (
                 <div key={item.title} className="profile-portfolio-grid">
                         {resultList}
@@ -372,12 +421,21 @@ export default class Profile extends Component {
                 )
             }
             else if (item.title === "Following" && item.isActive === true){
-                this.state.userFollowing.map(ele => 
-                    {resultList.push(<FollowUserCube key={ele.id} data={ele} isFollowing={ele.isFollowing} 
-                        stopFollowing={this.stopFollowing} />)
-                    return ele
-                })
-                resultList = this.padDummyShot(resultList, this.state.userFollowing.length, 5)
+                if(this.state.userFollowing.length === 0){
+                    let msg = "Currently not following anyone !!!"
+                    resultList = this.getNoContentDiv(msg)
+
+                }
+                else{
+                    this.state.userFollowing.map(ele => 
+                        {resultList.push(<FollowUserCube key={ele.id} data={ele} isFollowing={ele.isFollowing} 
+                            stopFollowing={this.stopFollowing} />)
+                        return ele
+                    })
+                    resultList = this.padDummyShot(resultList, this.state.userFollowing.length, 5)
+
+                }
+                
                 return (
                     <div key={item.title} className="profile-portfolio-grid">
                             {resultList}
@@ -390,21 +448,34 @@ export default class Profile extends Component {
                 return (<UserAbout key={item.title} data={this.state.userAbout}/>)
             }
 
+            else if (item.title === "Reviews" && item.isActive === true){
+                // USER ABOUT
+                return (<UserReview key={item.title} />)
+            }
+
             else if(item.title === "Saved" && item.isActive === true){
                 // Saved
-                this.state.userSaved.map(ele => 
-                    {resultList.push(
-                        <div className="tag-req saved-content" key={ele.id}>
-                            <div className="tag-decision">
-                                <AiFillCloseCircle className="tag-decision-btn" onClick={this.removeFromSaved.bind(this, ele.id)} />
-                            </div>
-                            <Portfolio key={ele.id} data={ele} currLocation={this.props.location} onlyShots={true} />
+                if(this.state.userSaved.length === 0){
+                    let msg = "Saved contents will appear here."
+                    resultList = this.getNoContentDiv(msg)
 
-                        </div>
-                    )
-                    return ele
-                })
-                resultList = this.padDummyShot(resultList, this.state.userSaved.length, 5)
+                }
+                else{
+                    this.state.userSaved.map(ele => 
+                        {resultList.push(
+                            <div className="tag-req saved-content" key={ele.id}>
+                                <div className="tag-decision">
+                                    <AiFillCloseCircle className="tag-decision-btn" onClick={this.removeFromSaved.bind(this, ele.id)} />
+                                </div>
+                                <Portfolio key={ele.id} data={ele} currLocation={this.props.location} onlyShots={true} />
+    
+                            </div>
+                        )
+                        return ele
+                    })
+                    resultList = this.padDummyShot(resultList, this.state.userSaved.length, 5)
+                }
+                
                 return(
                     <div key={item.title} className="profile-portfolio-grid">
                         {resultList}

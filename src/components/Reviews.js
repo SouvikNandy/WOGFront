@@ -4,7 +4,26 @@ import "swiper/css/swiper.css";
 import '../assets/css/review.css';
 import pl1 from "../assets/images/wedding1.jpg"
 import pl2 from "../assets/images/people/2.jpg";
-import { FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
+import { FaQuoteLeft, FaQuoteRight, FaFrown, FaMeh, FaLaugh, FaLaughWink, FaKissWinkHeart } from "react-icons/fa";
+
+
+const getReactionIcon = (key) =>{
+    switch(key){
+        case "frown":
+            return <FaFrown className="reaction-icon icons-active" />
+        case "meh":
+            return <FaMeh className="reaction-icon icons-active " />
+        case "laugh":
+            return <FaLaugh className="reaction-icon icons-active " />
+        case "wink":
+            return <FaLaughWink className="reaction-icon icons-active " />
+        case "kiss":
+            return <FaKissWinkHeart className="reaction-icon icons-active " />
+        default:
+            return <FaLaugh className="reaction-icon icons-active " />
+    }
+}
+
 
 export function ReviewBlock(props) {
     let data = props.data
@@ -21,6 +40,9 @@ export function ReviewBlock(props) {
                     <p>
                         {data.review}
                     </p>
+                    <div className="rev-rec">
+                        {getReactionIcon(data.reaction)}
+                    </div>
                     <h4>{data.name}<br /><span>{data.designation}</span></h4>
                 </div>
             </div>
@@ -28,6 +50,7 @@ export function ReviewBlock(props) {
         </React.Fragment>
     )
 }
+
 
 
 export function ReviewCurved(props){
@@ -42,9 +65,19 @@ export function ReviewCurved(props){
                     
                     <FaQuoteLeft  className="quotes-icon quote-left"/>
                     <div>
-                        <h4 className="rev-u-name">{data.name}
-                        <span className="rev-u-adj">{data.designation}</span>
-                        </h4>
+                        <div className="rev-user-reaction">
+                            <div className="rev-u">
+                                <h4 className="rev-u-name">{data.name}
+                                <span className="rev-u-adj">{data.designation}</span>
+                                </h4>
+                            </div>
+                            <div className="rev-reaction">
+                                {getReactionIcon(data.reaction)}
+                            </div>
+                            
+
+                        </div>
+                        
                         {data.review}
                     </div>
                     

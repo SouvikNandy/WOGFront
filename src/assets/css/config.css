@@ -118,7 +118,7 @@ ul {
 
 .icons-active {
     opacity: 1;
-    color: var(--hover-one);
+    color: var(--hover-one) !important;
 }
 
 .srch-box {

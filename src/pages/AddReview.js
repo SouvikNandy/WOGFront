@@ -2,7 +2,13 @@ import React, { Component } from 'react';
 import {ReviewCurved} from "../components/Reviews";
 import "../assets/css/addpost.css";
 import "../assets/css/review.css";
-import { FaPencilAlt, FaPlus } from 'react-icons/fa';
+import { FaPencilAlt, FaPlus, 
+    FaRegFrown, FaFrown,
+    FaRegMeh, FaMeh,
+    FaRegLaugh, FaLaugh,
+    FaRegLaughWink, FaLaughWink,
+    FaRegKissWinkHeart, FaKissWinkHeart,
+} from 'react-icons/fa';
 import {generateId} from '../utility/Utility.js';
 
 import pl1 from "../assets/images/wedding1.jpg";
@@ -40,16 +46,46 @@ export class AddReviewBTN extends Component {
 class AddReviewForm extends Component{
     state ={
         name: '',
-        review: ''
+        review: '',
+        reaction: null,
+
     }
+
     onChange = (e) => this.setState({
         [e.target.name]: e.target.value
 
     });
 
     createReviewObj =() =>{
-        let newRev = {id: generateId(), name: this.state.name, username: "Anonymous user", designation: "Anonymous user", profile_pic: pl2, review:this.state.review, cover_pic: pl1}
+        let newRev = {
+            id: generateId(), name: this.state.name? this.state.name: "Anonymous user", 
+            username: "Anonymous user", designation: "Anonymous user", 
+            profile_pic: pl2, cover_pic: pl1, review:this.state.review, 
+            reaction: this.state.reaction}
         return newRev
+    }
+
+    selectReaction = (key) =>{
+        this.setState({reaction: key})
+    }
+
+    feedToReviewBox = (rev) =>{
+        document.getElementById("user-rev").value = rev;
+        this.setState({review: rev})
+    }
+
+    getReviewSuggestions = () =>{
+        let resultList = [];
+        let suggestions = ["It's Awesome", "Need Improvements", "Good job", "Well done", "Looking Great",
+                            "Try more harder"]
+
+        suggestions.map((ele, index) =>{
+            resultList.push(
+            <span className="item-span suggestion-item-span" key={index} onClick={this.feedToReviewBox.bind(this, ele)}>{ele}</span>
+            )
+            return ele
+        })
+        return resultList
     }
 
     onPostSubmit = (e) =>{
@@ -81,8 +117,54 @@ class AddReviewForm extends Component{
                             <div className="rev-doc-body">
                                 <label>Name</label>
                                 <input type="text" id="rev-user-name" name="name" onChange={this.onChange} />
-                                <label>Description<span className="imp-field">*</span></label>
-                                <textarea type="text" id="user-rev" name="review" onChange={this.onChange} required/>
+                                <label>Drop a reaction<span className="imp-field">*</span></label>
+                                <div className="reaction-palette">
+                                    <div className="reaction-cube" onClick={this.selectReaction.bind(this, 'frown')}>
+                                        {this.state.reaction === "frown"?
+                                        <FaFrown className="reaction-icon icons-active" />
+                                        :
+                                        <FaRegFrown className="reaction-icon" />
+                                        }
+                                        
+                                        <div className="reaction-text">Pathetic</div>
+                                    </div>
+                                    <div className="reaction-cube" onClick={this.selectReaction.bind(this, 'meh')}>
+                                        {this.state.reaction === "meh"?
+                                        <FaMeh className="reaction-icon icons-active " />
+                                        :
+                                        <FaRegMeh className="reaction-icon" />
+                                        }
+                                        <div className="reaction-text">It's Ok Ok</div>
+                                    </div>
+                                    <div className="reaction-cube" onClick={this.selectReaction.bind(this, 'laugh')}>
+                                        {this.state.reaction === "laugh"?
+                                        <FaLaugh className="reaction-icon icons-active " />
+                                        :
+                                        <FaRegLaugh className="reaction-icon" />
+                                        }
+                                        <div className="reaction-text">It's Good</div>
+                                    </div>
+                                    <div className="reaction-cube" onClick={this.selectReaction.bind(this, 'wink')}>
+                                        {this.state.reaction === "wink"?
+                                        <FaLaughWink className="reaction-icon icons-active " />
+                                        :
+                                        <FaRegLaughWink className="reaction-icon" />
+                                        }
+                                        <div className="reaction-text">It's Great</div>
+                                    </div>
+                                    <div className="reaction-cube" onClick={this.selectReaction.bind(this, 'kiss')}>
+                                        {this.state.reaction === "kiss"?
+                                        <FaKissWinkHeart className="reaction-icon icons-active " />
+                                        :
+                                        <FaRegKissWinkHeart className="reaction-icon" />
+                                        }
+                                        <div className="reaction-text">Oh Lovely!</div>
+                                    </div>
+                                </div>
+                                <label>Add Review<span className="imp-field">*</span></label>
+                                <textarea type="text" id="user-rev" name="review" onChange={this.onChange} 
+                                placeholder="type your review ..." required/>
+                                <div className="review-suggestions">{this.getReviewSuggestions()}</div>
                             </div>
 
                         </section>
@@ -104,11 +186,26 @@ class AddReviewForm extends Component{
 export class AddReview extends Component{
     state ={
         reviews :[
-            {id: 1, name: "John Doe", username: "johndoe", designation: "Creative Director", profile_pic: pl2, review:"where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.", cover_pic: pl1},
-            {id: 2, name: "John Doe", username: "johndoe", designation: "Creative Director", profile_pic: pl2, review:"where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.", cover_pic: pl1},
-            {id: 3, name: "John Doe", username: "johndoe", designation: "Creative Director", profile_pic: pl2, review:"where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.", cover_pic: pl1},
-            {id: 4, name: "John Doe", username: "johndoe", designation: "Creative Director", profile_pic: pl2, review:"where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.", cover_pic: pl1},
-            {id: 5, name: "John Doe", username: "johndoe", designation: "Creative Director", profile_pic: pl2, review:"where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.", cover_pic: pl1},
+            {id: 1, name: "John Doe", username: "johndoe", designation: "Creative Director", profile_pic: pl2,  cover_pic: pl1,
+            review:"where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.",
+            reaction: "meh"
+            },
+            {id: 2, name: "John Doe", username: "johndoe", designation: "Creative Director", profile_pic: pl2,  cover_pic: pl1,
+            review:"where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.",
+            reaction: "laugh"
+            },
+            {id: 3, name: "John Doe", username: "johndoe", designation: "Creative Director", profile_pic: pl2,  cover_pic: pl1,
+            review:"where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.",
+            reaction: "frown"
+            },
+            {id: 4, name: "John Doe", username: "johndoe", designation: "Creative Director", profile_pic: pl2,  cover_pic: pl1,
+            review:"where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.",
+            reaction: "wink"
+            },            
+            {id: 5, name: "John Doe", username: "johndoe", designation: "Creative Director", profile_pic: pl2,  cover_pic: pl1,
+            review:"where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.",
+            reaction: "kiss"
+            },        
         ]
     }
 
@@ -118,7 +215,6 @@ export class AddReview extends Component{
         })
     }
     render(){
-        console.log("all reviews", this.state.reviews)
         let revList = [];
         this.state.reviews.map(ele =>{
             revList.push(

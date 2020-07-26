@@ -222,6 +222,10 @@
     cursor: pointer
 }
 
+
+.no-content-render{
+    height: 50vh;
+}
 /* media queries */
 
 @media(max-width: 900px) {
