@@ -19,7 +19,7 @@ import NoContent from '../components/NoContent';
 // Images for shot
 import w1 from "../assets/images/wedding1.jpg";
 import pl2 from "../assets/images/people/2.jpg";
-import UserReview from '../components/UserReview';
+import CommunityReview from '../pages/CommunityReview'
 
 
 
@@ -449,8 +449,9 @@ export default class Profile extends Component {
             }
 
             else if (item.title === "Reviews" && item.isActive === true){
-                // USER ABOUT
-                return (<UserReview key={item.title} />)
+                // USER reviews
+                return (<CommunityReview key={item.title} showSubNav={false} 
+                    headMessgae={"Public reaction about this profile"} />)
             }
 
             else if(item.title === "Saved" && item.isActive === true){

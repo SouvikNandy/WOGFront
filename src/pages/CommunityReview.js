@@ -15,6 +15,9 @@ import Subnav from '../components/Subnav';
 
 import pl1 from "../assets/images/wedding1.jpg";
 import pl2 from "../assets/images/people/2.jpg";
+import StickyBoard from '../components/StickyBoard';
+import Footer from '../components/Footer';
+import NoContent from '../components/NoContent';
 
 // Add review button
 export class AddReviewBTN extends Component {
@@ -229,6 +232,16 @@ export class CommunityReview extends Component{
             reviews: [record , ...this.state.reviews]
         })
     }
+
+    getNoContentDiv = (msg)=>{
+        return(
+            <div className="no-content-render">
+                <NoContent message={msg} />
+            </div>
+        )
+
+    }
+
     selectSubNavMenu = (key) =>{
         this.setState({
             SubNavOptions: this.state.SubNavOptions.map(item=>{
@@ -266,17 +279,26 @@ export class CommunityReview extends Component{
     getContent= () =>{
         let revList = [];
         this.state.SubNavOptions.map(item =>{
-            if(item.title=== "All Reviews" && item.isActive=== true){
-                this.state.reviews.map(ele =>{
-                    revList.push(
-                        <div className="review-box" key={ele.id}>
-                                <ReviewCurved key={ele.id} data={ele}/>
-                            </div>
-                    )
-                    return ele 
-                })
+            if(item.title === "All Reviews" && item.isActive=== true){
+                if(this.state.reviews.length === 0){
+                    let msg = "No reviews yet !!!"
+                    revList = this.getNoContentDiv(msg);
+                }
+                else{
+                    this.state.reviews.map(ele =>{
+                        revList.push(
+                            <div className="review-box" key={ele.id}>
+                                    <ReviewCurved key={ele.id} data={ele}/>
+                                </div>
+                        )
+                        return ele 
+                    })
+
+                }
+                
             }
-            else{
+            else if(item.title === "Suggest Us" && item.isActive=== true){
+                revList = <StickyBoard />
 
             }
             return item
@@ -304,7 +326,10 @@ export class CommunityReview extends Component{
                 <div className="review-container-head">
                     <div className="review-head-upper">
                         <div className="review-tagline">
-                            <span> Show your love for this community</span> 
+                            <span> {this.props.headMessgae? 
+                            this.props.headMessgae 
+                            : 
+                            "Show your love for this community"}</span> 
                             <AiFillHeart className="reaction-icon icons-active "/>
                         </div>
                         <div className="review-ratings-percent">
@@ -356,14 +381,25 @@ export class CommunityReview extends Component{
                             </div>
                         </div>
                     </div>
+                    {this.props.showSubNav=== false?
+                    ""
+                    :
                     <div className="review-head-lower">
                         <Subnav subNavList={this.state.SubNavOptions} selectSubMenu={this.selectSubNavMenu}/>
                     </div>
+                    }
+                    
                 </div>
                 <div className="review-container">
                     {this.getContent()}
                 </div>
+                {this.state.SubNavOptions[0].isActive?
                 <AddReviewBTN addNewReview = {this.addNewReview}/>
+                :
+                ""
+                }
+                <Footer />
+                
             </React.Fragment>
         )
     }
