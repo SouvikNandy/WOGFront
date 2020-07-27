@@ -9,7 +9,9 @@ import { FaPencilAlt, FaPlus,
     FaRegLaughWink, FaLaughWink,
     FaRegKissWinkHeart, FaKissWinkHeart,
 } from 'react-icons/fa';
+import {AiFillHeart} from 'react-icons/ai';
 import {generateId} from '../utility/Utility.js';
+import Subnav from '../components/Subnav';
 
 import pl1 from "../assets/images/wedding1.jpg";
 import pl2 from "../assets/images/people/2.jpg";
@@ -183,7 +185,7 @@ class AddReviewForm extends Component{
     }
 }
 
-export class AddReview extends Component{
+export class CommunityReview extends Component{
     state ={
         reviews :[
             {id: 1, name: "John Doe", username: "johndoe", designation: "Creative Director", profile_pic: pl2,  cover_pic: pl1,
@@ -206,28 +208,163 @@ export class AddReview extends Component{
             review:"where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.",
             reaction: "kiss"
             },        
-        ]
+        ],
+        suggested : [
+            {id:1, tilte: "Demo title 1", body : "where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book."},
+            {id:2, tilte: "Demo title 2", body : "where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book."}
+        ],
+        reactionCount :{
+            "kiss": 150,
+            "wink": 63,
+            "laugh": 15,
+            "meh": 6,
+            "frown": 12,
+            "total": 246
+        },
+        SubNavOptions:[
+            {key: "rv-1", "title": "All Reviews", "isActive": true},
+            {key: "rv-2", "title": "Suggest Us", "isActive": false}
+        ],
     }
 
     addNewReview = (record) =>{
         this.setState({
-            reviews: [...this.state.reviews, record]
+            reviews: [record , ...this.state.reviews]
         })
     }
-    render(){
-        let revList = [];
-        this.state.reviews.map(ele =>{
-            revList.push(
-                <div className="review-box" key={ele.id}>
-                        <ReviewCurved key={ele.id} data={ele}/>
-                    </div>
-            )
-            return ele
+    selectSubNavMenu = (key) =>{
+        this.setState({
+            SubNavOptions: this.state.SubNavOptions.map(item=>{
+                if(key=== item.key){
+                    item.isActive = true;
+                }
+                else{
+                    item.isActive = false;
+                }
+                return item
+            })
         })
+    }
+    
+    getReactionPercent = (key) =>{
+        let total = this.state.reactionCount.total;
+        let percentVal = 0
+        if (total > 0){
+            let keyCount = this.state.reactionCount[key]
+            percentVal = parseInt((keyCount /total) * 100)
+        }
+        return percentVal + '%'
+    }
+
+    getWeightedAvg = () =>{
+        let total = this.state.reactionCount.total;
+        let wavg = 0;
+        if (total > 0){
+            wavg = (5*this.state.reactionCount["kiss"] + 4*this.state.reactionCount["wink"] + 3 * this.state.reactionCount["laugh"] 
+            + 2 * this.state.reactionCount["meh"] + 1* this.state.reactionCount["frown"]) / total
+        }
+        return wavg
+    }
+
+    getContent= () =>{
+        let revList = [];
+        this.state.SubNavOptions.map(item =>{
+            if(item.title=== "All Reviews" && item.isActive=== true){
+                this.state.reviews.map(ele =>{
+                    revList.push(
+                        <div className="review-box" key={ele.id}>
+                                <ReviewCurved key={ele.id} data={ele}/>
+                            </div>
+                    )
+                    return ele 
+                })
+            }
+            else{
+
+            }
+            return item
+        })
+        return revList
+    }
+
+    render(){
+        
+        
+        
+        let wavg = Math.round(this.getWeightedAvg() *10)/10;
+        let wHeartSym = [];
+        for(let i=1; i<6 ; i++){
+            if(i <= parseInt(wavg) ){
+                wHeartSym.push(<AiFillHeart className="reaction-icon icons-active "/>)
+            }
+            else{
+                wHeartSym.push(<AiFillHeart className="reaction-icon"/>)
+            }
+        }
+        
         return(
             <React.Fragment>
+                <div className="review-container-head">
+                    <div className="review-head-upper">
+                        <div className="review-tagline">
+                            <span> Show your love for this community</span> 
+                            <AiFillHeart className="reaction-icon icons-active "/>
+                        </div>
+                        <div className="review-ratings-percent">
+                            <div className="rating-heading">
+                                <h4 >User Reactions</h4>
+                                <div className="avg-line">
+                                    <div className="w-avg">
+                                        {wHeartSym}
+                                    </div>
+                                    <span className="w-line">{wavg} average based on {this.state.reactionCount["total"]} reviews</span>
+
+                                </div>
+                                
+                            </div>
+                            <div className="rating-row">
+                                <FaKissWinkHeart className="reaction-icon icons-active " />
+                                <div className="rating-bar">
+                                    <div className="rating-fill" style={{width: this.getReactionPercent('kiss')}}></div>
+                                </div>
+                                <span className="reaction-count">{this.state.reactionCount["kiss"]}</span>
+                            </div>
+                            <div className="rating-row">
+                                <FaLaughWink className="reaction-icon icons-active " />
+                                <div className="rating-bar">
+                                    <div className="rating-fill" style={{width: this.getReactionPercent('wink')}}></div>
+                                </div>
+                                <span className="reaction-count">{this.state.reactionCount["wink"]}</span>
+                            </div>
+                            <div className="rating-row">
+                                <FaLaugh className="reaction-icon icons-active " />
+                                <div className="rating-bar">
+                                    <div className="rating-fill" style={{width: this.getReactionPercent('laugh')}}></div>
+                                </div>
+                                <span className="reaction-count">{this.state.reactionCount["laugh"]}</span>
+                            </div>
+                            <div className="rating-row">
+                                <FaMeh className="reaction-icon icons-active " />
+                                <div className="rating-bar">
+                                    <div className="rating-fill" style={{width: this.getReactionPercent('meh')}}></div>
+                                </div>
+                                <span className="reaction-count">{this.state.reactionCount["meh"]}</span>
+                            </div>
+                            <div className="rating-row">
+                                <FaFrown className="reaction-icon icons-active " />
+                                <div className="rating-bar">
+                                    <div className="rating-fill" style={{width: this.getReactionPercent('frown')}}></div>
+                                </div>
+                                <span className="reaction-count">{this.state.reactionCount["frown"]}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="review-head-lower">
+                        <Subnav subNavList={this.state.SubNavOptions} selectSubMenu={this.selectSubNavMenu}/>
+                    </div>
+                </div>
                 <div className="review-container">
-                    {revList}
+                    {this.getContent()}
                 </div>
                 <AddReviewBTN addNewReview = {this.addNewReview}/>
             </React.Fragment>
@@ -235,4 +372,5 @@ export class AddReview extends Component{
     }
 }
 
-export default AddReview;
+
+export default CommunityReview;

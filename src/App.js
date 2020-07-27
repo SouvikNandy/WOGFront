@@ -5,7 +5,7 @@ import Login from './pages/Login';
 import ShotModalView from './components/ShotModalView';
 // import Example from './components/FloatingNotifications';
 import Profile from './pages/Profile';
-import AddReviews from './pages/AddReview';
+import CommunityReview from './pages/CommunityReview';
 import {NotificationContainer} from 'react-notifications';
 import Explore from './pages/Explore';
 import {silentRefresh} from './utility/Utility';
@@ -55,7 +55,7 @@ function ShotModalUrl() {
         <Route exact path="/signin/" render={props => (<Login signInReq={true} />)} />
         <Route exact path="/profile/:username" component={Profile} />
         <Route exact path="/shot-view/:id" component={ShotModalView} />
-        <Route exact path="/reviews/" component={AddReviews} />
+        <Route exact path="/reviews/" component={CommunityReview} />
         <Route exact path="/explore/" component={Explore} />
         <Route exact path="/user-view/" component={UserLoggedInView} />
         {/* <PrivateRoute path="/user-view/" component={UserLoggedInView} /> */}
