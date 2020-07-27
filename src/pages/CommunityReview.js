@@ -209,10 +209,7 @@ export class CommunityReview extends Component{
             reaction: "kiss"
             },        
         ],
-        suggested : [
-            {id:1, tilte: "Demo title 1", body : "where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book."},
-            {id:2, tilte: "Demo title 2", body : "where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book."}
-        ],
+        
         reactionCount :{
             "kiss": 150,
             "wink": 63,

@@ -11,6 +11,7 @@ import Explore from './pages/Explore';
 import {silentRefresh} from './utility/Utility';
 // import {PrivateRoute} from './utility/PrivateRoute';
 import UserLoggedInView from "./pages/UserLoggedInView";
+import StickyBoard from './components/StickyBoard';
 
 
 export default class App extends Component {
@@ -59,6 +60,7 @@ function ShotModalUrl() {
         <Route exact path="/explore/" component={Explore} />
         <Route exact path="/user-view/" component={UserLoggedInView} />
         {/* <PrivateRoute path="/user-view/" component={UserLoggedInView} /> */}
+        <Route exact path="/sticky/" component={StickyBoard} />
         <Route> NOT FOUND</Route>
       </Switch>
       {isModal
