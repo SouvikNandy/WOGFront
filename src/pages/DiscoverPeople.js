@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import {FollowUserCubeAlt} from '../components/UserView';
 import DummyShots from '../components/DummyShots';
 import '../assets/css/profile.css';
-import {NewsFeedUserMenu, NewsFeedSuggestions} from '../pages/NewsFeeds';
+import {NewsFeedUserMenu, NewsFeedSuggestions} from './NewsFeeds';
 import '../assets/css/newsfeeds.css';
 import '../assets/css/discoverPeople.css';
+import {UserNavBar} from "../components/Navbar";
 
 // Images for shot
 import w1 from "../assets/images/wedding1.jpg";
@@ -62,18 +63,23 @@ export class DiscoverPeople extends Component {
         })
         resultList = this.padDummyShot(resultList, this.state.people.length, 5)
         return (
-            <div className="nf-container">
-                <NewsFeedUserMenu {...this.props}/>
-                <div className="nf-feeds">
-                    <div className="discover-people-container">
-                        <div className="profile-portfolio-grid">
-                            {resultList}
+            <React.Fragment>
+                <UserNavBar selectedMenu={"not-selected"}/>
+                <div className="nf-container">
+                    <NewsFeedUserMenu {...this.props}/>
+                    <div className="nf-feeds">
+                        <div className="discover-people-container">
+                            <div className="profile-portfolio-grid">
+                                {resultList}
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <NewsFeedSuggestions />
+                    
+                    <NewsFeedSuggestions />
             </div>
+
+            </React.Fragment>
+            
         )
     }
 }

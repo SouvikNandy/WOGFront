@@ -8,7 +8,8 @@ import {FiUnlock, FiSettings} from 'react-icons/fi';
 import { UserFlat } from '../components/UserView';
 import Portfolio from '../components/Portfolio';
 import ModalLikes from '../components/ModalLikes';
-
+import {UserNavBar} from "../components/Navbar";
+import {Link} from 'react-router-dom';
 
 import w1 from "../assets/images/wedding1.jpg";
 import pl2 from "../assets/images/people/2.jpg";
@@ -16,16 +17,18 @@ import pl2 from "../assets/images/people/2.jpg";
 export class NewsFeeds extends Component {
     render() {
         return (
-            
-            <div className="nf-container">
-                <NewsFeedUserMenu {...this.props}/>
-                
-                <div className="nf-feeds">
-                    <NewFeedPalette currLocation={this.props.location}/>
+            <React.Fragment>
+                <UserNavBar selectedMenu={"feeds"}/>
+                <div className="nf-container">
+                    <NewsFeedUserMenu {...this.props}/>
+                    
+                    <div className="nf-feeds">
+                        <NewFeedPalette currLocation={this.props.location}/>
+                    </div>
+                    <NewsFeedSuggestions />
+                    
                 </div>
-                <NewsFeedSuggestions />
-                
-            </div>
+            </React.Fragment>
         )
     }
 }
@@ -44,7 +47,7 @@ export function NewsFeedUserMenu(props){
                         
                 <span className="m-display-name">
                     Full Name
-                    <span className="m-adj">@username</span>
+                    <span className="m-adj">@{props.match.params.username}</span>
                     <span className="m-adj">designation</span>
                 </span>
                 <button className="btn edit-btn"><TiEdit  className="ico" />Edit Profile</button>
@@ -56,18 +59,18 @@ export function NewsFeedUserMenu(props){
                         <BsClockHistory className="ico" />
                         <span>Your Activities</span>
                     </div>
-                    <div className="nf-menu-tokens" onClick={()=> props.showContent("discover-people")}>
+                    <Link className="link nf-menu-tokens" to={`/discover-people/${props.match.params.username}`} >
                         <AiOutlineUsergroupAdd className="ico" />
                         <span>Discover People</span>
-                    </div>
-                    <div className="nf-menu-tokens" onClick={()=> props.showContent("profile-reviews")}>
+                    </Link>
+                    <Link className="link nf-menu-tokens" to={`/profile/${props.match.params.username}?active=Reviews`}>
                         <AiOutlineStar className="ico" />
                         <span>Ratings & Reviews</span>
-                    </div>
-                    <div className="nf-menu-tokens" onClick={()=> props.showContent("profile-saved")}>
+                    </Link>
+                    <Link className="link nf-menu-tokens" to={`/profile/${props.match.params.username}?active=Saved`}>
                         <BsBookmarks className="ico" />
                         <span>Saved</span>
-                    </div>
+                    </Link>
 
                 </div>
                 <div className="nf-lower-tokens">

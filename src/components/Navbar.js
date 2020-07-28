@@ -77,12 +77,12 @@ export class UserNavBar extends Component{
         let selectedMenu = this.props.selectedMenu;
         //console.log("selected menu", selectedMenu);
         let navLinks =  [
-            { key: 1, name: "feeds", id: "m-feeds", label: this.getLabel("feeds"), link: '#', 
+            { key: 1, name: "feeds", id: "m-feeds", label: this.getLabel("feeds"), link: '/user-feeds/johndoe', 
             isActive: selectedMenu && selectedMenu!=="feeds"? false: true  },
             { key: 2, name: "explore", id: "m-explore", label: this.getLabel("explore"), link: '/explore/', isActive: false},
-            { key: 3, name: "notification", id: "m-notification",  label: this.getLabel("notification"), link: '#', 
+            { key: 3, name: "notification", id: "m-notification",  label: this.getLabel("notification"), link: '/user-notifications/johndoe', 
             isActive: selectedMenu==="notification"? true: false},
-            { key: 4, name: "profile", id: "m-profile", label: this.getLabel("profile"), link: '#', 
+            { key: 4, name: "profile", id: "m-profile", label: this.getLabel("profile"), link: '/profile/johndoe', 
             isActive: selectedMenu==="profile"? true: false},
             { key: 6, name: "leftmenu", id: "m-leftmenu",  label: this.getLabel("leftmenu"), link: '#', isActive: false},
         ]
@@ -134,7 +134,8 @@ export class UserNavBar extends Component{
         }
         else{
             this.state.navLinks.map(item=> {
-                if(key=== item.key){
+                if(key=== item.key && this.props.showContent){
+
                     this.props.showContent(item.name);
                 }
                 return item

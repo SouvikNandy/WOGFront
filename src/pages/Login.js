@@ -31,7 +31,8 @@ export class Login extends Component {
 class SignIn extends Component {
     state = {
         email: "",
-        password : ""
+        password : "",
+        isLoggedIn : false
     }
 
     validateData=()=>{
@@ -48,14 +49,15 @@ class SignIn extends Component {
         axios.post(url, { email: this.state.email, password: this.state.password })
             .then(res => {
                 // store token in localstorage
-                storeAuthToken(res.data.token.access);
                 saveInStorage("refresh_token", res.data.token.refresh);
+                storeAuthToken(res.data.token.access);
+                
                 // activate silent refresh
                 silentRefresh();
                 
                 // reset 
                 document.getElementById("login-form").reset();
-                this.setState({ email: '', password:'' });
+                this.setState({ email: '', password:'', isLoggedIn: true });
                 createFloatingNotification("success", "Successful Login", res.data.message);
             })
             .catch(err =>{
@@ -76,6 +78,9 @@ class SignIn extends Component {
     });
 
     render() {
+        if (this.state.isLoggedIn){
+            return <Redirect to={`/user-feeds/${retrieveAuthToken()[1]}`} />
+        }
         return (
             <React.Fragment>
                 <h1 className="large text-primary">Sign In</h1>

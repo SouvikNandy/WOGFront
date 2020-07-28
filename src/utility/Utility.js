@@ -5,31 +5,41 @@ import {
 import axios from 'axios';
 
 // AUTH TOKEN MANAGEMENT
-let inMemoryToken = null;
 
 export const storeAuthToken = (token) => {
     let jwt_decoded = parseJwt(token);
     jwt_decoded["access"] = token;
-    inMemoryToken = jwt_decoded
+    saveInStorage("tx", JSON.stringify(jwt_decoded));
+    // inMemoryToken = jwt_decoded
     // console.log("inmemory token stored", inMemoryToken);
 }
 
 export const retrieveAuthToken = () => {
-    let token = inMemoryToken? inMemoryToken.access : null
-    return token
+    let inMemoryToken = retrieveFromStorage("tx");
+    if (inMemoryToken){
+        inMemoryToken = JSON.parse(inMemoryToken) 
+        return [inMemoryToken.access, inMemoryToken.username]
+    }
+    else{
+        return null
+    }
+    
 }
 
 
+
 export const silentRefresh = () => {
+    let inMemoryToken = retrieveFromStorage("tx");
     if (inMemoryToken) {
-        // console.log("inMemoryToken exists! ")
+        console.log("inMemoryToken exists! ")
+        inMemoryToken = JSON.parse(inMemoryToken) 
         let expiry = inMemoryToken.exp
         let cur_ms = getCurrentTimeInMS();
 
         let diff = expiry - cur_ms
         // if diff is less than one minutes
         if (diff < 60) {
-            // console.log("diff is less than one minutes, setting token directly");
+            console.log("diff is less than one minutes, setting token directly");
             refreshToken().then(res =>{
                 if (res !== false){
                     silentRefresh();
@@ -42,7 +52,7 @@ export const silentRefresh = () => {
             
         } 
         else {
-            // console.log("refresh token each in " + diff +" seconds");
+            console.log("refresh token each in " + diff +" seconds");
             setInterval(() => {
                 refreshToken().then(res =>{
                     if (res !== false){
@@ -55,7 +65,8 @@ export const silentRefresh = () => {
             }, diff * 1000)
 
         }
-    } else {
+    } 
+    else {
         let ref_token = retrieveFromStorage("refresh_token");
         if (ref_token) {
             refreshToken().then(res =>{
@@ -67,8 +78,6 @@ export const silentRefresh = () => {
                 }
             }
             );
-            
-        
             
         } 
         else {

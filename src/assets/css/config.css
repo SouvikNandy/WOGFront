@@ -38,7 +38,8 @@ ul {
 .link {
     cursor: pointer;
     text-decoration: none;
-    color: var(--dark);
+    /* color: var(--dark); */
+    color: black;
 }
 
 .center {

@@ -1,13 +1,14 @@
 @import url('config.css');
 
-.nf-container{
+.nf-container {
     height: 100%;
     width: 100%;
     display: flex;
 }
+
 /* LEFT SIDE MENU */
 
-.nf-user-menu{
+.nf-user-menu {
     flex: 0.8;
     /* border-right: 1px solid var(--border-grey); */
     height: 95vh;
@@ -18,11 +19,11 @@
     padding: 0 1.2rem;
     position: fixed;
     left: 0;
-    background: url("../images/mountainFog.jpg") no-repeat center center/cover;    
+    background: url("../images/mountainFog.jpg") no-repeat center center/cover;
 }
 
 
-.nf-user-menu-overlay{
+.nf-user-menu-overlay {
     position: absolute;
     left: 0;
     height: 100%;
@@ -34,7 +35,7 @@
     -ms-backdrop-filter: blur(8px);
 }
 
-.nf-user-menu .nf-user-edit{
+.nf-user-menu .nf-user-edit {
     z-index: 1;
     display: flex;
     justify-content: center;
@@ -42,10 +43,10 @@
     flex-direction: column;
     flex: 1.2;
     border-bottom: 1px solid var(--border-grey);
-    
+
 }
 
-.nf-user-menu .nf-user-edit .nf-user-img{
+.nf-user-menu .nf-user-edit .nf-user-img {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -53,9 +54,10 @@
     border: 1px solid black; */
 
 }
-.nf-user-menu .nf-user-edit .nf-user-img .edit-pic{
+
+.nf-user-menu .nf-user-edit .nf-user-img .edit-pic {
     position: absolute;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0, 0, 0, 0.7);
     height: 1.5rem;
     width: 1.5rem;
     top: 7vh;
@@ -67,12 +69,13 @@
     cursor: pointer;
 
 }
-.nf-user-edit .cam-icon{
+
+.nf-user-edit .cam-icon {
     color: var(--light);
     font-size: 0.8rem;
 }
 
-.nf-user-img .cube-user-img{
+.nf-user-img .cube-user-img {
     height: 4.2rem;
     width: 4.2rem;
     border-radius: 50%;
@@ -81,14 +84,14 @@
 
 
 
-.nf-user-menu .m-display-name{
+.nf-user-menu .m-display-name {
     margin: 0.4rem 0;
     display: flex;
     flex-direction: column;
     font-size: 0.8rem
 }
 
-.nf-user-menu .edit-btn{
+.nf-user-menu .edit-btn {
     font-size: 0.7rem;
     margin: 0;
     display: flex;
@@ -96,20 +99,22 @@
     justify-content: center;
     /* margin-bottom: 0.8rem; */
 }
-.nf-user-menu .edit-btn .ico{
+
+.nf-user-menu .edit-btn .ico {
     font-size: 0.7rem;
     margin-right: 0.2rem;
     font-weight: bold;
 
 }
-.nf-user-menu .m-display-name .m-adj{
+
+.nf-user-menu .m-display-name .m-adj {
     font-size: 0.7rem;
     /* padding: 0.2rem 0; */
     line-height: 1.2;
 }
 
 
-.nf-user-menu .nf-user-menulist{
+.nf-user-menu .nf-user-menulist {
     flex: 4;
     display: flex;
     flex-direction: column;
@@ -118,7 +123,7 @@
 }
 
 
-.nf-user-menulist .nf-menu-tokens{
+.nf-user-menulist .nf-menu-tokens {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -126,37 +131,38 @@
     height: 3vh;
     cursor: pointer;
     font-size: 0.9rem;
+    color: black;
 }
 
-.nf-user-menulist .nf-menu-tokens:hover{
+.nf-user-menulist .nf-menu-tokens:hover {
     /* color: var(--hover-one); */
     font-weight: bold !important;
 }
 
-.nf-user-menulist .nf-menu-tokens .ico{
+.nf-user-menulist .nf-menu-tokens .ico {
     margin-right: 0.5rem;
 }
 
-.nf-user-menulist .nf-upper-tokens{
+.nf-user-menulist .nf-upper-tokens {
     flex: 2.5;
     max-height: 70vh;
 
 }
 
-.nf-user-menulist .nf-lower-tokens{
+.nf-user-menulist .nf-lower-tokens {
     flex: 1;
     border-top: 1px solid var(--border-grey);
 }
 
-.nf-post-conatiner .pf-container-3, 
-.nf-post-conatiner .pf-container-5, 
-.nf-post-conatiner .pf-container-1{
-    height: 20rem ;
+.nf-post-conatiner .pf-container-3,
+.nf-post-conatiner .pf-container-5,
+.nf-post-conatiner .pf-container-1 {
+    height: 20rem;
 }
 
 /* Feeds section */
 
-.nf-feeds{
+.nf-feeds {
     flex: 3;
     margin-left: 15vw;
     min-height: 95vh;
@@ -167,22 +173,22 @@
 }
 
 
-.nf-post-conatiner{
+.nf-post-conatiner {
     width: 80%;
     background-color: var(--light);
     margin-top: 1.5rem;
     padding: 0.8rem 1.2rem;
 }
 
-.nf-post-conatiner:last-child{
+.nf-post-conatiner:last-child {
     margin-bottom: 1.5rem;
 }
 
-.nf-post-conatiner .nfp-user-preview{
+.nf-post-conatiner .nfp-user-preview {
     width: 100%;
 }
 
-.nf-post-conatiner .nfp-likes-mod{
+.nf-post-conatiner .nfp-likes-mod {
     height: 6vh;
     display: flex;
     justify-content: center;
@@ -196,13 +202,13 @@
     padding: 0.2rem 0;
 }
 
-.nfp-comments{
+.nfp-comments {
     margin-top: 0.5rem;
     display: flex;
     align-items: center;
 }
 
-.nfp-comments .short-comment{
+.nfp-comments .short-comment {
     width: 90%;
     border-radius: 0.9rem;
     padding: 0.4rem;
@@ -210,60 +216,66 @@
     font-size: 0.8rem;
     outline: none;
 }
-.nf-rest{
+
+.nf-rest {
     flex: 1.5;
     /* background: var(--border-grey); */
 }
 
 
-@media(max-width: 1100px){
-    .nf-user-menu{
+@media(max-width: 1100px) {
+    .nf-user-menu {
         width: 20vw;
         border: none;
     }
-    .nf-feeds{
+
+    .nf-feeds {
         margin-left: 20vw;
     }
-    .nf-user-menu .nf-user-edit .nf-user-img .edit-pic{
-        left:11vw
+
+    .nf-user-menu .nf-user-edit .nf-user-img .edit-pic {
+        left: 11vw
     }
 }
-@media(max-width: 900px){
-    .nf-container .nf-rest{
+
+@media(max-width: 900px) {
+    .nf-container .nf-rest {
         display: none;
     }
-    .nf-container .nf-feeds .nf-post-conatiner{
+
+    .nf-container .nf-feeds .nf-post-conatiner {
         width: 90%;
     }
 
-    .nf-container .nf-feeds .nf-post-conatiner .pf-grid{
+    .nf-container .nf-feeds .nf-post-conatiner .pf-grid {
         max-width: 100%;
     }
 }
 
-@media (max-width: 800px){
-    .nf-container{
+@media (max-width: 800px) {
+    .nf-container {
         overflow: hidden;
     }
-    .nf-container .nf-user-menu{
+
+    .nf-container .nf-user-menu {
         display: none !important;
     }
 
-    .nf-user-menu .nf-user-menu-overlay{
+    .nf-user-menu .nf-user-menu-overlay {
         width: 0 !important;
     }
 
-    .nf-container .nf-feeds{
+    .nf-container .nf-feeds {
         width: 100%;
         margin-left: 0;
 
 
     }
 
-    .nf-container .nf-feeds .nf-post-conatiner{
+    .nf-container .nf-feeds .nf-post-conatiner {
         width: 100%;
     }
 
-    
+
 
 }

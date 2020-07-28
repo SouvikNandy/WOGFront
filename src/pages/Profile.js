@@ -20,6 +20,7 @@ import NoContent from '../components/NoContent';
 import w1 from "../assets/images/wedding1.jpg";
 import pl2 from "../assets/images/people/2.jpg";
 import CommunityReview from '../pages/CommunityReview'
+import { UserNavBar } from '../components/Navbar';
 
 
 
@@ -97,10 +98,12 @@ export default class Profile extends Component {
     }
 
     componentDidMount(){
-        if(this.props.activeMenu){
+        let qstr = new URLSearchParams(this.props.location.search);
+        let activeTab = qstr.get('active');
+        if(activeTab){
             this.setState({
                 subNavList: this.state.subNavList.map(ele=>{
-                    if(ele.title.toLowerCase()=== this.props.activeMenu.toLowerCase()){
+                    if(ele.title.toLowerCase()=== activeTab.toLowerCase()){
                         ele.isActive = true;
                     }
                     else{
@@ -497,6 +500,9 @@ export default class Profile extends Component {
                 {/* <SearchHead /> */}
                 {this.props.showNav === false?
                 ""
+                :
+                this.props.isAuthenticated?
+                <UserNavBar selectedMenu={"profile"}/>
                 :
                 <SearchHead />
                 }

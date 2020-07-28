@@ -314,10 +314,10 @@ export class CommunityReview extends Component{
         let wHeartSym = [];
         for(let i=1; i<6 ; i++){
             if(i <= parseInt(wavg) ){
-                wHeartSym.push(<AiFillHeart className="reaction-icon icons-active "/>)
+                wHeartSym.push(<AiFillHeart key={i} className="reaction-icon icons-active "/>)
             }
             else{
-                wHeartSym.push(<AiFillHeart className="reaction-icon"/>)
+                wHeartSym.push(<AiFillHeart key={i} className="reaction-icon"/>)
             }
         }
         

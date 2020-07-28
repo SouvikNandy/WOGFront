@@ -1,24 +1,30 @@
 import React, { Component } from 'react';
-import {NewsFeedUserMenu, NewsFeedSuggestions} from '../pages/NewsFeeds';
+import {NewsFeedUserMenu, NewsFeedSuggestions} from './NewsFeeds';
 import '../assets/css/newsfeeds.css';
 import '../assets/css/notifications.css';
 import { Link } from "react-router-dom";
 import {AiFillCloseCircle} from "react-icons/ai";
+import {UserNavBar} from "../components/Navbar";
 
 import w1 from "../assets/images/wedding1.jpg";
 
 export class Notifications extends Component {
     render() {
         return (
-            <div className="nf-container">
-                <NewsFeedUserMenu {...this.props}/>
+            <React.Fragment>
+                <UserNavBar selectedMenu={"notification"}/>
+                <div className="nf-container">
+                    <NewsFeedUserMenu {...this.props}/>
+                    
+                    <div className="nf-feeds">
+                        <NotificationPalette />
+                    </div>
+                    <NewsFeedSuggestions />
                 
-                <div className="nf-feeds">
-                    <NotificationPalette />
                 </div>
-                <NewsFeedSuggestions />
                 
-            </div>
+            </React.Fragment>
+            
         )
     }
 }
