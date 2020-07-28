@@ -12,7 +12,7 @@ export class Notifications extends Component {
     render() {
         return (
             <React.Fragment>
-                <UserNavBar selectedMenu={"notification"}/>
+                <UserNavBar selectedMenu={"notification"} username={this.props.username}/>
                 <div className="nf-container">
                     <NewsFeedUserMenu {...this.props}/>
                     

@@ -64,7 +64,7 @@ export class DiscoverPeople extends Component {
         resultList = this.padDummyShot(resultList, this.state.people.length, 5)
         return (
             <React.Fragment>
-                <UserNavBar selectedMenu={"not-selected"}/>
+                <UserNavBar selectedMenu={"not-selected"} username={this.props.username}/>
                 <div className="nf-container">
                     <NewsFeedUserMenu {...this.props}/>
                     <div className="nf-feeds">

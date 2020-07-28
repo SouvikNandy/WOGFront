@@ -61,6 +61,7 @@ function ShotModalUrl() {
             <Route exact path="/reviews/" component={CommunityReview} />
             <Route exact path="/explore/" component={Explore} />
             <PrivateRoute exact path="/user-feeds/:username" component={NewsFeeds} />
+            <PrivateRoute exact path="/user-profile/:username" component={Profile} />
             <Route exact path="/user-notifications/:username" component={Notifications} />
             <Route exact path="/discover-people/:username" component={DiscoverPeople} />
             {/* <PrivateRoute path="/user-view/" component={UserLoggedInView} /> */}

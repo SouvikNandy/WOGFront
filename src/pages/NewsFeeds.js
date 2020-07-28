@@ -18,7 +18,7 @@ export class NewsFeeds extends Component {
     render() {
         return (
             <React.Fragment>
-                <UserNavBar selectedMenu={"feeds"}/>
+                <UserNavBar selectedMenu={"feeds"} username={this.props.username}/>
                 <div className="nf-container">
                     <NewsFeedUserMenu {...this.props}/>
                     
@@ -63,11 +63,11 @@ export function NewsFeedUserMenu(props){
                         <AiOutlineUsergroupAdd className="ico" />
                         <span>Discover People</span>
                     </Link>
-                    <Link className="link nf-menu-tokens" to={`/profile/${props.match.params.username}?active=Reviews`}>
+                    <Link className="link nf-menu-tokens" to={`/user-profile/${props.match.params.username}?active=Reviews`}>
                         <AiOutlineStar className="ico" />
                         <span>Ratings & Reviews</span>
                     </Link>
-                    <Link className="link nf-menu-tokens" to={`/profile/${props.match.params.username}?active=Saved`}>
+                    <Link className="link nf-menu-tokens" to={`/user-profile/${props.match.params.username}?active=Saved`}>
                         <BsBookmarks className="ico" />
                         <span>Saved</span>
                     </Link>

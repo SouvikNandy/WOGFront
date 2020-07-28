@@ -226,6 +226,16 @@
 .no-content-render{
     height: 50vh;
 }
+
+.activated-nav{
+    width: 100%;
+    height: 100%;
+}
+
+.activated-nav .review-container-head{
+    /* top: 10vh; */
+    position: static;
+}
 /* media queries */
 
 @media(max-width: 900px) {

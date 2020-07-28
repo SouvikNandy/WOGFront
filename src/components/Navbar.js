@@ -77,12 +77,13 @@ export class UserNavBar extends Component{
         let selectedMenu = this.props.selectedMenu;
         //console.log("selected menu", selectedMenu);
         let navLinks =  [
-            { key: 1, name: "feeds", id: "m-feeds", label: this.getLabel("feeds"), link: '/user-feeds/johndoe', 
+            { key: 1, name: "feeds", id: "m-feeds", label: this.getLabel("feeds"), link: `/user-feeds/${this.props.username}`, 
             isActive: selectedMenu && selectedMenu!=="feeds"? false: true  },
             { key: 2, name: "explore", id: "m-explore", label: this.getLabel("explore"), link: '/explore/', isActive: false},
-            { key: 3, name: "notification", id: "m-notification",  label: this.getLabel("notification"), link: '/user-notifications/johndoe', 
+            { key: 3, name: "notification", id: "m-notification",  label: this.getLabel("notification"), 
+            link: `/user-notifications/${this.props.username}`, 
             isActive: selectedMenu==="notification"? true: false},
-            { key: 4, name: "profile", id: "m-profile", label: this.getLabel("profile"), link: '/profile/johndoe', 
+            { key: 4, name: "profile", id: "m-profile", label: this.getLabel("profile"), link: `/user-profile/${this.props.username}`, 
             isActive: selectedMenu==="profile"? true: false},
             { key: 6, name: "leftmenu", id: "m-leftmenu",  label: this.getLabel("leftmenu"), link: '#', isActive: false},
         ]

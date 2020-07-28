@@ -115,6 +115,11 @@
     color: var(--dark);
 }
 
+.nav-icon path{
+    stroke: var(--dark);
+
+}
+
 
 .chat-icon-div{
     display: flex;
