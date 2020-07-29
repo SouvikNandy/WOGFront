@@ -34,6 +34,7 @@ export class NewsFeeds extends Component {
 }
 
 export function NewsFeedUserMenu(props){
+    let username = props.username? props.username: props.match.params.username
     return(
         <div className="nf-user-menu">
             <div className="nf-user-menu-overlay"></div>
@@ -47,7 +48,7 @@ export function NewsFeedUserMenu(props){
                         
                 <span className="m-display-name">
                     Full Name
-                    <span className="m-adj">@{props.match.params.username}</span>
+                    <span className="m-adj">@{username}</span>
                     <span className="m-adj">designation</span>
                 </span>
                 <button className="btn edit-btn"><TiEdit  className="ico" />Edit Profile</button>
@@ -59,15 +60,15 @@ export function NewsFeedUserMenu(props){
                         <BsClockHistory className="ico" />
                         <span>Your Activities</span>
                     </div>
-                    <Link className="link nf-menu-tokens" to={`/discover-people/${props.match.params.username}`} >
+                    <Link className="link nf-menu-tokens" to={`/discover-people/${username}`} >
                         <AiOutlineUsergroupAdd className="ico" />
                         <span>Discover People</span>
                     </Link>
-                    <Link className="link nf-menu-tokens" to={`/user-profile/${props.match.params.username}?active=Reviews`}>
+                    <Link className="link nf-menu-tokens" to={`/user-profile/${username}?active=Reviews`}>
                         <AiOutlineStar className="ico" />
                         <span>Ratings & Reviews</span>
                     </Link>
-                    <Link className="link nf-menu-tokens" to={`/user-profile/${props.match.params.username}?active=Saved`}>
+                    <Link className="link nf-menu-tokens" to={`/user-profile/${username}?active=Saved`}>
                         <BsBookmarks className="ico" />
                         <span>Saved</span>
                     </Link>

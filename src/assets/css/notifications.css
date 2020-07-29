@@ -35,6 +35,51 @@
     font-size: 1.2rem;
 }
 
+.selection-overlay{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.selection-overlay .selection-option{
+    width: 32vh;
+    background: var(--light);
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+}
+
+.selection-overlay .escape-overlay{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.selection-option .s-noti{
+    height: 6vh;
+    width: 100%;
+    border-bottom: 1px solid var(--border-grey);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 0.9rem;
+    cursor: pointer;
+    
+}
+
+.selection-option .s-noti .close-btn{
+    font-size: 1rem;
+    margin: 0 0.6rem;
+}
+
 @media (max-width: 800px){
     .noti-cube{
         width: 95%;

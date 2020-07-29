@@ -4,11 +4,12 @@ import '../assets/css/navbar.css';
 // import { FaAlignRight } from "react-icons/fa";
 import { FaRegUserCircle, FaRegPaperPlane } from "react-icons/fa";
 import { MdWallpaper } from "react-icons/md";
-import { FiBell } from "react-icons/fi";
+
 import { GrSearchAdvanced } from "react-icons/gr";
 import {AiOutlineAlignRight, AiOutlineAlignLeft} from 'react-icons/ai';
 import SideBar from "../components/SideBar";
-import {NewsFeedUserMenu} from "../pages/NewsFeeds" 
+import {NewsFeedUserMenu} from "../pages/NewsFeeds";
+import NotificationButton from '../components/NotificationButton';
 
 
 
@@ -101,7 +102,7 @@ export class UserNavBar extends Component{
                 return <GrSearchAdvanced className="nav-icon"/>;
             case "notification":
                 // default is approved tag values
-                return <FiBell className="nav-icon"/>;
+                return <NotificationButton />;
             case "profile":
                 return <FaRegUserCircle className="nav-icon"/>;
             case "leftmenu":
@@ -114,10 +115,11 @@ export class UserNavBar extends Component{
     }
 
     sideNFMenu = () =>{
+        console.log("props in usernav", this.props)
         return(
             <div className="side-nfuser-menu">
                 <AiOutlineAlignLeft className="nav-icon hide-left-menu" onClick={this.displaySideView}/>
-                <NewsFeedUserMenu />
+                <NewsFeedUserMenu username={"1amsid"}/>
                 </div>
         )
     }

@@ -116,7 +116,7 @@
 }
 
 .nav-icon path{
-    stroke: var(--dark);
+    /* stroke: var(--dark); */
 
 }
 
@@ -144,11 +144,14 @@
     background-color: var(--hover-one);
 }
 
-.notify-btn{
-    /* background: var(--hover-one); */
-    border-radius: 50%;
-    color: #FD1D1D
-    
+
+.menu-link--active .nav-icon path{
+    /* stroke: var(--hover-one); */
+    fill: var(--hover-one);
+}
+
+.unread-msgs {
+    stroke: var(--hover-two);
 }
 
 @media(min-width: 801px){

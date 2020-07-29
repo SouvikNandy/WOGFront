@@ -9,7 +9,7 @@
     --grad-one: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
     --grad-two: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
     
-    --sober-red: #d6aea6;
+    --cream: #ffdd99;
     --dark: #3a3e47;
     --light: #fff;
     --border-grey: #e5e5e5;
@@ -346,6 +346,11 @@ ul {
     max-width: 50vw;
     overflow: hidden;
     background: transparent;
+}
+
+.unread-content{
+    /* background: burlywood !important; */
+    background: var(--cream) !important;
 }
 
 @media(max-width:900px) {

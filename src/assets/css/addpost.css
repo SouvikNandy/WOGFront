@@ -8,8 +8,8 @@
     height: 4rem;
     width: 4rem;
     border-radius: 50%;
-    /* background: #fca474; */
-    background: burlywood;
+    background: var(--cream);
+    /* background: burlywood; */
     display: flex;
     justify-content: center;
     align-items: center;
