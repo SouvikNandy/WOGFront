@@ -146,7 +146,7 @@
 
 
 .menu-link--active .nav-icon path{
-    /* stroke: var(--hover-one); */
+    stroke: black;
     fill: var(--hover-one);
 }
 

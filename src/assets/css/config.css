@@ -55,7 +55,9 @@ ul {
 
 .btn {
     cursor: pointer;
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background: var(--hover-one);
     color: #333;
     padding: 0.4rem 1.3rem;

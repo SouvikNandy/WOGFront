@@ -21,22 +21,36 @@ import w1 from "../assets/images/wedding1.jpg";
 import pl2 from "../assets/images/people/2.jpg";
 import CommunityReview from '../pages/CommunityReview'
 import { UserNavBar } from '../components/Navbar';
+import { TiEdit } from 'react-icons/ti';
+import EditProfile from '../components/EditProfile';
 
 
+
+const AuthUserNav = [
+    {"key": "sm-1", "title": "Shots", "count": true, "isActive":true},
+    {"key": "sm-2", "title": "Portfolios", "count": true, "isActive":false},
+    {"key": "sm-3", "title": "Tags", "count": true, "isActive":false},
+    {"key": "sm-4", "title": "Followers", "count": true, "isActive":false},
+    {"key": "sm-5", "title": "Following", "count": true, "isActive":false},
+    {"key": "sm-6", "title": "Saved", "count": true, "isActive":false},
+    {"key": "sm-7", "title": "About", "isActive":false},
+    {"key": "sm-8", "title": "Reviews", "isActive":false},
+
+]
+
+const PublicNav = [
+    {"key": "sm-1", "title": "Shots", "count": true, "isActive":true},
+    {"key": "sm-2", "title": "Portfolios", "count": true, "isActive":false},
+    {"key": "sm-3", "title": "Tags", "count": true, "isActive":false},
+    {"key": "sm-4", "title": "Followers", "count": true, "isActive":false},
+    {"key": "sm-5", "title": "Following", "count": true, "isActive":false},
+    {"key": "sm-6", "title": "About", "isActive":false},
+    {"key": "sm-7", "title": "Reviews", "isActive":false},
+]
 
 export default class Profile extends Component {
     state = {
-        subNavList:[
-            {"key": "sm-1", "title": "Shots", "count": true, "isActive":true},
-            {"key": "sm-2", "title": "Portfolios", "count": true, "isActive":false},
-            {"key": "sm-3", "title": "Tags", "count": true, "isActive":false},
-            {"key": "sm-4", "title": "Followers", "count": true, "isActive":false},
-            {"key": "sm-5", "title": "Following", "count": true, "isActive":false},
-            {"key": "sm-6", "title": "Saved", "count": true, "isActive":false},
-            {"key": "sm-7", "title": "About", "isActive":false},
-            {"key": "sm-8", "title": "Reviews", "isActive":false},
-            
-        ],
+        subNavList:[],
 
         tagNavOptions:[
             {key: "tn-1", "title": "Approved", "count": true, "isActive": true},
@@ -95,26 +109,37 @@ export default class Profile extends Component {
             // {id: 3, name:"p4", shot: [w1, pl2, w1], likes: 100, comments: 100, shares:0,},
             // {id: 4, name:"p4", shot: [w1, pl2, w1, pl2], likes: 100, comments: 100, shares:0,},
         ],
+        isSelf : false,
+        editProf: true
     }
 
     componentDidMount(){
+        let subnav = ''
+        let isSelf = false
+        if(this.props.isAuthenticated && isSelfUser(this.props.username, this.props.match.params.username)){
+            subnav = AuthUserNav;
+            isSelf = true;
+        }
+        else{
+            subnav = PublicNav;
+        }
         let qstr = new URLSearchParams(this.props.location.search);
         let activeTab = qstr.get('active');
         if(activeTab){
-            this.setState({
-                subNavList: this.state.subNavList.map(ele=>{
-                    if(ele.title.toLowerCase()=== activeTab.toLowerCase()){
-                        ele.isActive = true;
-                    }
-                    else{
-                        ele.isActive = false
-                    }
-                    return ele
-                })
+            subnav.map(ele=>{
+                if(ele.title.toLowerCase()=== activeTab.toLowerCase()){
+                    ele.isActive = true;
+                }
+                else{
+                    ele.isActive = false
+                }
+                return ele
             })
-
+        
         }
+        this.setState({subNavList: subnav, isSelf: isSelf})
     }
+
 
     getMenuCount = (key) =>{
         switch (key) {
@@ -268,6 +293,10 @@ export default class Profile extends Component {
         })
 
 
+    }
+
+    editProfile = () =>{
+        this.setState({editProf: !this.state.editProf})
     }
 
     padDummyShot = (resultList, len, maxlen=5) =>{
@@ -503,18 +532,23 @@ export default class Profile extends Component {
         let resultBlock = this.getCompomentData()
         return (
             <React.Fragment>
+                {this.state.editProf?
+                <EditProfile />
+                :
+                ""
+                }
                 {/* <SearchHead /> */}
                 {this.props.showNav === false?
                 ""
                 :
                 this.props.isAuthenticated?
-                <UserNavBar selectedMenu={"profile"}/>
+                <UserNavBar selectedMenu={"profile"} username={this.props.username}/>
                 :
                 <SearchHead />
                 }
                 
                 {/* profile top section */}
-                <ProfileHead data={this.state.userAbout}/>
+                <ProfileHead data={this.state.userAbout} isSelf={this.state.isSelf} editProfile={this.editProfile} />
                 <Subnav subNavList={this.state.subNavList} selectSubMenu={this.selectSubMenu}  getMenuCount={this.getMenuCount}/>
                 {/* result Component */}
                 {resultBlock}
@@ -537,8 +571,16 @@ function ProfileHead(props) {
                         <span className="p-display-name">{data.name}<br />
                             <span className="p-adj-username">@{data.username}</span><br />
                             <span className="p-adj">{data.deisgnantion}</span><br />
-                            <button className="btn m-fuser">< FaPlus className="ico"/> Follow</button>
-                            <button className="btn m-fuser">< FaPaperPlane className="ico"/> Message</button>
+                            {props.isSelf?
+                                <button className="btn m-fuser" onClick={props.editProfile}>< TiEdit className="ico"/>Edit Profile</button>
+                            :
+                                <React.Fragment>
+                                    <button className="btn m-fuser">< FaPlus className="ico"/> Follow</button>
+                                    <button className="btn m-fuser">< FaPaperPlane className="ico"/> Message</button>
+                                </React.Fragment>
+                                
+                            }
+                            
                         </span>
                     </div>
                 </div>

@@ -53,7 +53,7 @@ export default function UserAbout(props) {
                     </div>
                     <div className="u-social u-box">
                         <div className="u-content">
-                            <h4>Social Handels</h4>
+                            <h4>Social Handles</h4>
                             <button className="btn-anc"><FaFacebookSquare className="icons only-right-m" /></button>
                             <button className="btn-anc"><FaInstagram className="icons" /></button>
                             <button className="btn-anc"><FaYoutubeSquare className="icons" /></button>
