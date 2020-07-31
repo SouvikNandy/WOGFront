@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../assets/css/profile.css';
-import { FaPlus, FaPaperPlane , FaCheckCircle} from "react-icons/fa";
+import { FaPlus, FaPaperPlane , FaCheckCircle, FaCameraRetro} from "react-icons/fa";
 import { AiFillCloseCircle } from 'react-icons/ai';
 // import { AiOutlineHome, AiOutlineSearch, AiOutlineBell, AiOutlineBulb } from "react-icons/ai";
 import SearchHead from '../components/SearchHead';
@@ -89,6 +89,7 @@ export default class Profile extends Component {
             "name": "Jane Doe",
             "username": "janedoe",
             "deisgnantion": "photographer",
+            "email": "souvikpxnandy@gmail.com",
             "profile_pic": pl2,
             "cover_pic": w1,
             "isFollowing": false,
@@ -110,7 +111,7 @@ export default class Profile extends Component {
             // {id: 4, name:"p4", shot: [w1, pl2, w1, pl2], likes: 100, comments: 100, shares:0,},
         ],
         isSelf : false,
-        editProf: true
+        editProf: true,
     }
 
     componentDidMount(){
@@ -533,7 +534,7 @@ export default class Profile extends Component {
         return (
             <React.Fragment>
                 {this.state.editProf?
-                <EditProfile />
+                <EditProfile data={this.state.userAbout}/>
                 :
                 ""
                 }
@@ -565,19 +566,38 @@ function ProfileHead(props) {
         <React.Fragment>
             <div className="profile-top">
                 <div className="p-cover">
+                    {props.isSelf?
+                    <span className="edit-coverpic">
+                        <FaCameraRetro  className="cam-icon"/>
+                    </span>
+                    :
+                    ""
+                    }
+                    
                     <img className="p-cover-img" src={data.cover_pic} alt="" />
                     <div className="p-user">
-                        <img className="p-user-img" src={data.profile_pic} alt="" />
+                        <div className="p-user-img-back">
+                            <img className="p-user-img" src={data.profile_pic} alt="" />
+                            {props.isSelf?
+                                <span className="edit-pic">
+                                    <FaCameraRetro  className="cam-icon"/>
+                                </span>
+                                :
+                                ""
+                            }
+                            
+                        </div>
+                        
                         <span className="p-display-name">{data.name}<br />
                             <span className="p-adj-username">@{data.username}</span><br />
                             <span className="p-adj">{data.deisgnantion}</span><br />
                             {props.isSelf?
                                 <button className="btn m-fuser" onClick={props.editProfile}>< TiEdit className="ico"/>Edit Profile</button>
                             :
-                                <React.Fragment>
+                                <div className="pf-otheruser-btns">
                                     <button className="btn m-fuser">< FaPlus className="ico"/> Follow</button>
                                     <button className="btn m-fuser">< FaPaperPlane className="ico"/> Message</button>
-                                </React.Fragment>
+                                </div>
                                 
                             }
                             

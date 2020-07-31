@@ -50,6 +50,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
     /* background: red;
     border: 1px solid black; */
 
@@ -60,8 +61,8 @@
     background: rgba(0, 0, 0, 0.7);
     height: 1.5rem;
     width: 1.5rem;
-    top: 7vh;
-    left: 8vw;
+    bottom: 0.2rem;
+    right: 0;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -233,9 +234,6 @@
         margin-left: 20vw;
     }
 
-    .nf-user-menu .nf-user-edit .nf-user-img .edit-pic {
-        left: 11vw
-    }
 }
 
 @media(max-width: 900px) {

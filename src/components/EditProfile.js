@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../assets/css/editprofile.css';
 import Subnav from '../components/Subnav';
+import {FaCameraRetro} from 'react-icons/fa';
 
 export class EditProfile extends Component {
     state ={
@@ -27,13 +28,43 @@ export class EditProfile extends Component {
     }
 
     pageContent = () =>{
-        let contentBlock = []
+        let contentBlock = [];
+        console.log(this.props);
+        let data = this.props.data;
         this.state.SubNavOptions.map(ele=>{
             if(ele.title === "Basic" && ele.isActive === true){
                 contentBlock.push(
                     <React.Fragment>
                         <div className="upld-pic">
-
+                            <span className="edit-coverpic">
+                                <FaCameraRetro  className="cam-icon"/>
+                            </span>
+                            <img className="e-cover-img" src={data.cover_pic} alt="" />
+                            <div className="prof-img-section">
+                                <div className="e-user-img-back">
+                                    <img className="e-user-img" src={data.profile_pic} alt="" />
+                                    <span className="edit-pic">
+                                        <FaCameraRetro  className="cam-icon"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="basic-details">
+                            <label>Full Name</label>
+                            <input type="text" placeholder="Enter your full name" value={data.name}></input>
+                            <div className="details-inline">
+                                <div className="inline-content">
+                                    <label>Username</label>
+                                    <input type="text" placeholder="Enter a username" value={data.username}></input>
+                                </div>
+                                <div className="inline-content">
+                                    <label>Email</label>
+                                    <input type="text" value={data.email} placeholder="Enter a email"></input>
+                                </div>
+                            </div>
+                            <label>Bio</label>
+                            <textarea placeholder="Let others know about you, add a bio" value={data.bio}></textarea>
+                            
 
                         </div>
 
@@ -50,6 +81,7 @@ export class EditProfile extends Component {
             // };
             return ele
         })
+        return contentBlock
     }
 
     render() {
@@ -61,6 +93,11 @@ export class EditProfile extends Component {
                     </div>
                     <div className="content-div">
                         {this.pageContent()}
+                    </div>
+                    <div className="edit-actions">
+                        <button className="btn cancel-btn">close</button>
+                        <button className="btn apply-btn">Next</button>
+
                     </div>
 
                 </div>

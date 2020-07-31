@@ -260,13 +260,7 @@
         z-index: 1;
         height: 1.5rem !important;
         width: 1.5rem !important;
-    }
-
-    .side-nfuser-menu .nf-user-menu .edit-pic{
-        left: 53vw !important;
-        top: 9vh !important;
-    }
-    
+    }  
 }
 
 @media (max-width: 350px){

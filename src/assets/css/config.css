@@ -15,6 +15,7 @@
     --border-grey: #e5e5e5;
     --div-underline: rgba(0, 0, 0, 0.4);
     --success-color : #47d147;
+    --peacock: rgba(0,255,255, 0.5);
 }
 
 * {
