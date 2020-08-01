@@ -92,7 +92,10 @@ class SignIn extends Component {
                     <div className="form-group">
                         <input type="password" name="password" placeholder="Password" onChange={this.onChange} required/>
                     </div>
-                    <input type="submit" value="Sign In" className="btn btn-primary" />
+                    <div className="apply-section">
+                        <input type="submit" value="Sign In" className="btn btn-primary" />
+                    </div>
+                    
                 </form>
                 <p className="my-1">
                     Don't have an account? <Link className="link" to={"/signup/"}> Create One</Link>
@@ -204,7 +207,10 @@ class SignUp extends Component {
                     <div className="form-group">
                         <input type="password" placeholder="Confirm Password" name="confirmPassword" onChange={this.onChange} required />
                     </div>
-                    <input type="submit" value="Create Account" className="btn btn-primary" />
+                    <div className="apply-section">
+                        <input type="submit" value="Create Account" className="btn btn-primary" />
+                    </div>
+                    
                 </form>
                 <p className="my-1">
                     Already have an account?<Link className="link" to={"/signin/"}> Sign In</Link>

@@ -63,6 +63,13 @@ select .i-am-option::after {
     outline-color: var(--hover-one);
 }
 
+.apply-section{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 @media (max-width:900px) {
     .auth-container {
         width: 100vw;

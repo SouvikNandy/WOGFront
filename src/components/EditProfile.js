@@ -51,7 +51,7 @@ export class EditProfile extends Component {
                         </div>
                         <div className="basic-details">
                             <label>Full Name</label>
-                            <input type="text" placeholder="Enter your full name" value={data.name}></input>
+                            <input type="text" placeholder="Enter your full name" defaultValue={data.name}></input>
                             <div className="details-inline">
                                 <div className="inline-content">
                                     <label>Username</label>
@@ -63,7 +63,7 @@ export class EditProfile extends Component {
                                 </div>
                             </div>
                             <label>Bio</label>
-                            <textarea placeholder="Let others know about you, add a bio" value={data.bio}></textarea>
+                            <textarea placeholder="Let others know about you, add a bio" defaultValue={data.bio}></textarea>
                             
 
                         </div>
