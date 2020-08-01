@@ -180,7 +180,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    border-top: 1px solid var(--border-grey);
+    /* border-top: 1px solid var(--border-grey); */
     height: 12%;
     /* margin-bottom: 1rem; */
 
@@ -203,7 +203,6 @@
 
 
 @media (max-width: 900px){
-
     .content-div{
         height: 80vh;
     }
@@ -215,12 +214,10 @@
 
 }
 
-@media(max-height: 500px){
-    /* .edit-profile-overlay
+/* @media(max-height: 500px){
+    .edit-profile-overlay, 
+    .edit-profile-container
     {
         height: 200vh;
-    } */
-    .content-div{
-        height: 80vh;
     }
-}
+} */
