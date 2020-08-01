@@ -99,9 +99,19 @@ export default class Profile extends Component {
             "bio": "A digital agency for the modern world. We challenge core assumptions, unpick legacy behaviors, and streamline complex processes. Contact us at info@bb.agency",
             "skills": ["photography", "dashboard", "development", "web design"],
             "hometown": "Kolkata, India",
+            "currentcity": "Kolkata, India",
             "birthday": "1 January, 1990",
             // team
-            "teams" : [w1, pl2, w1, pl2]
+            "teams" : [w1, pl2, w1, pl2],
+
+            // social handles
+            social_handles : {
+                "web": "www.abc.com",
+                "facebook": "www.facebook.com/abc",
+                "instagram": "www.instagram.com/abc",
+                "youtube": "www.youtube.com/abc",
+                "pinterest": null
+            }
             
         },
         userSaved: [
@@ -111,7 +121,7 @@ export default class Profile extends Component {
             // {id: 4, name:"p4", shot: [w1, pl2, w1, pl2], likes: 100, comments: 100, shares:0,},
         ],
         isSelf : false,
-        editProf: true,
+        editProf: false,
     }
 
     componentDidMount(){

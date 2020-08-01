@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import '../assets/css/editprofile.css';
 import Subnav from '../components/Subnav';
 import {FaCameraRetro} from 'react-icons/fa';
+import DateTimePicker from 'react-datetime-picker';
+import {FiGlobe} from 'react-icons/fi';
+import {FaFacebookSquare, FaInstagram, FaYoutube, FaPinterest} from 'react-icons/fa';
 
 export class EditProfile extends Component {
     state ={
@@ -72,11 +75,72 @@ export class EditProfile extends Component {
                     
                 )
 
-            };
-            // elif (ele.title === "Social" && ele.isActive === true){
+            }
+            else if (ele.title === "Social" && ele.isActive === true){
+                contentBlock.push(
+                    <div className="social-details">
+                        <div className="details-inline">
+                            <div className="inline-content">
+                                <label>Pick your Birthday</label>
+                                <DateTimePicker
+                                    disableClock={true}
+                                    format={"dd-MM-y"}
+                                    value={new Date()}
+                                />
+                            </div>
+                            
+                        </div>
+                        <div className="details-inline">
+                            <div className="inline-content">
+                                <label>Home Town</label>
+                                <input type="text" className="inp-box" defaultValue={data.hometown} placeholder="Add your hometown"></input>
+                            </div>
 
-            // };
-            // elif(ele.title === "Skills & Teams" && ele.isActive === true){
+                            <div className="inline-content">
+                                <label>Current City</label>
+                                <input type="text" className="inp-box" defaultValue={data.currentcity} placeholder="Add your current city"></input>
+                            </div>
+
+                        </div>
+                        <div className="social-handles">
+                            <label>Add your Social handles</label>
+                            <div className="s-link">
+                                <label> <FiGlobe /> </label>
+                                <input type="text" defaultValue={data.social_handles["web"]} placeholder="Add your website" />
+                            </div>
+                            <div className="s-link">
+                                <label> <FaFacebookSquare /> </label>
+                                <input type="text" defaultValue={data.social_handles["facebook"]} placeholder="Add your facebook account" />
+                            </div>
+
+                            <div className="s-link">
+                                <label> <FaInstagram /> </label>
+                                <input type="text" defaultValue={data.social_handles["instagram"]} placeholder="Add your instagram account" />
+                            </div>
+                            <div className="s-link">
+                                <label> <FaYoutube /> </label>
+                                <input type="text" defaultValue={data.social_handles["youtube"]} placeholder="Add your youtube channel" />
+                            </div>
+
+                            <div className="s-link">
+                                <label> <FaPinterest /> </label>
+                                <input type="text" defaultValue={data.social_handles["pinterest"]} placeholder="Add your pinterest account" />
+                            </div>
+
+
+
+                        </div>
+                        
+
+                        
+                    </div>
+                        
+                    )
+               
+
+
+            };
+            // else if(ele.title === "Skills & Teams" && ele.isActive === true){
 
             // };
             return ele

@@ -1,8 +1,9 @@
 import React from 'react'
 import '../assets/css/profile.css';
+import {FiGlobe} from 'react-icons/fi';
 import {
     FaMapMarkerAlt, FaBirthdayCake, FaIdCard,
-    FaFacebookSquare, FaInstagram, FaYoutubeSquare, FaTwitter
+    FaFacebookSquare, FaInstagram, FaYoutube, FaPinterest
 } from 'react-icons/fa';
 
 export default function UserAbout(props) {
@@ -37,8 +38,9 @@ export default function UserAbout(props) {
                     <div className="u-des u-box">
                         <div className="u-content">
                             <ul>
-                                <li><FaMapMarkerAlt /> {data.hometown}</li>
-                                <li><FaBirthdayCake /> {data.birthday}</li>
+                                {data.hometown? <li><FaMapMarkerAlt /> {data.hometown}</li>: ""}
+                                {data.currentcity? <li><FaMapMarkerAlt /> {data.currentcity}</li>: ""}
+                                {data.birthday? <li><FaBirthdayCake /> {data.birthday}</li>: ""}
                                 <li><FaIdCard /> Member since {data.joined}</li>
                             </ul>
 
@@ -48,16 +50,52 @@ export default function UserAbout(props) {
                         <div className="u-content">
                             <h4>Teams</h4>
                             {teamList}
-                            {/* {data.bio} */}
                         </div>
                     </div>
                     <div className="u-social u-box">
                         <div className="u-content">
                             <h4>Social Handles</h4>
-                            <button className="btn-anc"><FaFacebookSquare className="icons only-right-m" /></button>
-                            <button className="btn-anc"><FaInstagram className="icons" /></button>
-                            <button className="btn-anc"><FaYoutubeSquare className="icons" /></button>
-                            <button className="btn-anc"><FaTwitter className="icons" /></button>
+                            {data.social_handles["web"]? 
+                                <div className="u-link">
+                                    <FiGlobe className="icons" />
+                                    <span>{data.social_handles["web"]}</span>
+                                </div>
+                                : 
+                                ""
+                            }
+                            {data.social_handles["facebook"]? 
+                                <div className="u-link">
+                                    <FaFacebookSquare className="icons" />
+                                    <span>{data.social_handles["facebook"]}</span>
+                                </div>
+                                : 
+                                ""
+                            }
+                            {data.social_handles["instagram"]? 
+                                <div className="u-link">
+                                    <FaInstagram className="icons" />
+                                    <span>{data.social_handles["instagram"]}</span>
+                                </div>
+                                : 
+                                ""
+                            }
+                            {data.social_handles["youtube"]? 
+                                <div className="u-link">
+                                    <FaYoutube className="icons" />
+                                    <span>{data.social_handles["youtube"]}</span>
+                                </div>
+                                : 
+                                ""
+                            }
+                            {data.social_handles["pinterest"]? 
+                                <div className="u-link">
+                                    <FaPinterest className="icons" />
+                                    <span>{data.social_handles["pinterest"]}</span>
+                                </div>
+                                : 
+                                ""
+                            }
+                            
                         </div>
                     </div>
                 </div>
