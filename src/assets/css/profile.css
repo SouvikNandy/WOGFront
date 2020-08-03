@@ -152,7 +152,6 @@
 .u-bio {
     grid-area: u-bio;
     grid-column: 1/2;
-    font-size: 0.9rem;
 }
 
 .u-skills {
@@ -171,9 +170,34 @@
     grid-area: u-social;
 }
 
+.u-content-datadiv{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-start;
+    align-items: flex-start;
+    font-size: 0.9rem;
+    flex-wrap: wrap;
+}
+
+.u-des .u-content-datadiv{
+    flex-direction: column;
+    ;
+}
+
+.u-des .u-content-datadiv .icons{
+    margin-right: 0.5rem;
+    color: black;
+    opacity: 1;
+}
 .u-skills .u-content .item-span {
     padding: 0.2rem 0.4rem;
     border-radius: 0.7rem;
+}
+
+.u-team .tag-img{
+    margin-right: 0.4rem;
+    border: 1px solid var(--peacock);
 }
 
 .u-about-container .u-box {
@@ -187,14 +211,15 @@
 
 }
 
-.u-social .u-content {
+.u-content {
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
     align-items: center;
+    line-height: 1;
 }
 
-.u-social .u-content h4 {
+.u-content h4 {
     width: 100%;
     margin: 0.5rem 0;
 }

@@ -139,7 +139,8 @@
 }
 
 .content-div .basic-details label ,
-.content-div .social-details label {
+.content-div .social-details label,
+.content-div .skills-section label{
     font-size: 0.8rem;
     font-weight: bold;
     width: 100%;
@@ -148,7 +149,8 @@
 
 .content-div .basic-details input,
 .content-div .basic-details textarea,
-.content-div .social-details .inp-box
+.content-div .social-details .inp-box,
+.content-div .skills-section textarea
 {
     width: 100%;
     border: none;
@@ -248,6 +250,38 @@
     outline: none;
     border-bottom: 1px solid var(--border-grey);
     font-size: 0.9rem;
+}
+
+.content-div .skills-section {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.content-div .skills-section .select-profession{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    
+}
+
+.content-div .skills-section .select-profession label{
+    width: 30%;
+}
+
+.content-div .skills-section .Dropdown-root{
+    font-size: 0.8rem;
+}
+
+.content-div .skills-section textarea{
+    height: 15vh;
+    resize: none;
+    margin-bottom: 0.8rem;
 }
 
 @media (max-width: 900px) {

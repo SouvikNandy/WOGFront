@@ -121,7 +121,7 @@ export default class Profile extends Component {
             // {id: 4, name:"p4", shot: [w1, pl2, w1, pl2], likes: 100, comments: 100, shares:0,},
         ],
         isSelf : false,
-        editProf: false,
+        editProf: true,
     }
 
     componentDidMount(){

@@ -25,23 +25,28 @@ export default function UserAbout(props) {
                     <div className="u-bio u-box">
                         <div className="u-content">
                             <h4>Bio</h4>
-                            <p>{data.bio}</p>
-
+                            <div className="u-content-datadiv">
+                                <p>{data.bio}</p>
+                            </div>
+                            
                         </div>
                     </div>
                     <div className="u-skills u-box">
                         <div className="u-content">
                             <h4>Skills</h4>
-                            {skillList}
+                            <div className="u-content-datadiv">
+                                {skillList}
+                            </div>
+                            
                         </div>
                     </div>
                     <div className="u-des u-box">
                         <div className="u-content">
-                            <ul>
-                                {data.hometown? <li><FaMapMarkerAlt /> {data.hometown}</li>: ""}
-                                {data.currentcity? <li><FaMapMarkerAlt /> {data.currentcity}</li>: ""}
-                                {data.birthday? <li><FaBirthdayCake /> {data.birthday}</li>: ""}
-                                <li><FaIdCard /> Member since {data.joined}</li>
+                            <ul className="u-content-datadiv">
+                                {data.hometown? <li><FaMapMarkerAlt  className="icons"/> {data.hometown}</li>: ""}
+                                {data.currentcity? <li><FaMapMarkerAlt className="icons" /> {data.currentcity}</li>: ""}
+                                {data.birthday? <li><FaBirthdayCake  className="icons" /> {data.birthday}</li>: ""}
+                                <li><FaIdCard className="icons" /> Member since {data.joined}</li>
                             </ul>
 
                         </div>
@@ -49,52 +54,55 @@ export default function UserAbout(props) {
                     <div className="u-team u-box">
                         <div className="u-content">
                             <h4>Teams</h4>
-                            {teamList}
+                            <div className="u-content-datadiv">
+                                {teamList}
+                            </div>
                         </div>
                     </div>
                     <div className="u-social u-box">
                         <div className="u-content">
                             <h4>Social Handles</h4>
-                            {data.social_handles["web"]? 
-                                <div className="u-link">
-                                    <FiGlobe className="icons" />
-                                    <span>{data.social_handles["web"]}</span>
-                                </div>
-                                : 
-                                ""
-                            }
-                            {data.social_handles["facebook"]? 
-                                <div className="u-link">
-                                    <FaFacebookSquare className="icons" />
-                                    <span>{data.social_handles["facebook"]}</span>
-                                </div>
-                                : 
-                                ""
-                            }
-                            {data.social_handles["instagram"]? 
-                                <div className="u-link">
-                                    <FaInstagram className="icons" />
-                                    <span>{data.social_handles["instagram"]}</span>
-                                </div>
-                                : 
-                                ""
-                            }
-                            {data.social_handles["youtube"]? 
-                                <div className="u-link">
-                                    <FaYoutube className="icons" />
-                                    <span>{data.social_handles["youtube"]}</span>
-                                </div>
-                                : 
-                                ""
-                            }
-                            {data.social_handles["pinterest"]? 
-                                <div className="u-link">
-                                    <FaPinterest className="icons" />
-                                    <span>{data.social_handles["pinterest"]}</span>
-                                </div>
-                                : 
-                                ""
-                            }
+                            
+                                {data.social_handles["web"]? 
+                                    <div className="u-link">
+                                        <FiGlobe className="icons" />
+                                        <span>{data.social_handles["web"]}</span>
+                                    </div>
+                                    : 
+                                    ""
+                                }
+                                {data.social_handles["facebook"]? 
+                                    <div className="u-link">
+                                        <FaFacebookSquare className="icons" />
+                                        <span>{data.social_handles["facebook"]}</span>
+                                    </div>
+                                    : 
+                                    ""
+                                }
+                                {data.social_handles["instagram"]? 
+                                    <div className="u-link">
+                                        <FaInstagram className="icons" />
+                                        <span>{data.social_handles["instagram"]}</span>
+                                    </div>
+                                    : 
+                                    ""
+                                }
+                                {data.social_handles["youtube"]? 
+                                    <div className="u-link">
+                                        <FaYoutube className="icons" />
+                                        <span>{data.social_handles["youtube"]}</span>
+                                    </div>
+                                    : 
+                                    ""
+                                }
+                                {data.social_handles["pinterest"]? 
+                                    <div className="u-link">
+                                        <FaPinterest className="icons" />
+                                        <span>{data.social_handles["pinterest"]}</span>
+                                    </div>
+                                    : 
+                                    ""
+                                }
                             
                         </div>
                     </div>

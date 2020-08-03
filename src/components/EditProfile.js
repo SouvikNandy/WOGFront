@@ -6,6 +6,9 @@ import DateTimePicker from 'react-datetime-picker';
 import {FiGlobe} from 'react-icons/fi';
 import {FaFacebookSquare, FaInstagram, FaYoutube, FaPinterest} from 'react-icons/fa';
 
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
+
 export class EditProfile extends Component {
     state ={
         SubNavOptions:[
@@ -126,23 +129,27 @@ export class EditProfile extends Component {
                                 <label> <FaPinterest /> </label>
                                 <input type="text" defaultValue={data.social_handles["pinterest"]} placeholder="Add your pinterest account" />
                             </div>
-
-
-
                         </div>
-                        
-
-                        
                     </div>
                         
                     )
-               
+            }
+            else if(ele.title === "Skills & Teams" && ele.isActive === true){
+                let options = ['Photographer', 'Editor', 'Makeup Artist']
+                contentBlock.push(
+                    <div className="skills-section">
+                        <div className="select-profession">
+                            <label>Select your profession</label>
+                            <Dropdown options={options} placeholder="Select an option" />                          
+                        </div>
+                        <label>Enlist your skills here</label>
+                        <textarea></textarea>
+                        <label>Add teams you are associated with</label>
 
+                    </div>
+                )
 
             };
-            // else if(ele.title === "Skills & Teams" && ele.isActive === true){
-
-            // };
             return ele
         })
         return contentBlock
