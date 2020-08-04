@@ -42,6 +42,7 @@ export function NewsFeedUserMenu(props){
                 <div className="nf-user-img">
                     <img className="cube-user-img " src={w1} alt=""/>
                     <span className="edit-pic">
+                        <input type="file" className="pic-uploader" />
                         <FaCameraRetro  className="cam-icon"/>
                     </span>
                 </div>

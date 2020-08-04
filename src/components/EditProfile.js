@@ -12,9 +12,9 @@ import 'react-dropdown/style.css';
 export class EditProfile extends Component {
     state ={
         SubNavOptions:[
-            {key: "E-1", title: "Basic", isActive: true},
+            {key: "E-1", title: "Basic", isActive: false},
             {key: "E-2", title: "Social", isActive: false},
-            {key: "E-3", title: "Skills & Teams", isActive: false},
+            {key: "E-3", title: "Skills & Teams", isActive: true},
 
         ],
     }
@@ -33,6 +33,10 @@ export class EditProfile extends Component {
         })
     }
 
+    uploadPicture =(e, topic) =>{
+        console.log(e.target.files, topic)
+    }
+
     pageContent = () =>{
         let contentBlock = [];
         console.log(this.props);
@@ -43,6 +47,7 @@ export class EditProfile extends Component {
                     <React.Fragment>
                         <div className="upld-pic">
                             <span className="edit-coverpic">
+                                <input type="file" className="pic-uploader" onChange={ e => this.uploadPicture(e, 'profile')}/>
                                 <FaCameraRetro  className="cam-icon"/>
                             </span>
                             <img className="e-cover-img" src={data.cover_pic} alt="" />
@@ -50,6 +55,7 @@ export class EditProfile extends Component {
                                 <div className="e-user-img-back">
                                     <img className="e-user-img" src={data.profile_pic} alt="" />
                                     <span className="edit-pic">
+                                        <input type="file" className="pic-uploader" />
                                         <FaCameraRetro  className="cam-icon"/>
                                     </span>
                                 </div>
