@@ -10,6 +10,7 @@ import Portfolio from '../components/Portfolio';
 import ModalLikes from '../components/ModalLikes';
 import {UserNavBar} from "../components/Navbar";
 import {Link} from 'react-router-dom';
+import ImgCompressor from '../utility/ImgCompressor';
 
 import w1 from "../assets/images/wedding1.jpg";
 import pl2 from "../assets/images/people/2.jpg";
@@ -33,67 +34,85 @@ export class NewsFeeds extends Component {
     }
 }
 
-export function NewsFeedUserMenu(props){
-    let username = props.username? props.username: props.match.params.username
-    return(
-        <div className="nf-user-menu">
-            <div className="nf-user-menu-overlay"></div>
-            <div className="nf-user-edit">
-                <div className="nf-user-img">
-                    <img className="cube-user-img " src={w1} alt=""/>
-                    <span className="edit-pic">
-                        <input type="file" className="pic-uploader" />
-                        <FaCameraRetro  className="cam-icon"/>
+export class NewsFeedUserMenu extends Component{
+    state ={
+        profile_pic: w1,
+        name: "John Doe",
+        designation: "photographer"
+
+    }
+
+    uploadPicture =(e, imgKey) =>{
+        console.log(e.target.files, imgKey)
+        ImgCompressor(e, this.addFileToState, imgKey)
+    }
+    addFileToState = (compressedFile, imgKey) =>{
+        if (imgKey === "profile_pic"){
+            this.setState({profile_pic: URL.createObjectURL(compressedFile)})
+        }
+    }
+    render(){
+        let username = this.props.username? this.props.username: this.props.match.params.username
+        return(
+            <div className="nf-user-menu">
+                <div className="nf-user-menu-overlay"></div>
+                <div className="nf-user-edit">
+                    <div className="nf-user-img">
+                        <img className="cube-user-img " src={this.state.profile_pic} alt=""/>
+                        <span className="edit-pic">
+                            <input type="file" className="pic-uploader" onChange={ e => this.uploadPicture(e, 'profile_pic')}/>
+                            <FaCameraRetro  className="cam-icon"/>
+                        </span>
+                    </div>
+                            
+                    <span className="m-display-name">
+                        {this.state.name}
+                        <span className="m-adj">@{username}</span>
+                        <span className="m-adj">{this.state.designation}</span>
                     </span>
-                </div>
-                        
-                <span className="m-display-name">
-                    Full Name
-                    <span className="m-adj">@{username}</span>
-                    <span className="m-adj">designation</span>
-                </span>
-                <button className="btn edit-btn"><TiEdit  className="ico" />Edit Profile</button>
-
-            </div>
-            <div className="nf-user-menulist">
-                <div className="nf-upper-tokens">
-                    <div className="nf-menu-tokens">
-                        <BsClockHistory className="ico" />
-                        <span>Your Activities</span>
-                    </div>
-                    <Link className="link nf-menu-tokens" to={`/discover-people/${username}`} >
-                        <AiOutlineUsergroupAdd className="ico" />
-                        <span>Discover People</span>
-                    </Link>
-                    <Link className="link nf-menu-tokens" to={`/user-profile/${username}?active=Reviews`}>
-                        <AiOutlineStar className="ico" />
-                        <span>Ratings & Reviews</span>
-                    </Link>
-                    <Link className="link nf-menu-tokens" to={`/user-profile/${username}?active=Saved`}>
-                        <BsBookmarks className="ico" />
-                        <span>Saved</span>
-                    </Link>
+                    <button className="btn edit-btn"><TiEdit  className="ico" />Edit Profile</button>
 
                 </div>
-                <div className="nf-lower-tokens">
-                    <div className="nf-menu-tokens">
-                        <FiUnlock className="ico" />
-                        <span>Privacy</span>
-                    </div>
-                    <div className="nf-menu-tokens">
-                        <FiSettings className="ico" />
-                        <span>Settings</span>
-                    </div>
-                    <div className="nf-menu-tokens">
-                        <AiOutlinePoweroff className="ico" />
-                        <span>Log Out</span>
-                    </div>
+                <div className="nf-user-menulist">
+                    <div className="nf-upper-tokens">
+                        <div className="nf-menu-tokens">
+                            <BsClockHistory className="ico" />
+                            <span>Your Activities</span>
+                        </div>
+                        <Link className="link nf-menu-tokens" to={`/discover-people/${username}`} >
+                            <AiOutlineUsergroupAdd className="ico" />
+                            <span>Discover People</span>
+                        </Link>
+                        <Link className="link nf-menu-tokens" to={`/user-profile/${username}?active=Reviews`}>
+                            <AiOutlineStar className="ico" />
+                            <span>Ratings & Reviews</span>
+                        </Link>
+                        <Link className="link nf-menu-tokens" to={`/user-profile/${username}?active=Saved`}>
+                            <BsBookmarks className="ico" />
+                            <span>Saved</span>
+                        </Link>
 
+                    </div>
+                    <div className="nf-lower-tokens">
+                        <div className="nf-menu-tokens">
+                            <FiUnlock className="ico" />
+                            <span>Privacy</span>
+                        </div>
+                        <div className="nf-menu-tokens">
+                            <FiSettings className="ico" />
+                            <span>Settings</span>
+                        </div>
+                        <div className="nf-menu-tokens">
+                            <AiOutlinePoweroff className="ico" />
+                            <span>Log Out</span>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-        </div>
 
-    )
+        )
+    }
 }
 
 

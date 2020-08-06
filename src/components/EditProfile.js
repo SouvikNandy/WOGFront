@@ -8,6 +8,9 @@ import {FaFacebookSquare, FaInstagram, FaYoutube, FaPinterest} from 'react-icons
 
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
+import ImgCompressor from '../utility/ImgCompressor';
+import SideBar from "./SideBar";
+import IndianCityList from '../components/IndianCityList';
 
 export class EditProfile extends Component {
     state ={
@@ -17,6 +20,40 @@ export class EditProfile extends Component {
             {key: "E-3", title: "Skills & Teams", isActive: true},
 
         ],
+        // sidebar states
+        showSideView: false,
+        sideBarHead: true,
+        searchBarRequired: false,
+        sideViewContent: [],
+
+        // diabled fields
+        disabledFields: [],
+
+        // basic details
+        profile_pic: '',
+        cover_pic: '',
+        name: '',
+        username: '',
+        bio: '',
+
+        // social details
+        birthday: '',
+        hometown: '',
+        currentcity: '',
+        social_handles : {
+            "web": '',
+            "facebook": '',
+            "instagram": '',
+            "youtube": '',
+            "pinterest": ''
+        },
+
+        // skills
+        profession: '',
+        skills: [],
+        teams: []
+
+
     }
 
     selectSubNavMenu = (key) =>{
@@ -33,8 +70,71 @@ export class EditProfile extends Component {
         })
     }
 
-    uploadPicture =(e, topic) =>{
-        console.log(e.target.files, topic)
+    displaySideView = ({content, sureVal}) =>{
+        let stateVal = !this.state.showSideView
+        if (sureVal){
+            stateVal = sureVal
+        }
+
+        this.setState({
+            showSideView: stateVal,
+            sideBarHead: true,
+            
+
+        })
+
+        if(content){
+            this.setState({
+                sideViewContent: content
+            })
+        }
+
+        // on close clear diabled fields
+        this.clearDisabledFields();
+        
+    }
+
+    clearDisabledFields = () =>{
+        if (this.state.disabledFields){
+            this.state.disabledFields.map(name =>{
+                document.getElementById(name).disabled = false
+                return name
+            })
+    
+            this.setState({
+                // on close also clear the diasble fields
+                disabledFields: []
+            })
+
+        }
+        
+    }
+
+    chooseOptions =(fieldID, content) =>{
+        // clear previous disabled
+        this.clearDisabledFields();
+
+        // display content in sidebaer with searchable content 
+        document.getElementById(fieldID).disabled = true;
+        this.setState({
+            showSideView: true,
+            sideBarHead: false,
+            sideViewContent: content,
+            disabledFields: [fieldID],
+        })
+    }
+
+    uploadPicture =(e, imgKey) =>{
+        console.log(e.target.files, imgKey)
+        ImgCompressor(e, this.addFileToState, imgKey)
+    }
+    addFileToState = (compressedFile, imgKey) =>{
+        if (imgKey === "profile_pic"){
+            this.setState({profile_pic: URL.createObjectURL(compressedFile)})
+        }
+        else if(imgKey === "cover_pic"){
+            this.setState({cover_pic: URL.createObjectURL(compressedFile)})
+        }
     }
 
     pageContent = () =>{
@@ -47,15 +147,16 @@ export class EditProfile extends Component {
                     <React.Fragment>
                         <div className="upld-pic">
                             <span className="edit-coverpic">
-                                <input type="file" className="pic-uploader" onChange={ e => this.uploadPicture(e, 'profile')}/>
+                                <input type="file" className="pic-uploader" onChange={ e => this.uploadPicture(e, 'cover_pic')}/>
                                 <FaCameraRetro  className="cam-icon"/>
                             </span>
-                            <img className="e-cover-img" src={data.cover_pic} alt="" />
+                            <img className="e-cover-img" src={this.state.cover_pic? this.state.cover_pic:data.cover_pic} alt="" />
                             <div className="prof-img-section">
                                 <div className="e-user-img-back">
-                                    <img className="e-user-img" src={data.profile_pic} alt="" />
+                                    <img className="e-user-img" 
+                                    src={this.state.profile_pic? this.state.profile_pic: data.profile_pic} alt="" />
                                     <span className="edit-pic">
-                                        <input type="file" className="pic-uploader" />
+                                        <input type="file" className="pic-uploader" onChange={ e => this.uploadPicture(e, 'profile_pic')}/>
                                         <FaCameraRetro  className="cam-icon"/>
                                     </span>
                                 </div>
@@ -102,12 +203,31 @@ export class EditProfile extends Component {
                         <div className="details-inline">
                             <div className="inline-content">
                                 <label>Home Town</label>
-                                <input type="text" className="inp-box" defaultValue={data.hometown} placeholder="Add your hometown"></input>
+                                <input type="text" className="inp-box" defaultValue={data.hometown} placeholder="Add your hometown"
+                                name="hometown" id="hometown"
+                                onSelect={this.chooseOptions.bind(
+                                    this, 
+                                    'hometown',
+                                    <IndianCityList 
+                                        displaySideView={this.displaySideView} searchPlaceHolder={"Find a location ..."} 
+                                        populateOnDestinationID={'hometown'}
+                                    />
+                                )}></input>
                             </div>
 
                             <div className="inline-content">
                                 <label>Current City</label>
-                                <input type="text" className="inp-box" defaultValue={data.currentcity} placeholder="Add your current city"></input>
+                                <input type="text" className="inp-box" defaultValue={data.currentcity} placeholder="Add your current city"
+                                name="currentcity" id="currentcity"
+                                 onSelect={this.chooseOptions.bind(
+                                    this, 
+                                    'currentcity',
+                                    <IndianCityList 
+                                        displaySideView={this.displaySideView} searchPlaceHolder={"Find a location ..."} 
+                                        populateOnDestinationID={'currentcity'}
+                                    />
+                                )}
+                                ></input>
                             </div>
 
                         </div>
@@ -163,7 +283,8 @@ export class EditProfile extends Component {
 
     render() {
         return (
-            <div className="edit-profile-overlay">
+            <React.Fragment>
+            <div className={this.state.showSideView? "edit-profile-overlay with-side-width": "edit-profile-overlay full-width"}>
                 <div className="edit-profile-container">
                     <div className="edit-options">
                         <Subnav subNavList={this.state.SubNavOptions} selectSubMenu={this.selectSubNavMenu}/>
@@ -172,14 +293,24 @@ export class EditProfile extends Component {
                         {this.pageContent()}
                     </div>
                     <div className="edit-actions">
-                        <button className="btn cancel-btn">close</button>
-                        <button className="btn apply-btn">Next</button>
+                        <button className="btn cancel-btn" onClick={this.props.closeModal}>close</button>
+                        <button className="btn apply-btn">save</button>
 
                     </div>
 
                 </div>
                 
             </div>
+            {this.state.showSideView?
+                <div className="form-side-bar-view side-bar-view-active">
+                    <SideBar displaySideView={this.displaySideView} content={this.state.sideViewContent} 
+                    searchPlaceHolder={this.state.searchPlaceHolder} sideBarHead={this.state.sideBarHead}
+                    searchBarRequired={this.state.searchBarRequired}/>
+                </div>
+                :
+                <div className="form-side-bar-view"></div>
+            }
+            </React.Fragment>
         )
     }
 }

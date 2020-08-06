@@ -23,6 +23,7 @@ import CommunityReview from '../pages/CommunityReview'
 import { UserNavBar } from '../components/Navbar';
 import { TiEdit } from 'react-icons/ti';
 import EditProfile from '../components/EditProfile';
+import ImgCompressor from '../utility/ImgCompressor';
 
 
 
@@ -121,7 +122,7 @@ export default class Profile extends Component {
             // {id: 4, name:"p4", shot: [w1, pl2, w1, pl2], likes: 100, comments: 100, shares:0,},
         ],
         isSelf : false,
-        editProf: true,
+        editProf: false,
     }
 
     componentDidMount(){
@@ -326,6 +327,23 @@ export default class Profile extends Component {
             </div>
         )
 
+    }
+
+    uploadPicture =(e, imgKey) =>{
+        console.log(e.target.files, imgKey)
+        ImgCompressor(e, this.addFileToState, imgKey)
+    }
+    addFileToState = (compressedFile, imgKey) =>{
+        let userAbout = this.state.userAbout;
+        if (imgKey === "profile_pic"){
+            
+            userAbout.profile_pic = URL.createObjectURL(compressedFile)
+            this.setState({userAbout: userAbout})
+        }
+        else if(imgKey === "cover_pic"){
+            userAbout.cover_pic = URL.createObjectURL(compressedFile)
+            this.setState({userAbout: userAbout})
+        }
     }
 
     getCompomentData = () =>{
@@ -544,7 +562,7 @@ export default class Profile extends Component {
         return (
             <React.Fragment>
                 {this.state.editProf?
-                <EditProfile data={this.state.userAbout}/>
+                <EditProfile data={this.state.userAbout} closeModal={this.editProfile}/>
                 :
                 ""
                 }
@@ -559,7 +577,8 @@ export default class Profile extends Component {
                 }
                 
                 {/* profile top section */}
-                <ProfileHead data={this.state.userAbout} isSelf={this.state.isSelf} editProfile={this.editProfile} />
+                <ProfileHead data={this.state.userAbout} isSelf={this.state.isSelf} editProfile={this.editProfile} 
+                uploadPicture={this.uploadPicture} />
                 <Subnav subNavList={this.state.subNavList} selectSubMenu={this.selectSubMenu}  getMenuCount={this.getMenuCount}/>
                 {/* result Component */}
                 {resultBlock}
@@ -578,6 +597,7 @@ function ProfileHead(props) {
                 <div className="p-cover">
                     {props.isSelf?
                     <span className="edit-coverpic">
+                        <input type="file" className="pic-uploader" onChange={ e => props.uploadPicture(e, 'cover_pic')}/>
                         <FaCameraRetro  className="cam-icon"/>
                     </span>
                     :
@@ -590,6 +610,7 @@ function ProfileHead(props) {
                             <img className="p-user-img" src={data.profile_pic} alt="" />
                             {props.isSelf?
                                 <span className="edit-pic">
+                                    <input type="file" className="pic-uploader" onChange={ e => props.uploadPicture(e, 'profile_pic')}/>
                                     <FaCameraRetro  className="cam-icon"/>
                                 </span>
                                 :

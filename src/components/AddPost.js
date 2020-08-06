@@ -9,8 +9,7 @@ import SideBar from "./SideBar";
 import { TagUser } from './TagUser';
 import IndianCityList from '../components/IndianCityList';
 import FriendList from './FriendList';
-import imageCompression from 'browser-image-compression';
-import { createFloatingNotification } from '../components/FloatingNotifications';
+import ImgCompressor from '../utility/ImgCompressor';
 
 
 // video thumbnail
@@ -107,54 +106,14 @@ class AddDocumentForm extends Component {
     }
 
     onFileSelect = (e) => {
-        // console.log("on file selects", e.target.files, e.target.files.length);
-        let resultList = [];
-        for (let i=0; i < e.target.files.length; i++){
-            let file = e.target.files[i];
-            // console.log("selected file", file)
-            // check if file in video or image
-            if (!file.type.startsWith("image/") && !file.type.startsWith("video/")){
-                createFloatingNotification("error", "Invalid File type!", "Please make sure to upload images/videos only.");
-                continue;
-            }
-            if(file.type.startsWith("image/") && file.size/1024 > 500 ){
-                let options = {
-                    maxSizeMB: 0.8,
-                    maxWidthOrHeight: 1920,
-                    useWebWorker: true
-                }
-                let currentClass = this;
-                console.log(`originalFile size ${file.size / 1024 } KB`);
-                // compress image
-                imageCompression(file, options)
-                  .then(function (compressedFile) {
-                    // console.log('compressedFile ', compressedFile instanceof Blob); // true
-                    console.log(`compressedFile size ${compressedFile.size / 1024 } KB`); // smaller than maxSizeMB
-                    console.log('compressedFile ', compressedFile); 
-                    console.log("this",this);
-                    currentClass.setState({
-                        FileList: [...currentClass.state.FileList, compressedFile]
-                    });
-                  })
-                  .catch(function (error) {
-                    console.log(error.message);
-                  }) 
-            }
-
-            else{
-                // images below 500kb or videos
-                resultList.push(file);
-            }
-        }
-
-        console.log("updateing statees with previous files")
-        this.setState({
-            FileList: [...this.state.FileList, ...resultList]
-        });
+        // compress image list
+        ImgCompressor(e, this.addFileToState)        
     }
 
-    addFileToState = (result) =>{
-
+    addFileToState = (compressedFile) =>{
+        this.setState({
+            FileList: [...this.state.FileList, compressedFile]
+        });
 
     }
 
