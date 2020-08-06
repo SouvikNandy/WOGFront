@@ -138,9 +138,9 @@
     align-items: center;
 }
 
-.content-div .basic-details label ,
+.content-div .basic-details label,
 .content-div .social-details label,
-.content-div .skills-section label{
+.content-div .skills-section label {
     font-size: 0.8rem;
     font-weight: bold;
     width: 100%;
@@ -150,8 +150,7 @@
 .content-div .basic-details input,
 .content-div .basic-details textarea,
 .content-div .social-details .inp-box,
-.content-div .skills-section textarea
-{
+.content-div .skills-section input {
     width: 100%;
     border: none;
     border-bottom: 1px solid var(--border-grey);
@@ -208,19 +207,19 @@
     margin-left: 0.4rem;
 }
 
-.content-div .social-details .react-datetime-picker{
+.content-div .social-details .react-datetime-picker {
     width: 100%;
     outline: none;
     font-size: 0.8rem;
     margin-bottom: 0.4rem;
 }
 
-.content-div .social-details .react-datetime-picker .react-datetime-picker__wrapper{
+.content-div .social-details .react-datetime-picker .react-datetime-picker__wrapper {
     border: none;
     border-bottom: 1px solid var(--border-grey);
 }
 
-.content-div .social-details .social-handles{
+.content-div .social-details .social-handles {
     height: 100%;
     width: 100%;
     display: flex;
@@ -229,7 +228,7 @@
     flex-direction: column;
 }
 
-.content-div .social-details .social-handles .s-link{
+.content-div .social-details .social-handles .s-link {
     width: 100%;
     display: flex;
     align-items: center;
@@ -238,13 +237,14 @@
 
 }
 
-.content-div .social-details .social-handles .s-link label{
+.content-div .social-details .social-handles .s-link label {
     width: 5%;
     margin-right: 0.8rem;
     font-size: 1.1rem;
     color: var(--hover-two);
 }
-.content-div .social-details .social-handles .s-link input{
+
+.content-div .social-details .social-handles .s-link input {
     width: 85%;
     border: none;
     outline: none;
@@ -261,31 +261,72 @@
     flex-direction: column;
 }
 
-.content-div .skills-section .select-profession{
+.content-div .skills-section .select-profession {
     width: 100%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     margin-bottom: 0.8rem;
-    
+
 }
 
-.content-div .skills-section .select-profession label{
+.content-div .skills-section .select-profession label {
     width: 30%;
 }
 
-.content-div .skills-section .Dropdown-root{
+.content-div .skills-section .Dropdown-root {
     font-size: 0.8rem;
 }
 
-.content-div .skills-section textarea{
-    height: 15vh;
-    resize: none;
+.content-div .skills-section .info-text {
+    font-size: 0.7rem;
+    color: red;
+    margin: 0.5rem 0;
+}
+
+.content-div .skills-section .skill-keywords {
+    min-height: 8vh;
+    width: 100%;
+    border: 2px solid var(--border-grey);
+    margin: 0.8rem 0;
+    border-radius: 0.4rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.content-div .skills-section .skill-keywords .added-skills-text {
+    position: absolute;
+    top: -8px;
+    left: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    background: var(--light);
+    padding: 0 0.5rem;
+    color: var(--dark)
+}
+
+.content-div .skills-section .add-skills {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
     margin-bottom: 0.8rem;
 }
 
+.content-div .skills-section .add-skills .add-skills-btn{
+    height: 1.5rem;
+    width: 1.5rem;
+    color: var(--success-color);
+    margin-left: 1rem;
+   
+}
 
-.cam-icon{
+
+.cam-icon {
     cursor: pointer;
 }
 
@@ -302,8 +343,8 @@
 
 }
 
-@media(max-height: 500px){
-    .content-div .social-details .social-handles{
+@media(max-height: 500px) {
+    .content-div .social-details .social-handles {
         height: auto;
     }
 }

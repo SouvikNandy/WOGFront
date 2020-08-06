@@ -4,6 +4,7 @@ import Subnav from '../components/Subnav';
 import {FaCameraRetro} from 'react-icons/fa';
 import DateTimePicker from 'react-datetime-picker';
 import {FiGlobe} from 'react-icons/fi';
+import {AiFillCloseCircle, AiFillPlusCircle} from 'react-icons/ai';
 import {FaFacebookSquare, FaInstagram, FaYoutube, FaPinterest} from 'react-icons/fa';
 
 import Dropdown from 'react-dropdown';
@@ -11,6 +12,7 @@ import 'react-dropdown/style.css';
 import ImgCompressor from '../utility/ImgCompressor';
 import SideBar from "./SideBar";
 import IndianCityList from '../components/IndianCityList';
+import FriendList from './FriendList';
 
 export class EditProfile extends Component {
     state ={
@@ -137,6 +139,39 @@ export class EditProfile extends Component {
         }
     }
 
+    tagMembers = (record) =>{
+        this.setState({
+            teams : [...this.state.teams, record]
+        })
+
+    }
+    onRemoveMember = (idx, removeTagOnly=false) => {
+        if(removeTagOnly===true){
+            this.setState({
+                teams: [...this.state.teams.filter(item => item.id !== idx)],
+            });
+        }
+        else{
+            this.setState({
+                teams: [...this.state.teams.filter(item => item.id !== idx)],
+                sideViewContent: [...this.state.sideViewContent.filter(item => item.props.data.id !== idx)]
+            });
+        }
+        
+
+    }
+    addSkills = () =>{
+        let ele = document.getElementById("skill-keywords")
+        let valueset = ele.value;
+        valueset = valueset.split(',');
+        this.setState({skills: [...this.state.skills, ...valueset]});
+        ele.value = "";
+    }
+    removeSkills = (ele) =>{
+        this.setState({skills: this.state.skills.filter(item => item!== ele)})
+    }
+
+
     pageContent = () =>{
         let contentBlock = [];
         console.log(this.props);
@@ -262,15 +297,57 @@ export class EditProfile extends Component {
             }
             else if(ele.title === "Skills & Teams" && ele.isActive === true){
                 let options = ['Photographer', 'Editor', 'Makeup Artist']
+                let skillList = []
+                this.state.skills.map(item => {
+                    skillList.push(
+                        <span className="item-span" key={item}>
+                            <span>{item}</span>
+                            <AiFillCloseCircle className="close-btn close-img " onClick={this.removeSkills.bind(this, item)} />
+    
+                        </span>)
+                    return item
+                })
+                
                 contentBlock.push(
                     <div className="skills-section">
                         <div className="select-profession">
                             <label>Select your profession</label>
                             <Dropdown options={options} placeholder="Select an option" />                          
                         </div>
-                        <label>Enlist your skills here</label>
-                        <textarea></textarea>
+                        <label>Enlist your other skills</label>
+                        <span className="info-text">
+                            You can enlist other 5 skills you have. <br/>
+                            providing other skills increase your chances to apprear on other peoples search
+                        </span>
+                        <div className="skill-keywords">
+                            <span className="added-skills-text">Added Skills</span>
+                            {skillList}
+                        </div>
+                        <div className="add-skills">
+                            <input type="text" id="skill-keywords" placeholder="Add skills to display"></input>
+                            <AiFillPlusCircle className="add-skills-btn" onClick={this.addSkills} />
+
+                        </div>
+                        
                         <label>Add teams you are associated with</label>
+                        <span className="info-text">
+                            You can only associate with teams you follow. <br/>
+                        </span>
+                        <div className="skill-keywords">
+                            <span className="added-skills-text">Added Teams</span>
+                        </div>
+                        <input type="text" id="memo" name="memo" placeholder="Search Teams / organisations" 
+                            onSelect={this.chooseOptions.bind(
+                                this, 
+                                'memo',
+                                <FriendList 
+                                    displaySideView={this.displaySideView} searchPlaceHolder={"Search For Friends ..."} 
+                                    populateOnDestinationID={'memo'} tagMembers={this.tagMembers}
+                                    currentTags={this.state.teams}
+                                    currentTagIDs={this.state.teams.map(ele => ele.id )}
+                                    onRemoveMember={this.onRemoveMember}
+                                />)}
+                            />
 
                     </div>
                 )
