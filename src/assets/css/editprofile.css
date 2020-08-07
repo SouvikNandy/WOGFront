@@ -330,6 +330,34 @@
     cursor: pointer;
 }
 
+.content-div .skills-section .img-span{
+    padding: 0.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.content-div .skills-section .img-span .tag-img,
+.content-div .skills-section .tag-img-count{
+    height: 2rem;
+    width: 2rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.content-div .skills-section .tag-img-count{
+    cursor: pointer;
+    background: var(--border-grey);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 1px 2px rgba(0, 0, 0, 0.2);
+}
+.content-div .skills-section .review-tags{
+    font-size: 0.7rem;
+    font-weight: bold;
+}
 @media (max-width: 900px) {
     .content-div {
         height: 80vh;
@@ -344,7 +372,68 @@
 }
 
 @media(max-height: 500px) {
+    .prof-img-section .e-user-img-back{
+        height: 7rem;
+        width: 7rem;
+    }
+    .prof-img-section .e-user-img{
+        height: 6.8rem;
+        width: 6.8rem;
+    }
     .content-div .social-details .social-handles {
         height: auto;
+    }
+
+    .content-div .skills-section .info-text{
+        font-size: 0.5rem;
+        margin: 0.2rem 0;
+        }
+        
+    .content-div .skills-section .skill-keywords{
+            margin: 0.5rem 0;
+            padding: 0.5rem; 
+        }
+        
+    .content-div .skills-section .skill-keywords .added-skills-text{
+            font-size: 0.5rem;
+    }
+    
+        
+    .content-div .skills-section .add-skills .add-skills-btn{
+        height: 0.9rem;
+        width: 0.9rem
+        }
+    .content-div .skills-section .skill-keywords .item-span{
+            font-size: 0.5rem
+    }
+
+    .content-div .basic-details label,
+    .content-div .social-details label,
+    .content-div .skills-section label {
+        font-size: 0.7rem;
+    }
+
+    .content-div .basic-details input,
+    .content-div .basic-details textarea,
+    .content-div .social-details .inp-box,
+    .content-div .skills-section input { 
+        font-size: 0.6rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    .content-div .skills-section .Dropdown-root {
+        font-size: 0.5rem;
+    }
+    .content-div .skills-section .img-span .tag-img,
+    .content-div .skills-section .tag-img-count{
+        height: 1.5rem;
+        width: 1.5rem;
+        border-radius: 50%;
+        object-fit: cover;
+        font-size: 0.8rem;
+    }
+
+    .content-div .skills-section .review-tags{
+        font-size: 0.6rem;
     }
 }

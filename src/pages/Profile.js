@@ -122,7 +122,7 @@ export default class Profile extends Component {
             // {id: 4, name:"p4", shot: [w1, pl2, w1, pl2], likes: 100, comments: 100, shares:0,},
         ],
         isSelf : false,
-        editProf: true,
+        editProf: false,
     }
 
     componentDidMount(){
@@ -358,7 +358,11 @@ export default class Profile extends Component {
                     return(
                         <div key={item.title} className="profile-portfolio-grid">
                             {resultList}
+                            {this.state.isSelf?
                             <AddPost />
+                            :
+                            ""}
+                            
                         </div>
                     )
                 }
@@ -371,7 +375,10 @@ export default class Profile extends Component {
                     return(
                         <div key={item.title} className="profile-shots">
                             {resultList}
+                            {this.state.isSelf?
                             <AddPost />
+                            :
+                            ""}
                         </div>
                     )
                 }
@@ -395,7 +402,10 @@ export default class Profile extends Component {
                 return(
                     <div key={item.title} className="profile-portfolio-grid">
                         {resultList}
+                        {this.state.isSelf?
                         <AddPost />
+                        :
+                        ""}
                     </div>
                 )
             }
@@ -448,9 +458,14 @@ export default class Profile extends Component {
                 
                 return(
                     <React.Fragment key={item.title}>
-                        <div className="profile-tags-selector">
-                            <Subnav subNavList={this.state.tagNavOptions} selectSubMenu={this.selectTagNavMenu} getMenuCount={this.getMenuCount}/>
-                        </div>
+                        {this.state.isSelf? 
+                            <div className="profile-tags-selector">
+                                <Subnav subNavList={this.state.tagNavOptions} selectSubMenu={this.selectTagNavMenu} getMenuCount={this.getMenuCount}/>
+                            </div>
+                        : 
+                            ""
+                        }
+                        
                         <div className="profile-portfolio-grid">
                             {resultList}
                         </div>

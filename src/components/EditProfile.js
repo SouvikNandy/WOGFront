@@ -13,6 +13,7 @@ import ImgCompressor from '../utility/ImgCompressor';
 import SideBar from "./SideBar";
 import IndianCityList from '../components/IndianCityList';
 import FriendList from './FriendList';
+import TagUser from '../components/TagUser';
 
 export class EditProfile extends Component {
     state ={
@@ -152,6 +153,7 @@ export class EditProfile extends Component {
             });
         }
         else{
+            console.log(this.state.sideViewContent);
             this.setState({
                 teams: [...this.state.teams.filter(item => item.id !== idx)],
                 sideViewContent: [...this.state.sideViewContent.filter(item => item.props.data.id !== idx)]
@@ -163,14 +165,15 @@ export class EditProfile extends Component {
     addSkills = () =>{
         let ele = document.getElementById("skill-keywords")
         let valueset = ele.value;
+        if (valueset === ""){return false}
         valueset = valueset.split(',');
+        console.log("valueset.length", valueset.length, valueset)
         this.setState({skills: [...this.state.skills, ...valueset]});
         ele.value = "";
     }
     removeSkills = (ele) =>{
         this.setState({skills: this.state.skills.filter(item => item!== ele)})
     }
-
 
     pageContent = () =>{
         let contentBlock = [];
@@ -297,7 +300,7 @@ export class EditProfile extends Component {
             }
             else if(ele.title === "Skills & Teams" && ele.isActive === true){
                 let options = ['Photographer', 'Editor', 'Makeup Artist']
-                let skillList = []
+                let skillList = [];
                 this.state.skills.map(item => {
                     skillList.push(
                         <span className="item-span" key={item}>
@@ -307,7 +310,50 @@ export class EditProfile extends Component {
                         </span>)
                     return item
                 })
+
+                let tagList = [];
+                let existingList = [];
+                let maxCount = 5;
+
+                // all members list
+                this.state.teams.map(item=>{
+                    existingList.push(
+                        <TagUser key={item.id} data={item} onRemoveMember={this.onRemoveMember}/>
+                    )
+                    return item
+                })
+
+                if (this.state.teams.length > maxCount){
+                    let tagUsers =  this.state.teams
+                    let remainingTagsCount = tagUsers.length - maxCount
+                    for(let i=0; i<maxCount; i++){
+                        tagList.push(
+                        <span key={tagUsers[i].id} className="img-span">
+                            <img className="tag-img" src={tagUsers[i].profile_pic} alt={tagUsers[i].username}/>
+                        </span>)
+                    }
+                    tagList.push(<span key="tag-img-count" className="tag-img-count" 
+                    onClick={this.displaySideView.bind(this, {content: existingList, sureVal: true})}>+{remainingTagsCount}</span>)
+                }
                 
+                else{
+                    this.state.teams.map(ele => {
+                        tagList.push(
+                        <span key={ele.id} className="img-span">
+                            <img className="tag-img" src={ele.profile_pic} alt={ele.username}/>
+                        </span>
+                        )
+                        return ele
+                    })
+                }
+                if(this.state.teams.length > 0){
+                    tagList.push(
+                        <button key="review-tags" className="btn-anc review-tags" 
+                        onClick={this.displaySideView.bind(this, {content: existingList, sureVal: true})}>Review all</button>
+                        ) 
+
+                }
+                    
                 contentBlock.push(
                     <div className="skills-section">
                         <div className="select-profession">
@@ -335,6 +381,7 @@ export class EditProfile extends Component {
                         </span>
                         <div className="skill-keywords">
                             <span className="added-skills-text">Added Teams</span>
+                            {tagList}
                         </div>
                         <input type="text" id="memo" name="memo" placeholder="Search Teams / organisations" 
                             onSelect={this.chooseOptions.bind(
