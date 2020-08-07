@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import '../assets/css/shotmodalview.css';
 
 import { FaPlus, FaCheckDouble } from "react-icons/fa";
-import { AiFillLeftCircle, AiFillRightCircle } from "react-icons/ai";
-
+import { AiFillLeftCircle, AiFillRightCircle, AiOutlineCopyright } from "react-icons/ai";
+import {BsThreeDotsVertical} from "react-icons/bs";
+import {GoReport} from "react-icons/go";
 import ModalLikes from '../components/ModalLikes';
 import ModalComments from '../components/ModalComments';
 import GoBack from "../components/GoBack";
 import { UserFlat } from '../components/UserView';
 import TagUser from '../components/TagUser';
 import SideBar from '../components/SideBar';
+import ReportContent from '../components/ReportContent'
 
 // import {isSelfUser} from '../utility/Utility'
 
@@ -72,7 +74,11 @@ export class ShotModalView extends Component {
         sideBarFullScreen: false,
 
         // slider count management
-        currIndex: 0
+        currIndex: 0,
+
+        // report image
+        reportBox: false
+
     }
 
     doLike = () => {
@@ -201,8 +207,12 @@ export class ShotModalView extends Component {
         else{
             shot.isSaved = !shot.isSaved;
         }
-        this.setState({ shot });
+        this.setState({ shot : shot });
 
+    }
+
+    showReportOptions = () =>{
+        this.setState({reportBox : !this.state.reportBox})
     }
     
     render() {
@@ -275,7 +285,29 @@ export class ShotModalView extends Component {
                             <div className="m-options fade-down">
                                 <div className="m-options-menu">
                                         <GoBack activeIcon={true} clickMethod={this.props.openModalView} />
+                                        <BsThreeDotsVertical className="close-btn" onClick={this.showReportOptions}/>
+
+                                        {this.state.reportBox?
+                                            <div className="report-box">
+                                                <div className="r-opt"
+                                                onClick={this.displaySideView.bind(this, {content: <ReportContent />, sureVal: true})}
+                                                >
+                                                    <GoReport className="close-btn" />
+                                                    <span>Report content</span>
+                                                </div>
+                                                <div className="r-opt"
+                                                onClick={this.displaySideView.bind(this, {content: existingList, sureVal: true})}
+                                                >
+                                                    <AiOutlineCopyright className="close-btn" />
+                                                    <span>Claim copyright</span>
+                                                </div>
+
+                                            </div>
+                                            :
+                                            ""
+                                        }
                                 </div>
+                                
                             </div>
                             {/* preview image */}
                             <img alt="No Preview Available" className="m-shot-img" 

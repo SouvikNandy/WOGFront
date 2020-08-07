@@ -356,7 +356,7 @@
 
 
 /* potrait tablet, e-readers, kindle */
-@media(max-width: 800px) {
+@media(max-width: 850px) {
 
     .reviews-section .swiper-button-next,
     .reviews-section .swiper-button-prev {

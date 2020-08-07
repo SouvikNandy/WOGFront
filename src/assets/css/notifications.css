@@ -78,9 +78,10 @@
 .selection-option .s-noti .close-btn{
     font-size: 1rem;
     margin: 0 0.6rem;
+    color: var(--hover-one);
 }
 
-@media (max-width: 800px){
+@media (max-width: 850px){
     .noti-cube{
         width: 95%;
         margin-top: 0.5rem;

@@ -376,6 +376,12 @@ ul {
     cursor: pointer;
 }
 
+.info-text {
+    font-size: 0.7rem;
+    color: red;
+    margin: 0.5rem 0;
+}
+
 @media(max-width:900px) {
     .side-bar-view-active {
         width: 100vw;
@@ -413,4 +419,8 @@ ul {
     .m-display-name .m-adj {
         font-size: 0.5rem;
     }
+    .info-text{
+        font-size: 0.5rem;
+        margin: 0.2rem 0;
+        }
 }

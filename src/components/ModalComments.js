@@ -5,6 +5,7 @@ import AddComment from './AddComment';
 import '../assets/css/shotmodalview.css';
 
 import { animateScroll } from "react-scroll";
+import NoContent from './NoContent';
 
 
 
@@ -60,7 +61,7 @@ export class ModalComments extends CommentsBase {
 
     render() {
 
-        let allComments = <span className="m-no-comments">No comments yet</span>
+        let allComments = <span className="m-no-comments"><NoContent message={"No comments yet"}/></span>
         if (this.state.data.length > 0) {
             if (this.state.showAll) {
                 allComments = this.state.data

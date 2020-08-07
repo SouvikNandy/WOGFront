@@ -398,7 +398,12 @@ export class CommunityReview extends Component{
                 :
                 ""
                 }
+                {this.props.requireFooter === false?
+                ""
+                :
                 <Footer />
+                }
+                
                 
             </React.Fragment>
         )

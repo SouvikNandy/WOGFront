@@ -1,0 +1,92 @@
+@import url('config.css');
+
+.report-container{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.top-line{
+    width: 100%;
+    display: flex;
+    border-bottom: 1px solid var(--border-grey);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.top-line .headline{
+    width: 100%;
+    height: 6vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* padding: 0 0.5rem; */
+    font-size: 0.9rem;
+    font-weight: bold
+}
+
+.top-line .headline .r-icon{
+    
+    margin-right: 0.5rem;
+    font-size: 1rem;
+    color: var(--hover-one)
+}
+
+.top-line .info-text{
+    margin-top: 0;
+}
+
+
+.report-reasons{
+    width: 100%;
+    min-height: 15vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0.8rem 0;
+}
+
+.report-reasons .suggested-reasons{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.report-reasons .item-span {
+    font-size: 0.8rem;
+    padding: 0.4rem;
+}
+
+.report-reasons .custom-reason{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.report-reasons .custom-reason .inp-box{
+    width: 100%;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid var(--border-grey);
+    padding: 0.4rem;
+    margin-top: 0.8rem;
+    font-size: 0.8rem;
+}
+
+.report-reasons .custom-reason .add-icon{
+    color: var(--hover-two);
+    font-size: 1.5rem;
+}
+
+.disclaimer-box{
+    width: 100%;
+    height: 15vh;
+    background: var(--border-grey);
+    padding: 0.3rem;
+    border-radius: 0.5rem
+}
