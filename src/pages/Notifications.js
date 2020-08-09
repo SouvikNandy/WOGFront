@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import {BsThreeDotsVertical} from "react-icons/bs";
 import {FiBellOff} from 'react-icons/fi';
 import {AiFillCloseCircle} from 'react-icons/ai'
-import {UserNavBar} from "../components/Navbar";
+import {UserNavBar} from "../components/Navbar/Navbar";
 
 
 import w1 from "../assets/images/wedding1.jpg";

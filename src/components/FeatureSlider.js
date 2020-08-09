@@ -3,7 +3,7 @@ import Swiper from "swiper";
 import "swiper/css/swiper.css";
 import '../assets/css/userview.css';
 import '../assets/css/featureslider.css';
-import { UserCube } from './UserView';
+import { UserCube } from './Profile/UserView';
 
 // Images for shot
 import w1 from "../assets/images/wedding1.jpg";

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import "../assets/css/sidebar.css";
-import {UserFlat} from "../components/UserView";
+import "../../assets/css/sidebar.css";
+import {UserFlat} from "./UserView";
 import { AiFillCloseCircle, AiFillPlusCircle} from 'react-icons/ai';
 import { FaPlus } from 'react-icons/fa';
 

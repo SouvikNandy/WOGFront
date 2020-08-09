@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import '../assets/css/shotmodalview.css';
+import '../../assets/css/shotmodalview.css';
 import { FaHeart } from "react-icons/fa";
 import ModalReplies from "./ModalReplies";
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "../assets/css/sidebar.css";
-import SearchBar from "../components/SearchBar";
+import SearchBar from "./Search/SearchBar";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
 

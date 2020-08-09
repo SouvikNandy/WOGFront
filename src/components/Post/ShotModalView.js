@@ -1,22 +1,22 @@
 import React, { Component } from 'react';
-import '../assets/css/shotmodalview.css';
+import '../../assets/css/shotmodalview.css';
 
 import { FaPlus, FaCheckDouble } from "react-icons/fa";
 import { AiFillLeftCircle, AiFillRightCircle, AiOutlineCopyright } from "react-icons/ai";
 import {BsThreeDotsVertical} from "react-icons/bs";
 import {GoReport} from "react-icons/go";
-import ModalLikes from '../components/ModalLikes';
-import ModalComments from '../components/ModalComments';
-import GoBack from "../components/GoBack";
-import { UserFlat } from '../components/UserView';
-import TagUser from '../components/TagUser';
-import SideBar from '../components/SideBar';
-import ReportContent from '../components/ReportContent'
+import ModalLikes from './ModalLikes';
+import ModalComments from './ModalComments';
+import GoBack from "../GoBack";
+import { UserFlat } from '../Profile/UserView';
+import TagUser from '../Profile/TagUser';
+import SideBar from '../SideBar';
+import ReportContent from './ReportContent'
 
 // import {isSelfUser} from '../utility/Utility'
 
 // Images for shot
-import w1 from "../assets/images/wedding1.jpg";
+import w1 from "../../assets/images/wedding1.jpg";
 
 let sampleShot = {
     "id": 2,

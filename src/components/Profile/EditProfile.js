@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import '../assets/css/editprofile.css';
-import Subnav from '../components/Subnav';
+import '../../assets/css/editprofile.css';
+import Subnav from '../Navbar/Subnav';
 import {FaCameraRetro} from 'react-icons/fa';
 import DateTimePicker from 'react-datetime-picker';
 import {FiGlobe} from 'react-icons/fi';
@@ -9,11 +9,11 @@ import {FaFacebookSquare, FaInstagram, FaYoutube, FaPinterest} from 'react-icons
 
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
-import ImgCompressor from '../utility/ImgCompressor';
-import SideBar from "./SideBar";
-import IndianCityList from '../components/IndianCityList';
+import ImgCompressor from '../../utility/ImgCompressor';
+import SideBar from "../SideBar";
+import IndianCityList from '../IndianCityList';
 import FriendList from './FriendList';
-import TagUser from '../components/TagUser';
+import TagUser from '../Profile/TagUser';
 
 export class EditProfile extends Component {
     state ={

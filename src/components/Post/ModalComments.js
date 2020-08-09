@@ -2,10 +2,10 @@ import React from 'react';
 import CommentsBase from './CommentsBase';
 import CommentCubes from './CommentCubes';
 import AddComment from './AddComment';
-import '../assets/css/shotmodalview.css';
+import '../../assets/css/shotmodalview.css';
 
 import { animateScroll } from "react-scroll";
-import NoContent from './NoContent';
+import NoContent from '../NoContent';
 
 
 

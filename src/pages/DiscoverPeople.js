@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import {FollowUserCubeAlt} from '../components/UserView';
-import DummyShots from '../components/DummyShots';
+import {FollowUserCubeAlt} from '../components/Profile/UserView';
+import DummyShots from '../components/Post/DummyShots';
 import '../assets/css/profile.css';
 import {NewsFeedUserMenu, NewsFeedSuggestions} from './NewsFeeds';
 import '../assets/css/newsfeeds.css';
 import '../assets/css/discoverPeople.css';
-import {UserNavBar} from "../components/Navbar";
+import {UserNavBar} from "../components/Navbar/Navbar";
 
 // Images for shot
 import w1 from "../assets/images/wedding1.jpg";

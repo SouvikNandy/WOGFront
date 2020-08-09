@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Swiper from "swiper";
 import "swiper/css/swiper.css";
-import '../assets/css/review.css';
-import pl1 from "../assets/images/wedding1.jpg"
-import pl2 from "../assets/images/people/2.jpg";
+import '../../assets/css/review.css';
+import pl1 from "../../assets/images/wedding1.jpg"
+import pl2 from "../../assets/images/people/2.jpg";
 import { FaQuoteLeft, FaQuoteRight, FaFrown, FaMeh, FaLaugh, FaLaughWink, FaKissWinkHeart } from "react-icons/fa";
 
 

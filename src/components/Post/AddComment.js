@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../assets/css/shotmodalview.css';
+import '../../assets/css/shotmodalview.css';
 
 export default class AddComment extends Component {
     state = {

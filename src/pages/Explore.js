@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import "../assets/css/explore.css";
 import '../assets/css/profile.css';
-import SearchHead from '../components/SearchHead';
-import {Shot} from '../components/Shot';
+import SearchHead from '../components/Search/SearchHead';
+import {Shot} from '../components/Post/Shot';
 // Images for shot
 import w1 from "../assets/images/wedding1.jpg";
 import pl2 from "../assets/images/people/2.jpg";

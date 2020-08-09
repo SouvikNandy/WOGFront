@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import '../assets/css/navbar.css';
+import '../../assets/css/navbar.css';
 // import { FaAlignRight } from "react-icons/fa";
 import { FaRegUserCircle, FaRegPaperPlane } from "react-icons/fa";
 import { MdWallpaper } from "react-icons/md";
 
 import { GrSearchAdvanced } from "react-icons/gr";
 import {AiOutlineAlignRight, AiOutlineAlignLeft} from 'react-icons/ai';
-import SideBar from "../components/SideBar";
-import {NewsFeedUserMenu} from "../pages/NewsFeeds";
-import NotificationButton from '../components/NotificationButton';
+import SideBar from "../SideBar";
+import {NewsFeedUserMenu} from "../../pages/NewsFeeds";
+import NotificationButton from '../NotificationButton';
 
 
 

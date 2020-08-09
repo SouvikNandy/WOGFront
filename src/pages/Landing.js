@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar/Navbar';
 import '../assets/css/landing.css';
-import {ReviewSwiper} from '../components/Reviews';
+import {ReviewSwiper} from '../components/Review/Reviews';
 import Footer from '../components/Footer';
 // import Shot from '../components/Shot';
 import { FaAngleRight } from "react-icons/fa";
-import ShotPalette from '../components/Shot';
+import ShotPalette from '../components/Post/Shot';
 
 export class Landing extends Component {
     state = {

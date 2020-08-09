@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import "../assets/css/config.css";
-import "../assets/css/searchHead.css";
+import "../../assets/css/config.css";
+import "../../assets/css/searchHead.css";
 
 import {AiFillCloseCircle} from 'react-icons/ai';
 // import { GrSearchAdvanced } from "react-icons/gr";

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import '../assets/css/landing.css';
-import DummyShots from '../components/DummyShots';
+import '../../assets/css/landing.css';
+import DummyShots from './DummyShots';
 
 
 import { Link } from "react-router-dom";
 import { FaHeart, FaPaperPlane } from "react-icons/fa";
 
 // Images for shot
-import w1 from "../assets/images/wedding1.jpg";
-import pl2 from "../assets/images/people/2.jpg";
+import w1 from "../../assets/images/wedding1.jpg";
+import pl2 from "../../assets/images/people/2.jpg";
 
 export class ShotPalette extends Component {
     state = {

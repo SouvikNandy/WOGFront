@@ -1,6 +1,6 @@
 import React from 'react';
 
-import "../assets/css/userview.css";
+import "../../assets/css/userview.css";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 // import w1 from "../assets/images/wedding1.jpg";

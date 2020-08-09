@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {ReviewCurved} from "../components/Reviews";
+import {ReviewCurved} from "../components/Review/Reviews";
 import "../assets/css/addpost.css";
 import "../assets/css/review.css";
 import { FaPencilAlt, FaPlus, 
@@ -11,11 +11,11 @@ import { FaPencilAlt, FaPlus,
 } from 'react-icons/fa';
 import {AiFillHeart} from 'react-icons/ai';
 import {generateId} from '../utility/Utility.js';
-import Subnav from '../components/Subnav';
+import Subnav from '../components/Navbar/Subnav';
 
 import pl1 from "../assets/images/wedding1.jpg";
 import pl2 from "../assets/images/people/2.jpg";
-import StickyBoard from '../components/StickyBoard';
+import StickyBoard from '../components/Review/StickyBoard';
 import Footer from '../components/Footer';
 import NoContent from '../components/NoContent';
 

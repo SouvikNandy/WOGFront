@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import '../assets/css/subnav.css';
+import '../../assets/css/subnav.css';
 
 export default class Subnav extends Component {
     render(){

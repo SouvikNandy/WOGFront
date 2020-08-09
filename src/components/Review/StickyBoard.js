@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import "../assets/css/addpost.css";
-import '../assets/css/stickyBoard.css';
+import "../../assets/css/addpost.css";
+import '../../assets/css/stickyBoard.css';
 
 import { FaPlus } from 'react-icons/fa';
-import {generateId} from '../utility/Utility';
+import {generateId} from '../../utility/Utility';
 
 
 export class StickyBoard extends Component {

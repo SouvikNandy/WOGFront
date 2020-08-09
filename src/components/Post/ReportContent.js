@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../assets/css/reportContent.css';
+import '../../assets/css/reportContent.css';
 import {GoReport} from "react-icons/go";
 import {AiFillPlusCircle, AiOutlineCopyright, AiFillWarning} from 'react-icons/ai';
 

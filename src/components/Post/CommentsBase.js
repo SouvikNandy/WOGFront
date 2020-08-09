@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import '../assets/css/shotmodalview.css';
-import {generateId} from '../utility/Utility.js';
+import '../../assets/css/shotmodalview.css';
+import {generateId} from '../../utility/Utility.js';
 
 // Images for shot
-import w1 from "../assets/images/wedding1.jpg";
+import w1 from "../../assets/images/wedding1.jpg";
 
 class CommentsBase extends Component {
     state = {

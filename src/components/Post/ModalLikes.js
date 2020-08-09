@@ -1,5 +1,5 @@
 import React from 'react';
-import '../assets/css/shotmodalview.css';
+import '../../assets/css/shotmodalview.css';
 
 import { FaHeart, FaPaperPlane, FaRegHeart, FaRegComment, FaRegPaperPlane, FaBookmark, FaRegBookmark } from "react-icons/fa";
 

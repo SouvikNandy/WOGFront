@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import '../assets/css/portfolio.css';
-import ShotModalView from './ShotModalView';
-import { ShotFooterLikePreview } from '../components/Shot';
+import '../../assets/css/portfolio.css';
+import ShotModalView from '../Post/ShotModalView';
+import { ShotFooterLikePreview } from '../Post/Shot';
 
 
 export class Portfolio extends Component{

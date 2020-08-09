@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../assets/css/profile.css';
+import '../../assets/css/profile.css';
 import Subnav from '../components/Subnav';
 import NoContent from '../components/NoContent';
 

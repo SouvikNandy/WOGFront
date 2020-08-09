@@ -3,16 +3,16 @@ import '../assets/css/profile.css';
 import { FaPlus, FaPaperPlane , FaCheckCircle, FaCameraRetro} from "react-icons/fa";
 import { AiFillCloseCircle } from 'react-icons/ai';
 // import { AiOutlineHome, AiOutlineSearch, AiOutlineBell, AiOutlineBulb } from "react-icons/ai";
-import SearchHead from '../components/SearchHead';
-import Subnav from '../components/Subnav';
-import UserAbout from '../components/UserAbout';
-import {Shot, ShotPalette} from '../components/Shot';
-import Portfolio from '../components/Portfolio';
-import AddPost from '../components/AddPost';
+import SearchHead from '../components/Search/SearchHead';
+import Subnav from '../components/Navbar/Subnav';
+import UserAbout from '../components/Profile/UserAbout';
+import {Shot, ShotPalette} from '../components/Post/Shot';
+import Portfolio from '../components/Profile/Portfolio';
+import AddPost from '../components/Post/AddPost';
 import Footer from '../components/Footer';
-import {FollowUserCube} from '../components/UserView';
+import {FollowUserCube} from '../components/Profile/UserView';
 // import {UserNavBar} from "../components/Navbar";
-import DummyShots from '../components/DummyShots';
+import DummyShots from '../components/Post/DummyShots';
 import {generateId, isSelfUser} from '../utility/Utility.js';
 import NoContent from '../components/NoContent';
 
@@ -20,9 +20,9 @@ import NoContent from '../components/NoContent';
 import w1 from "../assets/images/wedding1.jpg";
 import pl2 from "../assets/images/people/2.jpg";
 import CommunityReview from '../pages/CommunityReview'
-import { UserNavBar } from '../components/Navbar';
+import { UserNavBar } from '../components/Navbar/Navbar';
 import { TiEdit } from 'react-icons/ti';
-import EditProfile from '../components/EditProfile';
+import EditProfile from '../components/Profile/EditProfile';
 import ImgCompressor from '../utility/ImgCompressor';
 
 

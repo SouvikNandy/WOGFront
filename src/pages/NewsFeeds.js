@@ -5,10 +5,10 @@ import { FaCameraRetro } from 'react-icons/fa';
 import {BsClockHistory, BsBookmarks} from 'react-icons/bs';
 import {AiOutlineUsergroupAdd, AiOutlineStar, AiOutlinePoweroff} from 'react-icons/ai';
 import {FiUnlock, FiSettings} from 'react-icons/fi';
-import { UserFlat } from '../components/UserView';
-import Portfolio from '../components/Portfolio';
-import ModalLikes from '../components/ModalLikes';
-import {UserNavBar} from "../components/Navbar";
+import { UserFlat } from '../components/Profile/UserView';
+import Portfolio from '../components/Profile/Portfolio';
+import ModalLikes from '../components/Post/ModalLikes';
+import {UserNavBar} from "../components/Navbar/Navbar";
 import {Link} from 'react-router-dom';
 import ImgCompressor from '../utility/ImgCompressor';
 

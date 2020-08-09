@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import Swiper from "swiper";
 
 import "swiper/css/swiper.css";
-import "../assets/css/addpost.css";
+import "../../assets/css/addpost.css";
 import { FaCameraRetro, FaPlus } from 'react-icons/fa';
 import { AiFillCloseCircle, AiOutlineFileAdd } from 'react-icons/ai';
-import SideBar from "./SideBar";
-import { TagUser } from './TagUser';
-import IndianCityList from '../components/IndianCityList';
-import FriendList from './FriendList';
-import ImgCompressor from '../utility/ImgCompressor';
+import SideBar from "../SideBar";
+import { TagUser } from '../Profile/TagUser';
+import IndianCityList from '../IndianCityList';
+import FriendList from '../Profile/FriendList';
+import ImgCompressor from '../../utility/ImgCompressor';
 
 
 // video thumbnail
-import videoThumbnail from '../assets/images/icons/video-thumbnail.jpg'
+import videoThumbnail from '../../assets/images/icons/video-thumbnail.jpg'
 
 // Add post button
 export class AddPost extends Component {

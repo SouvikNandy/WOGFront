@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { TagUser } from './TagUser';
-import { SideBarHead } from "./SideBar";
+import { SideBarHead } from "../SideBar";
 // Images for shot
-import w1 from "../assets/images/wedding1.jpg";
+import w1 from "../../assets/images/wedding1.jpg";
 
 export class FriendList extends Component {
     state = {

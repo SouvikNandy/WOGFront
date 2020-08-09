@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import GoBack from "../components/GoBack";
-import SearchBar from "../components/SearchBar";
+import GoBack from "../GoBack";
+import SearchBar from "./SearchBar";
 import {FaHashtag} from "react-icons/fa";
 import {AiFillCloseCircle} from 'react-icons/ai';
 
-import pl2 from "../assets/images/people/2.jpg";
+import pl2 from "../../assets/images/people/2.jpg";
 
 export default class SearchHead extends Component {
     state = {
