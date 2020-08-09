@@ -40,11 +40,13 @@ export class Explore extends Component {
                             <SearchHead />
                             <div className="e-head-suggestions">
                                 <div className="e-fixed-sug">
+                                    <span className="tag-lable">Filters : </span>
                                     <span key={"ef1"} className="item-span">Shots</span>
                                     <span key={"ef2"} className="item-span">People</span>
-                                    <span key={"ef3"} className="item-span">Places</span>
+                                    <span key={"ef3"} className="item-span">Hashtags</span>
                                 </div>
                                 <div className="e-floating-sug">
+                                    <span className="tag-lable">Suggestions : </span>
                                     <span key={"efl1"} className="item-span">Photogarphers</span>
                                     <span key={"efl2"} className="item-span">Designers</span>
                                     <span key={"efl3"} className="item-span">Makeup-artists</span>

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import "../assets/css/config.css";
+import "../assets/css/searchHead.css";
 
-import { GrSearchAdvanced } from "react-icons/gr";
+import {AiFillCloseCircle} from 'react-icons/ai';
+// import { GrSearchAdvanced } from "react-icons/gr";
 
 
 export default class SearchBar extends Component {
@@ -26,20 +28,56 @@ export default class SearchBar extends Component {
       
 
     render(){
-        const placeHolder = this.props.searchPlaceHolder? this.props.searchPlaceHolder : "Search Shots/People/Places ...";
+        const placeHolder = this.props.searchPlaceHolder? this.props.searchPlaceHolder : "Search Shots/People/Hashtags ...";
         let outerDivClass = this.props.searchBarRequired ===false ? "search-div invisible": "search-div"
         return (
             <div className={outerDivClass}>
-                {this.props.searchOnChange?
-                <input type="text" placeholder={placeHolder} onChange={this.handleChange} id="search-box"/>
-                :
-                <input type="text" placeholder={placeHolder} id="search-box-default"/>
-                }
+                <div className="search-inp-box">
+                    {this.props.searchOnChange?
+                    <input type="text" placeholder={placeHolder} onChange={this.handleChange} id="search-box"/>
+                    :
+                    <input type="text" placeholder={placeHolder} id="search-box-default" 
+                    onSelect={this.props.searchBarSelected} onChange={this.handleChange}
                 
-                <button className="btn-anc search-btn"><GrSearchAdvanced className="srch-icon" /></button>
+                    />
+                    }
+                    {this.props.searchDropDown?
+                        <div className="search-dropdown">
+                            <div className="s-filters">
+                                <SearchFilters closeDropdown={this.props.searchBarSelected}/>
+                            </div>
+                            <div className="dropdown-container">
+                                {this.props.dropdownContent}
+                            </div>
+
+                        </div>
+                        :
+                        ""
+                    }
+                </div>
+                
+                
+                
+                {/* <button className="btn-anc search-btn"><GrSearchAdvanced className="srch-icon" /></button> */}
             </div>
         )
 
     }
     
+}
+
+function SearchFilters(props){
+    return(
+        <div className="filter-search">
+            <div className="filter-options">
+                <span key={"sf1"} className="item-span">Shots</span>
+                <span key={"sf2"} className="item-span">People</span>
+                <span key={"sf3"} className="item-span">Hashtags</span>
+            </div>
+            <div className="close-div" onClick={props.closeDropdown}>
+                <AiFillCloseCircle className="close-btn close-menu"  />
+            </div>
+
+        </div>
+    )
 }

@@ -767,6 +767,10 @@
     .m-comments {
         font-size: 0.8rem;
     }
+
+    .m-options-menu .report-box{
+        top: 8vh;
+    }
 }
 
 @media(max-width: 800px){

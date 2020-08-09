@@ -296,7 +296,8 @@ export class ShotModalView extends Component {
                                                     <span>Report content</span>
                                                 </div>
                                                 <div className="r-opt"
-                                                onClick={this.displaySideView.bind(this, {content: existingList, sureVal: true})}
+                                                onClick={this.displaySideView.bind(this, 
+                                                    {content: <ReportContent copyrightClaim={true} />, sureVal: true})}
                                                 >
                                                     <AiOutlineCopyright className="close-btn" />
                                                     <span>Claim copyright</span>
