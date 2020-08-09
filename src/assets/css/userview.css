@@ -21,7 +21,7 @@
     padding: 0;
     margin: 0.5rem 0;
     display: grid;
-    grid-template-rows: 15.5rem;
+    /* grid-template-rows: 15.5rem; */
     grid-gap: 5px;
     border-radius: 0.7rem;
     max-width: 50vw;
@@ -56,7 +56,7 @@
     margin-top: 0.5rem;
     padding-bottom: 0.5rem;
     /* line-height: 1; */
-    font-size: 1rem;
+    font-size: 0.9rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -99,7 +99,7 @@
 }
 
 .cu-prof-details .cu-p-title {
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: bold;
     display: block;
     color: var(--dark);
@@ -107,7 +107,11 @@
 
 .cu-prof-details .cu-p-content {
     margin-top: 0.2rem;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+}
+
+.cube-grid .cube-user-prof .m-fuser{
+    font-size: 0.8rem;
 }
 
 

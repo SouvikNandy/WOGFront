@@ -78,12 +78,12 @@ export default class Profile extends Component {
             ]
         },
         userFollower:[
-            // {"id": 1, "name":"John Doe", "username": "jhndoe", "profile_pic": w1, "designation": "photographer", "isFollowing": false},
-            // {"id": 2, "name":"Jenny Doe", "username": "jennydoe", "profile_pic": pl2, "designation": "photographer", "isFollowing": false}
+            {"id": 1, "name":"John Doe", "username": "jhndoe", "profile_pic": w1, "designation": "photographer", "isFollowing": false},
+            {"id": 2, "name":"Jenny Doe", "username": "jennydoe", "profile_pic": pl2, "designation": "photographer", "isFollowing": false}
         ],
         userFollowing:[
-            // {"id": 11, "name":"John Doe", "username": "jhndoe", "profile_pic": w1, "designation": "photographer", "isFollowing": true},
-            // {"id": 12, "name":"Jenny Doe", "username": "jennydoe", "profile_pic": pl2, "designation": "photographer", "isFollowing": true}
+            {"id": 11, "name":"John Doe", "username": "jhndoe", "profile_pic": w1, "designation": "photographer", "isFollowing": true},
+            {"id": 12, "name":"Jenny Doe", "username": "jennydoe", "profile_pic": pl2, "designation": "photographer", "isFollowing": true}
         ],
         userAbout:{
             // profile top
@@ -491,7 +491,7 @@ export default class Profile extends Component {
                 }
                 
                 return (
-                <div key={item.title} className="profile-portfolio-grid">
+                <div key={item.title} className="profile-user-grid">
                         {resultList}
                 </div>
                 )
@@ -513,7 +513,7 @@ export default class Profile extends Component {
                 }
                 
                 return (
-                    <div key={item.title} className="profile-portfolio-grid">
+                    <div key={item.title} className="profile-user-grid">
                             {resultList}
                     </div>
                     )

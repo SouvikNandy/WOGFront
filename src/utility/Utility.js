@@ -164,7 +164,7 @@ export const handleErrorResponse = (error, notifierKey) => {
         createFloatingNotification("error", notifierKey, errDefaultMsg);
     } else {
         errorResponse = error.message;
-        console.log("error occurred ", errDefaultMsg);
+        console.log("error occurred ", errorResponse);
         createFloatingNotification("error", notifierKey, errDefaultMsg);
     }
 }

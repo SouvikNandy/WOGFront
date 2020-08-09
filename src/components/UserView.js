@@ -68,7 +68,7 @@ export function FollowUserCube(props){
                         </div>
                     </div>
                     :
-                    <button className="btn m-fuser" onClick={() => props.startFollowing(ele)}>< FaPlus /> Follow</button>}
+                    <button className="btn m-fuser" onClick={() => props.startFollowing(ele)}><FaPlus className="add-btn"/> Follow</button>}
                     
                 </div>
                 

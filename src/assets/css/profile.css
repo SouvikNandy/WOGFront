@@ -294,6 +294,16 @@
 
 }
 
+.profile-user-grid {
+    padding: 0 6%;
+    margin: 0;
+    display: grid;
+    max-width: 100vw;
+    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+    grid-column-gap: 0.8rem;
+    margin-bottom: 1rem;
+}
+
 .profile-tags-selector {
     height: 5vh;
     margin: 0 6%;
@@ -388,6 +398,44 @@
 @media(max-width: 850px) {
     .tag-req {
         max-width: 100vw;
+    }
+
+    .profile-user-grid .user-cube-div {
+        grid-template-rows: auto;
+        padding: 0.4rem 0;
+
+    }
+
+    .profile-user-grid .cube-grid .cube-user-img{
+        height: 4.5rem;
+        width: 4.5rem;
+    }
+    .profile-user-grid .cube-grid .m-display-name{
+        font-size: 0.8rem;
+    }
+
+    .profile-user-grid .cube-grid .m-adj{
+        font-size: 0.7rem;
+    }
+
+    .profile-user-grid .cube-grid .cube-user-prof .m-fuser{
+        font-size: 0.7rem;
+    }
+    .profile-user-grid .cube-grid .cube-user-prof .m-fuser .add-btn{
+        height: 0.7rem;
+        width: 0.7rem;
+    }
+
+    .profile-user-grid .cube-grid .m-display-name .unfollow-div .m-fuser{
+        font-size: 0.6rem;
+    }
+
+    .profile-user-grid .cu-prof-details .cu-p-title {
+        font-size: 0.7rem;
+    }
+    
+    .profile-user-grid .cu-prof-details .cu-p-content {
+        font-size: 0.7rem;
     }
 }
 

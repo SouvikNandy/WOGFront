@@ -69,7 +69,8 @@ export class DiscoverPeople extends Component {
                     <NewsFeedUserMenu {...this.props}/>
                     <div className="nf-feeds">
                         <div className="discover-people-container">
-                            <div className="profile-portfolio-grid">
+                            <div className="headline">People you may know</div>
+                            <div className="profile-user-grid">
                                 {resultList}
                             </div>
                         </div>
