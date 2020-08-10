@@ -47,6 +47,7 @@ export class NewsFeedUserMenu extends Component{
         sideBarHead: false,
         searchBarRequired: false,
         sideViewContent: [],
+        altHeadText : null,
     }
 
     uploadPicture =(e, imgKey) =>{
@@ -59,7 +60,7 @@ export class NewsFeedUserMenu extends Component{
             this.setState({profile_pic: URL.createObjectURL(compressedFile)})
         }
     }
-    displaySideView = ({content, sureVal}) =>{
+    displaySideView = ({content, sureVal, altHeadText=null}) =>{
         let stateVal = !this.state.showSideView
         if (sureVal){
             stateVal = sureVal
@@ -67,7 +68,8 @@ export class NewsFeedUserMenu extends Component{
 
         this.setState({
             showSideView: stateVal,
-            // sideBarHead: true,
+            sideBarHead: true,
+            altHeadText: altHeadText
             
         })
 
@@ -129,7 +131,8 @@ export class NewsFeedUserMenu extends Component{
                             <div className="nf-menu-tokens"
                             onClick={this.displaySideView.bind(this, 
                             {content:<Settings closeSideBar={this.displaySideView}/>, 
-                            sureVal: true
+                            sureVal: true,
+                            altHeadText: "Settings"
                             })}>
                                 <FiSettings className="ico" />
                                 <span>Settings</span>
@@ -146,7 +149,7 @@ export class NewsFeedUserMenu extends Component{
                 <div className="form-side-bar-view side-bar-view-active">
                     <SideBar displaySideView={this.displaySideView} content={this.state.sideViewContent} 
                     searchPlaceHolder={this.state.searchPlaceHolder} sideBarHead={this.state.sideBarHead}
-                    searchBarRequired={this.state.searchBarRequired}/>
+                    searchBarRequired={this.state.searchBarRequired} altHeadText={this.state.altHeadText}/>
                 </div>
                 :
                 <div className="form-side-bar-view"></div>

@@ -53,6 +53,7 @@ class AddDocumentForm extends Component {
         sideBarHead: true,
         searchBarRequired: false,
         sideViewContent: [],
+        altHeadText : null,
 
         // diabled fields
         disabledFields: [],
@@ -65,7 +66,7 @@ class AddDocumentForm extends Component {
 
     }
 
-    displaySideView = ({content, sureVal}) =>{
+    displaySideView = ({content, sureVal, altHeadText=null}) =>{
         let stateVal = !this.state.showSideView
         if (sureVal){
             stateVal = sureVal
@@ -74,6 +75,7 @@ class AddDocumentForm extends Component {
         this.setState({
             showSideView: stateVal,
             sideBarHead: true,
+            altHeadText: altHeadText,
             
 
         })
@@ -301,7 +303,7 @@ class AddDocumentForm extends Component {
                             <div className="check-t-c">
                                 <input type="checkbox" className="check-box" />
                                 <span className="t-c-line">I have read and accepted the following 
-                                    <button className="btn-anc t-c-highlight" onClick={this.displaySideView.bind(this, {content: <TandCTemplate />})}> Terms and Conditions</button>
+                                    <button className="btn-anc t-c-highlight" onClick={this.displaySideView.bind(this, {content: <TandCTemplate />, sureVal: true, altHeadText: "Terms of use"})}> Terms and Conditions</button>
                                 </span>
                                 
                             </div>
@@ -321,7 +323,7 @@ class AddDocumentForm extends Component {
                 <div className="form-side-bar-view side-bar-view-active">
                     <SideBar displaySideView={this.displaySideView} content={this.state.sideViewContent} 
                     searchPlaceHolder={this.state.searchPlaceHolder} sideBarHead={this.state.sideBarHead}
-                    searchBarRequired={this.state.searchBarRequired}/>
+                    searchBarRequired={this.state.searchBarRequired} altHeadText={this.state.altHeadText}/>
                 </div>
                 :
                 <div className="form-side-bar-view"></div>

@@ -28,6 +28,7 @@ export class EditProfile extends Component {
         sideBarHead: true,
         searchBarRequired: false,
         sideViewContent: [],
+        altHeadText : null,
 
         // diabled fields
         disabledFields: [],
@@ -69,11 +70,14 @@ export class EditProfile extends Component {
                     item.isActive = false;
                 }
                 return item
-            })
+            }),
+            // on changing tab close the sidebar / clear previous disabledFields
+            showSideView : false,
+            disabledFields: []
         })
     }
 
-    displaySideView = ({content, sureVal}) =>{
+    displaySideView = ({content, sureVal, altHeadtext=null}) =>{
         let stateVal = !this.state.showSideView
         if (sureVal){
             stateVal = sureVal
@@ -82,6 +86,7 @@ export class EditProfile extends Component {
         this.setState({
             showSideView: stateVal,
             sideBarHead: true,
+            altHeadtext: altHeadtext
             
 
         })
@@ -333,7 +338,7 @@ export class EditProfile extends Component {
                         </span>)
                     }
                     tagList.push(<span key="tag-img-count" className="tag-img-count" 
-                    onClick={this.displaySideView.bind(this, {content: existingList, sureVal: true})}>+{remainingTagsCount}</span>)
+                    onClick={this.displaySideView.bind(this, {content: existingList, sureVal: true, altHeadtext: "Tagged Users"})}>+{remainingTagsCount}</span>)
                 }
                 
                 else{
@@ -349,7 +354,7 @@ export class EditProfile extends Component {
                 if(this.state.teams.length > 0){
                     tagList.push(
                         <button key="review-tags" className="btn-anc review-tags" 
-                        onClick={this.displaySideView.bind(this, {content: existingList, sureVal: true})}>Review all</button>
+                        onClick={this.displaySideView.bind(this, {content: existingList, sureVal: true, altHeadtext: "Tagged users"})}>Review all</button>
                         ) 
 
                 }
@@ -429,7 +434,7 @@ export class EditProfile extends Component {
                 <div className="form-side-bar-view side-bar-view-active">
                     <SideBar displaySideView={this.displaySideView} content={this.state.sideViewContent} 
                     searchPlaceHolder={this.state.searchPlaceHolder} sideBarHead={this.state.sideBarHead}
-                    searchBarRequired={this.state.searchBarRequired}/>
+                    searchBarRequired={this.state.searchBarRequired} altHeadText={this.state.altHeadText}/>
                 </div>
                 :
                 <div className="form-side-bar-view"></div>
