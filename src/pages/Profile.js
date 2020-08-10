@@ -529,7 +529,7 @@ export default class Profile extends Component {
                 let comp = <CommunityReview key={item.title} showSubNav={false} headMessgae={"Public reaction about this profile"}
                 requireFooter={false}/>
                 if(this.props.isAuthenticated){
-                return (<div className="activated-nav">{comp}</div>)
+                return (<div className="activated-nav" key="r-plt">{comp}</div>)
                 }
                 else{
                     return comp

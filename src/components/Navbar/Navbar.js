@@ -115,12 +115,11 @@ export class UserNavBar extends Component{
     }
 
     sideNFMenu = () =>{
-        console.log("props in usernav", this.props)
         return(
             <div className="side-nfuser-menu">
                 <AiOutlineAlignLeft className="nav-icon hide-left-menu" onClick={this.displaySideView}/>
                 <NewsFeedUserMenu username={"1amsid"}/>
-                </div>
+            </div>
         )
     }
 

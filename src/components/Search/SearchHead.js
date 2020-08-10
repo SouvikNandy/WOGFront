@@ -77,7 +77,7 @@ function RecentSearchPalette(props){
         props.data.map(item =>{
             if(item.category === "user"){
                 resultBlock.push(
-                    <div className="s-recent-div">
+                    <div className="s-recent-div" key={item.id}>
                         <img src={item.profile_pic} alt="" className="u-img" />
                         <div className="recent-identity">
                             <span className="u-name">{item.name}</span>
@@ -90,7 +90,7 @@ function RecentSearchPalette(props){
             }
             else{
                 resultBlock.push(
-                    <div className="s-recent-div">
+                    <div className="s-recent-div" key={item.id}>
                         <div className="hash-circle">
                             <FaHashtag className="hash-icon" />
                         </div>

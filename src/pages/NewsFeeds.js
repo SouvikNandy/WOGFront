@@ -4,13 +4,15 @@ import {TiEdit} from "react-icons/ti";
 import { FaCameraRetro } from 'react-icons/fa';
 import {BsClockHistory, BsBookmarks} from 'react-icons/bs';
 import {AiOutlineUsergroupAdd, AiOutlineStar, AiOutlinePoweroff} from 'react-icons/ai';
-import {FiUnlock, FiSettings} from 'react-icons/fi';
+import {FiSettings} from 'react-icons/fi';
 import { UserFlat } from '../components/Profile/UserView';
 import Portfolio from '../components/Profile/Portfolio';
 import ModalLikes from '../components/Post/ModalLikes';
 import {UserNavBar} from "../components/Navbar/Navbar";
 import {Link} from 'react-router-dom';
 import ImgCompressor from '../utility/ImgCompressor';
+import SideBar from "../components/SideBar";
+import Settings from '../components/Settings/Settings'
 
 import w1 from "../assets/images/wedding1.jpg";
 import pl2 from "../assets/images/people/2.jpg";
@@ -38,78 +40,120 @@ export class NewsFeedUserMenu extends Component{
     state ={
         profile_pic: w1,
         name: "John Doe",
-        designation: "photographer"
+        designation: "photographer",
 
+        // sidebar states
+        showSideView: false,
+        sideBarHead: false,
+        searchBarRequired: false,
+        sideViewContent: [],
     }
 
     uploadPicture =(e, imgKey) =>{
         console.log(e.target.files, imgKey)
         ImgCompressor(e, this.addFileToState, imgKey)
     }
+
     addFileToState = (compressedFile, imgKey) =>{
         if (imgKey === "profile_pic"){
             this.setState({profile_pic: URL.createObjectURL(compressedFile)})
         }
     }
+    displaySideView = ({content, sureVal}) =>{
+        let stateVal = !this.state.showSideView
+        if (sureVal){
+            stateVal = sureVal
+        }
+
+        this.setState({
+            showSideView: stateVal,
+            // sideBarHead: true,
+            
+        })
+
+        if(content){
+            this.setState({
+                sideViewContent: content
+            })
+        }
+        
+    }
     render(){
         let username = this.props.username? this.props.username: this.props.match.params.username
         return(
-            <div className="nf-user-menu">
-                <div className="nf-user-menu-overlay"></div>
-                <div className="nf-user-edit">
-                    <div className="nf-user-img">
-                        <img className="cube-user-img " src={this.state.profile_pic} alt=""/>
-                        <span className="edit-pic">
-                            <input type="file" className="pic-uploader" onChange={ e => this.uploadPicture(e, 'profile_pic')}/>
-                            <FaCameraRetro  className="cam-icon"/>
+            <React.Fragment>
+                <div className="nf-user-menu">
+                    <div className="nf-user-menu-overlay"></div>
+                    <div className="nf-user-edit">
+                        <div className="nf-user-img">
+                            <img className="cube-user-img " src={this.state.profile_pic} alt=""/>
+                            <span className="edit-pic">
+                                <input type="file" className="pic-uploader" onChange={ e => this.uploadPicture(e, 'profile_pic')}/>
+                                <FaCameraRetro  className="cam-icon"/>
+                            </span>
+                        </div>
+                                
+                        <span className="m-display-name">
+                            {this.state.name}
+                            <span className="m-adj">@{username}</span>
+                            <span className="m-adj">{this.state.designation}</span>
                         </span>
-                    </div>
-                            
-                    <span className="m-display-name">
-                        {this.state.name}
-                        <span className="m-adj">@{username}</span>
-                        <span className="m-adj">{this.state.designation}</span>
-                    </span>
-                    <button className="btn edit-btn"><TiEdit  className="ico" />Edit Profile</button>
-
-                </div>
-                <div className="nf-user-menulist">
-                    <div className="nf-upper-tokens">
-                        <div className="nf-menu-tokens">
-                            <BsClockHistory className="ico" />
-                            <span>Your Activities</span>
-                        </div>
-                        <Link className="link nf-menu-tokens" to={`/discover-people/${username}`} >
-                            <AiOutlineUsergroupAdd className="ico" />
-                            <span>Discover People</span>
-                        </Link>
-                        <Link className="link nf-menu-tokens" to={`/user-profile/${username}?active=Reviews`}>
-                            <AiOutlineStar className="ico" />
-                            <span>Ratings & Reviews</span>
-                        </Link>
-                        <Link className="link nf-menu-tokens" to={`/user-profile/${username}?active=Saved`}>
-                            <BsBookmarks className="ico" />
-                            <span>Saved</span>
-                        </Link>
+                        <button className="btn edit-btn"><TiEdit  className="ico" />Edit Profile</button>
 
                     </div>
-                    <div className="nf-lower-tokens">
-                        <div className="nf-menu-tokens">
-                            <FiUnlock className="ico" />
-                            <span>Privacy</span>
-                        </div>
-                        <div className="nf-menu-tokens">
-                            <FiSettings className="ico" />
-                            <span>Settings</span>
-                        </div>
-                        <div className="nf-menu-tokens">
-                            <AiOutlinePoweroff className="ico" />
-                            <span>Log Out</span>
-                        </div>
+                    <div className="nf-user-menulist">
+                        <div className="nf-upper-tokens">
+                            <div className="nf-menu-tokens">
+                                <BsClockHistory className="ico" />
+                                <span>Your Activities</span>
+                            </div>
+                            <Link className="link nf-menu-tokens" to={`/discover-people/${username}`} >
+                                <AiOutlineUsergroupAdd className="ico" />
+                                <span>Discover People</span>
+                            </Link>
+                            <Link className="link nf-menu-tokens" to={`/user-profile/${username}?active=Reviews`}>
+                                <AiOutlineStar className="ico" />
+                                <span>Ratings & Reviews</span>
+                            </Link>
+                            <Link className="link nf-menu-tokens" to={`/user-profile/${username}?active=Saved`}>
+                                <BsBookmarks className="ico" />
+                                <span>Saved</span>
+                            </Link>
 
+                        </div>
+                        <div className="nf-lower-tokens">
+                            {/* <div className="nf-menu-tokens">
+                                <FiUnlock className="ico" />
+                                <span>Privacy</span>
+                            </div> */}
+                            <div className="nf-menu-tokens"
+                            onClick={this.displaySideView.bind(this, 
+                            {content:<Settings closeSideBar={this.displaySideView}/>, 
+                            sureVal: true
+                            })}>
+                                <FiSettings className="ico" />
+                                <span>Settings</span>
+                            </div>
+                            <div className="nf-menu-tokens">
+                                <AiOutlinePoweroff className="ico" />
+                                <span>Log Out</span>
+                            </div>
+
+                        </div>
                     </div>
-                </div>
             </div>
+            {this.state.showSideView?
+                <div className="form-side-bar-view side-bar-view-active">
+                    <SideBar displaySideView={this.displaySideView} content={this.state.sideViewContent} 
+                    searchPlaceHolder={this.state.searchPlaceHolder} sideBarHead={this.state.sideBarHead}
+                    searchBarRequired={this.state.searchBarRequired}/>
+                </div>
+                :
+                <div className="form-side-bar-view"></div>
+                }
+
+            </React.Fragment>
+            
 
         )
     }

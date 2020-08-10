@@ -141,7 +141,6 @@ ul {
     flex: 0.8;
     display: flex;
     align-items: center;
-    vertical-align: center;
 }
 
 .back-div .btn-anc {
