@@ -5,7 +5,7 @@ import '../../assets/css/navbar.css';
 import { FaRegUserCircle, FaRegPaperPlane } from "react-icons/fa";
 import { MdWallpaper } from "react-icons/md";
 
-import { GrSearchAdvanced } from "react-icons/gr";
+import { FiCompass } from "react-icons/fi";
 import {AiOutlineAlignRight, AiOutlineAlignLeft} from 'react-icons/ai';
 import SideBar from "../SideBar";
 import {NewsFeedUserMenu} from "../../pages/NewsFeeds";
@@ -99,7 +99,7 @@ export class UserNavBar extends Component{
             case "feeds":
                 return <MdWallpaper className="nav-icon"/>;
             case "explore":
-                return <GrSearchAdvanced className="nav-icon"/>;
+                return <FiCompass className="nav-icon"/>;
             case "notification":
                 // default is approved tag values
                 return <NotificationButton />;

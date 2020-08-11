@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import "../assets/css/sidebar.css";
 import SearchBar from "./Search/SearchBar";
 // import { AiOutlineCloseCircle } from "react-icons/ai";
-import {FiArrowRightCircle} from 'react-icons/fi'
+import {FiArrowRightCircle, FiArrowLeftCircle} from 'react-icons/fi'
 
 
 export class SideBar extends Component{
@@ -26,11 +26,15 @@ export class SideBar extends Component{
 
 export class SideBarHead extends Component{
     render(){
-        console.log("")
         return(
             <section className="side-bar-head">
                 <div className="back-div">
+                    {this.props.altBackBtn?
+                    <FiArrowLeftCircle className="close-btn" onClick={this.props.displaySideView.bind(this, {sureVal: false})}/>
+                    :
                     <FiArrowRightCircle className="close-btn" onClick={this.props.displaySideView.bind(this, {sureVal: false})}/>
+                    }
+                    
                 </div>
                 {this.props.searchBarRequired!==false? 
                 <SearchBar className="srch-bar" searchPlaceHolder={this.props.searchPlaceHolder} 

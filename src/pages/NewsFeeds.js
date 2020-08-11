@@ -60,7 +60,7 @@ export class NewsFeedUserMenu extends Component{
             this.setState({profile_pic: URL.createObjectURL(compressedFile)})
         }
     }
-    displaySideView = ({content, sureVal, altHeadText=null}) =>{
+    displaySideView = ({content, sureVal, sideBarHead=true}) =>{
         let stateVal = !this.state.showSideView
         if (sureVal){
             stateVal = sureVal
@@ -68,9 +68,7 @@ export class NewsFeedUserMenu extends Component{
 
         this.setState({
             showSideView: stateVal,
-            sideBarHead: true,
-            altHeadText: altHeadText
-            
+            sideBarHead: sideBarHead,            
         })
 
         if(content){
@@ -130,9 +128,9 @@ export class NewsFeedUserMenu extends Component{
                             </div> */}
                             <div className="nf-menu-tokens"
                             onClick={this.displaySideView.bind(this, 
-                            {content:<Settings closeSideBar={this.displaySideView}/>, 
+                            {content:<Settings displaySideView={this.displaySideView}/>, 
                             sureVal: true,
-                            altHeadText: "Settings"
+                            sideBarHead: false
                             })}>
                                 <FiSettings className="ico" />
                                 <span>Settings</span>

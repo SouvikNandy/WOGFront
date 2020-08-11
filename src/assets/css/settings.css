@@ -28,3 +28,57 @@
 .set-menu:hover {
     font-weight: bold;
 }
+
+.set-menu-label{
+    height: 3vh;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 0.6rem;
+    background-color: var(--border-grey);
+    
+}
+
+.select-options{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.select-options:hover {
+    font-weight: initial !important;
+}
+
+.select-options .prev-selected{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.select-options .selected-text{
+    font-size: 0.7rem;
+    /* padding: 0.2rem */
+}
+
+.select-options .opt-dropdown{
+    position: absolute;
+    top: 6vh;
+    right: 0;
+    box-shadow: var(--shadow);
+    padding: 0 0.5rem;
+}
+
+.select-options .opt-dropdown .opt-menu{
+    width: 100%;
+    height: 4vh;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 0.7rem;
+    border-bottom: 1px solid var(--border-grey);
+}
