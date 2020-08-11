@@ -122,9 +122,9 @@ class Comments extends Component{
     state={
         allowComments: [
             {id: 1, option: "Everyone", selected: true},
-            {id: 2, option: "Following & Followers", selected: false},
-            {id: 3, option: "Following only", selected: false},
-            {id: 4, option: "Followers only", selected: false},
+            {id: 2, option: "Followers & Following", selected: false},
+            {id: 3, option: "People You Follow", selected: false},
+            {id: 4, option: "Your Followers", selected: false},
         ],
         allowCommentsDropdown: false,
     }
@@ -186,9 +186,9 @@ class Comments extends Component{
 class Tags extends Component{
     state ={
         allowTags: [
-            {id: 1, option: "Everyone", selected: true},
-            {id: 2, option: "Following only", selected: false},
-            {id: 3, option: "No One", selected: false},
+            {id: 1, option: "No One", selected: false},
+            {id: 2, option: "Followers & Following", selected: true},
+            
         ],
         allowTagsDropdown: false,
         approveManually : [
