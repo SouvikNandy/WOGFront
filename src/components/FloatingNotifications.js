@@ -43,7 +43,7 @@ const createNotificationBtnClick = (type, title="title", message="message") => {
           break;
         case 'error':
 
-          NotificationManager.error(message, title, 5000, () => {
+          NotificationManager.error(message, title, 15000, () => {
             alert('callback');
           });
           break;

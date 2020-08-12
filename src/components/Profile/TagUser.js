@@ -15,11 +15,19 @@ export class TagUser extends Component{
                 </span>
                 
                 {this.props.allowFollow?
-                <span className="m-follow">
-                    <button className="btn m-fuser">< FaPlus /> Follow</button>
-                </span>
-                :
-                ""
+                    <span className="m-follow">
+                        <button className="btn m-fuser" onClick={this.props.allowFollow.bind(this, data.id)}>< FaPlus /> Follow</button>
+                    </span>
+                    :
+                    ""
+                }
+
+                {this.props.allowUnblock?
+                    <span className="m-follow">
+                        <button className="btn m-fuser dark-btn" onClick={this.props.allowUnblock.bind(this, data.id)}> Unblock </button>
+                    </span>
+                    :
+                    ""
                 }
                 
                 {this.props.onRemoveMember?

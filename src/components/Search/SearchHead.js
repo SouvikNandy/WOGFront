@@ -8,7 +8,7 @@ import pl2 from "../../assets/images/people/2.jpg";
 
 export default class SearchHead extends Component {
     state = {
-        searchDropDown : true,
+        searchDropDown : false,
         recentSearch : [
             {id:1,  phase: '#goodVibes', category: "hashtag"}, 
             {id:2,  username: 'milliebobbybrown', name:"millie Bobby Brown", category: "user", profile_pic: pl2 }, 

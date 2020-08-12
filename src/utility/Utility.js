@@ -121,6 +121,11 @@ export const getBackendHOST = (env = 'dev') => {
     return setup[env]["BACKEND_HOST"]
 }
 
+export const msToDateTime = (secondsVal) =>{
+    let dt = new Date(0);
+    dt.setUTCSeconds(secondsVal);
+    return dt.toDateString()
+}
 
 // LOCAL STORAGE MANAGEMENT
 export const saveInStorage = (key, value) => {

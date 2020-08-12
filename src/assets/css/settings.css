@@ -8,6 +8,10 @@
     /* background: red; */
 }
 
+.settings-container .side-bar-head{
+    margin-bottom: 0.5rem;
+}
+
 .set-menu {
     height: 5vh;
     width: 100%;
@@ -83,4 +87,87 @@
     align-items: center;
     font-size: 0.7rem;
     border-bottom: 1px solid var(--border-grey);
+}
+
+/* change password */
+.change-pass-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.change-pass-container label
+{
+    width: 100%;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+.change-pass-container .password-inp-field{
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 5vh;
+}
+
+.change-pass-container .password-inp-field input{
+    width: 100%;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid var(--border-grey);
+    font-size: 0.8rem;
+    padding: 0.5rem;
+   
+}
+
+.change-pass-container .password-inp-field .show-hide-icon{
+    position: absolute;
+    top: 2vh;
+    right: 0.8rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.change-pass-container .submit-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.8rem;
+    width: 100%;
+}
+
+.change-pass-container .submit-div .submit-btn{
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* login activity */
+
+.login-details-div{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 6vh;
+    border-bottom: 1px solid var(--border-grey);
+
+}
+
+.login-details-div .location-content{
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.8rem;
+    
+}
+
+.login-details-div .location-content .loc{
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.login-details-div .location-content .activity-time{
+    font-size: 0.75rem;
 }

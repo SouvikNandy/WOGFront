@@ -388,6 +388,14 @@ ul {
     margin: 0.5rem 0;
 }
 
+.notification-container .notification-message .title{
+    font-size: 0.9rem;
+}
+
+.notification-container .notification-message .message{
+    font-size: 0.85rem;
+}
+
 @media(max-width:900px) {
     .side-bar-view-active {
         width: 100vw;

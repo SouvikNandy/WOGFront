@@ -4,6 +4,7 @@ import {FiUnlock} from 'react-icons/fi';
 import {RiShieldFlashLine} from 'react-icons/ri';
 import {SideBarHead} from '../SideBar';
 import Privacy from './Privacy';
+import Security from './Security'
 
 export class Settings extends Component {
     state ={
@@ -28,7 +29,7 @@ export class Settings extends Component {
                     
                 }
                 else if (ele.name === "Security"){
-                    newContentblock = null
+                    newContentblock = <Security updateContentBlock={this.updateContentBlock} prvBtnClick={this.prvBtnClick} />
                 }
             }
             else{
@@ -118,7 +119,6 @@ export class Settings extends Component {
         return (
             <div className="settings-container">
                 {this.getHead()}
-                {/* <SideBarHead displaySideView ={this.props.displaySideView} searchBarRequired={false} altHeadText={'Settings'}/> */}
                 {this.getContent()}
             </div>
         )
