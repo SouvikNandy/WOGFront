@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {SideBarHead} from '../SideBar';
 import {FaRegComment, FaUserTag} from 'react-icons/fa';
-import {GoMention, GoCircleSlash} from 'react-icons/go';
+import {GoMention, GoCircleSlash, GoMail} from 'react-icons/go';
 import {FiUnlock} from 'react-icons/fi';
 import {AiOutlineHeart} from 'react-icons/ai';
-import {Comments, Tags, Mentions, AccountPrivacy, BlockedAccounts, CloseFriends} from './PrivacyOptions';
+import {Comments, Tags, Mentions, AccountPrivacy, BlockedAccounts, CloseFriends, ManageMails} from './PrivacyOptions';
 
 
 export class Privacy extends Component {
@@ -17,6 +17,7 @@ export class Privacy extends Component {
         ],
         connections : [
             {id: 'p5', name: "Account Privacy", isActive: false},
+            {id: 'p8', name: "Manage Mails", isActive: false},
             {id: 'p6', name: "Blocked Accounts", isActive: false},
             {id: 'p7', name: "Close Friends", isActive: false},
         ]
@@ -44,6 +45,9 @@ export class Privacy extends Component {
                 // connections
                 else if (ele.name === "Account Privacy"){
                     newContentblock = <AccountPrivacy  prvBtnClick={this.prvBtnClick}/>
+                }
+                else if (ele.name === "Manage Mails"){
+                    newContentblock = <ManageMails  prvBtnClick={this.prvBtnClick}/>
                 }
 
                 else if (ele.name === "Blocked Accounts"){
@@ -77,6 +81,8 @@ export class Privacy extends Component {
 
             case "Account Privacy":
                 return <FiUnlock className="ico" />
+            case "Manage Mails":
+                return <GoMail className="ico" />
             case "Blocked Accounts":
                 return <GoCircleSlash className="ico" />
             case "Close Friends":

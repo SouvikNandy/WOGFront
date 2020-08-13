@@ -372,6 +372,11 @@
 }
 
 @media(max-height: 500px) {
+
+    .edit-profile-container .sub-nav .sub-slide{
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
     .prof-img-section .e-user-img-back{
         height: 7rem;
         width: 7rem;

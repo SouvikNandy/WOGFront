@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import {SideBarHead} from '../SideBar';
-import {RiArrowDropDownLine} from 'react-icons/ri';
 import {FaMapMarkerAlt} from 'react-icons/fa';
 import {AiOutlineEyeInvisible, AiOutlineEye} from 'react-icons/ai';
 import {createFloatingNotification} from '../FloatingNotifications';
-import {msToDateTime} from '../../utility/Utility'
+import {msToDateTime} from '../../utility/Utility';
+import EditProfile from '../Profile/EditProfile';
+import {RecentSearchPalette} from '../Search/SearchHead'
 
+import w1 from '../../assets/images/wedding1.jpg';
+import pl2 from '../../assets/images/people/2.jpg';
 // SECURITY MENU OPTIONS
 
 // CHANGE PASSWORD
@@ -166,4 +169,102 @@ export class LoginActivity extends Component{
         )
     }
 }
-export default {ChangePassword, LoginActivity}
+
+
+
+export class AccountData extends Component{
+    state ={
+        userAbout:{
+            // profile top
+            "name": "Jane Doe",
+            "username": "janedoe",
+            "deisgnantion": "photographer",
+            "email": "souvikpxnandy@gmail.com",
+            "profile_pic": pl2,
+            "cover_pic": w1,
+            "isFollowing": false,
+
+            // about
+            "joined": "Feb 15, 2020",
+            "bio": "A digital agency for the modern world. We challenge core assumptions, unpick legacy behaviors, and streamline complex processes. Contact us at info@bb.agency",
+            "skills": ["photography", "dashboard", "development", "web design"],
+            "hometown": "Kolkata, India",
+            "currentcity": "Kolkata, India",
+            "birthday": "1 January, 1990",
+            // team
+            "teams" : [w1, pl2, w1, pl2],
+
+            // social handles
+            social_handles : {
+                "web": "www.abc.com",
+                "facebook": "www.facebook.com/abc",
+                "instagram": "www.instagram.com/abc",
+                "youtube": "www.youtube.com/abc",
+                "pinterest": null
+            }
+            
+        }
+    }
+    render(){
+        return(
+            <React.Fragment>
+                <EditProfile data={this.state.userAbout} closeModal={this.props.prvBtnClick}/>
+            </React.Fragment>
+        )
+    }
+}
+
+export function DownloadData(props){
+    return(
+        <div className="user-input-popup-container">
+            <div className="user-input-popup">
+                <span>Are you sure to coninue ?</span>
+                <div className="pop-up-action">
+                    <span className="pop-up-option-opt">Yes</span>
+                    <span className="pop-up-option-opt" onClick={props.prvBtnClick}>No</span>
+                </div>
+            </div>
+
+        </div>
+    )
+}
+
+export class SearchHistory extends Component{
+    state={
+        recentSearch : [
+            {id:1,  phase: '#goodVibes', category: "hashtag"}, 
+            {id:2,  username: 'milliebobbybrown', name:"millie Bobby Brown", category: "user", profile_pic: pl2 }, 
+            {id:3,  username: 'milliebobbybrown', name:"millie Bobby Brown", category: "user", profile_pic: pl2 }, 
+            {id:4,  "phase": '#goodVibes', "category": "hashtag"}, 
+            {id:11,  phase: '#goodVibes', category: "hashtag"}, 
+            {id:12,  username: 'milliebobbybrown', name:"millie Bobby Brown", category: "user", profile_pic: pl2 }, 
+            {id:13,  username: 'milliebobbybrown', name:"millie Bobby Brown", category: "user", profile_pic: pl2 }, 
+            {id:14,  "phase": '#goodVibes', "category": "hashtag"},
+
+        ],
+    }
+    removeFromRecent = (idx) =>{
+        if (idx === "all"){
+            this.setState({
+                recentSearch : []
+            })
+        }
+        else{
+            this.setState({
+                recentSearch : this.state.recentSearch.filter(ele => ele.id !== idx)
+            })
+
+        }
+        
+    }
+    render(){
+        return(
+            <React.Fragment>
+                <SideBarHead displaySideView ={this.props.prvBtnClick} searchBarRequired={false} 
+                altHeadText={"Search History"} altBackBtn={true} />
+                <RecentSearchPalette data={this.state.recentSearch} removeFromRecent={this.removeFromRecent} />
+            </React.Fragment>
+        )
+    }
+}
+export default {ChangePassword, LoginActivity, AccountData, DownloadData, SearchHistory}

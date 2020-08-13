@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import {SideBarHead} from '../SideBar';
 import {RiArrowDropDownLine} from 'react-icons/ri';
+import {AiFillPlusCircle} from 'react-icons/ai';
 import TagUser from '../Profile/TagUser';
+import {getCurrentTimeInMS} from '../../utility/Utility';
 import w1 from '../../assets/images/wedding_1.jpg'
 
 // PRIVACY MENU OPTIONS
@@ -368,4 +370,102 @@ export class CloseFriends extends Component{
         )
     }
 }
-export default {Comments, Tags, Mentions, AccountPrivacy, BlockedAccounts, CloseFriends}
+
+
+export class ManageMails extends Component{
+    state ={
+        mails: [
+            {'id': 1, "email": "souvik.nandy@nevaehtech.com", "default": false},
+            {'id': 2, "email": "souvikpxnandy@gmail.com", "default": true},
+            {'id': 3, "email": "souvik.nandy@getnadat.com", "default": false},
+        ],
+        addMailBox: false,
+    }
+    setDefault = (idx) =>{
+        this.setState({
+            mails: this.state.mails.map(ele=>{
+                if(ele.id === idx){
+                    ele.default = true
+                }
+                else{
+                    ele.default = false
+                }
+                return ele
+            })
+        })
+    }
+
+    removeMail = (idx) =>{
+        this.setState({mails: this.state.mails.filter(ele => ele.id!==idx)})
+    }
+
+    allowAddMail = () =>{
+        this.setState({allowAddMail: !this.state.allowAddMail})
+    }
+    addNewMail = () =>{
+        let ele = document.getElementById("new-mail-id");
+        if(ele.value === ""){
+            return false
+        }
+        let newRecord = {
+            id: getCurrentTimeInMS(),
+            email: ele.value,
+            default: false
+        }
+        this.setState({
+            mails: [newRecord, ...this.state.mails]
+        })
+        ele.value = ""
+
+    }
+
+    render(){
+        return(
+            <React.Fragment>
+                <SideBarHead displaySideView ={this.props.prvBtnClick} searchBarRequired={false} 
+                altHeadText={"Manage Mails"} altBackBtn={true} />
+                <div className="manage-mail-conatainer">
+                    <div className="default-mail">
+                        <label>Email</label>
+                        <span className="email-id">
+                            {this.state.mails.filter(ele=> ele.default===true)[0].email}
+                        </span>
+                    </div>
+                    <div className="add-new" >
+                        
+                        {this.state.allowAddMail?
+                            <React.Fragment>
+                                <span onClick={this.allowAddMail}>Cancel Adding New Email</span>
+                                <div className="add-email">
+                                    <input placeholder="Enter a new email" id="new-mail-id"></input>
+                                    <AiFillPlusCircle className="ico" onClick={this.addNewMail}/>
+                                </div>
+                            </React.Fragment>
+                            :
+                            <span onClick={this.allowAddMail}>Add New Email</span>
+                        }
+                        
+                        
+                        
+                    </div>
+                    <div className="other-mails">
+                        <div className="set-menu-label">Other Registered E-mails</div>
+                        {this.state.mails.filter(ele=> ele.default!==true).map(ele=>{
+                            return(
+                                <div className="non-default">
+                                    <span className="email-id">{ele.email}</span>
+                                    <div className="action-section">
+                                        <span className="btn-anc" onClick={this.setDefault.bind(this, ele.id)}>Set Default</span>
+                                        <span className="btn-anc" onClick={this.removeMail.bind(this, ele.id)}>Remove</span>
+                                    </div>
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
+
+            </React.Fragment>
+        )
+    }
+}
+export default {Comments, Tags, Mentions, AccountPrivacy, BlockedAccounts, CloseFriends, ManageMails}

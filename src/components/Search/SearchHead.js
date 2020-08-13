@@ -71,7 +71,7 @@ export default class SearchHead extends Component {
     
 }
 
-function RecentSearchPalette(props){
+export function RecentSearchPalette(props){
     let resultBlock = [];
     if (props.data.length > 0){
         props.data.map(item =>{

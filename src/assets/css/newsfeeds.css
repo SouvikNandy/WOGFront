@@ -89,7 +89,9 @@
     margin: 0.4rem 0;
     display: flex;
     flex-direction: column;
-    font-size: 0.8rem
+    font-size: 0.8rem;
+    justify-content: center;
+    align-items: center;
 }
 
 .nf-user-menu .edit-btn {
@@ -274,6 +276,21 @@
         width: 100%;
     }
 
+}
 
-
+@media(max-height: 500px){
+    .nf-user-img .cube-user-img{
+        height: 3.5rem;
+        width: 3.5rem;
+    }
+    
+    .side-nfuser-menu .nf-user-menu .nf-user-edit{
+        padding: 0.5rem
+    }
+    .nf-user-menulist .nf-menu-tokens{
+        margin: 0.5rem 0;
+        font-size: 0.8rem;
+        height: auto;
+    }
+    
 }

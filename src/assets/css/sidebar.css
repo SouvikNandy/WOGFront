@@ -114,6 +114,14 @@
 }
 
 @media(max-height: 500px) and (orientation: landscape) {
+
+    .side-bar-head{
+        height: 10vh;
+    }
+
+    .tag-user-div{
+        height: 10vh;
+    }
     .tag-user-div .tag-div-btn {
         height: 1.5rem;
         width: 1.5rem;
@@ -121,5 +129,10 @@
 
     .side-bar-content {
         line-height: 1.2;
+    }
+
+    .tag-user-div .m-follow .m-fuser{
+        padding: 0.4rem 0.8rem;
+        font-size: 0.65rem;
     }
 }

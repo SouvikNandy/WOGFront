@@ -103,6 +103,7 @@
     width: 100%;
     font-size: 0.75rem;
     font-weight: bold;
+    margin-top: 0.5rem
 }
 .change-pass-container .password-inp-field{
     position: relative;
@@ -120,8 +121,7 @@
     border: none;
     border-bottom: 1px solid var(--border-grey);
     font-size: 0.8rem;
-    padding: 0.5rem;
-   
+    padding: 0.5rem;   
 }
 
 .change-pass-container .password-inp-field .show-hide-icon{
@@ -171,4 +171,171 @@
 
 .login-details-div .location-content .activity-time{
     font-size: 0.75rem;
+}
+
+.settings-container .edit-profile-overlay{
+    height: 100%;
+    max-width: 30vw;
+}
+
+.settings-container .edit-profile-container{
+    height: 100%;
+    width: 100%;
+    /* width: 30vw; */
+    border-radius: 0;
+    padding-left: 0.5rem;
+    padding-right: 0.8rem;
+}
+
+.user-input-popup-container{
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-input-popup-container .user-input-popup{
+    padding: 0.6rem 0.8rem ;
+    border-radius: 0.7rem;
+    font-size: 0.8rem;
+    background: var(--light);
+}
+
+.user-input-popup-container .user-input-popup .pop-up-action{
+    margin-top: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    font-weight: bold;
+    border-top: 1px solid var(--border-grey);
+}
+.user-input-popup-container .user-input-popup .pop-up-action .pop-up-option-opt{
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+
+.settings-container .recent-search-div .s-recent-div{
+    width: 100%;
+    margin-right: 0;
+    background: transparent;
+    padding: 0.3rem 0.6rem;
+    border-bottom: 1px solid var(--border-grey);
+}
+
+.settings-container .recent-search-div .s-recent-div .hash-circle {
+    background: var(--border-grey);
+}
+
+.manage-mail-conatainer{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.manage-mail-conatainer .default-mail{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.manage-mail-conatainer .default-mail label{
+    width: 100%;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-bottom: 0.4rem;
+}
+
+.manage-mail-conatainer .email-id{
+    width: 100%;
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+}
+
+.manage-mail-conatainer .add-new{
+    min-height: 6vh;
+    width: 100%;
+    padding : 0.4rem 0;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-top: 1px solid var(--border-grey) ;
+    border-bottom: 1px solid var(--border-grey) ;
+    color: var(--hover-two);
+    display: flex;
+    justify-content: center;
+    /* align-items: flex-start; */
+    flex-direction: column;
+    
+}
+
+.manage-mail-conatainer .add-email{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0.5rem 0;
+}
+
+.manage-mail-conatainer .add-email input{
+    width: 90%;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid var(--border-grey);
+    font-size: 0.8rem;
+    padding: 0.5rem;
+}
+
+.manage-mail-conatainer .add-email .ico{
+    font-size: 1.2rem;
+    color: var(--success-color);
+}
+
+.manage-mail-conatainer .non-default{
+    width: 100%;
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-grey);
+}
+
+.manage-mail-conatainer .non-default .email-id{
+    width: 65%;
+}
+
+.manage-mail-conatainer .non-default .action-section{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    font-size: 0.7rem;
+    width: 35%;
+    color: var(--hover-two)
+    
+}
+
+@media(max-height: 500px){
+    .set-menu,
+    .login-details-div,
+    .manage-mail-conatainer .non-default{
+        height: 10vh;
+    }
+    .select-options .opt-dropdown{
+        top: 10vh;
+    }
+    .select-options .opt-dropdown .opt-menu{
+        height: 6vh;
+    }
+
+    .settings-container .edit-profile-overlay{
+        position: absolute;
+        top: 0;
+    }
+    .settings-container .sub-nav .sub-slide{
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+
 }

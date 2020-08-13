@@ -4,7 +4,7 @@ import {FaMapMarkerAlt, FaRegUser} from 'react-icons/fa';
 import {FiKey, FiDownload} from 'react-icons/fi';
 import {RiSearchEyeLine} from 'react-icons/ri';
 
-import {ChangePassword, LoginActivity} from './SecurityOptions';
+import {ChangePassword, LoginActivity, AccountData, DownloadData, SearchHistory} from './SecurityOptions';
 
 
 export class Security extends Component {
@@ -30,27 +30,24 @@ export class Security extends Component {
             if(ele.id === idx){
                 ele.isActive = true
                 headText = ele.name
-                // interactions
+                // login
                 if(ele.name === "Change Password"){
                     newContentblock = <ChangePassword prvBtnClick={this.prvBtnClick}/>
                 }
                 else if (ele.name === "Login Activity"){
                     newContentblock = <LoginActivity  prvBtnClick={this.prvBtnClick}/>
                 }
-                // else if (ele.name === "Mentions"){
-                //     newContentblock = <Mentions  prvBtnClick={this.prvBtnClick}/>
-                // }
-                // // connections
-                // else if (ele.name === "Account Privacy"){
-                //     newContentblock = <AccountPrivacy  prvBtnClick={this.prvBtnClick}/>
-                // }
-
-                // else if (ele.name === "Download data"){
-                //     newContentblock = <BlockedAccounts  prvBtnClick={this.prvBtnClick}/>
-                // }
-                // else if (ele.name === "Search History"){
-                //     newContentblock = <CloseFriends  prvBtnClick={this.prvBtnClick}/>
-                // }
+                // data and history
+                else if (ele.name === "Account Data"){
+                    newContentblock = <AccountData  prvBtnClick={this.prvBtnClick}/>
+                }
+                else if (ele.name === "Download Data"){
+                    newContentblock = <DownloadData  prvBtnClick={this.prvBtnClick}/>
+                }
+                else if (ele.name === "Search History"){
+                    newContentblock = <SearchHistory  prvBtnClick={this.prvBtnClick}/>
+                }
+                
             }
             else{
                 ele.isActive = false

@@ -13,7 +13,7 @@ import TagUser from '../Profile/TagUser';
 import SideBar from '../SideBar';
 import ReportContent from './ReportContent'
 
-// import {isSelfUser} from '../utility/Utility'
+import {msToDateTime} from '../../utility/Utility'
 
 // Images for shot
 import w1 from "../../assets/images/wedding1.jpg";
@@ -108,11 +108,6 @@ export class ShotModalView extends Component {
         })
     }
 
-    getUploadedDate = (secondsVal) =>{
-        let dt = new Date(0);
-        dt.setUTCSeconds(secondsVal);
-        return dt.toDateString()
-    }
 
     getSidebarDisplayImg = (imageObj) =>{
         return (<div className="side-bar-full-img"><img className="side-bar-display-img" alt="" src={imageObj} /></div>)
@@ -321,7 +316,7 @@ export class ShotModalView extends Component {
                                 <span className="p-attr-name">
                                     <span className="m-display-name">
                                         {this.state.shot.portfolio_name}<br />
-                                        <span className="m-adj">uploaded on: {this.getUploadedDate(this.state.shot.created_at)} </span>
+                                        <span className="m-adj">uploaded on: {msToDateTime(this.state.shot.created_at)} </span>
                                     </span>
                                 </span>
                                 <span className="p-attr-tags">
