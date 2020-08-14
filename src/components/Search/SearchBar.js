@@ -33,18 +33,18 @@ export default class SearchBar extends Component {
         return (
             <div className={outerDivClass}>
                 <div className="search-inp-box">
-                    {this.props.searchOnChange?
-                    <input type="text" placeholder={placeHolder} onChange={this.handleChange} id="search-box"/>
-                    :
+                    {this.props.defaultSearch?
                     <input type="text" placeholder={placeHolder} id="search-box-default" 
-                    onSelect={this.props.searchBarSelected} onChange={this.handleChange}
-                
-                    />
+                    onSelect={this.props.searchBarSelected} onChange={this.handleChange}/>
+                    :
+                    <input type="text" placeholder={placeHolder} onChange={this.handleChange} id="search-box"/>
+                    
+        
                     }
                     {this.props.searchDropDown?
                         <div className="search-dropdown">
                             <div className="s-filters">
-                                <SearchFilters closeDropdown={this.props.searchBarSelected}/>
+                                <SearchFilters closeDropdown={this.props.searchBarSelected} filterBy={this.props.filterBy}/>
                             </div>
                             <div className="dropdown-container">
                                 {this.props.dropdownContent}
@@ -70,9 +70,10 @@ function SearchFilters(props){
     return(
         <div className="filter-search">
             <div className="filter-options">
-                <span key={"sf1"} className="item-span">Shots</span>
-                <span key={"sf2"} className="item-span">People</span>
-                <span key={"sf3"} className="item-span">Hashtags</span>
+                
+                <span key={"sf2"} className="item-span" onClick={() => props.filterBy('user')}>People</span>
+                <span key={"sf3"} className="item-span" onClick={() => props.filterBy('hashtag')}>Hashtags</span>
+                <span key={"sf1"} className="item-span" onClick={() => props.filterBy('shots')}>Shots From Location</span>
             </div>
             <div className="close-div" onClick={props.closeDropdown}>
                 <AiFillCloseCircle className="close-btn close-menu"  />

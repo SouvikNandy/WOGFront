@@ -6,6 +6,24 @@ import {AiFillCloseCircle} from 'react-icons/ai';
 
 import pl2 from "../../assets/images/people/2.jpg";
 
+// sample dataset
+const userlist = [
+    {id: 1, name: "konika Sen Sharma", username: "hellokonika", profile_pic: pl2},
+    {id: 2, name: "jahn doe", username: "johndoe", profile_pic: pl2},
+    {id: 3, name: "jane doe", username: "jane doe", profile_pic: pl2},
+    {id: 4, name: "mike hussy", username: "mike", profile_pic: pl2},
+    {id: 5, name: "david miller", username: "killermiller", profile_pic: pl2},
+]
+
+const hashtag = [
+    {id:1,  phase: '#goodVibes', category: "hashtag"},
+    {id:2,  phase: '#kolkata', category: "hashtag"},
+    {id:3,  phase: '#jamaica', category: "hashtag"},
+]
+
+
+
+
 export default class SearchHead extends Component {
     state = {
         searchDropDown : false,
@@ -19,7 +37,8 @@ export default class SearchHead extends Component {
             {id:13,  username: 'milliebobbybrown', name:"millie Bobby Brown", category: "user", profile_pic: pl2 }, 
             {id:14,  "phase": '#goodVibes', "category": "hashtag"}, 
         ],
-        newResult: []
+        newResult: [],
+        showList: []
 
     }
 
@@ -27,7 +46,12 @@ export default class SearchHead extends Component {
         this.setState({searchDropDown: !this.state.searchDropDown})
     }
 
-    searchOnChange = () =>{
+    searchOnChange = (val) =>{
+        console.log("search key", val)
+        this.setState({
+            showList: userlist.filter(ele=> ele.name.startsWith(val)),
+            newResult: userlist.filter(ele=> ele.name.startsWith(val)),
+        })
 
     }
 
@@ -46,12 +70,27 @@ export default class SearchHead extends Component {
         
     }
 
-    fliterBy = () =>{
+    filterBy = (key) =>{
+        console.log("key", key, this.state.recentSearch.filter(ele => ele.category === key))
+        if (this.state.newResult.length < 1){
+            // filter on recentSearch
+            this.setState({showList: this.state.recentSearch.filter(ele => ele.category === key)})
+        }
 
     }
 
     render(){
-        let content = <RecentSearchPalette data={this.state.recentSearch} removeFromRecent={this.removeFromRecent} />
+        let content = "";
+        if (this.state.showList.length< 1){
+            content = <RecentSearchPalette 
+            data={this.state.showList.length>0 ? this.state.showList: this.state.recentSearch} 
+            removeFromRecent={this.removeFromRecent} />
+
+        }
+        else{
+            content = <SearchResultPalette data={this.state.showList} category={"user"} heading={"People"} />
+        }
+        
         return (
             <React.Fragment>
                 <div className="srch-box">
@@ -61,6 +100,10 @@ export default class SearchHead extends Component {
                     <SearchBar searchDropDown={this.state.searchDropDown} 
                     searchBarSelected={this.searchBarSelected}
                     dropdownContent={content}
+                    filterBy={this.filterBy}
+                    searchOnChange={this.searchOnChange}
+                    defaultSearch={true}
+                    
                     />
                 </div>
     
@@ -129,6 +172,65 @@ export function RecentSearchPalette(props){
                     ""
                 }
                 
+            </div>
+            <div className="recent-search-div">
+                {resultBlock}
+            </div>
+
+        </React.Fragment>
+        
+    )
+}
+
+
+export function SearchResultPalette(props){
+    let resultBlock = [];
+    if (props.data.length > 0){
+        props.data.map(item =>{
+            if(props.category === "user"){
+                resultBlock.push(
+                    <div className="s-recent-div" key={item.id}>
+                        <img src={item.profile_pic} alt="" className="u-img" />
+                        <div className="recent-identity">
+                            <span className="u-name">{item.name}</span>
+                            <span className="u-user">{item.username}</span>
+                        </div>
+                    </div>
+                )
+    
+            }
+            else{
+                resultBlock.push(
+                    <div className="s-recent-div" key={item.id}>
+                        <div className="hash-circle">
+                            <FaHashtag className="hash-icon" />
+                        </div>
+                        <div className="recent-identity">
+                            <span className="u-name">{item.phase}</span>
+                        </div>
+                    </div>
+                )
+    
+            }
+            return item
+        })
+
+    }
+    else{
+        resultBlock.push(
+            <div className="no-recent">
+                <sapn>
+                No previous searches
+                </sapn>
+
+            </div>
+            
+        )
+    }
+    return(
+        <React.Fragment>
+            <div className="recent-search-div-top">
+            <span className="heading">Search Results for {props.heading}</span>
             </div>
             <div className="recent-search-div">
                 {resultBlock}
