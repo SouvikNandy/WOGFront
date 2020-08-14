@@ -19,12 +19,17 @@ export class Navbar extends Component {
             return (
                 <li className="menu-list-item" key={obj.key}>
                     {obj.isActive?
-                    <Link className="menu-link menu-link--active" to={obj.link} id={obj.id?obj.id: ""}>{obj.label}</Link>
+                    <React.Fragment>
+                        <div className="menu-link--active"></div>
+                        <Link className="menu-link" to={obj.link} id={obj.id?obj.id: ""}>{obj.label}</Link>
+                    </React.Fragment>
                     :
-                    <Link className="menu-link" to={obj.link} id={obj.id?obj.id: ""}
-                    onClick={this.props.selectMenu.bind(this, obj.key)}>
-                    {obj.label}
-                    </Link>
+                    obj.name==="notification-btn"?
+                        <div className="menu-link" id={obj.id?obj.id: ""}>{obj.label}</div>
+                        :
+                        <Link className="menu-link" to={obj.link} id={obj.id?obj.id: ""}>{obj.label}</Link>
+                    
+                    
                     }
                 </li>
                 )
@@ -81,9 +86,8 @@ export class UserNavBar extends Component{
             { key: 1, name: "feeds", id: "m-feeds", label: this.getLabel("feeds"), link: `/user-feeds/${this.props.username}`, 
             isActive: selectedMenu && selectedMenu!=="feeds"? false: true  },
             { key: 2, name: "explore", id: "m-explore", label: this.getLabel("explore"), link: '/explore/', isActive: false},
-            { key: 3, name: "notification", id: "m-notification",  label: this.getLabel("notification"), 
-            link: `/user-notifications/${this.props.username}`, 
-            isActive: selectedMenu==="notification"? true: false},
+            { key: 3, name: "notification-btn", id: "m-notification",  label: this.getLabel("notification"), 
+            link: '#', isActive: selectedMenu==="notification"? true: false},
             { key: 4, name: "profile", id: "m-profile", label: this.getLabel("profile"), link: `/user-profile/${this.props.username}`, 
             isActive: selectedMenu==="profile"? true: false},
             { key: 6, name: "leftmenu", id: "m-leftmenu",  label: this.getLabel("leftmenu"), link: '#', isActive: false},
@@ -102,7 +106,7 @@ export class UserNavBar extends Component{
                 return <FiCompass className="nav-icon"/>;
             case "notification":
                 // default is approved tag values
-                return <NotificationButton />;
+                return <NotificationButton {...this.props} />;
             case "profile":
                 return <FaRegUserCircle className="nav-icon"/>;
             case "leftmenu":

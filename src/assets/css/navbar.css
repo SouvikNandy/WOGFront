@@ -41,12 +41,16 @@
     height: 100%;
     margin: 0;
     margin-right: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .menu-list-item {
-    display: inline-block;
+    /* display: inline-block; */
     height: 100%;
     margin-right: 1.25rem;
+    position: relative;
 }
 
 .menu-list-item:last-child {
@@ -55,7 +59,7 @@
 
 .menu-link {
     color: var(--dark);
-    display: inline-block;
+    /* display: inline-block; */
     height: 100%;
     font-size: 1rem;
     text-decoration: none;
@@ -63,6 +67,8 @@
     display: flex;
     align-items: center;
     padding: 0 0.2rem;
+    position: relative;
+    cursor: pointer;
 }
 
 .menu-link:hover {
@@ -70,6 +76,9 @@
 }
 
 .menu-link--active {
+    position: absolute;
+    top: 0;
+    width: 100%;
     color: var(--hover-one);
     border-top: 4px solid var(--hover-one);
     font-weight: 700;
@@ -115,12 +124,6 @@
     color: var(--dark);
 }
 
-.nav-icon path{
-    /* stroke: var(--dark); */
-
-}
-
-
 .chat-icon-div{
     display: flex;
     justify-content: center;
@@ -150,9 +153,6 @@
     fill: var(--hover-one);
 }
 
-.unread-msgs {
-    stroke: var(--hover-two);
-}
 
 @media(min-width: 801px){
     .left-menu{
@@ -181,7 +181,7 @@
     .menu-right{
         display: flex;
         padding-left: 1rem;
-        padding-bottom: 0.2rem;
+        /* padding-bottom: 0.2rem; */
         display: flex;
         justify-content: center;
     }
@@ -194,6 +194,7 @@
     }
     .menu-link--active{
         border: none;
+        bottom: 0;
         border-bottom: 5px solid var(--hover-one);
     }
 

@@ -396,6 +396,28 @@ ul {
     font-size: 0.85rem;
 }
 
+.unread-msgs{
+    position: relative;
+    /* height: 100%;
+    width: 100%; */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.unread-msgs .unread-icon{
+    position: absolute;
+    height: 0.8rem;
+    width: 0.8rem;
+    border-radius: 50%;
+    background: var(--peacock);
+    top: 0;
+    right: 0.2rem;
+    border: 1px solid rgba(11, 187, 187, 1)
+}
+
 @media(max-width:900px) {
     .side-bar-view-active {
         width: 100vw;
@@ -415,6 +437,11 @@ ul {
     .search-btn .srch-icon{
         height: 0.7rem;
         width: 0.7rem;
+    }
+
+    .unread-msgs .unread-icon{
+        height: 0.6rem;
+        width: 0.6rem;
     }
 }
 
