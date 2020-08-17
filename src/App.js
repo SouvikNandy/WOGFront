@@ -13,6 +13,7 @@ import NewsFeeds from './pages/NewsFeeds';
 import Notifications from './pages/Notifications'
 import DiscoverPeople from './pages/DiscoverPeople';
 import Page404 from './pages/Page404';
+import CommmunityGuidelines from './pages/CommunityGuidelines';
 
 
 export default class App extends Component {
@@ -65,6 +66,7 @@ function ShotModalUrl() {
             <PrivateRoute exact path="/user-profile/:username" component={Profile} />
             <Route exact path="/user-notifications/:username" component={Notifications} />
             <Route exact path="/discover-people/:username" component={DiscoverPeople} />
+            <Route exact path="/guidelines" component={CommmunityGuidelines} />
             {/* <PrivateRoute path="/user-view/" component={UserLoggedInView} /> */}
             <Route> <Page404 /> </Route>
         </Switch>

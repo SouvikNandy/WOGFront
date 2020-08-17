@@ -1,0 +1,50 @@
+@import url('config.css');
+
+.site-info-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.site-info-container .headline{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-bottom: 1px solid var(--border-grey);
+    padding: 0.5rem 0;
+    margin-bottom: 0.5rem;
+}
+
+.site-info-container .headline .last-updated{
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.site-info-container .label-heading{
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.site-info-container .context{
+    font-size: 0.9rem;
+    padding: 0.8rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.site-info-container .context span{
+    margin-top: 0.5rem;
+}
+
+.site-info-container .context span::before{
+    content: '# ';
+    font-weight: bold;
+    font-size: 1rem;
+    /* color: var(--hover-two); */
+    opacity: 0.6;
+}

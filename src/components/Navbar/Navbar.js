@@ -27,6 +27,9 @@ export class Navbar extends Component {
                     obj.name==="notification-btn"?
                         <div className="menu-link" id={obj.id?obj.id: ""}>{obj.label}</div>
                         :
+                        obj.name ==="leftmenu"?
+                        <div className="menu-link" id={obj.id?obj.id: ""} onClick={this.props.displaySidePanel.bind(this, obj.key)}>{obj.label}</div>
+                        :
                         <Link className="menu-link" to={obj.link} id={obj.id?obj.id: ""}>{obj.label}</Link>
                     
                     
@@ -70,8 +73,6 @@ export class Navbar extends Component {
 export class UserNavBar extends Component{
     state = {
         navLinks: [],
-        // sidebar required for keys
-        sideBarRequiredFor :[6],
         // sidebar states
         showSideView: false,
         sideBarHead: false,
@@ -127,40 +128,15 @@ export class UserNavBar extends Component{
         )
     }
 
-    selectMenu = (key) =>{
-        if (this.state.sideBarRequiredFor.includes(key)){
-            if (key === 6 && window.innerWidth < 800){
-                this.setState({
-                    showSideView: true,
-                    sideViewContent: this.sideNFMenu()
-                })
-
-            }
-            
-        }
-        else{
-            this.state.navLinks.map(item=> {
-                if(key=== item.key && this.props.showContent){
-
-                    this.props.showContent(item.name);
-                }
-                return item
-            })
+    displaySidePanel = (key) =>{
+        if (window.innerWidth < 800){
             this.setState({
-                navLinks: this.state.navLinks.map(item=>{
-                    if(key=== item.key){
-                        item.isActive = true;
-                    }
-                    else{
-                        item.isActive = false;
-                    }
-                    return item
-                })
+                showSideView: true,
+                sideViewContent: this.sideNFMenu()
             })
-            
-        }
-        
 
+        }
+            
     }
     displaySideView = ({content, sureVal}) =>{
         let stateVal = !this.state.showSideView
@@ -184,7 +160,7 @@ export class UserNavBar extends Component{
     render(){
         return(
             <React.Fragment>
-                <Navbar navLinks={this.state.navLinks} selectMenu={this.selectMenu} enableChat={true} displaySideView={this.displaySideView}/>
+                <Navbar navLinks={this.state.navLinks} displaySidePanel={this.displaySidePanel} enableChat={true} displaySideView={this.displaySideView}/>
                 {this.state.showSideView?
                 <div className="form-side-bar-view side-bar-view-active">
                     <SideBar displaySideView={this.displaySideView} content={this.state.sideViewContent} 

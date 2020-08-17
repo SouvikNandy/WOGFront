@@ -282,6 +282,8 @@
 .check-t-c .t-c-line {
     flex: 20;
     font-size: 0.8rem;
+    display: flex;
+    align-items: center;
 }
 
 .check-t-c .t-c-line .t-c-highlight {

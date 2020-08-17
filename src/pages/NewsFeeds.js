@@ -12,7 +12,8 @@ import {UserNavBar} from "../components/Navbar/Navbar";
 import {Link} from 'react-router-dom';
 import ImgCompressor from '../utility/ImgCompressor';
 import SideBar from "../components/SideBar";
-import Settings from '../components/Settings/Settings'
+import Settings from '../components/Settings/Settings';
+import LogOutPromptModal from '../components/LogOutPromptModal';
 
 import w1 from "../assets/images/wedding1.jpg";
 import pl2 from "../assets/images/people/2.jpg";
@@ -48,6 +49,12 @@ export class NewsFeedUserMenu extends Component{
         searchBarRequired: false,
         sideViewContent: [],
         altHeadText : null,
+        logOutPrompt: false,
+    }
+
+    showLogOutPrompt = () =>{
+        this.setState({logOutPrompt: !this.state.logOutPrompt
+        })
     }
 
     uploadPicture =(e, imgKey) =>{
@@ -135,9 +142,15 @@ export class NewsFeedUserMenu extends Component{
                                 <FiSettings className="ico" />
                                 <span>Settings</span>
                             </div>
-                            <div className="nf-menu-tokens">
+                            <div className="nf-menu-tokens" onClick={this.showLogOutPrompt}>
                                 <AiOutlinePoweroff className="ico" />
                                 <span>Log Out</span>
+
+                                {this.state.logOutPrompt?
+                                    <LogOutPromptModal prvBtnClick={this.showLogOutPrompt}/>
+                                :
+                                ""
+                                }
                             </div>
 
                         </div>

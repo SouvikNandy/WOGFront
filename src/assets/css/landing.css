@@ -257,6 +257,7 @@
     color: var(--dark);
     padding: 0;
     margin: 0;
+    font-size: 0.9rem;
 }
 
 .f-mod-1 {
@@ -298,7 +299,10 @@
 }
 
 
-.f-upper .social-links,
+.f-upper .social-links{
+    display: flex;
+}
+
 .f-upper .f-mod-1 p,
 .f-upper .f-mod-1 h4 {
     display: block;

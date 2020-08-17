@@ -1,10 +1,13 @@
 import setup from '../setup.json';
-import {
-    createFloatingNotification
-} from '../components/FloatingNotifications';
+import {createFloatingNotification} from '../components/FloatingNotifications';
 import axios from 'axios';
 
 // AUTH TOKEN MANAGEMENT
+
+export const LogOutUser = () =>{
+    localStorage.removeItem("tx");
+    localStorage.removeItem("refresh_token");
+}
 
 export const storeAuthToken = (token) => {
     let jwt_decoded = parseJwt(token);

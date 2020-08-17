@@ -90,3 +90,13 @@
         margin-bottom: 0.5rem;
     }
 }
+
+@media (max-height: 500px){
+    .selection-overlay .selection-option{
+        width: 40vw;
+    }
+
+    .selection-option .s-noti{
+        height: 10vh;
+    }
+}
