@@ -15,6 +15,7 @@ export class GoBack extends Component{
             <React.Fragment>
                 <button className="btn-anc" onClick={this.props.clickMethod? this.props.clickMethod: this.gotoPrev}>
                     <FaAngleLeft className={iconClass} />
+                    {this.props.btnText? this.props.btnText: ""}
                 </button>
             </React.Fragment>
         )

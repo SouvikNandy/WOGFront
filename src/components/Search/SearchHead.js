@@ -31,26 +31,32 @@ export default class SearchHead extends Component {
             {id:1,  phase: '#goodVibes', category: "hashtag"}, 
             {id:2,  username: 'milliebobbybrown', name:"millie Bobby Brown", category: "user", profile_pic: pl2 }, 
             {id:3,  username: 'milliebobbybrown', name:"millie Bobby Brown", category: "user", profile_pic: pl2 }, 
-            {id:4,  "phase": '#goodVibes', "category": "hashtag"}, 
+            {id:4,  phase: '#goodVibes', category: "hashtag"}, 
             {id:11,  phase: '#goodVibes', category: "hashtag"}, 
             {id:12,  username: 'milliebobbybrown', name:"millie Bobby Brown", category: "user", profile_pic: pl2 }, 
             {id:13,  username: 'milliebobbybrown', name:"millie Bobby Brown", category: "user", profile_pic: pl2 }, 
-            {id:14,  "phase": '#goodVibes', "category": "hashtag"}, 
+            {id:14,  phase: '#goodVibes', "category": "hashtag"}, 
         ],
-        newResult: [],
-        showList: []
+        // newResult: [],
+        showList: [],
+        searchedVal: '',
+        filteredCategory: 'user'
 
     }
 
-    searchBarSelected = () =>{
-        this.setState({searchDropDown: !this.state.searchDropDown})
+    openDropDown = () =>{
+        this.setState({searchDropDown: true})
+    }
+
+    closeDropDown = () =>{
+        this.setState({searchDropDown: false})
     }
 
     searchOnChange = (val) =>{
-        console.log("search key", val)
         this.setState({
+            searchedVal: val,
             showList: userlist.filter(ele=> ele.name.startsWith(val)),
-            newResult: userlist.filter(ele=> ele.name.startsWith(val)),
+            // newResult: userlist.filter(ele=> ele.name.startsWith(val)),
         })
 
     }
@@ -71,15 +77,41 @@ export default class SearchHead extends Component {
     }
 
     filterBy = (key) =>{
-        console.log("key", key, this.state.recentSearch.filter(ele => ele.category === key))
-        if (this.state.newResult.length < 1){
+        if (this.state.showList.length < 1){
             // filter on recentSearch
             this.setState({showList: this.state.recentSearch.filter(ele => ele.category === key)})
+        }
+        else if (key === "user"){
+            this.setState({
+                showList: userlist.filter(ele=> ele.name.startsWith(this.state.searchedVal)),
+                filteredCategory: key
+            })
+        }
+        else if (key === "hashtag"){
+            let allHashtags = [];
+            hashtag.map(ele=> {
+                let hashStrippedPhase = ele.phase.replace(/#/, '');
+                let hashStrippedSearchVal = this.state.searchedVal.replace(/#/, '');
+                if (hashStrippedPhase.startsWith(hashStrippedSearchVal)){
+                    allHashtags.push(ele)
+                }
+                return ele
+                }
+                
+            )
+            this.setState({
+                showList: allHashtags,
+                filteredCategory: key
+            })
+        }
+        else if (key === "location"){
+
         }
 
     }
 
     render(){
+        
         let content = "";
         if (this.state.showList.length< 1){
             content = <RecentSearchPalette 
@@ -88,9 +120,9 @@ export default class SearchHead extends Component {
 
         }
         else{
-            content = <SearchResultPalette data={this.state.showList} category={"user"} heading={"People"} />
+            content = <SearchResultPalette data={this.state.showList} category={this.state.filteredCategory} />
         }
-        
+        console.log("showlist on render", this.state.showList, content);
         return (
             <React.Fragment>
                 <div className="srch-box">
@@ -98,7 +130,8 @@ export default class SearchHead extends Component {
                         <GoBack />
                     </div>
                     <SearchBar searchDropDown={this.state.searchDropDown} 
-                    searchBarSelected={this.searchBarSelected}
+                    openDropDown={this.openDropDown}
+                    closeDropDown={this.closeDropDown}
                     dropdownContent={content}
                     filterBy={this.filterBy}
                     searchOnChange={this.searchOnChange}
@@ -185,11 +218,18 @@ export function RecentSearchPalette(props){
 
 export function SearchResultPalette(props){
     let resultBlock = [];
+    let heading = '';
+    if (props.category === "user"){
+        heading = "People"
+    }
+    else if (props.category === "hashtag"){
+        heading = "Hashtags"
+    }
     if (props.data.length > 0){
         props.data.map(item =>{
             if(props.category === "user"){
                 resultBlock.push(
-                    <div className="s-recent-div" key={item.id}>
+                    <div className="s-recent-div s-results" key={item.id}>
                         <img src={item.profile_pic} alt="" className="u-img" />
                         <div className="recent-identity">
                             <span className="u-name">{item.name}</span>
@@ -201,7 +241,7 @@ export function SearchResultPalette(props){
             }
             else{
                 resultBlock.push(
-                    <div className="s-recent-div" key={item.id}>
+                    <div className="s-recent-div s-results" key={item.id}>
                         <div className="hash-circle">
                             <FaHashtag className="hash-icon" />
                         </div>
@@ -230,7 +270,7 @@ export function SearchResultPalette(props){
     return(
         <React.Fragment>
             <div className="recent-search-div-top">
-            <span className="heading">Search Results for {props.heading}</span>
+            <span className="heading">Search Results for {heading}</span>
             </div>
             <div className="recent-search-div">
                 {resultBlock}

@@ -12,6 +12,7 @@ import {PrivateRoute} from './utility/PrivateRoute';
 import NewsFeeds from './pages/NewsFeeds';
 import Notifications from './pages/Notifications'
 import DiscoverPeople from './pages/DiscoverPeople';
+import Page404 from './pages/Page404';
 
 
 export default class App extends Component {
@@ -65,7 +66,7 @@ function ShotModalUrl() {
             <Route exact path="/user-notifications/:username" component={Notifications} />
             <Route exact path="/discover-people/:username" component={DiscoverPeople} />
             {/* <PrivateRoute path="/user-view/" component={UserLoggedInView} /> */}
-            <Route> NOT FOUND</Route>
+            <Route> <Page404 /> </Route>
         </Switch>
         {isModal
             ? <Route exact path="/shot-view/:id" component={ShotModalView} />

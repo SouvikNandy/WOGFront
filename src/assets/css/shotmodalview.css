@@ -316,6 +316,9 @@
 
 .m-likes-action {
     flex: 2;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 
 }
 
@@ -771,10 +774,18 @@
     .m-options-menu .report-box{
         top: 8vh;
     }
+    .m-likes-action .icons {
+        height: 1.2rem;
+        width: 1.2rem;
+    }
 }
 
 @media(max-width: 800px){
     .m-options-menu .report-box .r-opt{
         width: 35vw;
+    }
+    .m-likes-action .icons {
+        height: 1.2rem;
+        width: 1.2rem;
     }
 }

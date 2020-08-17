@@ -1,0 +1,103 @@
+@import url('config.css');
+
+.lost-page{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lost-content{
+    width: 40vw;
+    height: 45vh;
+    border-radius: 0.5rem;
+    background: rgba(0,0,0,0.6);
+    box-shadow: var(--shadow);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--light);
+    flex-direction: column;
+}
+
+.lost-content .top-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 8rem;
+    font-weight: bold;
+    width: 100%;
+}
+
+.lost-content .bottom-content{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.lost-content .bottom-content .fun-text{
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+.lost-content .bottom-content .btn-anc{
+    background: var(--hover-one);
+    padding: 0.4rem 1rem;
+    border: none;
+    font-size: 0.9rem;
+    margin: 0.5rem;
+    outline: none;
+    border-radius: 0.7rem;
+    /* transition: all 0.2s ease-in; */
+}
+
+.lost-content .bottom-content .btn-anc:hover{
+    color: black;
+    font-weight: bold;
+}
+
+.lost-content .bottom-content .btn-anc .icons:hover{
+    opacity: 1;
+    color: black;
+}
+
+.owl{
+    align-self: flex-end;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    transform-origin: bottom;
+}
+
+.bounce-owl {
+    animation-name: bounce-owl;
+    animation-timing-function: cubic-bezier(0.280, 0.840, 0.420, 1);
+}
+@keyframes bounce-owl {
+    0%   { transform: scale(1,1)      translateY(0); }
+    10%  { transform: scale(1.1,.9)   translateY(0); }
+    30%  { transform: scale(.9,1.1)   translateY(-3rem); }
+    50%  { transform: scale(1.05,.95) translateY(0); }
+    57%  { transform: scale(1,1)      translateY(-0.5rem); }
+    64%  { transform: scale(1,1)      translateY(0); }
+    100% { transform: scale(1,1)      translateY(0); }
+}
+
+@media(max-width: 700px){
+    .lost-content{
+        width: 80vw;
+    }
+    .lost-content .top-content{
+        font-size: 6.5rem;
+    }
+}
+
+@media(max-height: 500px){
+    .lost-content{
+        height: 60vh;
+    }
+    .lost-content .top-content{
+        font-size: 6.5rem;
+    }
+}

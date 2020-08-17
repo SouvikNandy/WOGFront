@@ -89,7 +89,12 @@
     margin-top: 0.3rem;
     padding: 0.3rem;
     border-radius: 1.5rem;
+    cursor: pointer;
     /* min-width: 12vw; */
+}
+
+.s-results{
+    padding-right: 0.5rem;
 }
 
 .s-recent-div .u-img,
@@ -164,8 +169,6 @@
 
 
 }
-
-
 
 @media(max-width: 400px){
     .filter-search .filter-options .item-span{

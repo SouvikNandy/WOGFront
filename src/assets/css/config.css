@@ -91,6 +91,9 @@ ul {
     background: transparent;
     border: none;
     outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .btn-anc:hover {

@@ -35,7 +35,7 @@ export default class SearchBar extends Component {
                 <div className="search-inp-box">
                     {this.props.defaultSearch?
                     <input type="text" placeholder={placeHolder} id="search-box-default" 
-                    onSelect={this.props.searchBarSelected} onChange={this.handleChange}/>
+                    onSelect={this.props.openDropDown} onChange={this.handleChange}/>
                     :
                     <input type="text" placeholder={placeHolder} onChange={this.handleChange} id="search-box"/>
                     
@@ -44,7 +44,7 @@ export default class SearchBar extends Component {
                     {this.props.searchDropDown?
                         <div className="search-dropdown">
                             <div className="s-filters">
-                                <SearchFilters closeDropdown={this.props.searchBarSelected} filterBy={this.props.filterBy}/>
+                                <SearchFilters closeDropdown={this.props.closeDropDown} filterBy={this.props.filterBy}/>
                             </div>
                             <div className="dropdown-container">
                                 {this.props.dropdownContent}
