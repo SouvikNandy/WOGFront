@@ -208,7 +208,7 @@ export class AccountData extends Component{
     render(){
         return(
             <React.Fragment>
-                <EditProfile data={this.state.userAbout} closeModal={this.props.prvBtnClick}/>
+                <EditProfile closeModal={this.props.prvBtnClick}/>
             </React.Fragment>
         )
     }

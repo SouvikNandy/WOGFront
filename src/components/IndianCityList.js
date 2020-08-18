@@ -28,7 +28,6 @@ export class IndianCityList extends Component {
 
     }
     findPlaces = (value) =>{
-        console.log("received phase", value)
         let phase = value.toLowerCase();
         if(!phase){
             // show last filtered results

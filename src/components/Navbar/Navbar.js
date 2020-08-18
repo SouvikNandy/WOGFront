@@ -21,7 +21,11 @@ export class Navbar extends Component {
                     {obj.isActive?
                     <React.Fragment>
                         <div className="menu-link--active"></div>
-                        <Link className="menu-link" to={obj.link} id={obj.id?obj.id: ""}>{obj.label}</Link>
+                        {obj.name==="notification-btn"?
+                            <div className="menu-link" id={obj.id?obj.id: ""}>{obj.label}</div>
+                            :
+                            <Link className="menu-link" to={obj.link} id={obj.id?obj.id: ""}>{obj.label}</Link>
+                        }
                     </React.Fragment>
                     :
                     obj.name==="notification-btn"?

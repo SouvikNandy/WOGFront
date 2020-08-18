@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../assets/css/newsfeeds.css';
 import {TiEdit} from "react-icons/ti";
-import { FaCameraRetro } from 'react-icons/fa';
+import { FaCameraRetro, FaUserCircle } from 'react-icons/fa';
 import {BsClockHistory, BsBookmarks} from 'react-icons/bs';
 import {AiOutlineUsergroupAdd, AiOutlineStar, AiOutlinePoweroff} from 'react-icons/ai';
 import {FiSettings} from 'react-icons/fi';
@@ -14,17 +14,19 @@ import ImgCompressor from '../utility/ImgCompressor';
 import SideBar from "../components/SideBar";
 import Settings from '../components/Settings/Settings';
 import LogOutPromptModal from '../components/LogOutPromptModal';
+import getUserData from '../utility/userData';
+import EditProfile from '../components/Profile/EditProfile';
 
-import w1 from "../assets/images/wedding1.jpg";
-import pl2 from "../assets/images/people/2.jpg";
+import NoContent from '../components/NoContent';
 
 export class NewsFeeds extends Component {
     render() {
+        let userData = getUserData();
         return (
             <React.Fragment>
-                <UserNavBar selectedMenu={"feeds"} username={this.props.username}/>
+                <UserNavBar selectedMenu={"feeds"} username={userData.username}/>
                 <div className="nf-container">
-                    <NewsFeedUserMenu {...this.props}/>
+                    <NewsFeedUserMenu {...this.props} userData={userData}/>
                     
                     <div className="nf-feeds">
                         <NewFeedPalette currLocation={this.props.location}/>
@@ -39,10 +41,6 @@ export class NewsFeeds extends Component {
 
 export class NewsFeedUserMenu extends Component{
     state ={
-        profile_pic: w1,
-        name: "John Doe",
-        designation: "photographer",
-
         // sidebar states
         showSideView: false,
         sideBarHead: false,
@@ -50,6 +48,11 @@ export class NewsFeedUserMenu extends Component{
         sideViewContent: [],
         altHeadText : null,
         logOutPrompt: false,
+        editProf: false,
+    }
+
+    editProfile = () =>{
+        this.setState({editProf: !this.state.editProf})
     }
 
     showLogOutPrompt = () =>{
@@ -86,14 +89,28 @@ export class NewsFeedUserMenu extends Component{
         
     }
     render(){
-        let username = this.props.username? this.props.username: this.props.match.params.username
+        let userData = this.props.userData;
+        let username = userData.username;
         return(
             <React.Fragment>
+                {this.state.editProf?
+                <div className="nf-edit-profile">
+                    <EditProfile closeModal={this.editProfile}/>
+                </div>
+                
+                :
+                ""
+                }
                 <div className="nf-user-menu">
                     <div className="nf-user-menu-overlay"></div>
                     <div className="nf-user-edit">
                         <div className="nf-user-img">
-                            <img className="cube-user-img " src={this.state.profile_pic} alt=""/>
+                            {userData.profile_pic?
+                            <img className="cube-user-img" src={userData.profile_pic} alt=""/>
+                            :
+                            <FaUserCircle className="cube-user-img default-user-logo" />
+                            }
+                            
                             <span className="edit-pic">
                                 <input type="file" className="pic-uploader" onChange={ e => this.uploadPicture(e, 'profile_pic')}/>
                                 <FaCameraRetro  className="cam-icon"/>
@@ -101,11 +118,11 @@ export class NewsFeedUserMenu extends Component{
                         </div>
                                 
                         <span className="m-display-name">
-                            {this.state.name}
-                            <span className="m-adj">@{username}</span>
-                            <span className="m-adj">{this.state.designation}</span>
+                            {userData.name}
+                            <span className="m-adj">@{userData.username}</span>
+                            <span className="m-adj">{userData.profile_data.designation}</span>
                         </span>
-                        <button className="btn edit-btn"><TiEdit  className="ico" />Edit Profile</button>
+                        <button className="btn edit-btn" onClick={this.editProfile}><TiEdit  className="ico" />Edit Profile</button>
 
                     </div>
                     <div className="nf-user-menulist">
@@ -190,15 +207,15 @@ export function NewsFeedSuggestions (){
 export class NewFeedPalette extends Component{
     state= {
         feeds:[
-            {
-                user:{"id": 1, "name":"John Doe", "username": "johndoe", "profile_pic": w1, "designation": "photographer"},
-                portfolio: {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1], likes: 100, comments: 100, shares:0},
+            // {
+            //     user:{"id": 1, "name":"John Doe", "username": "johndoe", "profile_pic": w1, "designation": "photographer"},
+            //     portfolio: {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1], likes: 100, comments: 100, shares:0},
                 
-            },
-            {
-                user:{"id": 1, "name":"John Doe", "username": "johndoe", "profile_pic": w1, "designation": "photographer"},
-                portfolio: {id: 2, name:"p1", shot: [w1], likes: 100, comments: 100, shares:0}, 
-            },
+            // },
+            // {
+            //     user:{"id": 1, "name":"John Doe", "username": "johndoe", "profile_pic": w1, "designation": "photographer"},
+            //     portfolio: {id: 2, name:"p1", shot: [w1], likes: 100, comments: 100, shares:0}, 
+            // },
         ]
     }
 
@@ -260,14 +277,27 @@ export class NewFeedPalette extends Component{
     }
     render(){
         let feedList = [];
-        this.state.feeds.map(ele=>{
-            feedList.push(<NewsFeedPost key={ele.portfolio.id} data={ele} currLocation={this.props.location}
-                likePortfolio={this.likePortfolio} unLikePortfolio={this.unLikePortfolio}
-                savePost={this.savePost} addComment={this.addComment}/>)
-            
-            return ele
+        if (this.state.feeds.length<1){
+            feedList.push(
+                <div className="empty-feeds">
+                    <NoContent message={"Start following people to view their post on your feeds."}/>
+                </div>
+            )
 
-        })
+        }
+        else{
+            this.state.feeds.map(ele=>{
+                feedList.push(<NewsFeedPost key={ele.portfolio.id} data={ele} currLocation={this.props.location}
+                    likePortfolio={this.likePortfolio} unLikePortfolio={this.unLikePortfolio}
+                    savePost={this.savePost} addComment={this.addComment}/>)
+                
+                return ele
+    
+            })
+
+        }
+        
+        
         return(
             <React.Fragment>
                 {feedList}

@@ -5,19 +5,33 @@ import {
     FaMapMarkerAlt, FaBirthdayCake, FaIdCard,
     FaFacebookSquare, FaInstagram, FaYoutube, FaPinterest
 } from 'react-icons/fa';
+import { msToDateTime } from '../../utility/Utility';
 
 export default function UserAbout(props) {
     let data = props.data
     let skillList = [];
     let teamList = [];
-    data.skills.map((ele, index) =>{
-        skillList.push(<span key={"sk-"+ index} className="item-span">{ele}</span>);
-        return ele
-    })
-    data.teams.map((ele, index) =>{
-        teamList.push(<img  key={"tl-"+ index} className="tag-img" src={ele} alt=""></img>);
-        return ele
-    })
+    if(data.profile_data.skillList && data.profile_data.skillList.length> 0){
+        data.profile_data.skills.map((ele, index) =>{
+            skillList.push(<span key={"sk-"+ index} className="item-span">{ele}</span>);
+            return ele
+        })
+
+    }
+    else{
+        skillList.push(<span>Not updated by user</span>)
+    }
+    
+    if(data.profile_data.teams && data.profile_data.teams.length> 0){
+        data.profile_data.teams.map((ele, index) =>{
+            teamList.push(<img  key={"tl-"+ index} className="tag-img" src={ele} alt=""></img>);
+            return ele
+        })
+    }
+    else{
+        teamList.push(<span>Not updated by user</span>)
+    }
+    
     return (
         <React.Fragment>
             <section className="user-about">
@@ -26,7 +40,7 @@ export default function UserAbout(props) {
                         <div className="u-content">
                             <h4>Bio</h4>
                             <div className="u-content-datadiv">
-                                <p>{data.bio}</p>
+                                <p>{data.profile_data.bio? data.profile_data.bio: "Not updated by user"}</p>
                             </div>
                             
                         </div>
@@ -43,10 +57,10 @@ export default function UserAbout(props) {
                     <div className="u-des u-box">
                         <div className="u-content">
                             <ul className="u-content-datadiv">
-                                {data.hometown? <li><FaMapMarkerAlt  className="icons"/> {data.hometown}</li>: ""}
-                                {data.currentcity? <li><FaMapMarkerAlt className="icons" /> {data.currentcity}</li>: ""}
-                                {data.birthday? <li><FaBirthdayCake  className="icons" /> {data.birthday}</li>: ""}
-                                <li><FaIdCard className="icons" /> Member since {data.joined}</li>
+                                {data.profile_data.hometown? <li><FaMapMarkerAlt  className="icons"/> {data.profile_data.hometown}</li>: ""}
+                                {data.profile_data.currentcity? <li><FaMapMarkerAlt className="icons" /> {data.profile_data.currentcity}</li>: ""}
+                                {data.profile_data.birthday? <li><FaBirthdayCake  className="icons" /> {data.profile_data.birthday}</li>: ""}
+                                <li><FaIdCard className="icons" /> Member since {msToDateTime(data.created_at)}</li>
                             </ul>
 
                         </div>
@@ -63,42 +77,42 @@ export default function UserAbout(props) {
                         <div className="u-content">
                             <h4>Social Handles</h4>
                             
-                                {data.social_handles["web"]? 
+                                {data.profile_data.social && data.profile_data.social["web"]? 
                                     <div className="u-link">
                                         <FiGlobe className="icons" />
-                                        <span>{data.social_handles["web"]}</span>
+                                        <span>{data.profile_data.social["web"]}</span>
                                     </div>
                                     : 
                                     ""
                                 }
-                                {data.social_handles["facebook"]? 
+                                {data.profile_data.social && data.profile_data.social["facebook"]? 
                                     <div className="u-link">
                                         <FaFacebookSquare className="icons" />
-                                        <span>{data.social_handles["facebook"]}</span>
+                                        <span>{data.profile_data.social["facebook"]}</span>
                                     </div>
                                     : 
                                     ""
                                 }
-                                {data.social_handles["instagram"]? 
+                                {data.profile_data.social && data.profile_data.social["instagram"]? 
                                     <div className="u-link">
                                         <FaInstagram className="icons" />
-                                        <span>{data.social_handles["instagram"]}</span>
+                                        <span>{data.profile_data.social["instagram"]}</span>
                                     </div>
                                     : 
                                     ""
                                 }
-                                {data.social_handles["youtube"]? 
+                                {data.profile_data.social && data.profile_data.social["youtube"]? 
                                     <div className="u-link">
                                         <FaYoutube className="icons" />
-                                        <span>{data.social_handles["youtube"]}</span>
+                                        <span>{data.profile_data.social["youtube"]}</span>
                                     </div>
                                     : 
                                     ""
                                 }
-                                {data.social_handles["pinterest"]? 
+                                {data.profile_data.social && data.profile_data.social["pinterest"]? 
                                     <div className="u-link">
                                         <FaPinterest className="icons" />
-                                        <span>{data.social_handles["pinterest"]}</span>
+                                        <span>{data.profile_data.social["pinterest"]}</span>
                                     </div>
                                     : 
                                     ""

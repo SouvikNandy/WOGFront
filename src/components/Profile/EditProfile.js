@@ -5,7 +5,7 @@ import {FaCameraRetro} from 'react-icons/fa';
 import DateTimePicker from 'react-datetime-picker';
 import {FiGlobe} from 'react-icons/fi';
 import {AiFillCloseCircle, AiFillPlusCircle} from 'react-icons/ai';
-import {FaFacebookSquare, FaInstagram, FaYoutube, FaPinterest} from 'react-icons/fa';
+import {FaFacebookSquare, FaInstagram, FaYoutube, FaPinterest, FaUserCircle} from 'react-icons/fa';
 
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
@@ -14,13 +14,16 @@ import SideBar from "../SideBar";
 import IndianCityList from '../IndianCityList';
 import FriendList from './FriendList';
 import TagUser from '../Profile/TagUser';
+import {defaultCoverPic} from '../../utility/userData';
+import HTTPRequestHandler from '../../utility/HTTPRequests';
+import { saveInStorage, retrieveFromStorage } from '../../utility/Utility';
 
 export class EditProfile extends Component {
     state ={
         SubNavOptions:[
-            {key: "E-1", title: "Basic", isActive: false},
+            {key: "E-1", title: "Basic", isActive: true},
             {key: "E-2", title: "Social", isActive: false},
-            {key: "E-3", title: "Skills & Teams", isActive: true},
+            {key: "E-3", title: "Skills & Teams", isActive: false},
 
         ],
         // sidebar states
@@ -44,7 +47,7 @@ export class EditProfile extends Component {
         birthday: '',
         hometown: '',
         currentcity: '',
-        social_handles : {
+        social : {
             "web": '',
             "facebook": '',
             "instagram": '',
@@ -55,10 +58,32 @@ export class EditProfile extends Component {
         // skills
         profession: '',
         skills: [],
-        teams: []
+        teams: [],
 
+        dataset : JSON.parse(retrieveFromStorage("user_data")),
 
     }
+
+    onChange =(e) =>{
+        if(e.target.name.startsWith("social")){
+            let keyset = e.target.name.split("-");
+            let social = this.state.social;
+            social[keyset[1]] = e.target.value
+            this.setState({
+                social : social
+            })
+        }
+        else{
+            this.setState({
+                [e.target.name]: e.target.value
+            })
+
+        }
+        
+    }
+
+    updateDob = date => this.setState({ birthday: date })
+
 
     selectSubNavMenu = (key) =>{
         this.setState({
@@ -133,7 +158,7 @@ export class EditProfile extends Component {
     }
 
     uploadPicture =(e, imgKey) =>{
-        console.log(e.target.files, imgKey)
+        // console.log(e.target.files, imgKey)
         ImgCompressor(e, this.addFileToState, imgKey)
     }
     addFileToState = (compressedFile, imgKey) =>{
@@ -158,7 +183,6 @@ export class EditProfile extends Component {
             });
         }
         else{
-            console.log(this.state.sideViewContent);
             this.setState({
                 teams: [...this.state.teams.filter(item => item.id !== idx)],
                 sideViewContent: [...this.state.sideViewContent.filter(item => item.props.data.id !== idx)]
@@ -182,8 +206,8 @@ export class EditProfile extends Component {
 
     pageContent = () =>{
         let contentBlock = [];
-        console.log(this.props);
-        let data = this.props.data;
+        let data = this.state.dataset;
+        let coverpic = data.cover_pic? data.cover_pic: defaultCoverPic();
         this.state.SubNavOptions.map(ele=>{
             if(ele.title === "Basic" && ele.isActive === true){
                 contentBlock.push(
@@ -193,11 +217,16 @@ export class EditProfile extends Component {
                                 <input type="file" className="pic-uploader" onChange={ e => this.uploadPicture(e, 'cover_pic')}/>
                                 <FaCameraRetro  className="cam-icon"/>
                             </span>
-                            <img className="e-cover-img" src={this.state.cover_pic? this.state.cover_pic:data.cover_pic} alt="" />
+                            <img className="e-cover-img" src={this.state.cover_pic? this.state.cover_pic:coverpic} alt="" />
                             <div className="prof-img-section">
                                 <div className="e-user-img-back">
+                                    {(this.state.profile_pic || data.profile_pic )?
                                     <img className="e-user-img" 
                                     src={this.state.profile_pic? this.state.profile_pic: data.profile_pic} alt="" />
+                                    :
+                                    <FaUserCircle className="e-user-img default-user-logo" />
+                                    }
+                                    
                                     <span className="edit-pic">
                                         <input type="file" className="pic-uploader" onChange={ e => this.uploadPicture(e, 'profile_pic')}/>
                                         <FaCameraRetro  className="cam-icon"/>
@@ -207,11 +236,13 @@ export class EditProfile extends Component {
                         </div>
                         <div className="basic-details">
                             <label>Full Name</label>
-                            <input type="text" placeholder="Enter your full name" defaultValue={data.name}></input>
+                            <input type="text" placeholder="Enter your full name" defaultValue={data.name} 
+                            name="name" onChange={this.onChange}></input>
                             <div className="details-inline">
                                 <div className="inline-content">
                                     <label>Username</label>
-                                    <input type="text" placeholder="Enter a username" value={data.username}></input>
+                                    <input type="text" placeholder="Enter a username" value={data.username}
+                                    name="username" onChange={this.onChange} ></input>
                                 </div>
                                 <div className="inline-content">
                                     <label>Email</label>
@@ -219,7 +250,8 @@ export class EditProfile extends Component {
                                 </div>
                             </div>
                             <label>Bio</label>
-                            <textarea placeholder="Let others know about you, add a bio" defaultValue={data.bio}></textarea>
+                            <textarea placeholder="Let others know about you, add a bio" defaultValue={data.profile_data.bio}
+                            name="bio" onChange={this.onChange}></textarea>
                             
 
                         </div>
@@ -230,6 +262,19 @@ export class EditProfile extends Component {
 
             }
             else if (ele.title === "Social" && ele.isActive === true){
+                console.log(data);
+                let dob = ''
+                if (data.profile_data.dob){
+                    dob = new Date(data.profile_data.birthday)
+                }
+                else if (this.state.birthday){
+                    dob = this.state.birthday
+                }
+                else{
+                    dob = new Date()
+
+                }
+                
                 contentBlock.push(
                     <div className="social-details">
                         <div className="details-inline">
@@ -238,7 +283,9 @@ export class EditProfile extends Component {
                                 <DateTimePicker
                                     disableClock={true}
                                     format={"dd-MM-y"}
-                                    value={new Date()}
+                                    value={dob}
+                                    name="dob"
+                                    onChange={this.updateDob}
                                 />
                             </div>
                             
@@ -246,7 +293,7 @@ export class EditProfile extends Component {
                         <div className="details-inline">
                             <div className="inline-content">
                                 <label>Home Town</label>
-                                <input type="text" className="inp-box" defaultValue={data.hometown} placeholder="Add your hometown"
+                                <input type="text" className="inp-box" defaultValue={data.profile_data.hometown} placeholder="Add your hometown"
                                 name="hometown" id="hometown"
                                 onSelect={this.chooseOptions.bind(
                                     this, 
@@ -260,7 +307,7 @@ export class EditProfile extends Component {
 
                             <div className="inline-content">
                                 <label>Current City</label>
-                                <input type="text" className="inp-box" defaultValue={data.currentcity} placeholder="Add your current city"
+                                <input type="text" className="inp-box" defaultValue={data.profile_data.currentcity} placeholder="Add your current city"
                                 name="currentcity" id="currentcity"
                                  onSelect={this.chooseOptions.bind(
                                     this, 
@@ -269,6 +316,7 @@ export class EditProfile extends Component {
                                         displaySideView={this.displaySideView} searchPlaceHolder={"Find a location ..."} 
                                         populateOnDestinationID={'currentcity'}
                                     />
+                                    
                                 )}
                                 ></input>
                             </div>
@@ -278,25 +326,30 @@ export class EditProfile extends Component {
                             <label>Add your Social handles</label>
                             <div className="s-link">
                                 <label> <FiGlobe /> </label>
-                                <input type="text" defaultValue={data.social_handles["web"]} placeholder="Add your website" />
+                                <input type="text" defaultValue={data.profile_data.social?data.profile_data.social["web"]:""} 
+                                placeholder="Add your website" name="social-web" onChange={this.onChange}/>
                             </div>
                             <div className="s-link">
                                 <label> <FaFacebookSquare /> </label>
-                                <input type="text" defaultValue={data.social_handles["facebook"]} placeholder="Add your facebook account" />
+                                <input type="text" defaultValue={data.profile_data.social?data.profile_data.social["facebook"]:""} 
+                                placeholder="Add your facebook account" name="social-facebook" onChange={this.onChange}/>
                             </div>
 
                             <div className="s-link">
                                 <label> <FaInstagram /> </label>
-                                <input type="text" defaultValue={data.social_handles["instagram"]} placeholder="Add your instagram account" />
+                                <input type="text" defaultValue={data.profile_data.social?data.profile_data.social["instagram"]:""} 
+                                placeholder="Add your instagram account" name="social-instagram" onChange={this.onChange}/>
                             </div>
                             <div className="s-link">
                                 <label> <FaYoutube /> </label>
-                                <input type="text" defaultValue={data.social_handles["youtube"]} placeholder="Add your youtube channel" />
+                                <input type="text" defaultValue={data.profile_data.social?data.profile_data.social["youtube"]:""} 
+                                placeholder="Add your youtube channel" name="social-youtube" onChange={this.onChange} />
                             </div>
 
                             <div className="s-link">
                                 <label> <FaPinterest /> </label>
-                                <input type="text" defaultValue={data.social_handles["pinterest"]} placeholder="Add your pinterest account" />
+                                <input type="text" defaultValue={data.profile_data.social?data.profile_data.social["pinterest"]:""} 
+                                placeholder="Add your pinterest account" name="social-pinterest" onChange={this.onChange} />
                             </div>
                         </div>
                     </div>
@@ -410,6 +463,56 @@ export class EditProfile extends Component {
         return contentBlock
     }
 
+    UpdateDetails =() =>{
+        let activeTab = this.state.SubNavOptions.filter(ele=> ele.isActive ===true)[0]
+        let url = 'api/v1/user-profile/';
+
+        let requestBody = {"profile_data": {} }
+        if(activeTab.key === "E-1"){
+
+            if (this.state.name){
+                requestBody["name"] = this.state.name;
+            }
+            else if(this.state.username){
+                requestBody["username"] = this.state.username
+            }
+            else if(this.state.bio){
+                requestBody['profile_data']['bio'] = this.state.bio
+
+            }
+            HTTPRequestHandler.post(
+                {url:url, requestBody: requestBody, includeToken:true, callBackFunc: this.onSuccessfulUpdate, errNotifierTitle:"Update failed !"})
+
+
+        }
+        else if(activeTab.key === "E-2"){
+            requestBody['profile_data']={'social':{}}
+           if(this.state.birthday){
+            requestBody['profile_data']['birthday'] = this.state.birthday.getMonth() + '-' + this.state.birthday.getDate() + '-' + this.state.birthday.getFullYear();
+           }
+
+           requestBody['profile_data']['hometown'] = document.getElementById('hometown').value;
+           requestBody['profile_data']['currentcity'] = document.getElementById('currentcity').value;
+           for (let s in this.state.social){
+            if(this.state.social[s]){
+                requestBody['profile_data']['social'][s] = this.state.social[s]
+               } 
+
+           }
+           HTTPRequestHandler.post(
+            {url:url, requestBody: requestBody, includeToken:true, callBackFunc: this.onSuccessfulUpdate, errNotifierTitle:"Update failed !"})
+
+        }
+        else if(activeTab.key === "E-3"){
+            
+        }
+    }
+
+    onSuccessfulUpdate = (data) =>{
+        console.log(data.data)
+        saveInStorage("user_data",JSON.stringify(data.data));
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -423,7 +526,7 @@ export class EditProfile extends Component {
                     </div>
                     <div className="edit-actions">
                         <button className="btn cancel-btn" onClick={this.props.closeModal}>close</button>
-                        <button className="btn apply-btn">save</button>
+                        <button className="btn apply-btn" onClick={this.UpdateDetails}>save</button>
 
                     </div>
 

@@ -57,6 +57,7 @@
     justify-content: center;
     align-items: center;
     margin-right: 0.8rem;
+    box-shadow: var(--shadow);
 }
 
 .p-user-img {
@@ -91,7 +92,7 @@
     font-size: 2rem;
     text-align: start;
     color: var(--light);
-    text-shadow: 1px 2px var(--dark);
+    text-shadow: var(--shadow);
 }
 
 .p-display-name .p-adj-username {
@@ -103,7 +104,7 @@
 .p-display-name .p-adj {
     font-size: 1rem;
     font-weight: 501;
-    text-shadow: 1px 1px var(--dark);
+    text-shadow: var(--shadow);
 }
 
 .p-display-name .pf-otheruser-btns {
@@ -178,6 +179,7 @@
     align-items: flex-start;
     font-size: 0.9rem;
     flex-wrap: wrap;
+    line-height: 1.2;
 }
 
 .u-des .u-content-datadiv{
@@ -205,7 +207,7 @@
     padding: 1.25rem;
     display: grid;
     font-size: 1rem;
-    min-width: 30vw;
+    min-width: 40vw;
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
     /* background: var(--cream); */
 

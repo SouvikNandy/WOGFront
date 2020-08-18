@@ -11,6 +11,12 @@ export class NotificationButton extends Component{
         redirectNow: false
     }
 
+    componentDidMount(){
+        if(this.props.pthName==="user-notifications"){
+            this.setState({unreadMsgs: false})
+        }
+    }
+
     markAsRead =() =>{
         this.setState({unreadMsgs: false, redirectNow: true})
     }

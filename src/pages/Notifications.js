@@ -7,6 +7,7 @@ import {BsThreeDotsVertical} from "react-icons/bs";
 import {FiBellOff} from 'react-icons/fi';
 import {AiFillCloseCircle} from 'react-icons/ai'
 import {UserNavBar} from "../components/Navbar/Navbar";
+import getUserData from '../utility/userData';
 
 
 import w1 from "../assets/images/wedding1.jpg";
@@ -14,11 +15,12 @@ import w1 from "../assets/images/wedding1.jpg";
 
 export class Notifications extends Component {
     render() {
+        let userData = getUserData();
         return (
             <React.Fragment>
-                <UserNavBar selectedMenu={"notification"} username={this.props.username}/>
+                <UserNavBar selectedMenu={"notification"} username={userData.username} pthName={"user-notifications"} />
                 <div className="nf-container">
-                    <NewsFeedUserMenu {...this.props}/>
+                    <NewsFeedUserMenu {...this.props} userData={userData}/>
                     
                     <div className="nf-feeds">
                         <NotificationPalette />

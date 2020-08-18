@@ -17,11 +17,17 @@ export const storeAuthToken = (token) => {
     // console.log("inmemory token stored", inMemoryToken);
 }
 
-export const retrieveAuthToken = () => {
+export const isAuthenticaed = () => {
     let inMemoryToken = retrieveFromStorage("tx");
     if (inMemoryToken){
-        inMemoryToken = JSON.parse(inMemoryToken) 
-        return [inMemoryToken.access, inMemoryToken.username]
+        inMemoryToken = JSON.parse(inMemoryToken);
+        if(inMemoryToken.exp > getCurrentTimeInMS()){
+            return true
+        }
+        else{
+            return false
+        }
+        
     }
     else{
         return null
@@ -148,7 +154,7 @@ export const retrieveFromStorage = (key) => {
 // Error handling and notifier
 export const notifyMultipleErrorMsg = (headingText, msgObj) => {
     Object.keys(msgObj).map(key => {
-        createFloatingNotification("error", headingText, msgObj[key]);
+        createFloatingNotification("error", headingText, key + ' : ' +msgObj[key]);
         return key
     })
 
@@ -158,8 +164,15 @@ export const handleErrorResponse = (error, notifierKey) => {
     let errorResponse = '';
     let errDefaultMsg = "Excuse us! We are facing some issues. Will be back in sometime."
     if (error.response && error.response.data) {
+        // console.log("response", error.response)
+        if(error.response.status=== 401 || error.response.status=== 403){
+            createFloatingNotification('error' ,'Request Unautorized!', 'You might not have the permission to access the requested content');
+        }
+        else if(error.response.status=== 500){
+            createFloatingNotification('error' ,'Something went wrong!', errDefaultMsg);
+        }
         // error occurred/reported from response
-        if (typeof error.response.data.message !== "string") {
+        else if (typeof error.response.data.message !== "string") {
             notifyMultipleErrorMsg(notifierKey, error.response.data.message);
         } else {
             createFloatingNotification("error", notifierKey, error.response.data.message);
@@ -194,7 +207,6 @@ export default {
     generateId,
     getBackendHOST,
     storeAuthToken,
-    retrieveAuthToken,
     saveInStorage,
     retrieveFromStorage,
     silentRefresh

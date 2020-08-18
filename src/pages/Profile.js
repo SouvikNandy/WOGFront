@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../assets/css/profile.css';
-import { FaPlus, FaPaperPlane , FaCheckCircle, FaCameraRetro} from "react-icons/fa";
+import { FaPlus, FaPaperPlane , FaCheckCircle, FaCameraRetro, FaUserCircle} from "react-icons/fa";
 import { AiFillCloseCircle } from 'react-icons/ai';
 // import { AiOutlineHome, AiOutlineSearch, AiOutlineBell, AiOutlineBulb } from "react-icons/ai";
 import SearchHead from '../components/Search/SearchHead';
@@ -17,13 +17,15 @@ import {generateId, isSelfUser} from '../utility/Utility.js';
 import NoContent from '../components/NoContent';
 
 // Images for shot
-import w1 from "../assets/images/wedding1.jpg";
-import pl2 from "../assets/images/people/2.jpg";
+// import w1 from "../assets/images/wedding1.jpg";
+// import pl2 from "../assets/images/people/2.jpg";
 import CommunityReview from '../pages/CommunityReview'
 import { UserNavBar } from '../components/Navbar/Navbar';
 import { TiEdit } from 'react-icons/ti';
 import EditProfile from '../components/Profile/EditProfile';
 import ImgCompressor from '../utility/ImgCompressor';
+import {defaultCoverPic} from '../utility/userData';
+import { retrieveFromStorage } from '../utility/Utility';
 
 
 
@@ -78,43 +80,16 @@ export default class Profile extends Component {
             ]
         },
         userFollower:[
-            {"id": 1, "name":"John Doe", "username": "jhndoe", "profile_pic": w1, "designation": "photographer", "isFollowing": false},
-            {"id": 2, "name":"Jenny Doe", "username": "jennydoe", "profile_pic": pl2, "designation": "photographer", "isFollowing": false}
+            // {"id": 1, "name":"John Doe", "username": "jhndoe", "profile_pic": w1, "designation": "photographer", "isFollowing": false},
+            // {"id": 2, "name":"Jenny Doe", "username": "jennydoe", "profile_pic": pl2, "designation": "photographer", "isFollowing": false}
         ],
         userFollowing:[
-            {"id": 11, "name":"John Doe", "username": "jhndoe", "profile_pic": w1, "designation": "photographer", "isFollowing": true},
-            {"id": 12, "name":"Jenny Doe", "username": "jennydoe", "profile_pic": pl2, "designation": "photographer", "isFollowing": true}
+            // {"id": 11, "name":"John Doe", "username": "jhndoe", "profile_pic": w1, "designation": "photographer", "isFollowing": true},
+            // {"id": 12, "name":"Jenny Doe", "username": "jennydoe", "profile_pic": pl2, "designation": "photographer", "isFollowing": true}
         ],
-        userAbout:{
-            // profile top
-            "name": "Jane Doe",
-            "username": "janedoe",
-            "deisgnantion": "photographer",
-            "email": "souvikpxnandy@gmail.com",
-            "profile_pic": pl2,
-            "cover_pic": w1,
-            "isFollowing": false,
+        
+        userAbout:JSON.parse(retrieveFromStorage("user_data")),
 
-            // about
-            "joined": "Feb 15, 2020",
-            "bio": "A digital agency for the modern world. We challenge core assumptions, unpick legacy behaviors, and streamline complex processes. Contact us at info@bb.agency",
-            "skills": ["photography", "dashboard", "development", "web design"],
-            "hometown": "Kolkata, India",
-            "currentcity": "Kolkata, India",
-            "birthday": "1 January, 1990",
-            // team
-            "teams" : [w1, pl2, w1, pl2],
-
-            // social handles
-            social_handles : {
-                "web": "www.abc.com",
-                "facebook": "www.facebook.com/abc",
-                "instagram": "www.instagram.com/abc",
-                "youtube": "www.youtube.com/abc",
-                "pinterest": null
-            }
-            
-        },
         userSaved: [
             // {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1], likes: 100, comments: 100, shares:0,}, 
             // {id: 2, name:"p2", shot: [w1], likes: 100, comments: 100, shares:0,}, 
@@ -128,7 +103,7 @@ export default class Profile extends Component {
     componentDidMount(){
         let subnav = ''
         let isSelf = false
-        if(this.props.isAuthenticated && isSelfUser(this.props.username, this.props.match.params.username)){
+        if(this.props.isAuthenticated && isSelfUser(this.state.userAbout.username, this.props.match.params.username)){
             subnav = AuthUserNav;
             isSelf = true;
         }
@@ -578,7 +553,7 @@ export default class Profile extends Component {
         return (
             <React.Fragment>
                 {this.state.editProf?
-                <EditProfile data={this.state.userAbout} closeModal={this.editProfile}/>
+                <EditProfile closeModal={this.editProfile}/>
                 :
                 ""
                 }
@@ -606,7 +581,8 @@ export default class Profile extends Component {
 
 
 function ProfileHead(props) {
-    let data = props.data
+    let data = props.data;
+    let coverpic = data.cover_pic? data.cover_pic: defaultCoverPic();
     return (
         <React.Fragment>
             <div className="profile-top">
@@ -620,10 +596,15 @@ function ProfileHead(props) {
                     ""
                     }
                     
-                    <img className="p-cover-img" src={data.cover_pic} alt="" />
+                    <img className="p-cover-img" src={coverpic} alt="" />
                     <div className="p-user">
                         <div className="p-user-img-back">
-                            <img className="p-user-img" src={data.profile_pic} alt="" />
+                                {data.profile_pic?
+                                    <img className="p-user-img" src={data.profile_pic} alt="" />
+                                    :
+                                    <FaUserCircle className="p-user-img default-user-logo" />
+                                    }
+                           
                             {props.isSelf?
                                 <span className="edit-pic">
                                     <input type="file" className="pic-uploader" onChange={ e => props.uploadPicture(e, 'profile_pic')}/>

@@ -3,8 +3,8 @@ import { FaUser } from "react-icons/fa";
 import '../assets/css/login.css';
 import { Link, Redirect } from 'react-router-dom';
 import { createFloatingNotification } from '../components/FloatingNotifications';
-import { getBackendHOST, handleErrorResponse, saveInStorage, storeAuthToken, retrieveAuthToken, silentRefresh } from '../utility/Utility';
-import axios from 'axios';
+import {saveInStorage, storeAuthToken, silentRefresh } from '../utility/Utility';
+import HTTPRequestHandler from '../utility/HTTPRequests';
 
 export class Login extends Component {
     render() {
@@ -32,7 +32,8 @@ class SignIn extends Component {
     state = {
         email: "",
         password : "",
-        isLoggedIn : false
+        isLoggedIn : false,
+        loggedinUser: '',
     }
 
     validateData=()=>{
@@ -44,26 +45,32 @@ class SignIn extends Component {
             createFloatingNotification("error", "Authentication failed!", "Please provide a valid password");
             return false
         }
-        let backendHost = getBackendHOST();
-        let url  = backendHost + 'api/v1/user-authentication/';
-        axios.post(url, { email: this.state.email, password: this.state.password })
-            .then(res => {
-                // store token in localstorage
-                saveInStorage("refresh_token", res.data.token.refresh);
-                storeAuthToken(res.data.token.access);
+
+        let url = 'api/v1/user-authentication/';
+        let requestBody = { email: this.state.email, password: this.state.password }
+        HTTPRequestHandler.post({url: url, requestBody: requestBody, callBackFunc: this.onSuccessfulLogin, errNotifierTitle: "Authentication failed!"})
+    }
+
+    onSuccessfulLogin = (data) => {
+        this.storeInCache(data)
+        storeAuthToken(data.token.access);
+        // activate silent refresh
+        silentRefresh();
                 
-                // activate silent refresh
-                silentRefresh();
-                
-                // reset 
-                document.getElementById("login-form").reset();
-                this.setState({ email: '', password:'', isLoggedIn: true });
-                createFloatingNotification("success", "Successful Login", res.data.message);
-            })
-            .catch(err =>{
-                handleErrorResponse(err, "Authentication failed!");
-            })
-            
+        // reset 
+        document.getElementById("login-form").reset();
+        this.setState({ email: '', password:'', isLoggedIn: true, loggedinUser: data.data.username });
+        createFloatingNotification("success", "Successful Login", data.message);
+    }
+
+    storeInCache = (data) =>{
+        // store user basic data and token in cache
+
+        // store token in localstorage
+        saveInStorage("refresh_token", data.token.refresh);
+        // store user basic details in localstorage
+        saveInStorage("user_data", JSON.stringify(data.data));
+
     }
 
     onSubmit = (e) => {
@@ -78,8 +85,9 @@ class SignIn extends Component {
     });
 
     render() {
+        // console.log(this.state.isLoggedIn, this.state.loggedinUser);
         if (this.state.isLoggedIn){
-            return <Redirect to={`/user-feeds/${retrieveAuthToken()[1]}`} />
+            return <Redirect to={`/user-feeds/${this.state.loggedinUser}`} />
         }
         return (
             <React.Fragment>
@@ -141,32 +149,31 @@ class SignUp extends Component {
 
         }
 
-        let backendHost = getBackendHOST();
         let user_type = document.getElementById('i-am')==="team"? "T": "I";
-        let url  = backendHost + 'api/v1/user-registration/';
-        axios.post(url, { 
+        let url  = 'api/v1/user-registration/';
+        let requestBody = { 
             name: this.state.name,
             username: this.state.username,
             user_type: user_type,
             email: this.state.email, 
             password: this.state.password
-        })
-            .then(res => {
-                document.getElementById("signup-form").reset();
-                this.setState({
-                    name:"",
-                    username:"",
-                    email: "",
-                    password : "",
-                    confirmPassword: "",
-                    signupSuccesful : true
-                })
-                createFloatingNotification("success", "Successful Signup", res.data.message);
-            })
-            .catch(err =>{
-                handleErrorResponse(err, "Signup failed!");
-            })
+        }
 
+        HTTPRequestHandler.post({url: url, requestBody: requestBody, callBackFunc: this.onSuccess, errNotifierTitle: "Signup failed!"})
+
+    }
+
+    onSuccess = (data) => {
+        document.getElementById("signup-form").reset();
+        this.setState({
+            name:"",
+            username:"",
+            email: "",
+            password : "",
+            confirmPassword: "",
+            signupSuccesful : true
+        })
+        createFloatingNotification("success", "Successful Signup", data.message);
     }
 
     onSubmit = (e) => {
@@ -179,7 +186,7 @@ class SignUp extends Component {
 
     });
     render() {
-        console.log("reteived auth Token", retrieveAuthToken());
+        // console.log("reteived auth Token", retrieveAuthToken());
         if (this.state.signupSuccesful){
             return <Redirect to='/signin/' />
         }

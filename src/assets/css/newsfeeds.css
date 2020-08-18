@@ -226,6 +226,17 @@
 }
 
 
+.empty-feeds{
+    height: 50%;
+    width: 80%;
+    background-color: var(--light);
+    margin-top: 1.5rem;
+    padding: 0.8rem 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 @media(max-width: 1100px) {
     .nf-user-menu {
         width: 20vw;
