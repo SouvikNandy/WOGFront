@@ -14,6 +14,12 @@ export class NotificationButton extends Component{
     markAsRead =() =>{
         this.setState({unreadMsgs: false, redirectNow: true})
     }
+    componentDidMount(){
+        if(this.props.unreadMsgs){
+            this.setState({unreadMsgs: this.props.unreadMsgs})
+        }
+        
+    }
     render(){
         if (this.state.redirectNow){
             return <Redirect to={`/user-notifications/${this.props.username}`} />
