@@ -3,7 +3,7 @@ import { createFloatingNotification } from '../components/FloatingNotifications'
 
 const ImgCompressor = (e, callbackFunc, imgKey=null) => {
     // console.log("on file selects", e.target.files, e.target.files.length);
-    let resultList = [];
+    // let resultList = [];
     for (let i = 0; i < e.target.files.length; i++) {
         let file = e.target.files[i];
         // console.log("selected file", file)
@@ -32,11 +32,13 @@ const ImgCompressor = (e, callbackFunc, imgKey=null) => {
                 })
         } else {
             // images below 500kb or videos
-            resultList.push(file);
+            console.log("images below 500kb")
+            // resultList.push(file);
+            callbackFunc(file, imgKey);
         }
     }
 
-    return resultList
+    return true
 
 }
 

@@ -158,17 +158,29 @@ export class EditProfile extends Component {
     }
 
     uploadPicture =(e, imgKey) =>{
-        // console.log(e.target.files, imgKey)
-        ImgCompressor(e, this.addFileToState, imgKey)
+        console.log("uploadPicture", e.target.files, imgKey)
+        ImgCompressor(e, this.makeUploadRequest, imgKey)
     }
-    addFileToState = (compressedFile, imgKey) =>{
-        if (imgKey === "profile_pic"){
-            this.setState({profile_pic: URL.createObjectURL(compressedFile)})
-        }
-        else if(imgKey === "cover_pic"){
-            this.setState({cover_pic: URL.createObjectURL(compressedFile)})
-        }
+
+    makeUploadRequest=(compressedFile, imgKey)=>{
+        let url = 'api/v1/user-profile/'
+        let formData = new FormData();
+        formData.append(imgKey, compressedFile); 
+        HTTPRequestHandler.post(
+            {url:url, requestBody: formData, includeToken:true, uploadType: 'file', callBackFunc: this.addFileToState.bind(this, compressedFile, imgKey), errNotifierTitle:"Update failed !"})
+
     }
+    addFileToState = (compressedFile, imgKey, data) =>{
+        console.log("addFileToState", data);
+        // if (imgKey === "profile_pic"){
+        //     this.setState({profile_pic: URL.createObjectURL(compressedFile)})
+        // }
+        // else if(imgKey === "cover_pic"){
+        //     this.setState({cover_pic: URL.createObjectURL(compressedFile)})
+        // }
+    }
+
+
 
     tagMembers = (record) =>{
         this.setState({
@@ -250,7 +262,8 @@ export class EditProfile extends Component {
                                 </div>
                             </div>
                             <label>Bio</label>
-                            <textarea placeholder="Let others know about you, add a bio" defaultValue={data.profile_data.bio}
+                            <textarea placeholder="Let others know about you, add a bio" 
+                            defaultValue={data.profile_data && data.profile_data.bio? data.profile_data.bio: ""}
                             name="bio" onChange={this.onChange}></textarea>
                             
 

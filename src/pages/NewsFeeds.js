@@ -120,7 +120,9 @@ export class NewsFeedUserMenu extends Component{
                         <span className="m-display-name">
                             {userData.name}
                             <span className="m-adj">@{userData.username}</span>
-                            <span className="m-adj">{userData.profile_data.designation}</span>
+                            <span className="m-adj">
+                                {(userData.profile_data && userData.profile_data.designation)?
+                                userData.profile_data.designation:""}</span>
                         </span>
                         <button className="btn edit-btn" onClick={this.editProfile}><TiEdit  className="ico" />Edit Profile</button>
 

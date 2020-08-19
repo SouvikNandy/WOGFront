@@ -11,7 +11,7 @@ export default function UserAbout(props) {
     let data = props.data
     let skillList = [];
     let teamList = [];
-    if(data.profile_data.skillList && data.profile_data.skillList.length> 0){
+    if(data.profile_data && data.profile_data.skillList && data.profile_data.skillList.length> 0){
         data.profile_data.skills.map((ele, index) =>{
             skillList.push(<span key={"sk-"+ index} className="item-span">{ele}</span>);
             return ele
@@ -22,7 +22,7 @@ export default function UserAbout(props) {
         skillList.push(<span>Not updated by user</span>)
     }
     
-    if(data.profile_data.teams && data.profile_data.teams.length> 0){
+    if(data.profile_data && data.profile_data.teams && data.profile_data.teams.length> 0){
         data.profile_data.teams.map((ele, index) =>{
             teamList.push(<img  key={"tl-"+ index} className="tag-img" src={ele} alt=""></img>);
             return ele
@@ -40,7 +40,7 @@ export default function UserAbout(props) {
                         <div className="u-content">
                             <h4>Bio</h4>
                             <div className="u-content-datadiv">
-                                <p>{data.profile_data.bio? data.profile_data.bio: "Not updated by user"}</p>
+                                <p>{data.profile_data && data.profile_data.bio? data.profile_data.bio: "Not updated by user"}</p>
                             </div>
                             
                         </div>
@@ -57,9 +57,9 @@ export default function UserAbout(props) {
                     <div className="u-des u-box">
                         <div className="u-content">
                             <ul className="u-content-datadiv">
-                                {data.profile_data.hometown? <li><FaMapMarkerAlt  className="icons"/> {data.profile_data.hometown}</li>: ""}
-                                {data.profile_data.currentcity? <li><FaMapMarkerAlt className="icons" /> {data.profile_data.currentcity}</li>: ""}
-                                {data.profile_data.birthday? <li><FaBirthdayCake  className="icons" /> {data.profile_data.birthday}</li>: ""}
+                                {data.profile_data && data.profile_data.hometown? <li><FaMapMarkerAlt  className="icons"/> {data.profile_data.hometown}</li>: ""}
+                                {data.profile_data && data.profile_data.currentcity? <li><FaMapMarkerAlt className="icons" /> {data.profile_data.currentcity}</li>: ""}
+                                {data.profile_data && data.profile_data.birthday? <li><FaBirthdayCake  className="icons" /> {data.profile_data.birthday}</li>: ""}
                                 <li><FaIdCard className="icons" /> Member since {msToDateTime(data.created_at)}</li>
                             </ul>
 
@@ -77,7 +77,7 @@ export default function UserAbout(props) {
                         <div className="u-content">
                             <h4>Social Handles</h4>
                             
-                                {data.profile_data.social && data.profile_data.social["web"]? 
+                                {data.profile_data && data.profile_data.social && data.profile_data.social["web"]? 
                                     <div className="u-link">
                                         <FiGlobe className="icons" />
                                         <span>{data.profile_data.social["web"]}</span>
@@ -85,7 +85,7 @@ export default function UserAbout(props) {
                                     : 
                                     ""
                                 }
-                                {data.profile_data.social && data.profile_data.social["facebook"]? 
+                                {data.profile_data && data.profile_data.social && data.profile_data.social["facebook"]? 
                                     <div className="u-link">
                                         <FaFacebookSquare className="icons" />
                                         <span>{data.profile_data.social["facebook"]}</span>
@@ -93,7 +93,7 @@ export default function UserAbout(props) {
                                     : 
                                     ""
                                 }
-                                {data.profile_data.social && data.profile_data.social["instagram"]? 
+                                {data.profile_data && data.profile_data.social && data.profile_data.social["instagram"]? 
                                     <div className="u-link">
                                         <FaInstagram className="icons" />
                                         <span>{data.profile_data.social["instagram"]}</span>
@@ -101,7 +101,7 @@ export default function UserAbout(props) {
                                     : 
                                     ""
                                 }
-                                {data.profile_data.social && data.profile_data.social["youtube"]? 
+                                {data.profile_data && data.profile_data.social && data.profile_data.social["youtube"]? 
                                     <div className="u-link">
                                         <FaYoutube className="icons" />
                                         <span>{data.profile_data.social["youtube"]}</span>
@@ -109,7 +109,7 @@ export default function UserAbout(props) {
                                     : 
                                     ""
                                 }
-                                {data.profile_data.social && data.profile_data.social["pinterest"]? 
+                                {data.profile_data && data.profile_data.social && data.profile_data.social["pinterest"]? 
                                     <div className="u-link">
                                         <FaPinterest className="icons" />
                                         <span>{data.profile_data.social["pinterest"]}</span>

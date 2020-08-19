@@ -618,7 +618,9 @@ function ProfileHead(props) {
                         
                         <span className="p-display-name">{data.name}<br />
                             <span className="p-adj-username">@{data.username}</span><br />
-                            <span className="p-adj">{data.deisgnantion}</span><br />
+                            <span className="p-adj">
+                            {(data.profile_data && data.profile_data.designation)? data.profile_data.designation:""}
+                                </span><br />
                             {props.isSelf?
                                 <button className="btn m-fuser" onClick={props.editProfile}>< TiEdit className="ico"/>Edit Profile</button>
                             :

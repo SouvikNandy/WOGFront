@@ -187,6 +187,12 @@
     ;
 }
 
+.u-content-datadiv li{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .u-des .u-content-datadiv .icons{
     margin-right: 0.5rem;
     color: black;
