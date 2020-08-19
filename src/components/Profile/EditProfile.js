@@ -223,7 +223,7 @@ export class EditProfile extends Component {
     pageContent = () =>{
         let contentBlock = [];
         let data = this.state.dataset;
-        let coverpic = data.cover_pic? data.cover_pic: defaultCoverPic();
+        let coverpic = data.profile_data.cover_pic? data.profile_data.cover_pic: defaultCoverPic();
         this.state.SubNavOptions.map((ele, index) =>{
             if(ele.title === "Basic" && ele.isActive === true){
                 contentBlock.push(
@@ -236,9 +236,9 @@ export class EditProfile extends Component {
                             <img className="e-cover-img" src={this.state.cover_pic? this.state.cover_pic:coverpic} alt="" />
                             <div className="prof-img-section">
                                 <div className="e-user-img-back">
-                                    {(this.state.profile_pic || data.profile_pic )?
+                                    {(this.state.profile_pic || data.profile_data.profile_pic )?
                                     <img className="e-user-img" 
-                                    src={this.state.profile_pic? this.state.profile_pic: data.profile_pic} alt="" />
+                                    src={this.state.profile_pic? this.state.profile_pic: data.profile_data.profile_pic} alt="" />
                                     :
                                     <FaUserCircle className="e-user-img default-user-logo" />
                                     }

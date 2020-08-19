@@ -2,13 +2,25 @@ import React, { Component } from 'react';
 import '../assets/css/dropdown.css';
 
 export class Dropdown extends Component {
+    state={
+        selected: "Select an option"
+    }
 
     componentDidMount(){
         this.dropdownInAction();
         /*if the user clicks anywhere outside the select box,
         then close all select boxes:*/
         document.addEventListener("click", this.closeAllSelect);
+    }
 
+    onChange = (e) =>{
+        let selectedVal = e.innerHTML;
+        if(selectedVal!==this.state.selected){
+            console.log("selected", selectedVal)
+            this.setState({selected: selectedVal})
+            
+        }
+        
     }
 
     closeAllSelect = (elmnt) => {
@@ -80,11 +92,13 @@ export class Dropdown extends Component {
         }
         x[i].appendChild(b);
         let closeAllSelect = this.closeAllSelect
+        let onChange = this.onChange
         a.addEventListener("click", function(e) {
             /*when the select box is clicked, close any other select boxes,
             and open/close the current select box:*/
             e.stopPropagation();
            closeAllSelect(this);
+           onChange(this)
             this.nextSibling.classList.toggle("select-hide");
             this.classList.toggle("select-arrow-active");
             });

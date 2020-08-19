@@ -81,6 +81,7 @@
     width: 4.2rem;
     border-radius: 50%;
     object-fit: cover;
+    box-shadow: var(--shadow);
 }
 
 
@@ -173,8 +174,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
 }
 
+.nf-feeds .add-pst-btn .camera-cover{
+    right: 28vw;
+}
 
 .nf-post-conatiner {
     width: 80%;
@@ -260,6 +265,9 @@
 
     .nf-container .nf-feeds .nf-post-conatiner .pf-grid {
         max-width: 100%;
+    }
+    .nf-feeds .add-pst-btn .camera-cover{
+        right: 2rem;
     }
 }
 

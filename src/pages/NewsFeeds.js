@@ -18,10 +18,14 @@ import getUserData from '../utility/userData';
 import EditProfile from '../components/Profile/EditProfile';
 
 import NoContent from '../components/NoContent';
+import HTTPRequestHandler from '../utility/HTTPRequests';
+import {saveInStorage} from '../utility/Utility';
+import AddPost from '../components/Post/AddPost';
 
 export class NewsFeeds extends Component {
     render() {
         let userData = getUserData();
+        console.log(userData);
         return (
             <React.Fragment>
                 <UserNavBar selectedMenu={"feeds"} username={userData.username}/>
@@ -30,6 +34,9 @@ export class NewsFeeds extends Component {
                     
                     <div className="nf-feeds">
                         <NewFeedPalette currLocation={this.props.location}/>
+                        <div className="add-pst-btn">
+                            <AddPost />
+                        </div>
                     </div>
                     <NewsFeedSuggestions />
                     
@@ -62,13 +69,29 @@ export class NewsFeedUserMenu extends Component{
 
     uploadPicture =(e, imgKey) =>{
         console.log(e.target.files, imgKey)
-        ImgCompressor(e, this.addFileToState, imgKey)
+        ImgCompressor(e, this.makeUploadRequest, imgKey)
     }
 
-    addFileToState = (compressedFile, imgKey) =>{
+    makeUploadRequest=(compressedFile, imgKey)=>{
+        let url = 'api/v1/user-profile/'
+        let formData = new FormData();
+        formData.append(imgKey, compressedFile); 
+        HTTPRequestHandler.put(
+            {url:url, requestBody: formData, includeToken:true, uploadType: 'file', callBackFunc: this.addFileToState.bind(this, compressedFile, imgKey), errNotifierTitle:"Update failed !"})
+
+    }
+
+    addFileToState = (compressedFile, imgKey, data) =>{
+        this.onSuccessfulUpdate(data);
         if (imgKey === "profile_pic"){
-            this.setState({profile_pic: URL.createObjectURL(compressedFile)})
+            // this.setState({profile_pic: URL.createObjectURL(compressedFile)})
+            this.setState({profile_pic: data.data.profile_data.profile_pic})
         }
+    }
+
+    onSuccessfulUpdate = (data) =>{
+        // console.log(data.data)
+        saveInStorage("user_data",JSON.stringify(data.data));
     }
     displaySideView = ({content, sureVal, sideBarHead=true}) =>{
         let stateVal = !this.state.showSideView
@@ -105,8 +128,8 @@ export class NewsFeedUserMenu extends Component{
                     <div className="nf-user-menu-overlay"></div>
                     <div className="nf-user-edit">
                         <div className="nf-user-img">
-                            {userData.profile_pic?
-                            <img className="cube-user-img" src={userData.profile_pic} alt=""/>
+                            {userData.profile_data && userData.profile_data.profile_pic?
+                            <img className="cube-user-img" src={userData.profile_data.profile_pic} alt=""/>
                             :
                             <FaUserCircle className="cube-user-img default-user-logo" />
                             }

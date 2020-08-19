@@ -138,10 +138,12 @@
 
     .sticky-notes .note-title {
         font-size: 0.7rem;
+        max-width: 100%;
     }
 
     .sticky-notes .note-body {
         font-size: 0.5rem;
+        max-width: 100%;
     }
 
     .sticky-notes .notes-bottom .pin-btn {

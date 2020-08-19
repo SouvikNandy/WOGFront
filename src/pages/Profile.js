@@ -25,7 +25,8 @@ import { TiEdit } from 'react-icons/ti';
 import EditProfile from '../components/Profile/EditProfile';
 import ImgCompressor from '../utility/ImgCompressor';
 import {defaultCoverPic} from '../utility/userData';
-import { retrieveFromStorage } from '../utility/Utility';
+import { retrieveFromStorage, saveInStorage } from '../utility/Utility';
+import HTTPRequestHandler from '../utility/HTTPRequests';
 
 
 
@@ -306,19 +307,34 @@ export default class Profile extends Component {
 
     uploadPicture =(e, imgKey) =>{
         console.log(e.target.files, imgKey)
-        ImgCompressor(e, this.addFileToState, imgKey)
+        ImgCompressor(e, this.makeUploadRequest, imgKey)
     }
-    addFileToState = (compressedFile, imgKey) =>{
+    makeUploadRequest=(compressedFile, imgKey)=>{
+        let url = 'api/v1/user-profile/'
+        let formData = new FormData();
+        formData.append(imgKey, compressedFile); 
+        HTTPRequestHandler.put(
+            {url:url, requestBody: formData, includeToken:true, uploadType: 'file', callBackFunc: this.addFileToState.bind(this, compressedFile, imgKey), errNotifierTitle:"Update failed !"})
+
+    }
+
+    addFileToState = (compressedFile, imgKey, data) =>{
         let userAbout = this.state.userAbout;
+        this.onSuccessfulUpdate(data);
         if (imgKey === "profile_pic"){
             
-            userAbout.profile_pic = URL.createObjectURL(compressedFile)
+            userAbout.profile_pic = data.data.profile_data.profile_pic
             this.setState({userAbout: userAbout})
         }
         else if(imgKey === "cover_pic"){
-            userAbout.cover_pic = URL.createObjectURL(compressedFile)
+            userAbout.cover_pic = data.data.profile_data.cover_pic
             this.setState({userAbout: userAbout})
         }
+    }
+
+    onSuccessfulUpdate = (data) =>{
+        // console.log(data.data)
+        saveInStorage("user_data",JSON.stringify(data.data));
     }
 
     getCompomentData = () =>{
@@ -582,7 +598,7 @@ export default class Profile extends Component {
 
 function ProfileHead(props) {
     let data = props.data;
-    let coverpic = data.cover_pic? data.cover_pic: defaultCoverPic();
+    let coverpic = data.profile_data && data.profile_data.cover_pic ? data.profile_data.cover_pic: defaultCoverPic();
     return (
         <React.Fragment>
             <div className="profile-top">
@@ -599,8 +615,8 @@ function ProfileHead(props) {
                     <img className="p-cover-img" src={coverpic} alt="" />
                     <div className="p-user">
                         <div className="p-user-img-back">
-                                {data.profile_pic?
-                                    <img className="p-user-img" src={data.profile_pic} alt="" />
+                                {data.profile_data && data.profile_data.profile_pic?
+                                    <img className="p-user-img" src={data.profile_data.profile_pic} alt="" />
                                     :
                                     <FaUserCircle className="p-user-img default-user-logo" />
                                     }

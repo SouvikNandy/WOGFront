@@ -93,6 +93,10 @@
     text-align: start;
     color: var(--light);
     text-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
 .p-display-name .p-adj-username {
@@ -382,8 +386,26 @@
         margin-left: 0;
     }
 
-    .p-display-name {
+    .p-user .p-user-img-back{
+        height: 9rem;
+        width: 9rem;
+    }
+    .p-user .p-user-img-back .p-user-img{
+        height: 8.5rem;
+        width: 8.5rem;
+    }
+
+    .p-user .p-display-name {
         text-align: center;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5rem !important;
+    }
+
+    .p-user .p-display-name .p-adj-username,
+    p-user .p-display-name .p-adj{
+        font-size: 0.9rem !important;
+
     }
 
     .sub-nav {
@@ -447,7 +469,7 @@
     }
 }
 
-@media (max-width: 500px) and (orientation: portrait) {
+@media (max-width: 500px) {
 
     .p-display-name {
         font-size: 1.5rem;
@@ -478,11 +500,7 @@
 
 }
 
-@media (max-width: 400px) and (orientation: portrait) {
-    .p-user-img-back {
-        height: 10.2rem;
-        width: 10.2rem;
-    }
+@media (max-width: 400px) {
 
     .p-user-img-back .edit-pic,
     .p-cover .edit-coverpic {
@@ -502,10 +520,14 @@
 
 }
 
-@media (max-width: 350px) and (orientation: portrait) {
-    .p-user-img-back {
-        height: 9.2rem;
-        width: 9.2rem;
+@media (max-width: 350px) {
+    .p-user .p-user-img-back {
+        height: 8rem;
+        width: 8rem;
+    }
+    .p-user .p-user-img-back .p-user-img{
+        height: 7.5rem;
+        width: 7.5rem;
     }
 
     .p-user-img-back .edit-pic,
@@ -521,33 +543,37 @@
     }
 }
 
-@media(max-height: 500px) and (orientation: landscape) {
+@media(max-height: 500px){
     .p-user {
         flex-direction: row;
         justify-content: flex-start;
         align-items: flex-end;
     }
 
-    .p-user-img-back {
-        height: 8.2rem;
-        width: 8.2rem;
+    .p-user .p-user-img-back {
+        height: 8rem;
+        width: 8rem;
         font-size: 0.8rem;
+        margin-left: 0.8rem;
+
     }
 
-    .p-user-img-back .edit-pic,
+    .p-user .p-user-img-back .edit-pic,
     .p-cover .edit-coverpic {
         height: 2rem;
         width: 2rem;
         font-size: 0.8rem;
     }
 
-    .p-user-img {
-        height: 8rem;
-        width: 8rem;
+    .p-user .p-user-img-back .p-user-img {
+        height: 7.8rem;
+        width: 7.8rem;
     }
 
-    .p-display-name {
-        font-size: 1rem;
+    .p-user .p-display-name {
+        font-size: 1rem !important;
+        justify-content: flex-start;
+        align-items: flex-start;
     }
 
     .p-display-name .p-adj-username {

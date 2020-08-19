@@ -9,15 +9,13 @@
     width: 4rem;
     border-radius: 50%;
     background: var(--cream);
-    /* background: burlywood; */
     display: flex;
     justify-content: center;
     align-items: center;
     outline: none;
-    /* border-color: #fff; */
     border: none;
     cursor: pointer;
-    /* border: 1px solid #b8b4b4; */
+    box-shadow: var(--shadow);
 }
 
 .camera-cover .camera-icon {
@@ -284,6 +282,7 @@
     font-size: 0.8rem;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .check-t-c .t-c-line .t-c-highlight {
@@ -333,4 +332,48 @@
         width: 30vw;
     }
 
+}
+
+@media (max-height: 500px){
+    .doc-form{
+        height: 100vh;
+        overflow: scroll;
+    }
+
+    .doc-form .img-upload-form{
+        position: absolute;
+        overflow: scroll;
+        padding: 0.8rem 0;
+    }
+
+    .doc-form .doc-body{
+        margin-top: 2rem
+    }
+    .doc-form .img-upload-form .doc-head{
+        display: none;
+    }
+
+    .img-upload-form .doc-body label,
+    .img-upload-form .doc-body input,
+    .img-upload-form .doc-body textarea{
+        font-size: 0.6rem;
+    }
+
+    .img-upload-form .doc-btn .btn{
+        padding: 0.2 0.8rem !important;
+        font-size: 0.5rem;
+    }
+
+    #file-count{
+        font-size: 0.8rem;
+    }
+
+    .check-t-c .t-c-line{
+        font-size: 0.5rem;
+    }
+    .check-t-c .t-c-line .t-c-highlight{
+        font-size: 0.7rem;
+    }
+
+    
 }
