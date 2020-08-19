@@ -281,7 +281,7 @@ export class NewFeedPalette extends Component{
         let feedList = [];
         if (this.state.feeds.length<1){
             feedList.push(
-                <div className="empty-feeds">
+                <div className="empty-feeds" key={'def'}>
                     <NoContent message={"Start following people to view their post on your feeds."}/>
                 </div>
             )

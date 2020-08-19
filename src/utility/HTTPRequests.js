@@ -43,8 +43,17 @@ export default class HTTPRequestHandler{
         }) 
 
     }
-    static put = ({url, requestBody, includeToken=false, callBackFunc=null}) =>{
-
+    static put = ({url, requestBody, includeToken=false, callBackFunc=null, errNotifierTitle='Something went wrong', uploadType=null}) =>{
+        axios.put( backendHost + url, requestBody, { headers: getHeader(includeToken, uploadType)})
+        .then(res => {
+            if(callBackFunc){
+                callBackFunc(res.data);
+            }
+        })
+        .catch(err =>{
+            console.log("err", err)
+            handleErrorResponse(err, errNotifierTitle);
+        }) 
     }
     static delete = ({url, requestBody, includeToken=false, callBackFunc=null}) =>{
 

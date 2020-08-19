@@ -7,7 +7,7 @@ import {FiGlobe} from 'react-icons/fi';
 import {AiFillCloseCircle, AiFillPlusCircle} from 'react-icons/ai';
 import {FaFacebookSquare, FaInstagram, FaYoutube, FaPinterest, FaUserCircle} from 'react-icons/fa';
 
-import Dropdown from 'react-dropdown';
+import Dropdown from '../Dropdown';
 import 'react-dropdown/style.css';
 import ImgCompressor from '../../utility/ImgCompressor';
 import SideBar from "../SideBar";
@@ -158,7 +158,7 @@ export class EditProfile extends Component {
     }
 
     uploadPicture =(e, imgKey) =>{
-        console.log("uploadPicture", e.target.files, imgKey)
+        // console.log("uploadPicture", e.target.files, imgKey)
         ImgCompressor(e, this.makeUploadRequest, imgKey)
     }
 
@@ -166,18 +166,22 @@ export class EditProfile extends Component {
         let url = 'api/v1/user-profile/'
         let formData = new FormData();
         formData.append(imgKey, compressedFile); 
-        HTTPRequestHandler.post(
+        HTTPRequestHandler.put(
             {url:url, requestBody: formData, includeToken:true, uploadType: 'file', callBackFunc: this.addFileToState.bind(this, compressedFile, imgKey), errNotifierTitle:"Update failed !"})
 
     }
     addFileToState = (compressedFile, imgKey, data) =>{
-        console.log("addFileToState", data);
-        // if (imgKey === "profile_pic"){
-        //     this.setState({profile_pic: URL.createObjectURL(compressedFile)})
-        // }
-        // else if(imgKey === "cover_pic"){
-        //     this.setState({cover_pic: URL.createObjectURL(compressedFile)})
-        // }
+        console.log("addFileToState", imgKey, data);
+        this.onSuccessfulUpdate(data);
+
+        if (imgKey === "profile_pic"){
+            // this.setState({profile_pic: URL.createObjectURL(compressedFile)})
+            this.setState({profile_pic: data.data.profile_data.profile_pic})
+        }
+        else if(imgKey === "cover_pic"){
+            // this.setState({cover_pic: URL.createObjectURL(compressedFile)})
+            this.setState({cover_pic: data.data.profile_data.cover_pic})
+        }
     }
 
 
@@ -220,10 +224,10 @@ export class EditProfile extends Component {
         let contentBlock = [];
         let data = this.state.dataset;
         let coverpic = data.cover_pic? data.cover_pic: defaultCoverPic();
-        this.state.SubNavOptions.map(ele=>{
+        this.state.SubNavOptions.map((ele, index) =>{
             if(ele.title === "Basic" && ele.isActive === true){
                 contentBlock.push(
-                    <React.Fragment>
+                    <React.Fragment key={index}>
                         <div className="upld-pic">
                             <span className="edit-coverpic">
                                 <input type="file" className="pic-uploader" onChange={ e => this.uploadPicture(e, 'cover_pic')}/>
@@ -258,7 +262,7 @@ export class EditProfile extends Component {
                                 </div>
                                 <div className="inline-content">
                                     <label>Email</label>
-                                    <input type="text" value={data.email} placeholder="Enter a email"></input>
+                                    <input type="text" value={data.email} placeholder="Enter a email" readOnly></input>
                                 </div>
                             </div>
                             <label>Bio</label>
@@ -275,7 +279,6 @@ export class EditProfile extends Component {
 
             }
             else if (ele.title === "Social" && ele.isActive === true){
-                console.log(data);
                 let dob = ''
                 if (data.profile_data.dob){
                     dob = new Date(data.profile_data.birthday)
@@ -289,7 +292,7 @@ export class EditProfile extends Component {
                 }
                 
                 contentBlock.push(
-                    <div className="social-details">
+                    <div className="social-details" key={index}>
                         <div className="details-inline">
                             <div className="inline-content">
                                 <label>Pick your Birthday</label>
@@ -426,10 +429,10 @@ export class EditProfile extends Component {
                 }
                     
                 contentBlock.push(
-                    <div className="skills-section">
+                    <div className="skills-section" key={index}>
                         <div className="select-profession">
                             <label>Select your profession</label>
-                            <Dropdown options={options} placeholder="Select an option" />                          
+                            <Dropdown options={options}/>                          
                         </div>
                         <label>Enlist your other skills</label>
                         <span className="info-text">
@@ -522,7 +525,7 @@ export class EditProfile extends Component {
     }
 
     onSuccessfulUpdate = (data) =>{
-        console.log(data.data)
+        // console.log(data.data)
         saveInStorage("user_data",JSON.stringify(data.data));
     }
 

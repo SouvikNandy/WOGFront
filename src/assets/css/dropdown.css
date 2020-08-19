@@ -1,0 +1,81 @@
+@import url('config.css');
+
+.custom-select {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius:0.3rem;
+    font-size: 0.9rem;
+    border: 1px solid var(--border-grey);
+
+  }
+
+  .custom-select select {
+    display: none; /*hide original SELECT element:*/
+  }
+  
+  .select-selected {
+    /* background-color: DodgerBlue; */
+    border-radius: 0.3rem;
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--border-grey);
+  }
+  
+  /*style the arrow inside the select element:*/
+  .select-selected:after {
+    position: absolute;
+    content: "";
+    top: 0.8rem;
+    right: 0.5rem;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: var(--dark) transparent transparent transparent;
+  }
+  
+  /*point the arrow upwards when the select box is open (active):*/
+  .select-selected.select-arrow-active:after {
+    border-color: transparent transparent var(--dark) transparent;
+    top: 7px;
+  }
+  
+  /*style the items (options), including the selected item:*/
+  .select-items div,
+  .select-selected {
+    /* color: #ffffff; */
+    padding: 0.4rem;
+    /* border: 1px solid transparent; */
+    /* border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent; */
+    border-right: 1px solid var(--border-grey);
+    border-left: 1px solid var(--border-grey);
+    cursor: pointer;
+    user-select: none;
+    
+  }
+  
+  .select-items div:first-child{
+      border-top:  1px solid var(--border-grey);
+  }
+
+  .select-items div:last-child{
+    border-bottom:  1px solid var(--border-grey);
+}
+  /*style items (options):*/
+  .select-items {
+    position: absolute;
+    background-color: var(--light);
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+  }
+  
+  /*hide the items when the select box is closed:*/
+  .select-hide {
+    display: none;
+  }
+  
+  .select-items div:hover, .same-as-selected {
+    background-color: rgba(0, 0, 0, 0.1);
+  }

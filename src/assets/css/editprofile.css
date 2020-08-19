@@ -274,8 +274,9 @@
     width: 30%;
 }
 
-.content-div .skills-section .Dropdown-root {
+.content-div .skills-section .custom-select {
     font-size: 0.8rem;
+    /* width: 30vw; */
 }
 
 .content-div .skills-section .info-text {
@@ -434,8 +435,9 @@
         margin-bottom: 0.3rem;
     }
     
-    .content-div .skills-section .Dropdown-root {
-        font-size: 0.5rem;
+    .content-div .skills-section .custom-select {
+        font-size: 0.6rem;
+        width: 20vw;
     }
     .content-div .skills-section .img-span .tag-img,
     .content-div .skills-section .tag-img-count{

@@ -5,6 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { createFloatingNotification } from '../components/FloatingNotifications';
 import {saveInStorage, storeAuthToken, silentRefresh } from '../utility/Utility';
 import HTTPRequestHandler from '../utility/HTTPRequests';
+import Dropdown from '../components/Dropdown';
 
 export class Login extends Component {
     render() {
@@ -197,10 +198,13 @@ class SignUp extends Component {
                 <form className="login-form" id="signup-form" onSubmit={this.onSubmit}>
                     <div className="form-group f-flex">
                         <input type="text" placeholder="Username" name="username" onChange={this.onChange} required />
-                        <select name="i-am" id="i-am">
+                        {/* <select name="i-am" id="i-am">
                             <option className="i-am-option" value="individual">I'm an Individual</option>
                             <option className="i-am-option" value="team">I'm a Team</option>
-                        </select>
+                        </select> */}
+                        <div className="i-am">
+                            <Dropdown options={["I'm an Individual", "I'm a Team"]} />
+                        </div>
                     </div>
                     <div className="form-group">
                         <input type="text" placeholder="Name" name="name" onChange={this.onChange} required />
