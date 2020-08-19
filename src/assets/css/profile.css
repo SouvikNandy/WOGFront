@@ -97,6 +97,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+    padding: 0 0.2rem;
 }
 
 .p-display-name .p-adj-username {
