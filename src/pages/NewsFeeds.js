@@ -19,7 +19,7 @@ import EditProfile from '../components/Profile/EditProfile';
 
 import NoContent from '../components/NoContent';
 import HTTPRequestHandler from '../utility/HTTPRequests';
-import {saveInStorage} from '../utility/Utility';
+import {saveInStorage, retrieveFromStorage} from '../utility/Utility';
 import AddPost from '../components/Post/AddPost';
 
 export class NewsFeeds extends Component {
@@ -48,6 +48,9 @@ export class NewsFeeds extends Component {
 
 export class NewsFeedUserMenu extends Component{
     state ={
+        // userdata 
+        userData : JSON.parse(retrieveFromStorage('user_data')),
+
         // sidebar states
         showSideView: false,
         sideBarHead: false,
@@ -83,9 +86,11 @@ export class NewsFeedUserMenu extends Component{
 
     addFileToState = (compressedFile, imgKey, data) =>{
         this.onSuccessfulUpdate(data);
+        let updatedUserData = this.state.userData
         if (imgKey === "profile_pic"){
+            updatedUserData.profile_data.profile_pic = data.data.profile_data.profile_pic
             // this.setState({profile_pic: URL.createObjectURL(compressedFile)})
-            this.setState({profile_pic: data.data.profile_data.profile_pic})
+            this.setState({userData: updatedUserData})
         }
     }
 
@@ -112,7 +117,7 @@ export class NewsFeedUserMenu extends Component{
         
     }
     render(){
-        let userData = this.props.userData;
+        let userData = this.state.userData;
         let username = userData.username;
         return(
             <React.Fragment>

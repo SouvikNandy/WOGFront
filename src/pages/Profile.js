@@ -323,11 +323,11 @@ export default class Profile extends Component {
         this.onSuccessfulUpdate(data);
         if (imgKey === "profile_pic"){
             
-            userAbout.profile_pic = data.data.profile_data.profile_pic
+            userAbout.profile_data.profile_pic = data.data.profile_data.profile_pic
             this.setState({userAbout: userAbout})
         }
         else if(imgKey === "cover_pic"){
-            userAbout.cover_pic = data.data.profile_data.cover_pic
+            userAbout.profile_data.cover_pic = data.data.profile_data.cover_pic
             this.setState({userAbout: userAbout})
         }
     }

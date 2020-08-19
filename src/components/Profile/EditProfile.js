@@ -171,7 +171,7 @@ export class EditProfile extends Component {
 
     }
     addFileToState = (compressedFile, imgKey, data) =>{
-        console.log("addFileToState", imgKey, data);
+        // console.log("addFileToState", imgKey, data);
         this.onSuccessfulUpdate(data);
 
         if (imgKey === "profile_pic"){
