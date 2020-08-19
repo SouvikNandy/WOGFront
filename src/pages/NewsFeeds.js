@@ -25,12 +25,11 @@ import AddPost from '../components/Post/AddPost';
 export class NewsFeeds extends Component {
     render() {
         let userData = getUserData();
-        console.log(userData);
         return (
             <React.Fragment>
                 <UserNavBar selectedMenu={"feeds"} username={userData.username}/>
                 <div className="nf-container">
-                    <NewsFeedUserMenu {...this.props} userData={userData}/>
+                    <NewsFeedUserMenu />
                     
                     <div className="nf-feeds">
                         <NewFeedPalette currLocation={this.props.location}/>
