@@ -1,12 +1,17 @@
 @import url('config.css');
 
 .log-out-prompt{
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     position: fixed;
     top:0;
     left: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.log-out-prompt .pop-up-option-opt .btn-anc{
+    font-weight: bold;
+    font-size: 0.8rem;
 }

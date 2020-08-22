@@ -216,6 +216,10 @@
     margin-top: 0.5rem;
 }
 
+.user-input-popup-container .user-input-popup .pop-up-action .pop-up-option-opt:hover{
+    color: var(--hover-one);
+}
+
 .settings-container .recent-search-div .s-recent-div{
     width: 100%;
     margin-right: 0;

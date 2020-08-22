@@ -16,8 +16,10 @@ export class Dropdown extends Component {
     onChange = (e) =>{
         let selectedVal = e.innerHTML;
         if(selectedVal!==this.state.selected){
-            console.log("selected", selectedVal)
             this.setState({selected: selectedVal})
+            if(this.props.onChange){
+                this.props.onChange(selectedVal)
+            }
             
         }
         
@@ -108,9 +110,9 @@ export class Dropdown extends Component {
         return (
             <div className="custom-select">
                 <select>
-                    <option value="0" >Select an option</option>
+                    <option value="0" key={"def0"}>{this.props.placeHolder? this.props.placeHolder: "Select an option"} </option>
                     {this.props.options.map((ele, index) =>{
-                        return(<option value={index+1}>{ele}</option>)
+                        return(<option key={"def"+index} value={index+1}>{ele}</option>)
                     })}
                 </select>
                 

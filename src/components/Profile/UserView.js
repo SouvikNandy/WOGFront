@@ -14,7 +14,7 @@ export function UserFlat(props){
                     <img className="tag-img" src={ele.profile_pic} alt={ele.username}/></Link>
                 <Link className="link m-display-name" to={{pathname: `/profile/${ele.username}`}}>
                     {ele.name} @{ele.username}<br />
-                    <span className="m-adj">{ele.designation}</span>
+                    <span className="m-adj">{ele.profession}</span>
                 </Link>
             </div>
         )

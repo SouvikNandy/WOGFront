@@ -1,62 +1,37 @@
 import React, { Component } from 'react';
 import '../../assets/css/portfolio.css';
-import ShotModalView from '../Post/ShotModalView';
 import { ShotFooterLikePreview } from '../Post/Shot';
+import { Link } from 'react-router-dom';
 
 
 export class Portfolio extends Component{
-    state = {
-        showModal: false,
-        sliderRequired: false,
-    }
-
-    openModalView = (slider=false) =>{
-        if(slider){
-            this.setState({
-                sliderRequired: slider,
-                showModal: !this.state.showModal})
-        }
-        else{
-            this.setState({showModal: !this.state.showModal})
-        }
-
-    }
-
-    iterifyArr = (arr) => {
-        let cur = 0;
-        arr.next = (function () { return (++cur >= this.length) ? false : this[cur]; });
-        arr.prev = (function () { return (--cur < 0) ? false : this[cur]; });
-        return arr;
-    };
-
-    getPrev = () =>{
-        let result = this.props.data.shot.prev();
-        return result
-    }
-
-    getNext = () =>{
-        let result = this.props.data.shot.next();
-        return result
-    }
-
     render(){
         let data = this.props.data;
-        let contained = data.shot.length;
-        if (contained > 1){
-            this.iterifyArr(this.props.data.shot)
-        }
+        let contained = data.attachments.length;
+        let redirect_key = data.user.username +'-'+ data.id +'-'+ data.attachments[0].id
+        console.log("redirectkey", redirect_key, data)
     return(
         <React.Fragment>
             <div className="pf-grid">
                 {contained < 5?
                     (contained < 3)?
-                        <div className="pf-container-1" onClick={contained >1 ? this.openModalView.bind(this, true) : this.openModalView.bind(this,false)}>
-                            <div className="pf-one"><img className="pf-img" src={data.shot[0]} alt=""></img></div>
-                        </div>
+                        <Link className="pf-container-1" key={data.id} to={{
+                            pathname: `/shot-view/${redirect_key}`,
+                            // This is the trick! This link sets
+                            // the `background` in location state.
+                            state: { modal: true, currLocation: this.props.currLocation }
+                        }}>
+                            <div className="pf-one"><img className="pf-img" src={data.attachments[0].content} alt=""></img></div>
+                        </Link>
                         :
-                        <div className="pf-container-3" onClick={this.openModalView.bind(this, true)}>
-                            <div className="pf-one"><img className="pf-img" src={data.shot[0]} alt=""></img></div>
-                            <div className="pf-two"><img className="pf-img" src={data.shot[1]} alt=""></img></div>
+                        <Link className="pf-container-3" key={data.id} to={{
+                            pathname: `/shot-view/${redirect_key}`,
+                            // This is the trick! This link sets
+                            // the `background` in location state.
+                            state: { modal: true, currLocation: this.props.currLocation }
+                        }}>
+                            <div className="pf-one"><img className="pf-img" src={data.attachments[0].content} alt=""></img></div>
+                            <div className="pf-two"><img className="pf-img" src={data.attachments[1].content} alt=""></img></div>
                             <div className="pf-three">
                                 {contained>3?
                                 <div className="count-overlay">
@@ -65,16 +40,21 @@ export class Portfolio extends Component{
                                 :
                                 ""
                                 }
-                                <img className="pf-img" src={data.shot[2]} alt=""></img>
+                                <img className="pf-img" src={data.attachments[2].content} alt=""></img>
                             </div>
-                        </div>
+                        </Link>
                 
                 :
-                <div className="pf-container-5" onClick={this.openModalView.bind(this, true)}>
-                    <div className="pf-one"><img className="pf-img" src={data.shot[0]} alt=""></img></div>
-                    <div className="pf-two"><img className="pf-img" src={data.shot[1]} alt=""></img></div>
-                    <div className="pf-three"><img className="pf-img" src={data.shot[2]} alt=""></img></div>
-                    <div className="pf-four"><img className="pf-img" src={data.shot[3]} alt=""></img></div>
+                <Link className="pf-container-5" key={data.id} to={{
+                    pathname: `/shot-view/${redirect_key}`,
+                    // This is the trick! This link sets
+                    // the `background` in location state.
+                    state: { modal: true, currLocation: this.props.currLocation }
+                }}>
+                    <div className="pf-one"><img className="pf-img" src={data.attachments[0].content} alt=""></img></div>
+                    <div className="pf-two"><img className="pf-img" src={data.attachments[1].content} alt=""></img></div>
+                    <div className="pf-three"><img className="pf-img" src={data.attachments[2].content} alt=""></img></div>
+                    <div className="pf-four"><img className="pf-img" src={data.attachments[3].content} alt=""></img></div>
                     <div className="pf-five">
                         {contained>5?
                             <div className="count-overlay">
@@ -83,9 +63,9 @@ export class Portfolio extends Component{
                             :
                             ""
                         }
-                        <img className="pf-img" src={data.shot[4]} alt=""></img>
+                        <img className="pf-img" src={data.attachments[4].content} alt=""></img>
                     </div>
-                </div>
+                </Link>
 
                 }
                 {this.props.onlyShots?
@@ -93,8 +73,8 @@ export class Portfolio extends Component{
                 :
                 <div className="pf-attribute">
                     <span className="pf-attr-span">
-                        <div className="pf-name">{data.name}</div>
-                        <div className="pf-shot-count">Shots {contained}</div>
+                        <div className="pf-name">{data.portfolio_name}</div>
+                        {/* <div className="pf-shot-count">Shots {contained}</div> */}
                     </span>
                     <ShotFooterLikePreview data={data} unLikeShot={this.props.unLikePortfolio} likeShot={this.props.likePortfolio} />
                     
@@ -102,18 +82,9 @@ export class Portfolio extends Component{
                 }
                 
             </div>
-            {this.state.showModal?
-                
-                <ShotModalView openModalView={this.openModalView} slider={this.state.sliderRequired} totalShotCount={contained}
-                getNext={this.getNext} getPrev={this.getPrev} />
-                
-                :
-                ""
-            }
-            
         </React.Fragment>
         );
-}
+    }
 
     }
     

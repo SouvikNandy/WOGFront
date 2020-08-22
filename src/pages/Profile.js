@@ -60,16 +60,8 @@ export default class Profile extends Component {
             {key: "tn-1", "title": "Approved", "count": true, "isActive": true},
             {key: "tn-2", "title": "Requests", "count": true, "isActive": false}
         ],
-        userShot : [
-            // {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: pl2}, 
-            // {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: w1}, 
 
-        ],
-        userPortFolio :[
-            // {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1], likes: 100, comments: 100, shares:0,}, 
-            // {id: 2, name:"p2", shot: [w1], likes: 100, comments: 100, shares:0,}, 
-            // {id: 3, name:"p4", shot: [w1, pl2, w1], likes: 100, comments: 100, shares:0,}, 
-        ],
+        userPortFolio :[],
         userTag:{
             approved : [
                 // {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: pl2, is_liked: false}, 
@@ -102,17 +94,24 @@ export default class Profile extends Component {
     }
 
     componentDidMount(){
+        // get user portfolio data
         let subnav = ''
         let isSelf = false
+        let userAbout = ''
         if(this.props.isAuthenticated && isSelfUser(this.state.userAbout.username, this.props.match.params.username)){
             subnav = AuthUserNav;
             isSelf = true;
+            userAbout = JSON.parse(retrieveFromStorage("user_data"))
         }
         else{
             subnav = PublicNav;
+            // call api to get user about
+            userAbout = JSON.parse(retrieveFromStorage("user_data"))
+
         }
         let qstr = new URLSearchParams(this.props.location.search);
         let activeTab = qstr.get('active');
+        // console.log("active tab", activeTab);
         if(activeTab){
             subnav.map(ele=>{
                 if(ele.title.toLowerCase()=== activeTab.toLowerCase()){
@@ -125,14 +124,40 @@ export default class Profile extends Component {
             })
         
         }
-        this.setState({subNavList: subnav, isSelf: isSelf})
+        else{
+            activeTab = 'shots'
+            let url = 'api/v1/view-post/'+ userAbout.username + '/'
+            HTTPRequestHandler.get(
+                {url:url, includeToken:true, callBackFunc: this.updateStateOnAPIcall.bind(this, 'userPortFolio'), 
+                errNotifierTitle:"Update failed !"})
+        }
+
+        this.setState({
+            subNavList: subnav, isSelf: isSelf, userAbout: userAbout
+        })
+    }
+
+    updateStateOnAPIcall = (key, data)=>{
+        // console.log("updateStateOnAPIcall", key, data)
+        if('count' in data && 'next' in data && 'previous' in data){
+            // paginated response
+            this.setState({
+                [key]: data.results
+            })
+        }
+        else{
+            this.setState({
+                [key]: data.data
+            })
+        }
+
     }
 
 
     getMenuCount = (key) =>{
         switch (key) {
             case "Shots":
-                return this.state.userShot.length;
+                return this.state.userPortFolio.length;
             case "Portfolios":
                 return this.state.userPortFolio.length;
             case "Tags":
@@ -211,11 +236,14 @@ export default class Profile extends Component {
     }
     
     likePortfolio = (idx) =>{
+        let url = 'api/v1/like-post/';
+        let requestBody = {action: "l", post_id: idx}
+        HTTPRequestHandler.post({url:url, requestBody: requestBody, includeToken: true, callBackFunc: null})
         this.setState({
             userPortFolio: this.state.userPortFolio.map(ele =>{
                 if(ele.id === idx){
                     ele.is_liked = true;
-                    ele.likes++;
+                    ele.interactions.likes++;
                 }
                 return ele
             })
@@ -223,11 +251,14 @@ export default class Profile extends Component {
     }
 
     unLikePortfolio = (idx) =>{
+        let url = 'api/v1/like-post/';
+        let requestBody = {action: "d", post_id: idx}
+        HTTPRequestHandler.post({url:url, requestBody: requestBody, includeToken: true, callBackFunc: null})
         this.setState({
             userPortFolio: this.state.userPortFolio.map(ele =>{
                 if(ele.id === idx){
                     ele.is_liked = false;
-                    ele.likes--;
+                    ele.interactions.likes--;
                 }
                 return ele
             })
@@ -306,7 +337,6 @@ export default class Profile extends Component {
     }
 
     uploadPicture =(e, imgKey) =>{
-        console.log(e.target.files, imgKey)
         ImgCompressor(e, this.makeUploadRequest, imgKey)
     }
     makeUploadRequest=(compressedFile, imgKey)=>{
@@ -342,8 +372,9 @@ export default class Profile extends Component {
         let resultBlock = '';
         resultBlock = this.state.subNavList.map((item, index) => {
             if(item.title === "Shots" && item.isActive === true){
+
                 // SHOTS
-                if (this.state.userShot.length === 0){
+                if (this.state.userPortFolio.length === 0){
                     let msg = "No shots yet !!!"
                     resultList = this.getNoContentDiv(msg);
                     return(
@@ -358,11 +389,21 @@ export default class Profile extends Component {
                     )
                 }
                 else{
-                    this.state.userShot.map(ele => 
-                        {resultList.push(<Shot key={ele.id} id={ele} onlyShot={true} data={ele} currLocation={this.props.location} />)
-                        return ele
+                    // get all shots
+                    this.state.userPortFolio.map(portfolio => {
+
+                        portfolio.attachments.map(ele=>{
+                            // {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: pl2},
+                            let data ={
+                                id: ele.id, name: portfolio.user.name, username: portfolio.user.username, content: ele.content, 
+                                interactions: portfolio.interactions, portfolio_id: portfolio.id
+                            }
+                            resultList.push(<Shot key={data.id} id={data.id} onlyShot={true} data={data} currLocation={this.props.location} />)
+                            return ele
+                        })
+                        return portfolio
                     })
-                    resultList = this.padDummyShot(resultList, this.state.userShot.length, 5)
+                    resultList = this.padDummyShot(resultList, resultList.length, 5)
                     return(
                         <div key={item.title} className="profile-shots">
                             {resultList}
@@ -578,7 +619,7 @@ export default class Profile extends Component {
                 ""
                 :
                 this.props.isAuthenticated?
-                <UserNavBar selectedMenu={"profile"} username={this.props.username}/>
+                <UserNavBar selectedMenu={"profile"} username={this.state.userAbout.username}/>
                 :
                 <SearchHead />
                 }
@@ -632,11 +673,11 @@ function ProfileHead(props) {
                             
                         </div>
                         
-                        <span className="p-display-name">{data.name}<br />
-                            <span className="p-adj-username">@{data.username}</span><br />
+                        <span className="p-display-name">{data.name}
+                            <span className="p-adj-username">@{data.username}</span>
                             <span className="p-adj">
-                            {(data.profile_data && data.profile_data.designation)? data.profile_data.designation:""}
-                                </span><br />
+                            {(data.profile_data && data.profile_data.profession)? data.profile_data.profession:""}
+                                </span>
                             {props.isSelf?
                                 <button className="btn m-fuser" onClick={props.editProfile}>< TiEdit className="ico"/>Edit Profile</button>
                             :

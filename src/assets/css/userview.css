@@ -50,6 +50,7 @@
     width: 6rem;
     display: block;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .cube-grid .m-display-name {

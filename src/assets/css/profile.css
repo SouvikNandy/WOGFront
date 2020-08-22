@@ -101,15 +101,18 @@
 }
 
 .p-display-name .p-adj-username {
-    font-size: 1.5rem;
-    font-weight: 501;
+    font-size: 1.2rem;
+    /* font-weight: 501; */
+    font-weight: bold;
 
 }
 
 .p-display-name .p-adj {
-    font-size: 1rem;
-    font-weight: 501;
+    font-size: 0.9rem;
+    /* font-weight: 501; */
     text-shadow: var(--shadow);
+    /* font-weight: normal; */
+    padding: 0.4rem;
 }
 
 .p-display-name .pf-otheruser-btns {

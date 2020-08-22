@@ -64,6 +64,18 @@ export class EditProfile extends Component {
 
     }
 
+    componentDidMount(){
+        let dataset = JSON.parse(retrieveFromStorage("user_data"))
+        if(dataset.profile_data){
+            if(dataset.profile_data.skills){
+                this.setState({skills: dataset.profile_data.skills})
+            }
+            if(dataset.profile_data.teams){
+                this.setState({teams: dataset.profile_data.teams})
+            }
+        }
+    }    
+
     onChange =(e) =>{
         if(e.target.name.startsWith("social")){
             let keyset = e.target.name.split("-");
@@ -212,12 +224,16 @@ export class EditProfile extends Component {
         let valueset = ele.value;
         if (valueset === ""){return false}
         valueset = valueset.split(',');
-        console.log("valueset.length", valueset.length, valueset)
+        // console.log("valueset.length", valueset.length, valueset)
         this.setState({skills: [...this.state.skills, ...valueset]});
         ele.value = "";
     }
     removeSkills = (ele) =>{
         this.setState({skills: this.state.skills.filter(item => item!== ele)})
+    }
+
+    selectProfession =(name) =>{
+        this.setState({profession: name})
     }
 
     pageContent = () =>{
@@ -427,12 +443,13 @@ export class EditProfile extends Component {
                         ) 
 
                 }
-                    
+                console.log("skills data", data.profile_data)   
                 contentBlock.push(
                     <div className="skills-section" key={index}>
                         <div className="select-profession">
                             <label>Select your profession</label>
-                            <Dropdown options={options}/>                          
+                            <Dropdown options={options} onChange={this.selectProfession} 
+                            placeHolder={data.profile_data && data.profile_data.profession?data.profile_data.profession:""}/>                          
                         </div>
                         <label>Enlist your other skills</label>
                         <span className="info-text">
@@ -496,10 +513,6 @@ export class EditProfile extends Component {
                 requestBody['profile_data']['bio'] = this.state.bio
 
             }
-            HTTPRequestHandler.post(
-                {url:url, requestBody: requestBody, includeToken:true, callBackFunc: this.onSuccessfulUpdate, errNotifierTitle:"Update failed !"})
-
-
         }
         else if(activeTab.key === "E-2"){
             requestBody['profile_data']={'social':{}}
@@ -515,13 +528,18 @@ export class EditProfile extends Component {
                } 
 
            }
-           HTTPRequestHandler.post(
-            {url:url, requestBody: requestBody, includeToken:true, callBackFunc: this.onSuccessfulUpdate, errNotifierTitle:"Update failed !"})
+           
 
         }
         else if(activeTab.key === "E-3"){
-            
+            // console.log("skills page", this.state.profession, this.state.skills, this.state.teams.map(ele=> ele.id));
+            requestBody['profile_data']["profession"] = this.state.profession;
+            requestBody['profile_data']["skills"] = this.state.skills;
+            requestBody['profile_data']["teams"] = this.state.teams.map(ele=> ele.id)
         }
+        
+        HTTPRequestHandler.post(
+            {url:url, requestBody: requestBody, includeToken:true, callBackFunc: this.onSuccessfulUpdate, errNotifierTitle:"Update failed !"})
     }
 
     onSuccessfulUpdate = (data) =>{

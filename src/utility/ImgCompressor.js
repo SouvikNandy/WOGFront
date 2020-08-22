@@ -1,9 +1,9 @@
 import imageCompression from 'browser-image-compression';
 import { createFloatingNotification } from '../components/FloatingNotifications';
 
-const ImgCompressor = (e, callbackFunc, imgKey=null) => {
+const ImgCompressor = (e, callbackFunc, imgKey=null, returnUncompressedList=false) => {
     // console.log("on file selects", e.target.files, e.target.files.length);
-    // let resultList = [];
+    let resultList = [];
     for (let i = 0; i < e.target.files.length; i++) {
         let file = e.target.files[i];
         // console.log("selected file", file)
@@ -32,13 +32,18 @@ const ImgCompressor = (e, callbackFunc, imgKey=null) => {
                 })
         } else {
             // images below 500kb or videos
-            console.log("images below 500kb")
-            // resultList.push(file);
-            callbackFunc(file, imgKey);
+            // console.log("images below 500kb")
+            if(returnUncompressedList){
+                // for multiple simultaneous callbacks, state got messed up 
+                resultList.push(file);
+            }
+            else{
+                callbackFunc(file, imgKey);
+            } 
         }
     }
 
-    return true
+    return resultList
 
 }
 

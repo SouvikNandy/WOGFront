@@ -26,8 +26,7 @@ export const isAuthenticaed = () => {
         }
         else{
             return false
-        }
-        
+        }     
     }
     else{
         return null
@@ -40,7 +39,7 @@ export const isAuthenticaed = () => {
 export const silentRefresh = () => {
     let inMemoryToken = retrieveFromStorage("tx");
     if (inMemoryToken) {
-        console.log("inMemoryToken exists! ")
+        // console.log("inMemoryToken exists! ")
         inMemoryToken = JSON.parse(inMemoryToken) 
         let expiry = inMemoryToken.exp
         let cur_ms = getCurrentTimeInMS();
@@ -48,7 +47,7 @@ export const silentRefresh = () => {
         let diff = expiry - cur_ms
         // if diff is less than one minutes
         if (diff < 60) {
-            console.log("diff is less than one minutes, setting token directly");
+            // console.log("diff is less than one minutes, setting token directly");
             refreshToken().then(res =>{
                 if (res !== false){
                     silentRefresh();
@@ -61,7 +60,7 @@ export const silentRefresh = () => {
             
         } 
         else {
-            console.log("refresh token each in " + diff +" seconds");
+            // console.log("refresh token each in " + diff +" seconds");
             setInterval(() => {
                 refreshToken().then(res =>{
                     if (res !== false){
@@ -114,7 +113,7 @@ async function refreshToken () {
 
 // REUASBLE methods
 export const isSelfUser = (sourceID, targetID) => {
-    return sourceID === targetID ? true : false
+    return sourceID.toLowerCase() === targetID.toLowerCase() ? true : false
 }
 
 export const getCurrentTimeInMS = () => {

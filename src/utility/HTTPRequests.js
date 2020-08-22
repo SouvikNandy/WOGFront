@@ -26,7 +26,18 @@ const getHeader = (includeToken, uploadType) =>{
 
 }
 export default class HTTPRequestHandler{
-    static get = ({url, requestBody, includeToken=false, callBackFunc=null, errNotifierTitle='Something went wrong'}) =>{
+    static get = ({url, includeToken=false, callBackFunc=null, errNotifierTitle='Something went wrong'}) =>{
+
+        axios.get( backendHost + url, { headers: getHeader(includeToken)})
+        .then(res => {
+            if(callBackFunc){
+                callBackFunc(res.data);
+            }
+        })
+        .catch(err =>{
+            console.log("err", err)
+            handleErrorResponse(err, errNotifierTitle);
+        }) 
 
     }
     static post = ({url, requestBody, includeToken=false, callBackFunc=null, errNotifierTitle='Something went wrong', uploadType=null}) =>{

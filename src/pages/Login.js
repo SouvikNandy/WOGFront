@@ -66,7 +66,6 @@ class SignIn extends Component {
 
     storeInCache = (data) =>{
         // store user basic data and token in cache
-
         // store token in localstorage
         saveInStorage("refresh_token", data.token.refresh);
         // store user basic details in localstorage

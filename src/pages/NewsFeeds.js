@@ -13,7 +13,6 @@ import {Link} from 'react-router-dom';
 import ImgCompressor from '../utility/ImgCompressor';
 import SideBar from "../components/SideBar";
 import Settings from '../components/Settings/Settings';
-import LogOutPromptModal from '../components/LogOutPromptModal';
 import getUserData from '../utility/userData';
 import EditProfile from '../components/Profile/EditProfile';
 
@@ -56,17 +55,11 @@ export class NewsFeedUserMenu extends Component{
         searchBarRequired: false,
         sideViewContent: [],
         altHeadText : null,
-        logOutPrompt: false,
         editProf: false,
     }
 
     editProfile = () =>{
         this.setState({editProf: !this.state.editProf})
-    }
-
-    showLogOutPrompt = () =>{
-        this.setState({logOutPrompt: !this.state.logOutPrompt
-        })
     }
 
     uploadPicture =(e, imgKey) =>{
@@ -148,8 +141,8 @@ export class NewsFeedUserMenu extends Component{
                             {userData.name}
                             <span className="m-adj">@{userData.username}</span>
                             <span className="m-adj">
-                                {(userData.profile_data && userData.profile_data.designation)?
-                                userData.profile_data.designation:""}</span>
+                                {(userData.profile_data && userData.profile_data.profession)?
+                                userData.profile_data.profession:""}</span>
                         </span>
                         <button className="btn edit-btn" onClick={this.editProfile}><TiEdit  className="ico" />Edit Profile</button>
 
@@ -188,16 +181,11 @@ export class NewsFeedUserMenu extends Component{
                                 <FiSettings className="ico" />
                                 <span>Settings</span>
                             </div>
-                            <div className="nf-menu-tokens" onClick={this.showLogOutPrompt}>
+                            <Link className="nf-menu-tokens" to={`/log-out/`}>
                                 <AiOutlinePoweroff className="ico" />
                                 <span>Log Out</span>
-
-                                {this.state.logOutPrompt?
-                                    <LogOutPromptModal prvBtnClick={this.showLogOutPrompt}/>
-                                :
-                                ""
-                                }
-                            </div>
+                                
+                            </Link>
 
                         </div>
                     </div>

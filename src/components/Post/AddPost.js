@@ -11,10 +11,12 @@ import IndianCityList from '../IndianCityList';
 import FriendList from '../Profile/FriendList';
 import CommmunityGuidelines from '../../pages/CommunityGuidelines';
 import ImgCompressor from '../../utility/ImgCompressor';
+import HTTPRequestHandler from '../../utility/HTTPRequests';
 
 
 // video thumbnail
 import videoThumbnail from '../../assets/images/icons/video-thumbnail.jpg'
+import { createFloatingNotification } from '../FloatingNotifications';
 
 // Add post button
 export class AddPost extends Component {
@@ -67,6 +69,29 @@ class AddDocumentForm extends Component {
 
     }
 
+    onSubmit =() =>{
+        console.log("current state", this.state)
+        let url = 'api/v1/add-post/'
+        let formData = new FormData();
+        this.state.FileList.map(ele=>  formData.append("attachments", ele))
+       
+        formData.append("portfolio_name", this.state.portfolioName)
+        formData.append("description", this.state.description)
+        formData.append("location", document.getElementById("location").value)
+
+        HTTPRequestHandler.post(
+            {url:url, requestBody: formData, includeToken:true, uploadType: 'file', callBackFunc: this.successfulUpload, errNotifierTitle:"Uplading failed !"})
+        
+        // close modal and notify user 
+        this.props.showModal();
+        createFloatingNotification('warning' ,'Your shots are being uploaded!', "It may took a while. We will notify you as soon as its done");
+    }
+
+    successfulUpload = (data) =>{
+        createFloatingNotification('success' ,'Your shots have been posted!', data.message);
+
+    }
+
     displaySideView = ({content, sureVal, altHeadText=null}) =>{
         let stateVal = !this.state.showSideView
         if (sureVal){
@@ -103,14 +128,18 @@ class AddDocumentForm extends Component {
                 // on close also clear the diasble fields
                 disabledFields: []
             })
-
-        }
-        
+        } 
     }
 
     onFileSelect = (e) => {
+        // console.log("selected files", e.target.files)
         // compress image list
-        ImgCompressor(e, this.addFileToState)        
+        let uncompressed = ImgCompressor(e, this.addFileToState, null, true)
+        if(uncompressed.length> 0) {
+            this.setState({
+            FileList: [...this.state.FileList, ...uncompressed]
+        })
+        }  
     }
 
     addFileToState = (compressedFile) =>{
@@ -316,7 +345,7 @@ class AddDocumentForm extends Component {
                             <input type="button"
                                 className="btn cancel-btn" value="Cancel"
                                 onClick={this.props.showModal} />
-                            <input type="submit" className="btn apply-btn" value="Create" />
+                            <input type="submit" className="btn apply-btn" value="Create" onClick={this.onSubmit}/>
                         </section>
                     </form>
                 </div>

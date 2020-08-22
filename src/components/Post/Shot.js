@@ -4,7 +4,7 @@ import DummyShots from './DummyShots';
 
 
 import { Link } from "react-router-dom";
-import { FaHeart, FaPaperPlane } from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaRegEye } from "react-icons/fa";
 
 // Images for shot
 import w1 from "../../assets/images/wedding1.jpg";
@@ -87,19 +87,20 @@ export class Shot extends Component {
     render() {
         let data = this.props.data
         let shotClass = this.props.onlyShot ? "shot-preview-alt" : "shot-preview"
+        let redirect_key = data.username +'-'+ data.portfolio_id +'-'+ data.id
         return (
             <React.Fragment>
                 <div className={shotClass}>
                     <Link className="sp-img"
                         key={data.id}
                         to={{
-                            pathname: `/shot-view/${data.id}`,
+                            pathname: `/shot-view/${redirect_key}`,
                             // This is the trick! This link sets
                             // the `background` in location state.
                             state: { modal: true, currLocation: this.props.currLocation }
                         }}>
 
-                        <img src={data.shot} alt="" />
+                        <img src={data.content} alt="" />
                     </Link>
                     {!this.props.onlyShot ?
                         <span className="attribution-user">
@@ -127,15 +128,15 @@ export class ShotFooterLikePreview extends Component{
             <span className="like-comment-share-preview">
                 {data.is_liked?
                     <React.Fragment>
-                        <FaHeart className="icons icons-active" onClick={this.props.unLikeShot.bind(this, data.id)}/><span>{data.likes}</span>
+                        <FaHeart className="icons icons-active" onClick={this.props.unLikeShot.bind(this, data.id)}/><span>{data.interactions.likes}</span>
                     </React.Fragment>
                     :
                     <React.Fragment>
-                        <FaHeart className="icons" onClick={this.props.likeShot.bind(this, data.id)}/><span>{data.likes}</span>
+                        <FaRegHeart className="icons" onClick={this.props.likeShot.bind(this, data.id)}/><span>{data.interactions.likes}</span>
                     </React.Fragment>                                
                 }
                 
-                <FaPaperPlane className="icons" /><span>{data.shares}</span>
+                <FaRegEye className="icons" /><span>{data.interactions.views}</span>
             </span>
         )
     }
