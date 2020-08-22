@@ -7,7 +7,8 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={props => {
         let auth = isAuthenticaed();
         if (auth){
-            return (<Component {...props}  isAuthenticated={true} />) 
+            console.log("rest in private route" , rest)
+            return (<Component {...rest} {...props}  isAuthenticated={true} />) 
         }
         else{
             return (<Redirect to={{ pathname: "/signin/" }} />)

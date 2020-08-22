@@ -20,6 +20,7 @@ import NoContent from '../components/NoContent';
 import HTTPRequestHandler from '../utility/HTTPRequests';
 import {saveInStorage, retrieveFromStorage} from '../utility/Utility';
 import AddPost from '../components/Post/AddPost';
+import { createFloatingNotification } from '../components/FloatingNotifications';
 
 export class NewsFeeds extends Component {
     render() {
@@ -32,12 +33,9 @@ export class NewsFeeds extends Component {
                     
                     <div className="nf-feeds">
                         <NewFeedPalette currLocation={this.props.location}/>
-                        <div className="add-pst-btn">
-                            <AddPost />
-                        </div>
                     </div>
                     <NewsFeedSuggestions />
-                    
+                    <AddPost />
                 </div>
             </React.Fragment>
         )
@@ -84,6 +82,9 @@ export class NewsFeedUserMenu extends Component{
             // this.setState({profile_pic: URL.createObjectURL(compressedFile)})
             this.setState({userData: updatedUserData})
         }
+        let noti_key = "Profile picture updated"
+        let noti_msg = "Here comes your new profile picture. Cheers!"
+        createFloatingNotification('success', noti_key, noti_msg)
     }
 
     onSuccessfulUpdate = (data) =>{

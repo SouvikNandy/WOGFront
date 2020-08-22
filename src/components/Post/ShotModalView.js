@@ -16,15 +16,13 @@ import ReportContent from './ReportContent'
 import {msToDateTime, isSelfUser, retrieveFromStorage} from '../../utility/Utility'
 
 import HTTPRequestHandler from '../../utility/HTTPRequests';
+import OwlLoader from '../OwlLoader';
 
 
 export class ShotModalView extends Component {
     state = {
         shot: null,
         selected_shot_id: '',
-
-        // is_liked: false,
-        isSaved: false,
 
         // sidebar states
         showSideView: false,
@@ -57,6 +55,9 @@ export class ShotModalView extends Component {
         shot.is_liked = true;
         shot.interactions.likes++;
         this.setState({ shot });
+        let url = 'api/v1/like-post/';
+        let requestBody = {post_id: shot.id}
+        HTTPRequestHandler.post({url:url, requestBody: requestBody, includeToken: true, callBackFunc: null})
     }
 
     doUnLike = () => {
@@ -66,6 +67,23 @@ export class ShotModalView extends Component {
         updatedshot.is_liked = false;
         updatedshot.interactions.likes--;
         this.setState({ shot: updatedshot })
+        let url = 'api/v1/like-post/';
+        let requestBody = {post_id: updatedshot.id}
+        HTTPRequestHandler.post({url:url, requestBody: requestBody, includeToken: true, callBackFunc: null})
+    }
+
+    savePost = () =>{
+        var shot = { ...this.state.shot };
+        if(!shot.is_saved){
+            shot.is_saved = true;
+        }
+        else{
+            shot.is_saved = !shot.is_saved;
+        }
+        this.setState({ shot : shot });
+        let url = 'api/v1/save-post/';
+        let requestBody = {post_id: shot.id}
+        HTTPRequestHandler.post({url:url, requestBody: requestBody, includeToken: true, callBackFunc: null})
     }
 
     followUser = () =>{
@@ -128,17 +146,6 @@ export class ShotModalView extends Component {
 
     }
 
-    savePost = () =>{
-        var shot = { ...this.state.shot };
-        if(!shot.isSaved){
-            shot.isSaved = true;
-        }
-        else{
-            shot.isSaved = !shot.isSaved;
-        }
-        this.setState({ shot : shot });
-
-    }
 
     showReportOptions = () =>{
         this.setState({reportBox : !this.state.reportBox})
@@ -146,9 +153,10 @@ export class ShotModalView extends Component {
     
     render() {
         // if component not loaded yet return
+        // console.log(this.state.shot)
         if(!this.state.shot){
             return(
-                <div className="bg-modal full-width"></div>
+                <div className="bg-modal full-width"><OwlLoader /></div>
                 )
         }
         let maxCount = window.innerWidth > 700? 3: 2;
@@ -279,7 +287,7 @@ export class ShotModalView extends Component {
                                     doLike={this.doLike}
                                     doUnLike={this.doUnLike}
                                     isLiked={this.state.shot.is_liked}
-                                    isSaved={this.state.shot.isSaved}
+                                    isSaved={this.state.shot.is_saved}
                                     savePost={this.savePost}
                                     responsecounts={this.state.shot.interactions} />
 
@@ -318,7 +326,7 @@ class ImageSlider extends Component{
     }
 
     componentDidMount(){
-        console.log("ImageSlider", this.props)
+        // console.log("ImageSlider", this.props)
         let selectedContent = this.props.attachments[0];
         let currIndex = 0
         this.props.attachments.map((ele, index)=> {
@@ -371,7 +379,7 @@ class ImageSlider extends Component{
     render(){
 
         if(!this.state.selectedContent){
-            return(<React.Fragment></React.Fragment>)
+            return(<div className="img-preview"><OwlLoader /></div>)
         }
 
         if (this.props.attachments.length > 1){
@@ -382,11 +390,7 @@ class ImageSlider extends Component{
                 {this.props.attachments.length> 0?
                     <div className="image-overlay">
                         <AiFillLeftCircle  className ="slide-btn" onClick={this.getPrevShot}/>
-                        <div className="slide-middle-view"
-                        // onclick event to show full size picture
-                        // onClick={this.displayFullSizeImagePreview.bind(
-                        // this, this.getSidebarDisplayImg(this.state.selectedContent.content))}
-                        ></div>
+                        <div className="slide-middle-view"></div>
                         <AiFillRightCircle className ="slide-btn" onClick={this.getNextShot}/>
                     </div>
                     :
@@ -402,8 +406,6 @@ class ImageSlider extends Component{
 
                 </div>
                 
-                {/* <div className="m-shot-background-cover"></div> */}
-
             </React.Fragment>
         )
     }

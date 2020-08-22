@@ -27,6 +27,8 @@ import ImgCompressor from '../utility/ImgCompressor';
 import {defaultCoverPic} from '../utility/userData';
 import { retrieveFromStorage, saveInStorage } from '../utility/Utility';
 import HTTPRequestHandler from '../utility/HTTPRequests';
+import { createFloatingNotification } from '../components/FloatingNotifications';
+import { Redirect } from 'react-router-dom';
 
 
 
@@ -89,7 +91,7 @@ export default class Profile extends Component {
             // {id: 3, name:"p4", shot: [w1, pl2, w1], likes: 100, comments: 100, shares:0,},
             // {id: 4, name:"p4", shot: [w1, pl2, w1, pl2], likes: 100, comments: 100, shares:0,},
         ],
-        isSelf : false,
+        isSelf : null,
         editProf: false,
     }
 
@@ -237,7 +239,7 @@ export default class Profile extends Component {
     
     likePortfolio = (idx) =>{
         let url = 'api/v1/like-post/';
-        let requestBody = {action: "l", post_id: idx}
+        let requestBody = {post_id: idx}
         HTTPRequestHandler.post({url:url, requestBody: requestBody, includeToken: true, callBackFunc: null})
         this.setState({
             userPortFolio: this.state.userPortFolio.map(ele =>{
@@ -252,7 +254,7 @@ export default class Profile extends Component {
 
     unLikePortfolio = (idx) =>{
         let url = 'api/v1/like-post/';
-        let requestBody = {action: "d", post_id: idx}
+        let requestBody = {post_id: idx}
         HTTPRequestHandler.post({url:url, requestBody: requestBody, includeToken: true, callBackFunc: null})
         this.setState({
             userPortFolio: this.state.userPortFolio.map(ele =>{
@@ -351,15 +353,22 @@ export default class Profile extends Component {
     addFileToState = (compressedFile, imgKey, data) =>{
         let userAbout = this.state.userAbout;
         this.onSuccessfulUpdate(data);
+        let noti_key=''
+        let noti_msg=''
         if (imgKey === "profile_pic"){
             
             userAbout.profile_data.profile_pic = data.data.profile_data.profile_pic
             this.setState({userAbout: userAbout})
+            noti_key = "Profile picture updated"
+            noti_msg = "Here comes your new profile picture. Cheers!"
         }
         else if(imgKey === "cover_pic"){
             userAbout.profile_data.cover_pic = data.data.profile_data.cover_pic
             this.setState({userAbout: userAbout})
+            noti_key = "Cover picture updated"
+            noti_msg = "Here come your new Cover picture. Cheers!"
         }
+        createFloatingNotification('success', noti_key, noti_msg)
     }
 
     onSuccessfulUpdate = (data) =>{
@@ -606,6 +615,9 @@ export default class Profile extends Component {
     }
 
     render() {
+        if (this.props.AuthenticatedOnly && this.state.isSelf === false){
+            return(<Redirect to={{ pathname: "/page-404/" }} />)
+        }
         let resultBlock = this.getCompomentData()
         return (
             <React.Fragment>

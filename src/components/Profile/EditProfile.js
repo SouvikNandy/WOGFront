@@ -8,7 +8,6 @@ import {AiFillCloseCircle, AiFillPlusCircle} from 'react-icons/ai';
 import {FaFacebookSquare, FaInstagram, FaYoutube, FaPinterest, FaUserCircle} from 'react-icons/fa';
 
 import Dropdown from '../Dropdown';
-import 'react-dropdown/style.css';
 import ImgCompressor from '../../utility/ImgCompressor';
 import SideBar from "../SideBar";
 import IndianCityList from '../IndianCityList';
@@ -17,6 +16,7 @@ import TagUser from '../Profile/TagUser';
 import {defaultCoverPic} from '../../utility/userData';
 import HTTPRequestHandler from '../../utility/HTTPRequests';
 import { saveInStorage, retrieveFromStorage } from '../../utility/Utility';
+import { createFloatingNotification } from '../FloatingNotifications';
 
 export class EditProfile extends Component {
     state ={
@@ -185,15 +185,23 @@ export class EditProfile extends Component {
     addFileToState = (compressedFile, imgKey, data) =>{
         // console.log("addFileToState", imgKey, data);
         this.onSuccessfulUpdate(data);
-
+        let noti_key=''
+        let noti_msg=''
         if (imgKey === "profile_pic"){
             // this.setState({profile_pic: URL.createObjectURL(compressedFile)})
             this.setState({profile_pic: data.data.profile_data.profile_pic})
+            noti_key = "Profile picture updated"
+            noti_msg = "Here comes your new profile picture. Cheers!"
         }
         else if(imgKey === "cover_pic"){
             // this.setState({cover_pic: URL.createObjectURL(compressedFile)})
             this.setState({cover_pic: data.data.profile_data.cover_pic})
+            noti_key = "Cover picture updated"
+            noti_msg = "Here come your new Cover picture. Cheers!"
         }
+
+        // create user notification
+        createFloatingNotification('success', noti_key, noti_msg)
     }
 
 
