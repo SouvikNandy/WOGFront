@@ -66,7 +66,19 @@ export default class HTTPRequestHandler{
             handleErrorResponse(err, errNotifierTitle);
         }) 
     }
-    static delete = ({url, requestBody, includeToken=false, callBackFunc=null}) =>{
+    static delete = ({url, includeToken=false, callBackFunc=null, errNotifierTitle='Something went wrong'}) =>{
+        axios.delete( backendHost + url, { 
+            headers: getHeader(includeToken),
+        })
+        .then(res => {
+            if(callBackFunc){
+                callBackFunc(res.data);
+            }
+        })
+        .catch(err =>{
+            console.log("err", err)
+            handleErrorResponse(err, errNotifierTitle);
+        }) 
 
     }
 }

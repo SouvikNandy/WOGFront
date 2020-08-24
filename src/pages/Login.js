@@ -47,7 +47,7 @@ class SignIn extends Component {
             return false
         }
 
-        let url = 'api/v1/user-authentication/';
+        let url = 'api/v1/user-authentication/?r='+ window.innerWidth;
         let requestBody = { email: this.state.email, password: this.state.password }
         HTTPRequestHandler.post({url: url, requestBody: requestBody, callBackFunc: this.onSuccessfulLogin, errNotifierTitle: "Authentication failed!"})
     }
@@ -197,10 +197,6 @@ class SignUp extends Component {
                 <form className="login-form" id="signup-form" onSubmit={this.onSubmit}>
                     <div className="form-group f-flex">
                         <input type="text" placeholder="Username" name="username" onChange={this.onChange} required />
-                        {/* <select name="i-am" id="i-am">
-                            <option className="i-am-option" value="individual">I'm an Individual</option>
-                            <option className="i-am-option" value="team">I'm a Team</option>
-                        </select> */}
                         <div className="i-am">
                             <Dropdown options={["I'm an Individual", "I'm a Team"]} />
                         </div>

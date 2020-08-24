@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '../../assets/css/settings.css';
 import '../../assets/css/shotmodalview.css';
 
 import { FaPlus, FaCheckDouble } from "react-icons/fa";
@@ -40,7 +41,7 @@ export class ShotModalView extends Component {
         let param = this.props.match.params.id
         let [username, portfolio_id, shot_id] = param.split("-");
         // get portfolio details
-        let url = "api/v1/view-post/" + username + '/?q='+portfolio_id
+        let url = "api/v1/view-post/" + username + '/?q='+portfolio_id+'&r='+ window.innerWidth
         HTTPRequestHandler.get({url:url, includeToken:true, callBackFunc: this.updateStateOnAPIcall.bind(this, shot_id, username)})
     }
 
@@ -349,6 +350,8 @@ export class ImageSlider extends Component{
         // slider count management
         selectedContent : null,
         currIndex : 0,
+        deletePopup: false,
+        deleteMethod: null
     }
 
     componentDidMount(){
@@ -402,6 +405,18 @@ export class ImageSlider extends Component{
 
     }
 
+    activateDeletePopup = (callbackMethod=null) =>{
+        this.setState({
+            deletePopup: !this.state.deletePopup,
+            deleteMethod: callbackMethod
+        })
+    }
+
+    deleteShot = () =>{
+        console.log("shot to delete",this.state.selectedContent.id )
+        this.props.deleteShot(this.state.selectedContent.id)
+    }
+
     render(){
 
         if(!this.state.selectedContent){
@@ -430,8 +445,34 @@ export class ImageSlider extends Component{
                         <img alt="" className="m-shot-background-cover" src={this.state.selectedContent.content}></img>
 
                     </div>
+                </div>
+                {this.props.actionBtn?
+                <div className="btn-space">
+                    <div className="btn">
+                        <span className="add-shot-text">Add Shot</span>
+                        <input type="file" className="add-shot-input" onChange={this.props.addShot} />
+                    </div>
+                    <button className="btn" onClick={this.activateDeletePopup.bind(this, this.deleteShot)}>Remove Shot</button>
+                    <button className="btn">Remove Portfolio</button>
+                </div>
+                :
+                ""
+                }
+                {this.state.deletePopup?
+                <div className="user-input-popup-container">
+                    <div className="user-input-popup">
+                        <span>Are you sure to delete shot?</span>
+                        <div className="pop-up-action">
+                            <span className="pop-up-option-opt" onClick={this.state.deleteMethod}>Yes</span>
+                            <span className="pop-up-option-opt" onClick={this.activateDeletePopup}>No</span>
+                        </div>
+                    </div>
 
                 </div>
+                :
+                ""
+
+                }
                 
             </React.Fragment>
         )

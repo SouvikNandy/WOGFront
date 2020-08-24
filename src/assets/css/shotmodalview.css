@@ -841,9 +841,22 @@
     .m-options-menu .report-box{
         top: 8vh;
     }
+    .m-options-menu .report-box .r-opt{
+        height: 8vh;
+        font-size: 0.7rem;
+    }
+    .m-options-menu .report-box .r-opt .close-btn{
+        font-size: 0.8rem;
+    }
     .m-likes-action .icons {
         height: 1.2rem;
         width: 1.2rem;
+    }
+    .modal-imgbox .image-overlay{
+        height: 100%;
+    }
+    .modal-imgbox .image-overlay .attachment-counter{
+        top: 10vh
     }
 }
 

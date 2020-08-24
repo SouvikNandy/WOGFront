@@ -44,8 +44,7 @@
     margin: 1rem 0;
 }
 
-.form-group input,
-.form-group select {
+.form-group input{
     display: block;
     border-radius: 0.3rem;
     width: 100%;

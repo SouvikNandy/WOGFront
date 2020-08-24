@@ -6,12 +6,19 @@
     width: 80vw;
     background: #fff;
     padding: 1rem;
+    display: flex;
+    justify-content: space-between;
 }
 
 .edit-container .edit-container-top{
-    width: 100%;
-    height: 60vh;
-    background: red;
+    width: 38vw;
+    height: 100%;
+    position: relative;
+}
+
+.edit-container .modal-imgbox{
+    display: flex;
+    flex-direction: column;
 }
 
 .edit-container-top .modal-imgbox .image-overlay{
@@ -24,36 +31,198 @@
     height: 60vh;
 }
 
-/* .edit-container .edit-container-top .edit-image-slider{
-    width: 50%;
-    height: 100%;
-    background: var(--hover-one)
+.edit-container-top .btn-space{
+    width: 35vw;
+    height: 8vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.edit-container .edit-container-top .edit-image-slider .image-overlay {
+.edit-container-top .btn-space .btn{
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    /* width: 1.5rem; */
+    /* overflow: hidden; */
+    position: relative;
+}
+
+.edit-container .edit-container-bottom{
+    width: 38vw;
+    height: 100%;
+    border-left: 1px solid var(--border-grey);
+
+}
+
+.edit-container .edit-container-bottom .doc-form{
+    position: relative;
+    height: 100%;
+    width: 100% !important;
+}
+
+.edit-container .edit-container-bottom .img-upload-form{
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+}
+
+.edit-container .edit-container-bottom .img-upload-form .doc-head{
+    display: none;
+}
+
+.edit-container .edit-container-bottom .img-upload-form .doc-body{
+    margin-top: 2rem;
+}
+
+
+.edit-container .edit-container-bottom .img-upload-form .doc-body input,
+.edit-container .edit-container-bottom .img-upload-form .doc-body textarea,
+.edit-container .edit-container-bottom .img-upload-form .doc-body label{
+    font-size: 0.8rem;
+}
+
+.edit-container .edit-container-bottom .img-upload-form .doc-body .select-doc{
+    display: none;
+}
+
+.edit-container .edit-container-bottom .img-upload-form .doc-body .attach-label{
+    display: none;
+}
+
+
+.edit-container-resize{
+    width: 40vw;
+    padding: 1rem 0;
+    border-left: none;
+}
+.edit-container .edit-container-top-hide{
+    display: none;
+}
+
+.edit-container .edit-container-bottom-resize{
+    width: 40vw;
+}
+
+.edit-container .edit-container-top .add-shot-input{
+    opacity: 0;
+    width: 100%;
+    position: absolute;
+}
+
+.edit-container .edit-container-top .user-input-popup-container{
     height: 100%;
     width: 100%;
-    background: transparent;
     position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    z-index: 5;
 }
 
-.edit-container .edit-container-top .edit-image-slider .image-overlay .slide-btn {
-    flex: 1;
-    height: 1.5rem;
-    width: 1.5rem;
-    cursor: pointer;
-    opacity: 0.4;
-    margin: 0.5rem;
+@media(max-height: 500px){
+    .edit-container{
+        height: 100vh;
+        width: 100vw;
+        padding: 1rem;
+        flex-direction: row !important;
+        
+    }
+    .edit-container .edit-container-top,
+    .edit-container .edit-container-top .modal-imgbox
+    {
+        width: 48vw !important;
+        height: 100% !important;
+    }
+    .edit-container .edit-container-top .image-overlay,
+    .edit-container .modal-imgbox .img-preview
+    {
+        width: 45vw !important;
+        height: 60vh !important;
+    }
+    
+
+    .edit-container .modal-imgbox{
+        display: flex;
+        flex-direction: column !important;
+    }
+    
+
+    .edit-container .edit-container-bottom{
+        width: 50vw;
+    }
+
+    .edit-container-top .btn-space{
+        width: 45vw !important;
+        height: 10vh !important;
+        flex-direction: row !important;
+    }
+
+    .edit-container-top .btn-space .btn{
+        font-size: 0.5rem;
+    }
+    .edit-container .edit-container-bottom{
+        width: 45vw !important;
+        height: 100% !important;
+        border-left: 1px solid var(--border-grey);
+    
+    }
+    .edit-container .edit-container-bottom .img-upload-form{
+        max-width: 100% !important;
+        max-height: 100% !important;
+        border-radius: 0;
+    }
+    .edit-container .edit-container-bottom .img-upload-form .doc-body input,
+    .edit-container .edit-container-bottom .img-upload-form .doc-body textarea,
+    .edit-container .edit-container-bottom .img-upload-form .doc-body label{
+    font-size: 0.5rem !important;
+    }
+    
 }
 
-.edit-container .edit-container-top .edit-image-slider .image-overlay .slide-btn:hover {
-    opacity: 1;
-}
+@media(max-width:900px){
+    .edit-container{
+        height: 100%;
+        width: 100%;
+        background: #fff;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+    }
+    .edit-container .edit-container-top,
+    .edit-container .edit-container-top .modal-imgbox{
+        width: 100%;
+        height: 30vh;
+    }
+    .edit-container .modal-imgbox{
+        flex-direction: row;
+    }
+    .edit-container .edit-container-top .image-overlay,
+    .edit-container .modal-imgbox .img-preview{
+        height: 30vh;
+        width: 60%;
+    }
+    .edit-container-top .btn-space{
+        height: 100%;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+    .edit-container .edit-container-bottom{
+        width: 100%;
+        height: 60vh;
+    }
+    .edit-container .edit-container-bottom .img-upload-form{
+        max-height: 60vh;
+        max-width: 100%;
+        padding: 0;
+    }
 
-.edit-container .edit-container-top .edit-image-slider .image-overlay .slide-middle-view {
-    flex: 2;
-    height: 100%;
-} */
+    .edit-container-top .modal-imgbox .image-overlay .attachment-counter{
+        top: 1rem;
+        font-size: 0.6rem;
+    }
+
+    .edit-container-top .modal-imgbox .image-overlay .img-upload-form .doc-body{
+        width: 90%;
+    }
+
+}

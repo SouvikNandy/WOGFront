@@ -50,7 +50,7 @@ export class AddPost extends Component {
 
 
 // Document Form
-class AddDocumentForm extends Component {
+export class AddDocumentForm extends Component {
     state = {
         // sidebar states
         showSideView: false,
@@ -122,6 +122,7 @@ class AddDocumentForm extends Component {
 
     displaySideView = ({content, sureVal, altHeadText=null}) =>{
         let stateVal = !this.state.showSideView
+        console.log("showSideView", stateVal)
         if (sureVal){
             stateVal = sureVal
         }
@@ -142,6 +143,9 @@ class AddDocumentForm extends Component {
 
         // on close clear diabled fields
         this.clearDisabledFields();
+        if (this.props.sideViewOnChange){
+            this.props.sideViewOnChange(stateVal)
+        }
         
     }
 
@@ -217,6 +221,9 @@ class AddDocumentForm extends Component {
             sideViewContent: content,
             disabledFields: [fieldID],
         })
+        if (this.props.sideViewOnChange){
+            this.props.sideViewOnChange(true)
+        }
     }
 
     tagMembers = (record) =>{
@@ -280,11 +287,13 @@ class AddDocumentForm extends Component {
                             <div className="pf-loc">
                                 <span className="pf-div">
                                     <label>Portfolio Name <span className="imp-field">*</span> </label>
-                                    <input type="text" id="portfolioName" name="portfolioName" onChange={this.onChange} required />
+                                    <input type="text" id="portfolioName" name="portfolioName" defaultValue={this.props.portfolio_name}
+                                    onChange={this.onChange} required />
                                 </span>
                                 <span className="loc-div">
                                     <label>Add Location <span className="imp-field"></span></label>
                                     <input type="text" id="location" name="location" placeholder="Search Location" 
+                                    defaultValue={this.props.location}
                                     onSelect={this.chooseOptions.bind(
                                         this, 
                                         'location',
@@ -297,7 +306,9 @@ class AddDocumentForm extends Component {
                             </div>
                             
                             <label>Description</label>
-                            <textarea type="text" id="description" name="description" onChange={this.onChange} />
+                            <textarea type="text" id="description" name="description" onChange={this.onChange}
+                            defaultValue={this.props.description}
+                             />
                             <label>Members / Contributes</label>
                             {this.state.taggedMembers.length > 0 ?
                                 <div className="member-list">
@@ -318,7 +329,7 @@ class AddDocumentForm extends Component {
                                     onRemoveMember={this.onRemoveMember}
                                 />
                             )}/>
-                            <label>Attachments <span className="imp-field">*</span> </label>
+                            <label className="attach-label">Attachments <span className="imp-field">*</span> </label>
                             {this.state.FileList.length > 0 ?
                                 <UploadedSlider
                                     uploadedFilePreviewList={this.state.FileList}
@@ -452,7 +463,7 @@ class UploadedSlider extends Component {
 
 
 
-function TandCTemplate(){
+export function TandCTemplate(){
     return(
         <React.Fragment>
             <CommmunityGuidelines />

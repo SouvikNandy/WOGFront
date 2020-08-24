@@ -457,7 +457,7 @@ export default class Profile extends Component {
                 else if (this.state.userPortFolio && this.state.userPortFolio.length > 0){
                     // get all shots
                     this.state.userPortFolio.map(portfolio => {
-                        portfolio.attachments.map(ele=>{
+                        portfolio.attachments.reverse().map(ele=>{
                             let data ={
                                 id: ele.id, name: portfolio.user.name, username: portfolio.user.username, content: ele.content, 
                                 interactions: portfolio.interactions, portfolio_id: portfolio.id
