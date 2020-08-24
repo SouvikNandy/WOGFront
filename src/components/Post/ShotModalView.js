@@ -17,6 +17,7 @@ import {msToDateTime, isSelfUser, retrieveFromStorage} from '../../utility/Utili
 
 import HTTPRequestHandler from '../../utility/HTTPRequests';
 import OwlLoader from '../OwlLoader';
+import { Link } from 'react-router-dom';
 
 
 export class ShotModalView extends Component {
@@ -41,6 +42,10 @@ export class ShotModalView extends Component {
         // get portfolio details
         let url = "api/v1/view-post/" + username + '/?q='+portfolio_id
         HTTPRequestHandler.get({url:url, includeToken:true, callBackFunc: this.updateStateOnAPIcall.bind(this, shot_id, username)})
+    }
+
+    getShotData = () =>{
+        return this.state.shot
     }
 
     updateStateOnAPIcall = (shot_id, username, data) =>{
@@ -215,20 +220,41 @@ export class ShotModalView extends Component {
 
                                         {this.state.reportBox?
                                             <div className="report-box">
-                                                <div className="r-opt"
-                                                onClick={this.displaySideView.bind(this, {content: <ReportContent />, sureVal: true})}
-                                                >
-                                                    <GoReport className="close-btn" />
-                                                    <span>Report content</span>
-                                                </div>
-                                                <div className="r-opt"
-                                                onClick={this.displaySideView.bind(this, 
-                                                    {content: <ReportContent copyrightClaim={true} />, sureVal: true})}
-                                                >
-                                                    <AiOutlineCopyright className="close-btn" />
-                                                    <span>Claim copyright</span>
-                                                </div>
+                                                {this.state.isSelf?
+                                                    <React.Fragment>
+                                                        <Link className="link r-opt"
+                                                        to={{
+                                                            pathname: `/edit-shot/${this.props.match.params.id}`,
+                                                            // This is the trick! This link sets
+                                                            // the `background` in location state.
+                                                            state: { modal: true, currLocation: this.props.location.state.currLocation }
+                                                        }}
+                                                        >
+                                                            <GoReport className="close-btn" />
+                                                            <span>Edit Portfolio</span>
+                                                        </Link>
 
+                                                    </React.Fragment>
+                                                    :
+                                                    <React.Fragment>
+                                                        <div className="r-opt"
+                                                        onClick={this.displaySideView.bind(this, {content: <ReportContent />, sureVal: true})}
+                                                        >
+                                                            <GoReport className="close-btn" />
+                                                            <span>Report content</span>
+                                                        </div>
+                                                        <div className="r-opt"
+                                                        onClick={this.displaySideView.bind(this, 
+                                                            {content: <ReportContent copyrightClaim={true} />, sureVal: true})}
+                                                        >
+                                                            <AiOutlineCopyright className="close-btn" />
+                                                            <span>Claim copyright</span>
+                                                        </div>
+
+                                                    </React.Fragment>
+                                                
+                                                }
+                                                
                                             </div>
                                             :
                                             ""
@@ -318,7 +344,7 @@ export class ShotModalView extends Component {
 
 
 
-class ImageSlider extends Component{
+export class ImageSlider extends Component{
     state={
         // slider count management
         selectedContent : null,
@@ -387,11 +413,12 @@ class ImageSlider extends Component{
         }
         return(
             <React.Fragment>
-                {this.props.attachments.length> 0?
+                {this.props.attachments.length> 1?
                     <div className="image-overlay">
                         <AiFillLeftCircle  className ="slide-btn" onClick={this.getPrevShot}/>
                         <div className="slide-middle-view"></div>
                         <AiFillRightCircle className ="slide-btn" onClick={this.getNextShot}/>
+                        <div className="attachment-counter">{this.state.currIndex + 1}/{this.props.attachments.length}</div>
                     </div>
                     :
                     ""

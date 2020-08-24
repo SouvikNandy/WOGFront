@@ -11,10 +11,10 @@ export class OwlLoader extends Component {
                     <DiProlog className="owl bounce-owl"/>
                 </div>
                 
-                <div class="loading-dots">
-                    <div class="loading-dots--dot"></div>
-                    <div class="loading-dots--dot"></div>
-                    <div class="loading-dots--dot"></div>
+                <div className="loading-dots">
+                    <div className="loading-dots--dot"></div>
+                    <div className="loading-dots--dot"></div>
+                    <div className="loading-dots--dot"></div>
                 </div>
             </div>
         )

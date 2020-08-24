@@ -15,6 +15,7 @@ import DiscoverPeople from './pages/DiscoverPeople';
 import Page404 from './pages/Page404';
 import CommmunityGuidelines from './pages/CommunityGuidelines';
 import LogOutPromptModal from './components/LogOutPromptModal';
+import EditPost from './components/Post/EditPost';
 
 
 export default class App extends Component {
@@ -68,11 +69,16 @@ function ShotModalUrl() {
             <PrivateRoute exact path="/user-notifications/:username" component={Notifications} />
             <PrivateRoute exact path="/discover-people/:username" component={DiscoverPeople} />
             <PrivateRoute exact path="/log-out/" component={LogOutPromptModal} />
+            <PrivateRoute exact path="/edit-shot/:id" component={EditPost} />
             <Route exact path="/guidelines" component={CommmunityGuidelines} />
             <Route> <Page404 /> </Route>
         </Switch>
         {isModal
             ? <Route exact path="/shot-view/:id" component={ShotModalView} />
+            : null
+        }
+        {isModal
+            ? <Route exact path="/edit-shot/:id" component={EditPost} />
             : null
         }
 

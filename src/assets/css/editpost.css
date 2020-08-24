@@ -1,0 +1,59 @@
+@import url('config.css');
+
+
+.edit-container{
+    height: 98vh;
+    width: 80vw;
+    background: #fff;
+    padding: 1rem;
+}
+
+.edit-container .edit-container-top{
+    width: 100%;
+    height: 60vh;
+    background: red;
+}
+
+.edit-container-top .modal-imgbox .image-overlay{
+    width: 35vw;
+    height: 60vh;
+}
+
+.edit-container .modal-imgbox .img-preview{
+    width: 35vw;
+    height: 60vh;
+}
+
+/* .edit-container .edit-container-top .edit-image-slider{
+    width: 50%;
+    height: 100%;
+    background: var(--hover-one)
+}
+
+.edit-container .edit-container-top .edit-image-slider .image-overlay {
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.edit-container .edit-container-top .edit-image-slider .image-overlay .slide-btn {
+    flex: 1;
+    height: 1.5rem;
+    width: 1.5rem;
+    cursor: pointer;
+    opacity: 0.4;
+    margin: 0.5rem;
+}
+
+.edit-container .edit-container-top .edit-image-slider .image-overlay .slide-btn:hover {
+    opacity: 1;
+}
+
+.edit-container .edit-container-top .edit-image-slider .image-overlay .slide-middle-view {
+    flex: 2;
+    height: 100%;
+} */

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import '../assets/css/profile.css';
 import { FaPlus, FaPaperPlane , FaCheckCircle, FaCameraRetro, FaUserCircle} from "react-icons/fa";
 import { AiFillCloseCircle } from 'react-icons/ai';
-// import { AiOutlineHome, AiOutlineSearch, AiOutlineBell, AiOutlineBulb } from "react-icons/ai";
 import SearchHead from '../components/Search/SearchHead';
 import Subnav from '../components/Navbar/Subnav';
 import UserAbout from '../components/Profile/UserAbout';
@@ -11,14 +10,9 @@ import Portfolio from '../components/Profile/Portfolio';
 import AddPost from '../components/Post/AddPost';
 import Footer from '../components/Footer';
 import {FollowUserCube} from '../components/Profile/UserView';
-// import {UserNavBar} from "../components/Navbar";
 import DummyShots from '../components/Post/DummyShots';
 import {generateId, isSelfUser} from '../utility/Utility.js';
 import NoContent from '../components/NoContent';
-
-// Images for shot
-// import w1 from "../assets/images/wedding1.jpg";
-// import pl2 from "../assets/images/people/2.jpg";
 import CommunityReview from '../pages/CommunityReview'
 import { UserNavBar } from '../components/Navbar/Navbar';
 import { TiEdit } from 'react-icons/ti';
@@ -29,6 +23,7 @@ import { retrieveFromStorage, saveInStorage } from '../utility/Utility';
 import HTTPRequestHandler from '../utility/HTTPRequests';
 import { createFloatingNotification } from '../components/FloatingNotifications';
 import { Redirect } from 'react-router-dom';
+import OwlLoader from '../components/OwlLoader';
 
 
 
@@ -63,7 +58,7 @@ export default class Profile extends Component {
             {key: "tn-2", "title": "Requests", "count": true, "isActive": false}
         ],
 
-        userPortFolio :[],
+        userPortFolio : null,
         userTag:{
             approved : [
                 // {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: pl2, is_liked: false}, 
@@ -85,12 +80,13 @@ export default class Profile extends Component {
         
         userAbout:JSON.parse(retrieveFromStorage("user_data")),
 
-        userSaved: [
-            // {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1], likes: 100, comments: 100, shares:0,}, 
-            // {id: 2, name:"p2", shot: [w1], likes: 100, comments: 100, shares:0,}, 
-            // {id: 3, name:"p4", shot: [w1, pl2, w1], likes: 100, comments: 100, shares:0,},
-            // {id: 4, name:"p4", shot: [w1, pl2, w1, pl2], likes: 100, comments: 100, shares:0,},
-        ],
+        // userSaved: [
+        //     {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1], likes: 100, comments: 100, shares:0,}, 
+        //     {id: 2, name:"p2", shot: [w1], likes: 100, comments: 100, shares:0,}, 
+        //     {id: 3, name:"p4", shot: [w1, pl2, w1], likes: 100, comments: 100, shares:0,},
+        //     {id: 4, name:"p4", shot: [w1, pl2, w1, pl2], likes: 100, comments: 100, shares:0,},
+        // ],
+        userSaved : null,
         isSelf : null,
         editProf: false,
     }
@@ -127,17 +123,62 @@ export default class Profile extends Component {
         
         }
         else{
-            activeTab = 'shots'
-            let url = 'api/v1/view-post/'+ userAbout.username + '/'
-            HTTPRequestHandler.get(
-                {url:url, includeToken:true, callBackFunc: this.updateStateOnAPIcall.bind(this, 'userPortFolio'), 
-                errNotifierTitle:"Update failed !"})
+            activeTab = 'Shots'
+            this.retrieveDataFromAPI(activeTab, this.updateStateOnAPIcall)   
         }
-
         this.setState({
             subNavList: subnav, isSelf: isSelf, userAbout: userAbout
         })
     }
+
+    getStateKeyFromSubmenuName = (name) =>{
+        switch(name){
+            case 'Shots':
+                return 'userPortFolio'
+            
+            case 'Portfolio':
+                return 'userPortFolio'
+            
+            case 'Saved':
+                return 'userSaved'
+            
+            case 'Followers':
+                return 'userFollower'
+
+            case 'Following':
+                return 'userFollowing'
+            
+            default: return null
+        }
+
+    }
+
+    getAPIUrl = (key) =>{
+        switch(key){
+            case 'Shots':
+                return 'api/v1/view-post/'+ this.props.match.params.username + '/'
+
+            case 'Portfolios':
+                return 'api/v1/view-post/'+ this.props.match.params.username + '/'
+
+            case 'Saved':
+                return 'api/v1/save-post/'
+
+            default: return null
+
+        }
+
+    }
+
+    retrieveDataFromAPI = (selectedMenu, callbackFunc)=>{
+        let url = this.getAPIUrl(selectedMenu)
+        if (url){
+            let stateKey = this.getStateKeyFromSubmenuName(selectedMenu)
+            HTTPRequestHandler.get(
+                {url:url, includeToken:true, callBackFunc: callbackFunc.bind(this, stateKey), 
+                errNotifierTitle:"Update failed !"})
+        }
+    } 
 
     updateStateOnAPIcall = (key, data)=>{
         // console.log("updateStateOnAPIcall", key, data)
@@ -157,29 +198,30 @@ export default class Profile extends Component {
 
 
     getMenuCount = (key) =>{
-        switch (key) {
-            case "Shots":
-                return this.state.userPortFolio.length;
-            case "Portfolios":
-                return this.state.userPortFolio.length;
-            case "Tags":
-                // default is approved tag values
-                return this.state.userTag.approved.length;
-            case "Followers":
-                return this.state.userFollower.length;
-            case "Following":
-                return this.state.userFollowing.length;
-            case "Approved":
-                // approved tags
-                return this.state.userTag.approved.length;
-            case "Requests":
-                // requested tags
-                return this.state.userTag.requests.length;
-            case "Saved":
-                return this.state.userSaved.length;
-            default:
-                return 0
-        }
+        return 0
+        // switch (key) {
+        //     case "Shots":
+        //         return this.state.userPortFolio.length;
+        //     case "Portfolios":
+        //         return this.state.userPortFolio.length;
+        //     case "Tags":
+        //         // default is approved tag values
+        //         return this.state.userTag.approved.length;
+        //     case "Followers":
+        //         return this.state.userFollower.length;
+        //     case "Following":
+        //         return this.state.userFollowing.length;
+        //     case "Approved":
+        //         // approved tags
+        //         return this.state.userTag.approved.length;
+        //     case "Requests":
+        //         // requested tags
+        //         return this.state.userTag.requests.length;
+        //     case "Saved":
+        //         return this.state.userSaved.length;
+        //     default:
+        //         return 0
+        // }
     }
     
     selectSubMenu = (key) =>{
@@ -188,6 +230,7 @@ export default class Profile extends Component {
             subNavList: this.state.subNavList.map(item=>{
                 if(key=== item.key){
                     item.isActive = true;
+                    this.retrieveDataFromAPI(item.title, this.updateStateOnAPIcall)
                 }
                 else{
                     item.isActive = false;
@@ -305,10 +348,10 @@ export default class Profile extends Component {
         })
     }
 
-    saveShot = () =>{
-        
-    }
     removeFromSaved = (idx) =>{
+        let url = this.getAPIUrl('Saved');
+        let requestBody = {post_id: idx}
+        HTTPRequestHandler.post({url:url, requestBody: requestBody, includeToken: true, callBackFunc: null})
         this.setState({
             userSaved : this.state.userSaved.filter(ele=> ele.id!==idx)
         })
@@ -336,6 +379,14 @@ export default class Profile extends Component {
             </div>
         )
 
+    }
+
+    getLoaderDIv =()=>{
+        return(
+            <div className="no-content-render">
+                <OwlLoader />
+            </div>
+        )
     }
 
     uploadPicture =(e, imgKey) =>{
@@ -376,6 +427,12 @@ export default class Profile extends Component {
         saveInStorage("user_data",JSON.stringify(data.data));
     }
 
+    addNewPortfolioToState = (newRecord) =>{
+        this.setState({
+            userPortFolio: [newRecord, ...this.state.userPortFolio]
+        })
+    }
+
     getCompomentData = () =>{
         let resultList = [];
         let resultBlock = '';
@@ -383,26 +440,24 @@ export default class Profile extends Component {
             if(item.title === "Shots" && item.isActive === true){
 
                 // SHOTS
-                if (this.state.userPortFolio.length === 0){
+                if (this.state.userPortFolio && this.state.userPortFolio.length === 0){
                     let msg = "No shots yet !!!"
                     resultList = this.getNoContentDiv(msg);
                     return(
                         <div key={item.title} className="profile-portfolio-grid">
                             {resultList}
                             {this.state.isSelf?
-                            <AddPost />
+                            <AddPost onSuccessfulUpload={this.addNewPortfolioToState} />
                             :
                             ""}
                             
                         </div>
                     )
                 }
-                else{
+                else if (this.state.userPortFolio && this.state.userPortFolio.length > 0){
                     // get all shots
                     this.state.userPortFolio.map(portfolio => {
-
                         portfolio.attachments.map(ele=>{
-                            // {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: pl2},
                             let data ={
                                 id: ele.id, name: portfolio.user.name, username: portfolio.user.username, content: ele.content, 
                                 interactions: portfolio.interactions, portfolio_id: portfolio.id
@@ -417,9 +472,16 @@ export default class Profile extends Component {
                         <div key={item.title} className="profile-shots">
                             {resultList}
                             {this.state.isSelf?
-                            <AddPost />
+                            <AddPost onSuccessfulUpload={this.addNewPortfolioToState} />
                             :
                             ""}
+                        </div>
+                    )
+                }
+                else{
+                    return(
+                        <div key={item.title} className="profile-portfolio-grid">
+                            {this.getLoaderDIv()}                        
                         </div>
                     )
                 }
@@ -427,17 +489,25 @@ export default class Profile extends Component {
             }
             else if (item.title === "Portfolios" && item.isActive === true){
                 // PORTFOLIOS
-                if (this.state.userPortFolio.length === 0){
+                if (this.state.userPortFolio && this.state.userPortFolio.length === 0){
                     let msg = "No portfolios have been created !!!"
                     resultList = this.getNoContentDiv(msg)
                 }
-                else{
+                else if(this.state.userPortFolio && this.state.userPortFolio.length > 0){
                     this.state.userPortFolio.map(ele => 
                         {resultList.push(<Portfolio key={ele.id} data={ele} currLocation={this.props.location} 
                             likePortfolio={this.likePortfolio} unLikePortfolio={this.unLikePortfolio} />)
                         return ele
                     })
                     resultList = this.padDummyShot(resultList, this.state.userPortFolio.length, 5)
+                }
+                else {
+                    return(
+                        <div key={item.title} className="profile-portfolio-grid">
+                            {this.getLoaderDIv()}                        
+                        </div>
+                    )
+
                 }
                 
                 return(
@@ -452,15 +522,22 @@ export default class Profile extends Component {
             }
             else if (item.title === "Tags" && item.isActive === true){
                 // TAG LIST
-
                 // get requested or approve tab
                 let getSelectedTab = this.state.tagNavOptions.filter(ele => ele.isActive === true)[0]
                 // getSelectedTab.toLowerCase()
                 getSelectedTab = getSelectedTab.title.toLowerCase();
                 // console.log("selected tab ", getSelectedTab);
 
+                if(!this.state.userTag[getSelectedTab]){
+                    return(
+                        <div key={item.title} className="profile-portfolio-grid">
+                            {this.getLoaderDIv()}                        
+                        </div>
+                    )
+
+                } 
                 if (getSelectedTab === "approved"){
-                    if(this.state.userTag[getSelectedTab].length === 0){
+                    if(this.state.userTag[getSelectedTab] && this.state.userTag[getSelectedTab].length === 0){
                         let msg = "No tags made it upto here !!!"
                         resultList = this.getNoContentDiv(msg)
 
@@ -470,6 +547,7 @@ export default class Profile extends Component {
                     }
                 }
                 else{
+                    
                     if(this.state.userTag[getSelectedTab].length === 0){
                         let msg = "No tag requests received !!!"
                         resultList = this.getNoContentDiv(msg)
@@ -517,6 +595,14 @@ export default class Profile extends Component {
             }
             else if (item.title === "Followers" && item.isActive === true){
                 // Followers
+                if(!this.state.userFollower){
+                    return(
+                        <div key={item.title} className="profile-portfolio-grid">
+                            {this.getLoaderDIv()}                        
+                        </div>
+                    )
+
+                }
                 if(this.state.userFollower.length === 0){
                     let msg = "No followers yet !!!"
                     resultList = this.getNoContentDiv(msg)
@@ -538,6 +624,16 @@ export default class Profile extends Component {
                 )
             }
             else if (item.title === "Following" && item.isActive === true){
+
+                if(!this.state.userFollowing){
+                    return(
+                        <div key={item.title} className="profile-portfolio-grid">
+                            {this.getLoaderDIv()}                        
+                        </div>
+                    )
+
+                }
+
                 if(this.state.userFollowing.length === 0){
                     let msg = "Currently not following anyone !!!"
                     resultList = this.getNoContentDiv(msg)
@@ -580,6 +676,14 @@ export default class Profile extends Component {
 
             else if(item.title === "Saved" && item.isActive === true){
                 // Saved
+                if(!this.state.userSaved){
+                    return(
+                        <div key={item.title} className="profile-portfolio-grid">
+                            {this.getLoaderDIv()}                        
+                        </div>
+                    )
+
+                }
                 if(this.state.userSaved.length === 0){
                     let msg = "Saved contents will appear here."
                     resultList = this.getNoContentDiv(msg)

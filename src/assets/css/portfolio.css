@@ -20,12 +20,13 @@
 .pf-container-3 {
     display: grid;
     grid-template-areas:
-        "pf-one pf-two"
-        "pf-one pf-three"
+    "pf-one pf-one pf-two"
+    "pf-one pf-one pf-three"
     ;
     grid-gap: 0.25rem;
     width: 100%;
     /* height: 100%; */
+    position: relative;
 
 }
 
@@ -77,6 +78,7 @@
     grid-gap: 0.25rem;
     width: 100%;
     /* height: 100%; */
+    position: relative;
 
 }
 
@@ -118,6 +120,10 @@
 
 }
 
+/* .pf-one .pf-img{
+    height: 100% !important;
+} */
+
 .pf-container-3,
 .pf-container-5,
 .pf-container-1 {
@@ -154,6 +160,9 @@
     color: var(--light);
     font-size: 1.5rem;
     font-weight: bold;
+    /* top:70%; */
+    bottom: 1rem;
+    right: 0.8rem;
 
 }
 

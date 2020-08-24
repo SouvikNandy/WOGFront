@@ -17,6 +17,7 @@ import HTTPRequestHandler from '../../utility/HTTPRequests';
 // video thumbnail
 import videoThumbnail from '../../assets/images/icons/video-thumbnail.jpg'
 import { createFloatingNotification } from '../FloatingNotifications';
+// import { retrieveFromStorage } from '../../utility/Utility';
 
 // Add post button
 export class AddPost extends Component {
@@ -32,7 +33,7 @@ export class AddPost extends Component {
     render() {
         return (
             <React.Fragment>
-                {this.state.isModalOpen ? <AddDocumentForm showModal={this.showModal} />
+                {this.state.isModalOpen ? <AddDocumentForm showModal={this.showModal} onSuccessfulUpload={this.props.onSuccessfulUpload} />
                 :
                 <button className="camera-cover" onClick={this.showModal}>
                     <FaCameraRetro className="camera-icon" />
@@ -69,8 +70,31 @@ class AddDocumentForm extends Component {
 
     }
 
-    onSubmit =() =>{
-        console.log("current state", this.state)
+    validateForm = () =>{
+        if(!this.state.portfolioName){
+            createFloatingNotification("error", "Portfolio Name must be provided!", "Provide a portfolio name that suits your content")
+            return false
+        }
+        else if(!this.state.FileList.length> 0){
+            createFloatingNotification("error", "Attach some shots!", "Your portfolio must have some shots attached.")
+            return false
+        }
+        else if (!document.getElementById("tc-checked").checked === true){
+            createFloatingNotification("error", "You must accept the terms!", "Your can click on Terms and Conditions to know more.")
+            return false
+        }
+        else{
+            return true
+        }
+        
+    }
+
+    onSubmit =(e) =>{
+        e.preventDefault();
+        let _validated = this.validateForm()
+        if (!_validated){
+            return false
+        }
         let url = 'api/v1/add-post/'
         let formData = new FormData();
         this.state.FileList.map(ele=>  formData.append("attachments", ele))
@@ -80,14 +104,18 @@ class AddDocumentForm extends Component {
         formData.append("location", document.getElementById("location").value)
 
         HTTPRequestHandler.post(
-            {url:url, requestBody: formData, includeToken:true, uploadType: 'file', callBackFunc: this.successfulUpload, errNotifierTitle:"Uplading failed !"})
+            {url:url, requestBody: formData, includeToken:true, uploadType: 'file', 
+            callBackFunc: this.successfulUpload.bind(this, this.props.onSuccessfulUpload), errNotifierTitle:"Uplading failed !"})
         
         // close modal and notify user 
         this.props.showModal();
         createFloatingNotification('warning' ,'Your shots are being uploaded!', "It may took a while. We will notify you as soon as its done");
     }
 
-    successfulUpload = (data) =>{
+    successfulUpload = (successCallBAck, data) =>{
+        if(successCallBAck){
+            successCallBAck(data.data)
+        }
         createFloatingNotification('success' ,'Your shots have been posted!', data.message);
 
     }
@@ -177,18 +205,6 @@ class AddDocumentForm extends Component {
 
     });
 
-    onPostSubmit = (e) => {
-        e.preventDefault();
-        // reset state and form 
-        let newState = {
-            FileList: [],
-            portfolioName: '',
-            description: '',
-            taggedMembers: []
-        }
-        this.setState(newState);
-        document.getElementById("img-upload-form").reset();
-    }
     chooseOptions =(fieldID, content) =>{
         // clear previous disabled
         this.clearDisabledFields();
@@ -253,7 +269,7 @@ class AddDocumentForm extends Component {
         return (
             <React.Fragment>
                 <div className={this.state.showSideView?"doc-form with-side-width": "doc-form full-width"}>
-                    <form className="img-upload-form" id="img-upload-form" onSubmit={this.onPostSubmit}>
+                    <form className="img-upload-form" id="img-upload-form">
                         <section className="doc-head">
                             <div className="top-logo">
                                 <FaCameraRetro className="cam-logo" />
@@ -331,7 +347,7 @@ class AddDocumentForm extends Component {
                             </div>
 
                             <div className="check-t-c">
-                                <input type="checkbox" className="check-box" />
+                                <input type="checkbox" className="check-box" id="tc-checked" />
                                 <span className="t-c-line">I have read and accepted the following 
                                     <button className="btn-anc t-c-highlight" onClick={this.displaySideView.bind(this, {content: <TandCTemplate />, sureVal: true, altHeadText: "Terms of use"})}> Terms and Conditions</button>
                                 </span>

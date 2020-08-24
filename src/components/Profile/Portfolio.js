@@ -9,7 +9,6 @@ export class Portfolio extends Component{
         let data = this.props.data;
         let contained = data.attachments.length;
         let redirect_key = data.user.username +'-'+ data.id +'-'+ data.attachments[0].id
-        console.log("redirectkey", redirect_key, data)
     return(
         <React.Fragment>
             <div className="pf-grid">
@@ -32,16 +31,14 @@ export class Portfolio extends Component{
                         }}>
                             <div className="pf-one"><img className="pf-img" src={data.attachments[0].content} alt=""></img></div>
                             <div className="pf-two"><img className="pf-img" src={data.attachments[1].content} alt=""></img></div>
-                            <div className="pf-three">
-                                {contained>3?
+                            <div className="pf-three"><img className="pf-img" src={data.attachments[2].content} alt=""></img></div>
+                            {contained>3?
                                 <div className="count-overlay">
                                     <div className="more-count">+{contained - 3}</div>
                                 </div>
                                 :
                                 ""
                                 }
-                                <img className="pf-img" src={data.attachments[2].content} alt=""></img>
-                            </div>
                         </Link>
                 
                 :
@@ -74,7 +71,6 @@ export class Portfolio extends Component{
                 <div className="pf-attribute">
                     <span className="pf-attr-span">
                         <div className="pf-name">{data.portfolio_name}</div>
-                        {/* <div className="pf-shot-count">Shots {contained}</div> */}
                     </span>
                     <ShotFooterLikePreview data={data} unLikeShot={this.props.unLikePortfolio} likeShot={this.props.likePortfolio} />
                     

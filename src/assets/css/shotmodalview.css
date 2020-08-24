@@ -94,6 +94,11 @@
     font-size: 0.8rem;
     cursor: pointer;
 }
+
+.m-options-menu .report-box .r-opt:last-child{
+    border: none
+}
+
 .m-options-menu .report-box .r-opt .close-btn{
     margin-left: 0.5rem;
     font-size: 1rem;
@@ -210,6 +215,18 @@
     height: 100%;
     /* cursor: zoom-in; */
     /* background-color: red; */
+}
+
+.modal-imgbox .image-overlay .attachment-counter{
+    position: absolute;
+    right: 0.8rem;
+    top: 7.5vh;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 0.4rem 0.8rem ;
+    border-radius: 0.9rem;
+    color: var(--light);
+    z-index: 2;
+    font-size: 0.8rem;
 }
 
 .modal-imgbox .img-preview{
@@ -619,6 +636,7 @@
 
     .modal-content-grid {
         max-width: 100vw;
+        height: 100%;
         overflow: auto;
         grid-template-areas:
             'modal-imgbox'
@@ -642,7 +660,10 @@
     .modal-imgbox {
         height: 50vh;
         max-width: 100%;
+        /* height: 100%; */
         overflow: hidden;
+        position: relative;
+
     }
 
     /* Modal User */
