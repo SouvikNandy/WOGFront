@@ -355,7 +355,7 @@ export class ImageSlider extends Component{
     }
 
     componentDidMount(){
-        // console.log("ImageSlider", this.props)
+        
         let selectedContent = this.props.attachments[0];
         let currIndex = 0
         this.props.attachments.map((ele, index)=> {
@@ -408,13 +408,35 @@ export class ImageSlider extends Component{
     activateDeletePopup = (callbackMethod=null) =>{
         this.setState({
             deletePopup: !this.state.deletePopup,
-            deleteMethod: callbackMethod
+            deleteMethod: callbackMethod,
         })
     }
 
+    updateSelectedContentOnDelete = () =>{
+        if(this.state.currIndex>0 && this.props.attachments.length -1 > 0){
+            this.getPrevShot() 
+        }
+        else if(this.state.currIndex===0 && this.props.attachments.length -1 > 0){
+            this.getNextShot()
+        }
+    }
+
     deleteShot = () =>{
-        console.log("shot to delete",this.state.selectedContent.id )
         this.props.deleteShot(this.state.selectedContent.id)
+        this.updateSelectedContentOnDelete()
+        this.setState({
+            deletePopup: false,
+            deleteMethod: null
+
+        })
+    }
+    deletePortfolio = () =>{
+        this.props.deletePortfolio()
+        this.updateSelectedContentOnDelete()
+        this.setState({
+            deletePopup: false,
+            deleteMethod: null
+        })
     }
 
     render(){
@@ -422,7 +444,6 @@ export class ImageSlider extends Component{
         if(!this.state.selectedContent){
             return(<div className="img-preview"><OwlLoader /></div>)
         }
-
         if (this.props.attachments.length > 1){
             this.iterifyArr(this.props.attachments)
         }
@@ -453,7 +474,7 @@ export class ImageSlider extends Component{
                         <input type="file" className="add-shot-input" onChange={this.props.addShot} />
                     </div>
                     <button className="btn" onClick={this.activateDeletePopup.bind(this, this.deleteShot)}>Remove Shot</button>
-                    <button className="btn">Remove Portfolio</button>
+                    <button className="btn" onClick={this.activateDeletePopup.bind(this, this.deletePortfolio)}>Remove Portfolio</button>
                 </div>
                 :
                 ""

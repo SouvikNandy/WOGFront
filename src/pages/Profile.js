@@ -59,6 +59,9 @@ export default class Profile extends Component {
         ],
 
         userPortFolio : null,
+        userFollower: null,
+        userFollowing: null,
+        userSaved : null,
         userTag:{
             approved : [
                 // {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: pl2, is_liked: false}, 
@@ -69,29 +72,16 @@ export default class Profile extends Component {
                 // {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: w1, is_liked: false}, 
             ]
         },
-        userFollower:[
-            // {"id": 1, "name":"John Doe", "username": "jhndoe", "profile_pic": w1, "designation": "photographer", "isFollowing": false},
-            // {"id": 2, "name":"Jenny Doe", "username": "jennydoe", "profile_pic": pl2, "designation": "photographer", "isFollowing": false}
-        ],
-        userFollowing:[
-            // {"id": 11, "name":"John Doe", "username": "jhndoe", "profile_pic": w1, "designation": "photographer", "isFollowing": true},
-            // {"id": 12, "name":"Jenny Doe", "username": "jennydoe", "profile_pic": pl2, "designation": "photographer", "isFollowing": true}
-        ],
-        
+ 
         userAbout:JSON.parse(retrieveFromStorage("user_data")),
-
-        // userSaved: [
-        //     {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1], likes: 100, comments: 100, shares:0,}, 
-        //     {id: 2, name:"p2", shot: [w1], likes: 100, comments: 100, shares:0,}, 
-        //     {id: 3, name:"p4", shot: [w1, pl2, w1], likes: 100, comments: 100, shares:0,},
-        //     {id: 4, name:"p4", shot: [w1, pl2, w1, pl2], likes: 100, comments: 100, shares:0,},
-        // ],
-        userSaved : null,
         isSelf : null,
         editProf: false,
+        // forceful rerender
+        forceRerender : false
     }
 
     componentDidMount(){
+        console.log("component did mount called");
         // get user portfolio data
         let subnav = ''
         let isSelf = false
@@ -114,18 +104,18 @@ export default class Profile extends Component {
             subnav.map(ele=>{
                 if(ele.title.toLowerCase()=== activeTab.toLowerCase()){
                     ele.isActive = true;
+                    activeTab = ele.title;
                 }
                 else{
                     ele.isActive = false
                 }
                 return ele
             })
-        
         }
         else{
-            activeTab = 'Shots'
-            this.retrieveDataFromAPI(activeTab, this.updateStateOnAPIcall)   
+            activeTab = 'Shots'   
         }
+        this.retrieveDataFromAPI(activeTab, this.updateStateOnAPIcall)
         this.setState({
             subNavList: subnav, isSelf: isSelf, userAbout: userAbout
         })
@@ -163,6 +153,12 @@ export default class Profile extends Component {
 
             case 'Saved':
                 return 'api/v1/save-post/'
+            
+            case 'Following':
+                return 'api/v1/follow-requests/' + this.props.match.params.username +'/?q=following'
+            
+            case 'Followers':
+                return 'api/v1/follow-requests/' + this.props.match.params.username +'/?q=followers'
 
             default: return null
 
@@ -640,8 +636,8 @@ export default class Profile extends Component {
 
                 }
                 else{
-                    this.state.userFollowing.map(ele => 
-                        {resultList.push(<FollowUserCube key={ele.id} data={ele} isFollowing={ele.isFollowing} 
+                    this.state.userFollowing.map((ele, index) => 
+                        {resultList.push(<FollowUserCube key={index} data={ele} isFollowing={ele.isFollowing} 
                             stopFollowing={this.stopFollowing} />)
                         return ele
                     })
@@ -718,9 +714,28 @@ export default class Profile extends Component {
         return resultBlock
     }
 
+    forceRerenderOnce = (renderKey) =>{
+        // to be unpdated only once
+        console.log("forceRerenderOnce called", this.state.forceRerender )
+        if(this.state.forceRerender=== false){
+            this.setState({
+                [renderKey]: null,
+                forceRerender: true,
+            }, ()=>{
+                this.retrieveDataFromAPI(renderKey, this.updateStateOnAPIcall)
+                console.log("state updated and retrieveDataFromAPI called")
+            })
+            
+        }
+    }
+
     render() {
         if (this.props.AuthenticatedOnly && this.state.isSelf === false){
             return(<Redirect to={{ pathname: "/page-404/" }} />)
+        }
+        if(this.props.location.state && this.props.location.state.rerender){
+            this.forceRerenderOnce(this.props.location.state.rerender)
+            
         }
         let resultBlock = this.getCompomentData()
         return (

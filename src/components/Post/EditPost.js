@@ -5,7 +5,7 @@ import {ImageSlider} from './ShotModalView';
 import OwlLoader from '../OwlLoader';
 import HTTPRequestHandler from '../../utility/HTTPRequests';
 import {AddDocumentForm} from './AddPost';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { createFloatingNotification } from '../FloatingNotifications';
 import ImgCompressor from '../../utility/ImgCompressor';
 
@@ -14,6 +14,7 @@ export class EditPost extends Component {
     state ={
         shot: null,
         showSideView : false,
+        portfolioDeleted: false
 
     }
     componentDidMount(){
@@ -63,32 +64,52 @@ export class EditPost extends Component {
     }
 
     deleteShot = (shot_id)=>{
-        let url = 'api/v1/add-post/?pid='+this.state.shot.id+'&sid='+shot_id
+        let url = 'api/v1/add-post/?pid='+this.state.shot.id+'&sid='+shot_id;
         HTTPRequestHandler.delete(
-            {url:url, includeToken: true, callBackFunc: this.succesOnDeleteShot, })
+            {url:url, includeToken: true, callBackFunc: this.succesOnDelete, })
         createFloatingNotification('warning', 'Shot getting deleted!', "Your shot will be deleted soon")
     }
-    succesOnDeleteShot = (data) =>{
-        console.log(data)
-        let shot = {...this.state.shot}
-        shot.attachments.filter(ele => ele.id!==data.data)
-        this.setState({shot: shot})
-        createFloatingNotification('success', "Shot removed", data.message)
+    succesOnDelete = (data) =>{
+        if(data.data=== "ALL"){
+            // portfolio deleted
+            this.setState({portfolioDeleted: true})
+            createFloatingNotification('success', "Portfolio deleted", data.message)
+        }
+        else{
+            let shot = {...this.state.shot}
+            shot.attachments = shot.attachments.filter(ele => ele.id!==data.data)
+            this.setState({shot: shot})
+            createFloatingNotification('success', "Shot deleted", data.message)
+        }
     }
+
+    deletePortfolio =()=>{
+        let url = 'api/v1/add-post/?pid='+this.state.shot.id;
+        HTTPRequestHandler.delete(
+            {url:url, includeToken: true, callBackFunc: this.succesOnDelete, })
+        createFloatingNotification('warning', 'portfolio getting deleted!', "Your portfolio will be deleted soon")
+    }
+
+
     render() {
+        if(this.state.portfolioDeleted){
+            return <Redirect to={{ 
+                pathname: "/user-profile/"+this.state.shot.user.username, 
+                state: {rerender: 'Shots'}
+         }} />
+        }
         if(!this.state.shot){
             return(
                 <div className="bg-modal full-width"><OwlLoader /></div>
                 )
         }
-        console.log(this.state.shot)
         return (
             <div className={this.state.showSideView?"bg-modal with-side-width": "bg-modal full-width"}>
                 <div className={this.state.showSideView?"edit-container edit-container-resize": "edit-container"} >
                     <div className={this.state.showSideView?"edit-container-top-hide": "edit-container-top"}>
                         <div className="modal-imgbox">
                             <ImageSlider attachments={this.state.shot.attachments} actionBtn={true} 
-                            addShot={this.uploadPicture} deleteShot={this.deleteShot}/>
+                            addShot={this.uploadPicture} deleteShot={this.deleteShot} deletePortfolio={this.deletePortfolio} />
                         </div>
                     </div>
                     <div className={this.state.showSideView?"edit-container-bottom edit-container-bottom-resize": "edit-container-bottom"}>
