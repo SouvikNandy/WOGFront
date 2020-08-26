@@ -56,7 +56,8 @@ export function UserCube(props){
 
 export function FollowUserCube(props){
     const ele = props.data;
-    const is_following = props.isFollowing? true: false
+    const is_following = ele.is_following? true: false
+    console.log("FollowUserCube", props)
     return(
         <div className="user-cube-div">
             <div className="cube-grid">
@@ -90,14 +91,14 @@ export function FollowUserCube(props){
 
 export function FollowUserCubeAlt(props){
     const ele = props.data;
-    const is_following = props.isFollowing? true: false
+    const is_following = ele.is_following? true: false
     return(
         <div className="user-cube-div">
             <div className="cube-grid">
                 <UserCube data={ele} showRemoveBtn={false}/>
                 <div className="cube-user-prof">
                     {is_following?
-                    <button className="btn m-fuser dark-btn" onClick={() => props.stopFollowing(ele)}> Remove</button>
+                    <button className="btn m-fuser dark-btn" onClick={() => props.stopFollowing(ele)}> Unfollow</button>
                     :
                     <button className="btn m-fuser" onClick={() => props.startFollowing(ele)}>< FaPlus /> Follow</button>}
                     

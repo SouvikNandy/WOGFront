@@ -90,6 +90,19 @@ export class EditPost extends Component {
         createFloatingNotification('warning', 'portfolio getting deleted!', "Your portfolio will be deleted soon")
     }
 
+    updatePostDetails =(requestBody)=>{
+        if(Object.keys(requestBody).length !==0){
+            let url = 'api/v1/add-post/';
+            requestBody['portfolio_id']= this.state.shot.id; 
+            HTTPRequestHandler.put(
+                {url:url, requestBody: requestBody, includeToken:true,  
+                callBackFunc: this.successfulUpdate, errNotifierTitle:"Uplading failed !"})
+        }
+
+    }
+    successfulUpdate =(data)=>{
+        createFloatingNotification('success' ,'Your shots have been updated!', data.message);
+    }
 
     render() {
         if(this.state.portfolioDeleted){
@@ -115,7 +128,7 @@ export class EditPost extends Component {
                     <div className={this.state.showSideView?"edit-container-bottom edit-container-bottom-resize": "edit-container-bottom"}>
                         <AddDocumentForm sideViewOnChange={this.activeSideView} showModal={this.gotoPrev} 
                         portfolio_name={this.state.shot.portfolio_name} description={this.state.shot.description} 
-                        location={this.state.shot.location}/>
+                        location={this.state.shot.location} updatePostDetails={this.updatePostDetails} />
 
                     </div>
                 </div>

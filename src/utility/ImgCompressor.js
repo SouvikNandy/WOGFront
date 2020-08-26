@@ -8,13 +8,13 @@ const ImgCompressor = (e, callbackFunc, imgKey=null, returnUncompressedList=fals
         let file = e.target.files[i];
         // console.log("selected file", file)
         // check if file in video or image
-        if (!file.type.startsWith("image/") && !file.type.startsWith("video/")) {
-            createFloatingNotification("error", "Invalid File type!", "Please make sure to upload images/videos only.");
+        if (!file.type.startsWith("image/")) {
+            createFloatingNotification("error", "Invalid File type!", "Please make sure to upload images only.");
             continue;
         }
-        if (file.type.startsWith("image/") && file.size / 1024 > 500) {
+        if (file.type.startsWith("image/") && file.size / 1024 > 600) {
             let options = {
-                maxSizeMB: 0.5,
+                maxSizeMB: 0.6,
                 maxWidthOrHeight: 1920,
                 useWebWorker: true
             }

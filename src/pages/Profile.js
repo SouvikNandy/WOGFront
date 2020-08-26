@@ -9,7 +9,7 @@ import {Shot, ShotPalette} from '../components/Post/Shot';
 import Portfolio from '../components/Profile/Portfolio';
 import AddPost from '../components/Post/AddPost';
 import Footer from '../components/Footer';
-import {FollowUserCube} from '../components/Profile/UserView';
+import {FollowUserCubeAlt} from '../components/Profile/UserView';
 import DummyShots from '../components/Post/DummyShots';
 import {generateId, isSelfUser} from '../utility/Utility.js';
 import NoContent from '../components/NoContent';
@@ -73,7 +73,8 @@ export default class Profile extends Component {
             ]
         },
  
-        userAbout:JSON.parse(retrieveFromStorage("user_data")),
+        userAbout: null, 
+        // JSON.parse(retrieveFromStorage("user_data")),
         isSelf : null,
         editProf: false,
         // forceful rerender
@@ -81,7 +82,6 @@ export default class Profile extends Component {
     }
 
     componentDidMount(){
-        console.log("component did mount called");
         // get user portfolio data
         let subnav = ''
         let isSelf = false
@@ -94,7 +94,7 @@ export default class Profile extends Component {
         else{
             subnav = PublicNav;
             // call api to get user about
-            userAbout = JSON.parse(retrieveFromStorage("user_data"))
+            this.retrieveDataFromAPI('About', this.updateStateOnAPIcall)
 
         }
         let qstr = new URLSearchParams(this.props.location.search);
@@ -113,7 +113,7 @@ export default class Profile extends Component {
             })
         }
         else{
-            activeTab = 'Shots'   
+            activeTab = subnav.filter(ele=>ele.isActive === true)[0].title   
         }
         this.retrieveDataFromAPI(activeTab, this.updateStateOnAPIcall)
         this.setState({
@@ -138,6 +138,9 @@ export default class Profile extends Component {
             case 'Following':
                 return 'userFollowing'
             
+            case 'About':
+                return 'userAbout'
+            
             default: return null
         }
 
@@ -146,19 +149,22 @@ export default class Profile extends Component {
     getAPIUrl = (key) =>{
         switch(key){
             case 'Shots':
-                return 'api/v1/view-post/'+ this.props.match.params.username + '/'
+                return 'api/v1/view-post/'+ this.props.match.params.username + '/';
 
             case 'Portfolios':
-                return 'api/v1/view-post/'+ this.props.match.params.username + '/'
+                return 'api/v1/view-post/'+ this.props.match.params.username + '/';
 
             case 'Saved':
-                return 'api/v1/save-post/'
+                return 'api/v1/save-post/';
             
             case 'Following':
-                return 'api/v1/follow-requests/' + this.props.match.params.username +'/?q=following'
+                return 'api/v1/follow-requests/' + this.props.match.params.username +'/?q=following';
             
             case 'Followers':
-                return 'api/v1/follow-requests/' + this.props.match.params.username +'/?q=followers'
+                return 'api/v1/follow-requests/' + this.props.match.params.username +'/?q=followers';
+            
+            case 'About':
+                return 'api/v1/user-profile/?q='+ this.props.match.params.username;
 
             default: return null
 
@@ -606,7 +612,7 @@ export default class Profile extends Component {
                 }
                 else{
                     this.state.userFollower.map(ele => 
-                        {resultList.push(<FollowUserCube key={ele.id} data={ele} isFollowing={ele.isFollowing} 
+                        {resultList.push(<FollowUserCubeAlt key={ele.id} data={ele} isFollowing={ele.isFollowing} 
                             startFollowing={this.startFollowing} stopFollowing={this.stopFollowing} />)
                         return ele
                     })
@@ -637,7 +643,7 @@ export default class Profile extends Component {
                 }
                 else{
                     this.state.userFollowing.map((ele, index) => 
-                        {resultList.push(<FollowUserCube key={index} data={ele} isFollowing={ele.isFollowing} 
+                        {resultList.push(<FollowUserCubeAlt key={index} data={ele} isFollowing={ele.isFollowing} 
                             stopFollowing={this.stopFollowing} />)
                         return ele
                     })
@@ -770,6 +776,15 @@ export default class Profile extends Component {
 
 function ProfileHead(props) {
     let data = props.data;
+    if (!props.data){
+        return(
+        <div className="profile-top">
+            <OwlLoader />
+        </div>
+        )
+
+    }
+    
     let coverpic = data.profile_data && data.profile_data.cover_pic ? data.profile_data.cover_pic: defaultCoverPic();
     return (
         <React.Fragment>

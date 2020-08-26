@@ -89,6 +89,28 @@ export class AddDocumentForm extends Component {
         
     }
 
+    onUpdate = (e) =>{
+        e.preventDefault();
+        if (!document.getElementById("tc-checked").checked === true){
+            createFloatingNotification("error", "You must accept the terms!", "Your can click on Terms and Conditions to know more.")
+            return false
+        }
+        document.getElementById("tc-checked").checked = false
+        let requestBody ={}
+        if (this.state.portfolioName && this.state.portfolioName!==this.props.portfolio_name){
+            requestBody["portfolio_name"] = this.state.portfolioName
+        }
+        if (this.state.description && this.state.description!==this.props.description){
+            requestBody["description"] = this.state.description
+        }
+        let location = document.getElementById("location").value
+        if(location && location!=="" && location!==this.props.location){
+            requestBody["location"] = location
+        }
+        this.props.updatePostDetails(requestBody);   
+    }
+
+
     onSubmit =(e) =>{
         e.preventDefault();
         let _validated = this.validateForm()
@@ -372,7 +394,8 @@ export class AddDocumentForm extends Component {
                             <input type="button"
                                 className="btn cancel-btn" value="Cancel"
                                 onClick={this.props.showModal} />
-                            <input type="submit" className="btn apply-btn" value="Create" onClick={this.onSubmit}/>
+                            <input type="submit" className="btn apply-btn" value={this.props.updatePostDetails?"Update":"Create"} 
+                            onClick={this.props.updatePostDetails?this.onUpdate: this.onSubmit}/>
                         </section>
                     </form>
                 </div>
