@@ -19,7 +19,7 @@ export default function UserAbout(props) {
 
     }
     else{
-        skillList.push(<span>Not updated by user</span>)
+        skillList.push(<span key={"sk-def"}>Not updated by user</span>)
     }
     
     if(data.profile_data && data.profile_data.teams && data.profile_data.teams.length> 0){
@@ -29,7 +29,7 @@ export default function UserAbout(props) {
         })
     }
     else{
-        teamList.push(<span>Not updated by user</span>)
+        teamList.push(<span key={"tl-def"}>Not updated by user</span>)
     }
     
     return (

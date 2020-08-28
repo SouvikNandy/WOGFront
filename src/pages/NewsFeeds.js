@@ -17,11 +17,13 @@ import getUserData from '../utility/userData';
 import EditProfile from '../components/Profile/EditProfile';
 
 import NoContent from '../components/NoContent';
+import OwlLoader from '../components/OwlLoader';
 import HTTPRequestHandler from '../utility/HTTPRequests';
-import {saveInStorage, retrieveFromStorage} from '../utility/Utility';
+import {saveInStorage, retrieveFromStorage, ControlledEventFire, msToDateTime} from '../utility/Utility';
 import AddPost from '../components/Post/AddPost';
 import { createFloatingNotification } from '../components/FloatingNotifications';
-import { UserFeedsAPI } from '../utility/ApiSet';
+import { UserFeedsAPI, SavePostAPI, LikePostAPI } from '../utility/ApiSet';
+import Paginator from '../utility/Paginator';
 
 export class NewsFeeds extends Component {
     render() {
@@ -224,41 +226,63 @@ export function NewsFeedSuggestions (){
 
 export class NewFeedPalette extends Component{
     state= {
-        feeds:[
-            // {
-            //     user:{"id": 1, "name":"John Doe", "username": "johndoe", "profile_pic": w1, "designation": "photographer"},
-            //     portfolio: {id: 1, name:"p1", shot: [w1, pl2, w1, pl2, pl2, w1], likes: 100, comments: 100, shares:0},
-                
-            // },
-            // {
-            //     user:{"id": 1, "name":"John Doe", "username": "johndoe", "profile_pic": w1, "designation": "photographer"},
-            //     portfolio: {id: 2, name:"p1", shot: [w1], likes: 100, comments: 100, shares:0}, 
-            // },
-        ]
+        feeds:null,
+        paginator: null,
+        isFetching: false,
+        eventListnerRef: null,
     }
 
     componentDidMount(){
         UserFeedsAPI(this.updateStateOnAPIcall.bind(this, 'feeds'))
+        let eventListnerRef = this.handleScroll.bind(this);
+        this.setState({
+            eventListnerRef: eventListnerRef
+        })
+        window.addEventListener('scroll', eventListnerRef);
+    }
+    
+    componentWillUnmount(){
+        window.removeEventListener('scroll', this.state.eventListnerRef);
+        
     }
 
     updateStateOnAPIcall = (key, data)=>{
-        console.log("updateStateOnAPIcall", key, data)
+        console.log(data)
         if('count' in data && 'next' in data && 'previous' in data){
             // paginated response
             this.setState({
-                [key]: data.results
+                [key]: data.results,
+                paginator: data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null
             })
+
         }
         else{
             this.setState({
                 [key]: data.data
             })
         }
+    }
+    handleScroll() {
+        if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+        if(this.state.paginator){
+            let res = this.state.paginator.getNextPage(this.updateStateOnPagination)
+            if (res !== false){
+                this.setState({isFetching: true})
+            }  
+        }
+        
+    }
 
+    updateStateOnPagination = (results) =>{
+        this.setState({
+            feeds:[...this.state.feeds, ...results],
+            isFetching: false
+        })
     }
 
 
     savePost = (idx) =>{
+        let feed_id = null
         this.setState({
             feeds: this.state.feeds.map(ele =>{
                 if(ele.id === idx){
@@ -266,54 +290,69 @@ export class NewFeedPalette extends Component{
                         ele.is_saved = true;
                     }
                     else{
-                        ele.is_Saved = !ele.is_saved;
+                        ele.is_saved = !ele.is_saved;
+                        
                     }
+                    feed_id= ele.id;
                 }
                 return ele
             })
         })
+        if(feed_id){
+            let requestBody = {post_id: feed_id}
+            SavePostAPI(requestBody, null)
+
+        }
+        
     }
 
     likePortfolio = (idx) =>{
+        let feed_id = null
         this.setState({
             feeds: this.state.feeds.map(ele =>{
                 if(ele.id === idx){
                     ele.is_liked = true;
-                    ele.likes++;
+                    ele.interactions.likes++;
+                    feed_id= ele.id;
                 }
                 return ele
             })
         })
+        if(feed_id){
+            let requestBody = {post_id: feed_id}
+            LikePostAPI(requestBody, null)
+
+        }
 
     }
     unLikePortfolio = (idx) =>{
+        let feed_id=null
         this.setState({
             feeds: this.state.feeds.map(ele =>{
                 if(ele.id === idx){
                     ele.is_liked = false;
-                    ele.likes--;
+                    ele.interactions.likes--;
+                    feed_id= ele.id;
                 }
                 return ele
             })
         })
+        if(feed_id){
+            let requestBody = {post_id: feed_id}
+            LikePostAPI(requestBody, null)
 
-    }
-    addComment = (idx) =>{
-        this.setState({
-            feeds: this.state.feeds.map(ele =>{
-                if(ele.id === idx){
-                    
-                    ele.comments++;
-                }
-                return ele
-            })
-        })
-
-        
-
+        }
     }
     render(){
         let feedList = [];
+        if(!this.state.feeds){
+            return(
+                <div className="empty-feeds" key={'def'}>
+                    <OwlLoader />
+                </div>
+            )
+
+        }
         if (this.state.feeds.length<1){
             feedList.push(
                 <div className="empty-feeds" key={'def'}>
@@ -324,16 +363,17 @@ export class NewFeedPalette extends Component{
         }
         else{
             this.state.feeds.map(ele=>{
-                feedList.push(<NewsFeedPost key={ele.id} data={ele} currLocation={this.props.location}
+                feedList.push(<NewsFeedPost key={ele.id} data={ele} currLocation={this.props.currLocation}
                     likePortfolio={this.likePortfolio} unLikePortfolio={this.unLikePortfolio}
                     savePost={this.savePost} addComment={this.addComment}/>)
                 
                 return ele
     
             })
-
         }
-        
+        if(this.state.isFetching){
+            feedList.push(<div className="empty-feeds" key={'def'}><OwlLoader /> </div>)
+        }
         
         return(
             <React.Fragment>
@@ -347,27 +387,20 @@ export class NewFeedPalette extends Component{
 export class NewsFeedPost extends Component{
 
     feedCommentBox = (eleID) => {
-        document.getElementById(eleID).select();
+        ControlledEventFire(document.getElementById(eleID), 'click')
     }
-    addComment = (eleID) =>{
-        let divID = "short-comment-"+ eleID;
-        let ele = document.getElementById(divID);
-        console.log(ele.value);
-        document.getElementById(divID).value = "";
-        this.props.addComment(eleID);
-    }
-    
+
     render(){
         let pf = this.props.data;
-        let responsecounts = pf.interactions
-
+        let tagText = pf.location
         return(
             <div  className="nf-post-conatiner">
                 <div className="nfp-user-preview">
-                    <UserFlat data={pf.user}/>
+                    {tagText?<UserFlat data={pf.user} tagText={tagText} />: <UserFlat data={pf.user}/>}
+                    
                 </div>
                 <div className="nfp-portfolio-preview" >
-                    <Portfolio key={pf.id} data={pf} currLocation={this.props.location} onlyShots={true} />
+                    <Portfolio key={pf.id} data={pf} currLocation={this.props.currLocation} onlyShots={true} />
                 </div>
                 <div className="nfp-likes-mod">
                     <ModalLikes
@@ -376,22 +409,19 @@ export class NewsFeedPost extends Component{
                         isLiked={pf.is_liked}
                         isSaved={pf.is_saved}
                         savePost={this.props.savePost.bind(this, pf.id)}
-                        feedCommentBox={this.feedCommentBox.bind(this, "short-comment-"+ pf.id )}
-                        responsecounts={responsecounts} />
+                        feedCommentBox={this.feedCommentBox.bind(this, "npf-"+ pf.id )}
+                        responsecounts={pf.interactions} />
                 </div>
-                <div className="nfp-details">
-                    <span className="m-display-name">
-                        {pf.portfolio_name}
-                        <span className="m-adj"> {pf.portfolio_name}</span>
-                    </span>
-                    <div className="cmnt-count"> view all {pf.comments} comments</div>
+                <div className="nfp-details" onClick={this.feedCommentBox.bind(this, "npf-"+ pf.id )}>
+                    <div className="m-display-name">{pf.portfolio_name}</div>
+                    <div className="m-dt">{msToDateTime(pf.created_at)}</div>
+                    <div className="m-description"> {pf.description}</div>
+                    <div className="cmnt-count">
+                        {pf.interactions.comments>0? <span>view all {pf.interactions.comments} comments</span>: <span>Be the first to comment</span> }
+                    
+                    </div>
 
                 </div>
-                <div className="nfp-comments">
-                    <textarea className="short-comment" placeholder="Add a comment..." id={"short-comment-"+ pf.id}></textarea>
-                    <button className="btn" onClick={this.addComment.bind(this, pf.id)}>Post</button>
-                </div>
-
             </div>
         )
     }

@@ -275,7 +275,7 @@ ul {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-weight: 501;
+    font-weight: bold;
     font-size: 0.8rem;
     text-align: start;
     vertical-align: middle;
@@ -284,7 +284,6 @@ ul {
 
 .m-display-name .m-adj {
     font-size: 0.7rem;
-    font-weight: 300;
 }
 
 

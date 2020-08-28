@@ -20,7 +20,15 @@ export class Portfolio extends Component{
                             // the `background` in location state.
                             state: { modal: true, currLocation: this.props.currLocation }
                         }}>
-                            <div className="pf-one"><img className="pf-img" src={data.attachments[0].content} alt=""></img></div>
+                            {/* an id is provided to pf-one for controlled click events */}
+                            <div className="pf-one" id={"npf-"+data.id}>
+                                <img className="pf-img" src={data.attachments[0].content} alt=""></img>
+                                <div className="background-decor">
+                                    <div className="decor-overlay"></div>
+                                    <img alt="" className="pf-one-background-cover" src={data.attachments[0].content}></img>
+
+                                </div>
+                            </div>
                         </Link>
                         :
                         <Link className="pf-container-3" key={data.id} to={{
@@ -29,7 +37,7 @@ export class Portfolio extends Component{
                             // the `background` in location state.
                             state: { modal: true, currLocation: this.props.currLocation }
                         }}>
-                            <div className="pf-one"><img className="pf-img" src={data.attachments[0].content} alt=""></img></div>
+                            <div className="pf-one" id={"npf-"+data.id}><img className="pf-img" src={data.attachments[0].content} alt=""></img></div>
                             <div className="pf-two"><img className="pf-img" src={data.attachments[1].content} alt=""></img></div>
                             <div className="pf-three"><img className="pf-img" src={data.attachments[2].content} alt=""></img></div>
                             {contained>3?
@@ -48,7 +56,7 @@ export class Portfolio extends Component{
                     // the `background` in location state.
                     state: { modal: true, currLocation: this.props.currLocation }
                 }}>
-                    <div className="pf-one"><img className="pf-img" src={data.attachments[0].content} alt=""></img></div>
+                    <div className="pf-one" id={"npf-"+data.id}><img className="pf-img" src={data.attachments[0].content} alt=""></img></div>
                     <div className="pf-two"><img className="pf-img" src={data.attachments[1].content} alt=""></img></div>
                     <div className="pf-three"><img className="pf-img" src={data.attachments[2].content} alt=""></img></div>
                     <div className="pf-four"><img className="pf-img" src={data.attachments[3].content} alt=""></img></div>

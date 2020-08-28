@@ -27,4 +27,16 @@ export const UserFeedsAPI = (callBackFunc) =>{
     HTTPRequestHandler.get({url: url, includeToken:true, callBackFunc: callBackFunc })
 }
 
+export const LikePostAPI = (requestBody, callBackFunc) =>{
+    let url = 'api/v1/like-post/';
+    HTTPRequestHandler.post({url:url, requestBody: requestBody, includeToken: true, callBackFunc: callBackFunc})    
+
+}
+
+export const SavePostAPI = (requestBody, callBackFunc) =>{
+    let url = 'api/v1/save-post/';
+    HTTPRequestHandler.post({url:url, requestBody: requestBody, includeToken: true, callBackFunc: callBackFunc})    
+
+}
+
 export default {LoginAPI}

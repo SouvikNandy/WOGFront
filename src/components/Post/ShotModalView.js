@@ -19,6 +19,7 @@ import {msToDateTime, isSelfUser, retrieveFromStorage} from '../../utility/Utili
 import HTTPRequestHandler from '../../utility/HTTPRequests';
 import OwlLoader from '../OwlLoader';
 import { Link } from 'react-router-dom';
+import { LikePostAPI, SavePostAPI } from '../../utility/ApiSet';
 
 
 export class ShotModalView extends Component {
@@ -61,9 +62,8 @@ export class ShotModalView extends Component {
         shot.is_liked = true;
         shot.interactions.likes++;
         this.setState({ shot });
-        let url = 'api/v1/like-post/';
         let requestBody = {post_id: shot.id}
-        HTTPRequestHandler.post({url:url, requestBody: requestBody, includeToken: true, callBackFunc: null})
+        LikePostAPI(requestBody, null)
     }
 
     doUnLike = () => {
@@ -73,9 +73,8 @@ export class ShotModalView extends Component {
         updatedshot.is_liked = false;
         updatedshot.interactions.likes--;
         this.setState({ shot: updatedshot })
-        let url = 'api/v1/like-post/';
         let requestBody = {post_id: updatedshot.id}
-        HTTPRequestHandler.post({url:url, requestBody: requestBody, includeToken: true, callBackFunc: null})
+        LikePostAPI(requestBody, null)
     }
 
     savePost = () =>{
@@ -87,9 +86,9 @@ export class ShotModalView extends Component {
             shot.is_saved = !shot.is_saved;
         }
         this.setState({ shot : shot });
-        let url = 'api/v1/save-post/';
+        
         let requestBody = {post_id: shot.id}
-        HTTPRequestHandler.post({url:url, requestBody: requestBody, includeToken: true, callBackFunc: null})
+        SavePostAPI(requestBody, null)
     }
 
     followUser = () =>{
@@ -268,10 +267,8 @@ export class ShotModalView extends Component {
 
                             <div className="m-img-attribute fade-up">
                                 <span className="p-attr-name">
-                                    <span className="m-display-name">
-                                        {this.state.shot.portfolio_name}<br />
-                                        <span className="m-adj">{msToDateTime(this.state.shot.created_at)} </span>
-                                    </span>
+                                    <div className="m-display-name">{this.state.shot.portfolio_name}</div>
+                                    <span className="m-dt">{msToDateTime(this.state.shot.created_at)} </span>
                                 </span>
                                 <span className="p-attr-tags">
                                         {tagList}
@@ -282,7 +279,12 @@ export class ShotModalView extends Component {
                         <section className={this.state.showSideView?"modal-user hide": "modal-user"}>
                             <span className="m-attribution-user">
                                 <span className="m-user-preview">
+                                    {this.state.shot.location?
+                                    <UserFlat data={this.state.shot.user} tagText={this.state.shot.location} />
+                                    :
                                     <UserFlat data={this.state.shot.user}/>
+                                    }
+                                    
                                 </span>
                             </span>
                             {this.state.isSelf?

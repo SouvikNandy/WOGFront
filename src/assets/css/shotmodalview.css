@@ -123,16 +123,16 @@
     color: var(--light);
     line-height: 1;
     text-shadow: 1px 0px rgba(0, 0, 0, 0.4);
-    flex: 1;
+    width: 60%;
 }
 
 .m-img-attribute .p-attr-name .m-display-name {
     font-size: 0.9rem;
-    max-width: 70%;
 }
 
-.m-img-attribute .p-attr-name .m-display-name .m-adj {
-    font-size: 0.7rem
+.m-img-attribute .p-attr-name  .m-dt {
+    font-size: 0.7rem;
+    margin-top: 0.2rem
 }
 
 .m-img-attribute .p-attr-tags {

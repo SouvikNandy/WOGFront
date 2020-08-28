@@ -159,11 +159,6 @@
     border-top: 1px solid var(--border-grey);
 }
 
-.nf-post-conatiner .pf-container-3,
-.nf-post-conatiner .pf-container-5,
-.nf-post-conatiner .pf-container-1 {
-    height: 20rem;
-}
 
 /* Feeds section */
 
@@ -184,7 +179,7 @@
 }
 
 .nf-post-conatiner {
-    width: 75%;
+    width: 70%;
     background-color: var(--light);
     margin-top: 1.5rem;
     padding: 0.8rem 1.2rem;
@@ -203,10 +198,61 @@
 }
 
 .nf-post-conatiner .nfp-portfolio-preview{
-    width: 100%;
+    width: 35vw;
+    height: 26vw;
     display: flex;
     justify-content: center;
     align-items: center;
+    /* background: var(--hover-one); */
+}
+
+.nf-post-conatiner .nfp-portfolio-preview .pf-grid{
+    height: 100%;
+    width: 100%;
+}
+.nf-post-conatiner .pf-container-3,
+.nf-post-conatiner .pf-container-5,
+.nf-post-conatiner .pf-container-1 {
+    height: 100%;
+    width: 100%;
+    /* height: 20rem; */
+}
+
+.nf-post-conatiner .pf-container-1 .pf-one{
+    position: relative;
+    object-fit: cover;
+}
+.nf-post-conatiner .pf-container-1 .pf-one .pf-img{
+    object-fit: contain;
+    position: absolute;
+    z-index: 1;
+} 
+
+.nf-post-conatiner .pf-container-1 .pf-one .background-decor{
+    display: flex;
+    position: absolute;
+    top: 0;
+    z-index: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.nf-post-conatiner .pf-container-1 .pf-one .background-decor .decor-overlay{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    /* background: rgba(0, 0, 0, 0.7); */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    -moz-backdrop-filter: blur(8px);
+    -o-backdrop-filter: blur(8px);
+    -ms-backdrop-filter: blur(8px);
+}
+
+.nf-post-conatiner .pf-container-1 .pf-one .background-decor .pf-one-background-cover{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
 }
 
 .nf-post-conatiner .nfp-likes-mod {
@@ -219,41 +265,48 @@
 
 .nf-post-conatiner .nfp-details{
     width: 100%;
+    cursor: pointer;
 }
 
+.nf-post-conatiner .nfp-details .m-dt{
+    font-size: 0.7rem;
+    padding: 0.4rem 0;
+}
 .nfp-details .cmnt-count {
-    font-size: 0.8rem;
-    color: var(--dark);
+    font-size: 0.72rem;
+    color: var(--hover-two);
     font-weight: bold;
-    padding: 0.2rem 0;
-}
-
-.nfp-comments {
-    width: 100%;
-    margin-top: 0.5rem;
+    /* padding: 0.2rem ; */
+    height: 5vh;
+    /* background: var(--border-grey); */
     display: flex;
     align-items: center;
 }
 
-.nfp-comments .short-comment {
-    width: 90%;
-    border-radius: 0.9rem;
-    padding: 0.4rem;
-    resize: none;
+.nfp-details .m-display-name{
+    display: block;
+    flex-direction: column;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-overflow: ellipsis;
+}
+
+.nfp-details .m-description{
+    margin-top: 0.4rem;
     font-size: 0.8rem;
-    outline: none;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
 }
 
 .nf-rest {
-    /* flex: 1.5; */
-    /* background: var(--border-grey); */
     width: 30vw;
 }
 
 
 .empty-feeds{
     height: 50%;
-    width: 80%;
+    width: 70%;
     background-color: var(--light);
     margin-top: 1.5rem;
     padding: 0.8rem 1.2rem;
@@ -271,6 +324,16 @@
     .nf-feeds {
         margin-left: 20vw;
     }
+    .nf-post-conatiner .nfp-portfolio-preview{
+        width: 100%;
+    }
+    .nf-container .nf-feeds .nf-post-conatiner, 
+    .empty-feeds {
+        width: 90%;
+    }
+    .nf-post-conatiner .nfp-portfolio-preview{
+        height: 40vw;
+    }
 
 }
 
@@ -279,8 +342,11 @@
         display: none;
     }
 
-    .nf-container .nf-feeds .nf-post-conatiner {
-        width: 90%;
+    .nf-feeds{
+        width: initial;
+    }
+    .nf-post-conatiner .nfp-portfolio-preview{
+        height: 55vw;
     }
 
     .nf-container .nf-feeds .nf-post-conatiner .pf-grid {
@@ -292,6 +358,7 @@
 }
 
 @media (max-width: 850px) {
+
     .nf-container {
         overflow: hidden;
     }
@@ -311,8 +378,11 @@
 
     }
 
-    .nf-container .nf-feeds .nf-post-conatiner {
+    .nf-container .nf-feeds .nf-post-conatiner, .empty-feeds {
         width: 100%;
+    }
+    .nf-post-conatiner .nfp-portfolio-preview{
+        height: 45vh;
     }
 
 }
@@ -330,6 +400,17 @@
         margin: 0.5rem 0;
         font-size: 0.8rem;
         height: auto;
+    }
+
+    .nf-post-conatiner .nfp-portfolio-preview{
+        height: 70vw;
+    }
+    .nf-post-conatiner .nfp-likes-mod{
+        height: 8vh;
+    }
+    .user-flat-div{
+        height: 10vh;
+        /* padding: 0.4rem; */
     }
     
 }

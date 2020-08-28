@@ -201,6 +201,16 @@ export const parseJwt = (token) => {
     return JSON.parse(jsonPayload);
 };
 
+export const ControlledEventFire = (el, etype) =>{
+    if (el.fireEvent) {
+      el.fireEvent('on' + etype);
+    } else {
+      var evObj = document.createEvent('MouseEvents');
+      evObj.initEvent(etype, true, false);
+      el.dispatchEvent(evObj);
+    }
+}
+
 export default {
     isSelfUser,
     generateId,

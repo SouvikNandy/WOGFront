@@ -174,8 +174,12 @@ export default class Profile extends Component {
 
     retrieveDataFromAPI = (selectedMenu, callbackFunc)=>{
         let url = this.getAPIUrl(selectedMenu)
+        let stateKey = this.getStateKeyFromSubmenuName(selectedMenu)
+        if (this.state[stateKey]!== null){
+            // don't make api call
+            return true
+        }
         if (url){
-            let stateKey = this.getStateKeyFromSubmenuName(selectedMenu)
             HTTPRequestHandler.get(
                 {url:url, includeToken:true, callBackFunc: callbackFunc.bind(this, stateKey), 
                 errNotifierTitle:"Update failed !"})

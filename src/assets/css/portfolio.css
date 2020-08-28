@@ -86,7 +86,7 @@
     /* background: red; */
     min-height: 5vh;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -112,6 +112,7 @@
     font-size: 0.9rem;
     white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .pf-img {
@@ -139,6 +140,10 @@
 .pf-container-1 .pf-one {
     height: 100%;
     width: 100%;
+}
+
+.pf-container-1 .pf-one .background-decor{
+    display: none;
 }
 
 .floating-p-modal {

@@ -26,9 +26,12 @@ const getHeader = (includeToken, uploadType) =>{
 
 }
 export default class HTTPRequestHandler{
-    static get = ({url, includeToken=false, callBackFunc=null, errNotifierTitle='Something went wrong'}) =>{
-
-        axios.get( backendHost + url, { headers: getHeader(includeToken)})
+    static get = ({url, includeToken=false, callBackFunc=null, errNotifierTitle='Something went wrong', completeUrl=false}) =>{
+        let burl= url
+        if (completeUrl === false){
+            burl = backendHost + url;
+        }
+        axios.get( burl, { headers: getHeader(includeToken)})
         .then(res => {
             if(callBackFunc){
                 callBackFunc(res.data);
