@@ -9,7 +9,7 @@
 .p-cover {
     height: 100%;
     width: 100%;
-    overflow: hidden;
+    /* overflow: hidden; */
     position: relative;
 }
 
@@ -85,7 +85,7 @@
 }
 
 .p-display-name {
-    overflow: hidden;
+    /* overflow: hidden; */
     text-overflow: ellipsis;
     white-space: nowrap;
     font-weight: 701;
@@ -119,6 +119,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    position: relative;
 }
 
 .p-display-name .m-fuser {
@@ -132,6 +133,33 @@
 .p-display-name .m-fuser .ico {
     padding: 0.1rem;
     margin-right: 0.2rem;
+}
+
+
+
+.p-display-name .pf-otheruser-btns .user-action-menu{
+    position: absolute;
+    /* bottom: 0; */
+    top: 2.5rem;
+    /* height: 100%; */
+    width: 100%;
+    background: var(--light);
+    box-shadow: var(--shadow);
+    padding: 0.2rem 0.4rem;
+}
+
+.p-display-name .pf-otheruser-btns .user-action-menu .a-opt{
+    width: 100%;
+    padding: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border-bottom: 1px solid var(--border-grey);
+    color: black;
+    text-shadow: none;
+}
+
+.p-display-name .pf-otheruser-btns .user-action-menu .a-opt:last-child{
+    border-bottom: none;
 }
 
 /* profile about */

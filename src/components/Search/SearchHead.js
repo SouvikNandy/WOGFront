@@ -122,7 +122,6 @@ export default class SearchHead extends Component {
         else{
             content = <SearchResultPalette data={this.state.showList} category={this.state.filteredCategory} />
         }
-        console.log("showlist on render", this.state.showList, content);
         return (
             <React.Fragment>
                 <div className="srch-box">

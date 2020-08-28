@@ -110,6 +110,8 @@
 .pf-attr-span .pf-name {
     /* border-right: 1px solid #333; */
     font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .pf-img {

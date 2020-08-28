@@ -3,6 +3,7 @@ import React from 'react';
 import "../../assets/css/userview.css";
 import { Link } from "react-router-dom";
 import { FaPlus, FaUserCircle } from "react-icons/fa";
+import { FollowRequestAPI } from '../../utility/ApiSet';
 // import w1 from "../assets/images/wedding1.jpg";
 
 
@@ -25,6 +26,12 @@ export function UserFlat(props){
         )
 }
 
+
+const FollowUnfollowUser =(ele, callBack)=>{
+    FollowRequestAPI(ele.username, {}, callBack)
+    callBack(ele)
+}
+
 export function UserCube(props){
     let ele = props.data;
     return(
@@ -40,7 +47,7 @@ export function UserCube(props){
                     <Link to={{pathname: `/profile/${ele.username}`}} className="link">{ele.name}</Link>
                     {props.showRemoveBtn? 
                         <div className="unfollow-div">
-                            <button className="btn m-fuser" onClick={() => props.stopFollowing(ele)}> Remove </button>
+                            <button className="btn m-fuser" onClick={() => FollowUnfollowUser(ele, props.stopFollowing) }> Remove </button>
                         </div>
                     :   
                         <React.Fragment>
@@ -57,7 +64,6 @@ export function UserCube(props){
 export function FollowUserCube(props){
     const ele = props.data;
     const is_following = ele.is_following? true: false
-    console.log("FollowUserCube", props)
     return(
         <div className="user-cube-div">
             <div className="cube-grid">
@@ -79,7 +85,7 @@ export function FollowUserCube(props){
                         </div>
                     </div>
                     :
-                    <button className="btn m-fuser" onClick={() => props.startFollowing(ele)}><FaPlus className="add-btn"/> Follow</button>}
+                    <button className="btn m-fuser" onClick={() => FollowUnfollowUser(ele, props.startFollowing)}><FaPlus className="add-btn"/> Follow</button>}
                     
                 </div>
                 
@@ -92,15 +98,16 @@ export function FollowUserCube(props){
 export function FollowUserCubeAlt(props){
     const ele = props.data;
     const is_following = ele.is_following? true: false
+
     return(
         <div className="user-cube-div">
             <div className="cube-grid">
                 <UserCube data={ele} showRemoveBtn={false}/>
                 <div className="cube-user-prof">
                     {is_following?
-                    <button className="btn m-fuser dark-btn" onClick={() => props.stopFollowing(ele)}> Unfollow</button>
+                    <button className="btn m-fuser dark-btn" onClick={() => FollowUnfollowUser(ele, props.stopFollowing)}> Unfollow</button>
                     :
-                    <button className="btn m-fuser" onClick={() => props.startFollowing(ele)}>< FaPlus /> Follow</button>}
+                    <button className="btn m-fuser" onClick={() => FollowUnfollowUser(ele, props.startFollowing)}>< FaPlus /> Follow</button>}
                     
                 </div>
                 

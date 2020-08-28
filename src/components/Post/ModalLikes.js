@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../assets/css/shotmodalview.css';
 
-import { FaHeart, FaPaperPlane, FaRegHeart, FaRegComment, FaRegPaperPlane, FaBookmark, FaRegBookmark } from "react-icons/fa";
+import { FaHeart, FaRegEye, FaRegHeart, FaRegComment, FaRegPaperPlane, FaBookmark, FaRegBookmark } from "react-icons/fa";
 
 const ModalLikes = (props) => {
     return (
@@ -27,7 +27,7 @@ const ModalLikes = (props) => {
             </div>
             <div className="m-likes-preview">
                 <FaHeart className="icons" /><span>{props.responsecounts.likes}</span>
-                <FaPaperPlane className="icons" /><span>{props.responsecounts.shares}</span>
+                <FaRegEye className="icons" /><span>{props.responsecounts.views}</span>
             </div>
         </React.Fragment>
     )

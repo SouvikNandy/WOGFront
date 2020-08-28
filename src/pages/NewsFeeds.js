@@ -21,6 +21,7 @@ import HTTPRequestHandler from '../utility/HTTPRequests';
 import {saveInStorage, retrieveFromStorage} from '../utility/Utility';
 import AddPost from '../components/Post/AddPost';
 import { createFloatingNotification } from '../components/FloatingNotifications';
+import { UserFeedsAPI } from '../utility/ApiSet';
 
 export class NewsFeeds extends Component {
     render() {
@@ -28,9 +29,8 @@ export class NewsFeeds extends Component {
         return (
             <React.Fragment>
                 <UserNavBar selectedMenu={"feeds"} username={userData.username}/>
+                <NewsFeedUserMenu />
                 <div className="nf-container">
-                    <NewsFeedUserMenu />
-                    
                     <div className="nf-feeds">
                         <NewFeedPalette currLocation={this.props.location}/>
                     </div>
@@ -66,7 +66,7 @@ export class NewsFeedUserMenu extends Component{
     }
 
     makeUploadRequest=(compressedFile, imgKey)=>{
-        let url = 'api/v1/user-profile/'
+        let url = 'api/v1/user-profile/?r='+window.innerWidth;
         let formData = new FormData();
         formData.append(imgKey, compressedFile); 
         HTTPRequestHandler.put(
@@ -237,17 +237,36 @@ export class NewFeedPalette extends Component{
         ]
     }
 
+    componentDidMount(){
+        UserFeedsAPI(this.updateStateOnAPIcall.bind(this, 'feeds'))
+    }
+
+    updateStateOnAPIcall = (key, data)=>{
+        console.log("updateStateOnAPIcall", key, data)
+        if('count' in data && 'next' in data && 'previous' in data){
+            // paginated response
+            this.setState({
+                [key]: data.results
+            })
+        }
+        else{
+            this.setState({
+                [key]: data.data
+            })
+        }
+
+    }
+
 
     savePost = (idx) =>{
         this.setState({
             feeds: this.state.feeds.map(ele =>{
-                if(ele.portfolio.id === idx){
-                    if(!ele.portfolio.isSaved){
-                        console.log("if cond")
-                        ele.portfolio.isSaved = true;
+                if(ele.id === idx){
+                    if(!ele.is_saved){
+                        ele.is_saved = true;
                     }
                     else{
-                        ele.portfolio.isSaved = !ele.portfolio.isSaved;
+                        ele.is_Saved = !ele.is_saved;
                     }
                 }
                 return ele
@@ -258,9 +277,9 @@ export class NewFeedPalette extends Component{
     likePortfolio = (idx) =>{
         this.setState({
             feeds: this.state.feeds.map(ele =>{
-                if(ele.portfolio.id === idx){
-                    ele.portfolio.is_liked = true;
-                    ele.portfolio.likes++;
+                if(ele.id === idx){
+                    ele.is_liked = true;
+                    ele.likes++;
                 }
                 return ele
             })
@@ -270,9 +289,9 @@ export class NewFeedPalette extends Component{
     unLikePortfolio = (idx) =>{
         this.setState({
             feeds: this.state.feeds.map(ele =>{
-                if(ele.portfolio.id === idx){
-                    ele.portfolio.is_liked = false;
-                    ele.portfolio.likes--;
+                if(ele.id === idx){
+                    ele.is_liked = false;
+                    ele.likes--;
                 }
                 return ele
             })
@@ -282,9 +301,9 @@ export class NewFeedPalette extends Component{
     addComment = (idx) =>{
         this.setState({
             feeds: this.state.feeds.map(ele =>{
-                if(ele.portfolio.id === idx){
+                if(ele.id === idx){
                     
-                    ele.portfolio.comments++;
+                    ele.comments++;
                 }
                 return ele
             })
@@ -305,7 +324,7 @@ export class NewFeedPalette extends Component{
         }
         else{
             this.state.feeds.map(ele=>{
-                feedList.push(<NewsFeedPost key={ele.portfolio.id} data={ele} currLocation={this.props.location}
+                feedList.push(<NewsFeedPost key={ele.id} data={ele} currLocation={this.props.location}
                     likePortfolio={this.likePortfolio} unLikePortfolio={this.unLikePortfolio}
                     savePost={this.savePost} addComment={this.addComment}/>)
                 
@@ -339,16 +358,13 @@ export class NewsFeedPost extends Component{
     }
     
     render(){
-        let user = this.props.data.user;
-        let pf = this.props.data.portfolio;
-        let responsecounts ={
-            likes: pf.likes, comments: pf.comments, shares: pf.shares
-        }
+        let pf = this.props.data;
+        let responsecounts = pf.interactions
 
         return(
             <div  className="nf-post-conatiner">
                 <div className="nfp-user-preview">
-                    <UserFlat data={user}/>
+                    <UserFlat data={pf.user}/>
                 </div>
                 <div className="nfp-portfolio-preview" >
                     <Portfolio key={pf.id} data={pf} currLocation={this.props.location} onlyShots={true} />
@@ -358,15 +374,15 @@ export class NewsFeedPost extends Component{
                         doLike={this.props.likePortfolio.bind(this, pf.id)}
                         doUnLike={this.props.unLikePortfolio.bind(this, pf.id)}
                         isLiked={pf.is_liked}
-                        isSaved={pf.isSaved}
+                        isSaved={pf.is_saved}
                         savePost={this.props.savePost.bind(this, pf.id)}
                         feedCommentBox={this.feedCommentBox.bind(this, "short-comment-"+ pf.id )}
                         responsecounts={responsecounts} />
                 </div>
                 <div className="nfp-details">
                     <span className="m-display-name">
-                        {pf.name}
-                        <span className="m-adj"> Lorem Ipsum dollar amet ... see more</span>
+                        {pf.portfolio_name}
+                        <span className="m-adj"> {pf.portfolio_name}</span>
                     </span>
                     <div className="cmnt-count"> view all {pf.comments} comments</div>
 

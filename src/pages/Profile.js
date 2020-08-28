@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import '../assets/css/profile.css';
 import { FaPlus, FaPaperPlane , FaCheckCircle, FaCameraRetro, FaUserCircle} from "react-icons/fa";
-import { AiFillCloseCircle } from 'react-icons/ai';
+import { AiFillCloseCircle, AiFillSetting } from 'react-icons/ai';
 import SearchHead from '../components/Search/SearchHead';
 import Subnav from '../components/Navbar/Subnav';
 import UserAbout from '../components/Profile/UserAbout';
@@ -74,7 +74,6 @@ export default class Profile extends Component {
         },
  
         userAbout: null, 
-        // JSON.parse(retrieveFromStorage("user_data")),
         isSelf : null,
         editProf: false,
         // forceful rerender
@@ -85,14 +84,15 @@ export default class Profile extends Component {
         // get user portfolio data
         let subnav = ''
         let isSelf = false
-        let userAbout = ''
-        if(this.props.isAuthenticated && isSelfUser(this.state.userAbout.username, this.props.match.params.username)){
+        let userAbout = JSON.parse(retrieveFromStorage("user_data"))
+
+        if(this.props.isAuthenticated && isSelfUser(userAbout.username, this.props.match.params.username)){
             subnav = AuthUserNav;
             isSelf = true;
-            userAbout = JSON.parse(retrieveFromStorage("user_data"))
         }
         else{
             subnav = PublicNav;
+            userAbout = null;
             // call api to get user about
             this.retrieveDataFromAPI('About', this.updateStateOnAPIcall)
 
@@ -164,7 +164,7 @@ export default class Profile extends Component {
                 return 'api/v1/follow-requests/' + this.props.match.params.username +'/?q=followers';
             
             case 'About':
-                return 'api/v1/user-profile/?q='+ this.props.match.params.username;
+                return 'api/v1/user-profile/?q='+ this.props.match.params.username+'&r='+ window.innerWidth;
 
             default: return null
 
@@ -335,7 +335,7 @@ export default class Profile extends Component {
     }
 
     startFollowing =(record) =>{
-        record.isFollowing = true;
+        record.is_following = true;
         if (isSelfUser(2,1)){
             this.setState({
                 userFollowing: [...this.state.userFollowing, record]
@@ -344,7 +344,7 @@ export default class Profile extends Component {
     }
 
     stopFollowing =(record) =>{
-        record.isFollowing = false;
+        record.is_following = false;
         this.setState({
             userFollowing: this.state.userFollowing.filter(ele => ele.id!==record.id) 
         })
@@ -395,7 +395,7 @@ export default class Profile extends Component {
         ImgCompressor(e, this.makeUploadRequest, imgKey)
     }
     makeUploadRequest=(compressedFile, imgKey)=>{
-        let url = 'api/v1/user-profile/'
+        let url = 'api/v1/user-profile/?r='+window.innerWidth
         let formData = new FormData();
         formData.append(imgKey, compressedFile); 
         HTTPRequestHandler.put(
@@ -722,14 +722,12 @@ export default class Profile extends Component {
 
     forceRerenderOnce = (renderKey) =>{
         // to be unpdated only once
-        console.log("forceRerenderOnce called", this.state.forceRerender )
         if(this.state.forceRerender=== false){
             this.setState({
                 [renderKey]: null,
                 forceRerender: true,
             }, ()=>{
                 this.retrieveDataFromAPI(renderKey, this.updateStateOnAPIcall)
-                console.log("state updated and retrieveDataFromAPI called")
             })
             
         }
@@ -742,6 +740,9 @@ export default class Profile extends Component {
         if(this.props.location.state && this.props.location.state.rerender){
             this.forceRerenderOnce(this.props.location.state.rerender)
             
+        }
+        if(!this.state.userAbout){
+            return(<React.Fragment><OwlLoader /></React.Fragment>)
         }
         let resultBlock = this.getCompomentData()
         return (
@@ -776,6 +777,8 @@ export default class Profile extends Component {
 
 function ProfileHead(props) {
     let data = props.data;
+    const [userActions, showUserActions] = useState(false);
+
     if (!props.data){
         return(
         <div className="profile-top">
@@ -783,8 +786,7 @@ function ProfileHead(props) {
         </div>
         )
 
-    }
-    
+    }    
     let coverpic = data.profile_data && data.profile_data.cover_pic ? data.profile_data.cover_pic: defaultCoverPic();
     return (
         <React.Fragment>
@@ -828,8 +830,24 @@ function ProfileHead(props) {
                                 <button className="btn m-fuser" onClick={props.editProfile}>< TiEdit className="ico"/>Edit Profile</button>
                             :
                                 <div className="pf-otheruser-btns">
-                                    <button className="btn m-fuser">< FaPlus className="ico"/> Follow</button>
-                                    <button className="btn m-fuser">< FaPaperPlane className="ico"/> Message</button>
+                                    {data.is_following?
+                                    <button className="btn m-fuser"><FaPaperPlane className="ico"/> Message</button>
+                                    :
+                                    <button className="btn m-fuser"><FaPlus className="ico"/> Follow</button>
+                                    }
+                                    <button className="btn m-fuser" onClick={()=> showUserActions(!userActions)}>
+                                        <AiFillSetting className="ico"/> Actions</button>
+                                    {userActions?
+                                        <div className="user-action-menu">
+                                            {data.is_following?
+                                            <div className="a-opt">Unfollow</div> : ""
+                                            }
+                                            <div className="a-opt">Block</div>
+                                            <div className="a-opt">Report</div>
+                                        </div>
+                                        :
+                                        ""
+                                    }
                                 </div>
                                 
                             }

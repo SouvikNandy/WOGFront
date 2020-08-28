@@ -117,6 +117,7 @@
     z-index: 3;
 }
 
+
 .m-img-attribute .p-attr-name {
     padding: 0.8rem 1.2rem;
     color: var(--light);
@@ -126,7 +127,8 @@
 }
 
 .m-img-attribute .p-attr-name .m-display-name {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
+    max-width: 70%;
 }
 
 .m-img-attribute .p-attr-name .m-display-name .m-adj {
@@ -339,6 +341,13 @@
     margin-left: 0.5rem;
 }
 
+.modal-about-img .m-display-name{
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    white-space: initial;
+    line-height: 1.2;
+}
 .hide-about {
     /* to hide modal-about-img and show full comment section */
     display: none;
@@ -668,7 +677,8 @@
 
     /* Modal User */
     .modal-user {
-        width: 100%
+        width: 100%;
+        padding: 0 0.4rem;
     }
 
     /* Modal about img section */

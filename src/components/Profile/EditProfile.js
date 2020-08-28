@@ -175,7 +175,7 @@ export class EditProfile extends Component {
     }
 
     makeUploadRequest=(compressedFile, imgKey)=>{
-        let url = 'api/v1/user-profile/'
+        let url = 'api/v1/user-profile/?r='+window.innerWidth
         let formData = new FormData();
         formData.append(imgKey, compressedFile); 
         HTTPRequestHandler.put(
@@ -506,7 +506,7 @@ export class EditProfile extends Component {
 
     UpdateDetails =() =>{
         let activeTab = this.state.SubNavOptions.filter(ele=> ele.isActive ===true)[0]
-        let url = 'api/v1/user-profile/';
+        let url = 'api/v1/user-profile/?r='+window.innerWidth;
 
         let requestBody = {"profile_data": {} }
         if(activeTab.key === "E-1"){

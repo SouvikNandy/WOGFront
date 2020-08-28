@@ -4,8 +4,9 @@ import '../assets/css/login.css';
 import { Link, Redirect } from 'react-router-dom';
 import { createFloatingNotification } from '../components/FloatingNotifications';
 import {saveInStorage, storeAuthToken, silentRefresh } from '../utility/Utility';
-import HTTPRequestHandler from '../utility/HTTPRequests';
 import Dropdown from '../components/Dropdown';
+import {LoginAPI, SignupAPI} from '../utility/ApiSet';
+
 
 export class Login extends Component {
     render() {
@@ -47,9 +48,9 @@ class SignIn extends Component {
             return false
         }
 
-        let url = 'api/v1/user-authentication/?r='+ window.innerWidth;
+
         let requestBody = { email: this.state.email, password: this.state.password }
-        HTTPRequestHandler.post({url: url, requestBody: requestBody, callBackFunc: this.onSuccessfulLogin, errNotifierTitle: "Authentication failed!"})
+        LoginAPI(requestBody, this.onSuccessfulLogin)
     }
 
     onSuccessfulLogin = (data) => {
@@ -149,17 +150,22 @@ class SignUp extends Component {
 
         }
 
-        let user_type = document.getElementById('i-am')==="team"? "T": "I";
-        let url  = 'api/v1/user-registration/';
+        let user_type = document.getElementById('i-am');
+        if (!user_type || user_type === ""){
+            createFloatingNotification("error", "Signup failed!", "You must choose between individual/team account.");
+            return false
+        }
+        
+        
         let requestBody = { 
             name: this.state.name,
             username: this.state.username,
-            user_type: user_type,
+            user_type: user_type ==="team"? "T": "I",
             email: this.state.email, 
             password: this.state.password
         }
 
-        HTTPRequestHandler.post({url: url, requestBody: requestBody, callBackFunc: this.onSuccess, errNotifierTitle: "Signup failed!"})
+        SignupAPI(requestBody, this.onSuccess)
 
     }
 

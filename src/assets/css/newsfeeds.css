@@ -9,7 +9,6 @@
 /* LEFT SIDE MENU */
 
 .nf-user-menu {
-    flex: 0.8;
     /* border-right: 1px solid var(--border-grey); */
     height: 95vh;
     width: 15vw;
@@ -169,7 +168,7 @@
 /* Feeds section */
 
 .nf-feeds {
-    flex: 3;
+    width: 55vw;
     margin-left: 15vw;
     min-height: 95vh;
     background-color: var(--border-grey);
@@ -185,10 +184,14 @@
 }
 
 .nf-post-conatiner {
-    width: 80%;
+    width: 75%;
     background-color: var(--light);
     margin-top: 1.5rem;
     padding: 0.8rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .nf-post-conatiner:last-child {
@@ -199,11 +202,23 @@
     width: 100%;
 }
 
-.nf-post-conatiner .nfp-likes-mod {
-    height: 6vh;
+.nf-post-conatiner .nfp-portfolio-preview{
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.nf-post-conatiner .nfp-likes-mod {
+    height: 6vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nf-post-conatiner .nfp-details{
+    width: 100%;
 }
 
 .nfp-details .cmnt-count {
@@ -214,6 +229,7 @@
 }
 
 .nfp-comments {
+    width: 100%;
     margin-top: 0.5rem;
     display: flex;
     align-items: center;
@@ -229,8 +245,9 @@
 }
 
 .nf-rest {
-    flex: 1.5;
+    /* flex: 1.5; */
     /* background: var(--border-grey); */
+    width: 30vw;
 }
 
 

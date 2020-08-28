@@ -270,7 +270,7 @@ export class ShotModalView extends Component {
                                 <span className="p-attr-name">
                                     <span className="m-display-name">
                                         {this.state.shot.portfolio_name}<br />
-                                        <span className="m-adj">uploaded on: {msToDateTime(this.state.shot.created_at)} </span>
+                                        <span className="m-adj">{msToDateTime(this.state.shot.created_at)} </span>
                                     </span>
                                 </span>
                                 <span className="p-attr-tags">
@@ -302,7 +302,7 @@ export class ShotModalView extends Component {
                         </section>
                         {/* Modal about uploaded image */}
                         <section className={this.state.showSideView?"modal-about-img hide": "modal-about-img"} id="modal-about-img">
-                            <span className="m-display-name">{this.state.shot.user.name}</span>
+                            <span className="m-display-name">{this.state.shot.portfolio_name}</span>
                             <p className="m-img-content">
                                 {this.state.shot.description}
                             </p>

@@ -6,19 +6,35 @@ import {NewsFeedUserMenu, NewsFeedSuggestions} from './NewsFeeds';
 import '../assets/css/newsfeeds.css';
 import '../assets/css/discoverPeople.css';
 import {UserNavBar} from "../components/Navbar/Navbar";
-
-// Images for shot
-import w1 from "../assets/images/wedding1.jpg";
-import pl2 from "../assets/images/people/2.jpg";
+import { DiscoverPeopleAPI } from '../utility/ApiSet';
+import OwlLoader from '../components/OwlLoader';
+import {getUserData} from '../utility/userData';
 
 export class DiscoverPeople extends Component {
     state ={
-        people:[
-            {"id": 1, "name":"John Doe", "username": "jhndoe", "profile_pic": w1, "designation": "photographer", "isFollowing": false},
-            {"id": 2, "name":"Jenny Doe", "username": "jennydoe", "profile_pic": pl2, "designation": "photographer", "isFollowing": false},
-            {"id": 3, "name":"Jenny Doe", "username": "jennydoe", "profile_pic": pl2, "designation": "photographer", "isFollowing": false}
-        ],
+        people: null
     }
+
+    componentDidMount(){
+        DiscoverPeopleAPI(this.updateStateOnAPIcall.bind(this, 'people'))
+    }
+
+    updateStateOnAPIcall = (key, data)=>{
+        // console.log("updateStateOnAPIcall", key, data)
+        if('count' in data && 'next' in data && 'previous' in data){
+            // paginated response
+            this.setState({
+                [key]: data.results
+            })
+        }
+        else{
+            this.setState({
+                [key]: data.data
+            })
+        }
+
+    }
+
 
     padDummyShot = (resultList, len, maxlen=5) =>{
         if (len < maxlen){
@@ -33,7 +49,7 @@ export class DiscoverPeople extends Component {
         this.setState({
             people: this.state.people.map(ele =>{
                 if(ele.id===record.id){
-                    record.isFollowing = true;
+                    record.is_following = true;
                 }
                 return ele
             })
@@ -42,12 +58,10 @@ export class DiscoverPeople extends Component {
     }
 
     stopFollowing =(record) =>{
-
-        console.log("stop following user called");
         this.setState({
             people: this.state.people.map(ele =>{
                 if(ele.id===record.id){
-                    record.isFollowing = false;
+                    record.is_following = false;
                 }
                 return ele
             })
@@ -55,16 +69,26 @@ export class DiscoverPeople extends Component {
     }
 
     render() {
+        console.log("dicover people", this.props)
         let resultList = [];
-        this.state.people.map(ele => 
-            {resultList.push(<FollowUserCubeAlt key={ele.id} data={ele} isFollowing={ele.isFollowing} 
-                startFollowing={this.startFollowing} stopFollowing={this.stopFollowing} />)
-            return ele
-        })
-        resultList = this.padDummyShot(resultList, this.state.people.length, 5)
+        if (!this.state.people){
+            resultList = <div className="profile-user-grid"> <OwlLoader /></div>
+        }
+        else{
+            console.log(this.state.people)
+            this.state.people.map(ele => 
+                {resultList.push(<FollowUserCubeAlt key={ele.username} data={ele} isFollowing={ele.is_following} 
+                    startFollowing={this.startFollowing} stopFollowing={this.stopFollowing} />)
+                return ele
+            })
+            resultList = this.padDummyShot(resultList, this.state.people.length, 5)
+
+        }
+        let current_user = getUserData().username
+        
         return (
             <React.Fragment>
-                <UserNavBar selectedMenu={"not-selected"} username={this.props.username}/>
+                <UserNavBar selectedMenu={"not-selected"} username={current_user}/>
                 <div className="nf-container">
                     <NewsFeedUserMenu {...this.props}/>
                     <div className="nf-feeds">
