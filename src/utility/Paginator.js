@@ -14,7 +14,6 @@ export default class Paginator{
         HTTPRequestHandler.get({url:this.next, completeUrl: true, includeToken: true, callBackFunc: this.onNextCallback.bind(this, callBackFunc) })
     }
     onNextCallback = (callBackFunc, data) =>{
-        console.log("received",this.next, this.count, this.fetched,  data.results)
         this.count = data.count
         this.next = data.next
         this.prev = data.previous

@@ -63,7 +63,6 @@ export class NewsFeedUserMenu extends Component{
     }
 
     uploadPicture =(e, imgKey) =>{
-        console.log(e.target.files, imgKey)
         ImgCompressor(e, this.makeUploadRequest, imgKey)
     }
 
@@ -231,7 +230,6 @@ export class NewFeedPalette extends Component{
         isFetching: false,
         eventListnerRef: null,
     }
-
     componentDidMount(){
         UserFeedsAPI(this.updateStateOnAPIcall.bind(this, 'feeds'))
         let eventListnerRef = this.handleScroll.bind(this);
@@ -245,16 +243,13 @@ export class NewFeedPalette extends Component{
         window.removeEventListener('scroll', this.state.eventListnerRef);
         
     }
-
     updateStateOnAPIcall = (key, data)=>{
-        console.log(data)
         if('count' in data && 'next' in data && 'previous' in data){
             // paginated response
             this.setState({
                 [key]: data.results,
                 paginator: data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null
             })
-
         }
         else{
             this.setState({
@@ -264,6 +259,7 @@ export class NewFeedPalette extends Component{
     }
     handleScroll() {
         if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+        if(this.state.isFetching) return;
         if(this.state.paginator){
             let res = this.state.paginator.getNextPage(this.updateStateOnPagination)
             if (res !== false){

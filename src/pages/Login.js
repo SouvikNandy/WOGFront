@@ -127,7 +127,6 @@ class SignUp extends Component {
     }
 
     validateData=()=>{
-        console.log(this.state);
         if (!this.state.name){
             createFloatingNotification("error", "Signup failed!", "Please provide a valid name.");
             return false
@@ -156,7 +155,6 @@ class SignUp extends Component {
             return false
         }
         
-        
         let requestBody = { 
             name: this.state.name,
             username: this.state.username,
@@ -164,7 +162,6 @@ class SignUp extends Component {
             email: this.state.email, 
             password: this.state.password
         }
-
         SignupAPI(requestBody, this.onSuccess)
 
     }
@@ -192,7 +189,6 @@ class SignUp extends Component {
 
     });
     render() {
-        // console.log("reteived auth Token", retrieveAuthToken());
         if (this.state.signupSuccesful){
             return <Redirect to='/signin/' />
         }
@@ -204,7 +200,7 @@ class SignUp extends Component {
                     <div className="form-group f-flex">
                         <input type="text" placeholder="Username" name="username" onChange={this.onChange} required />
                         <div className="i-am">
-                            <Dropdown options={["I'm an Individual", "I'm a Team"]} />
+                            <Dropdown options={["Individual", "Team/Organization"]} placeHolder={"I am"} />
                         </div>
                     </div>
                     <div className="form-group">

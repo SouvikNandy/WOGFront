@@ -69,7 +69,6 @@ export class DiscoverPeople extends Component {
     }
 
     render() {
-        console.log("dicover people", this.props)
         let resultList = [];
         if (!this.state.people){
             resultList = <div className="profile-user-grid"> <OwlLoader /></div>

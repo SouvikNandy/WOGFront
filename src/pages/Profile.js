@@ -24,6 +24,7 @@ import HTTPRequestHandler from '../utility/HTTPRequests';
 import { createFloatingNotification } from '../components/FloatingNotifications';
 import { Redirect } from 'react-router-dom';
 import OwlLoader from '../components/OwlLoader';
+import Paginator from '../utility/Paginator';
 
 
 
@@ -49,6 +50,16 @@ const PublicNav = [
     {"key": "sm-7", "title": "Reviews", "isActive":false},
 ]
 
+const StateSubmenuMap = {
+    'Shots': 'userPortFolio', 'Portfolios': 'userPortFolio', 'Saved': 'userSaved', 'Followers': 'userFollower', 
+    'Following': 'userFollowing', 'About': 'userAbout'
+    }
+
+const StatePaginatorMap = {
+    'Shots': 'portfolioPaginator', 'Portfolios': 'portfolioPaginator', 'Saved': 'savedPaginator', 'Followers': 'followerPaginator', 
+    'Following': 'followingPaginator', 'TagApproved': 'tagApprovedPaginator', 'TagRequest':'tagRequestPaginator'
+    }
+
 export default class Profile extends Component {
     state = {
         subNavList:[],
@@ -57,7 +68,6 @@ export default class Profile extends Component {
             {key: "tn-1", "title": "Approved", "count": true, "isActive": true},
             {key: "tn-2", "title": "Requests", "count": true, "isActive": false}
         ],
-
         userPortFolio : null,
         userFollower: null,
         userFollowing: null,
@@ -72,12 +82,21 @@ export default class Profile extends Component {
                 // {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: w1, is_liked: false}, 
             ]
         },
- 
         userAbout: null, 
         isSelf : null,
         editProf: false,
         // forceful rerender
-        forceRerender : false
+        forceRerender : false,
+        // paginations
+        portfolioPaginator : null,
+        followerPaginator: null,
+        followingPaginator: null,
+        tagApprovedPaginator: null,
+        tagRequestPaginator: null,
+        savedPaginator: null,
+
+        eventListnerRef: null,
+        isFetching: false,
     }
 
     componentDidMount(){
@@ -116,8 +135,42 @@ export default class Profile extends Component {
             activeTab = subnav.filter(ele=>ele.isActive === true)[0].title   
         }
         this.retrieveDataFromAPI(activeTab, this.updateStateOnAPIcall)
+
+        // add event listner
+        let eventListnerRef = this.handleScroll.bind(this);
         this.setState({
-            subNavList: subnav, isSelf: isSelf, userAbout: userAbout
+            subNavList: subnav, isSelf: isSelf, userAbout: userAbout, eventListnerRef: eventListnerRef
+        })
+        window.addEventListener('scroll', eventListnerRef);
+
+    }
+
+    componentWillUnmount(){
+        window.removeEventListener('scroll', this.state.eventListnerRef);
+        
+    }
+
+    handleScroll() {
+        if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+        if(this.state.isFetching) return;
+
+        let currentPage = this.state.subNavList.filter(ele => ele.isActive)[0]
+        let paginatorKey = this.getPaginatorFromSubmenuName(currentPage.title)
+        if(!paginatorKey) return;
+        if(this.state[paginatorKey]){
+            let res = this.state[paginatorKey].getNextPage(this.updateStateOnPagination.bind(this, currentPage.title))
+            if (res !== false){
+                this.setState({isFetching: true})
+            }  
+        }
+        
+    }
+
+    updateStateOnPagination = (key , results) =>{
+        let stateKey = this.getStateKeyFromSubmenuName(key)
+        this.setState({
+            [stateKey]:[...this.state[stateKey], ...results],
+            isFetching: false
         })
     }
 
@@ -129,31 +182,25 @@ export default class Profile extends Component {
         
 
     }
-
     getStateKeyFromSubmenuName = (name) =>{
-        switch(name){
-            case 'Shots':
-                return 'userPortFolio'
-            
-            case 'Portfolio':
-                return 'userPortFolio'
-            
-            case 'Saved':
-                return 'userSaved'
-            
-            case 'Followers':
-                return 'userFollower'
-
-            case 'Following':
-                return 'userFollowing'
-            
-            case 'About':
-                return 'userAbout'
-            
-            default: return null
+        try{
+            return StateSubmenuMap[name]
         }
-
+        catch{
+            return null
+        }
+        
     }
+    getPaginatorFromSubmenuName = (name) =>{
+        try{
+            return StatePaginatorMap[name]
+        }
+        catch{
+            return null
+        }
+        
+    }
+
 
     getAPIUrl = (key) =>{
         switch(key){
@@ -190,17 +237,20 @@ export default class Profile extends Component {
         }
         if (url){
             HTTPRequestHandler.get(
-                {url:url, includeToken:true, callBackFunc: callbackFunc.bind(this, stateKey), 
+                {url:url, includeToken:true, callBackFunc: callbackFunc.bind(this, stateKey, selectedMenu), 
                 errNotifierTitle:"Update failed !"})
         }
     } 
 
-    updateStateOnAPIcall = (key, data)=>{
+    updateStateOnAPIcall = (key, menuTitle, data)=>{
         // console.log("updateStateOnAPIcall", key, data)
         if('count' in data && 'next' in data && 'previous' in data){
             // paginated response
+            let paginatorKey = this.getPaginatorFromSubmenuName(menuTitle)
             this.setState({
-                [key]: data.results
+                [key]: data.results,
+                [paginatorKey]: data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null
+
             })
         }
         else{
@@ -272,7 +322,6 @@ export default class Profile extends Component {
     likeTagRequestShot = (idx) => {
         // api call to update likes
         // also increase the count
-
         let updatedUserTag = {...this.state.userTag}
 
         updatedUserTag.requests.map(ele => ele.id === idx? ele.is_liked=true : '') 
@@ -381,9 +430,13 @@ export default class Profile extends Component {
     padDummyShot = (resultList, len, maxlen=5) =>{
         if (len < maxlen){
             for(let i =0; i< maxlen - len ; i++){
-                resultList.push(<DummyShots  key={"DS"+ i }/>)
+                resultList.push(<DummyShots  key={"DS"+ i } />)
             }
         }
+        return resultList
+    }
+    padLoaderShot = (resultList) =>{
+        resultList.push(<DummyShots  key={"DS-load" } loaderShot={true} />)
         return resultList
     }
 
@@ -395,6 +448,7 @@ export default class Profile extends Component {
         )
 
     }
+
 
     getLoaderDIv =()=>{
         return(
@@ -465,7 +519,6 @@ export default class Profile extends Component {
                             <AddPost onSuccessfulUpload={this.addNewPortfolioToState} />
                             :
                             ""}
-                            
                         </div>
                     )
                 }
@@ -483,6 +536,9 @@ export default class Profile extends Component {
                         return portfolio
                     })
                     resultList = this.padDummyShot(resultList, resultList.length, 5)
+                    if(this.state.isFetching){
+                        resultList = this.padLoaderShot(resultList)
+                    }
                     return(
                         <div key={item.title} className="profile-shots">
                             {resultList}
@@ -515,6 +571,9 @@ export default class Profile extends Component {
                         return ele
                     })
                     resultList = this.padDummyShot(resultList, this.state.userPortFolio.length, 5)
+                    if(this.state.isFetching){
+                        resultList = this.padLoaderShot(resultList)
+                    }
                 }
                 else {
                     return(
@@ -584,6 +643,9 @@ export default class Profile extends Component {
                             return ele
                         })
                         resultList = this.padDummyShot(resultList, this.state.userTag[getSelectedTab].length, 5)
+                        if(this.state.isFetching){
+                            resultList = this.padLoaderShot(resultList)
+                        }
 
                     }
                     
@@ -630,6 +692,9 @@ export default class Profile extends Component {
                         return ele
                     })
                     resultList = this.padDummyShot(resultList, this.state.userFollower.length, 5)
+                    if(this.state.isFetching){
+                        resultList = this.padLoaderShot(resultList)
+                    }
                 }
                 
                 return (
@@ -661,6 +726,9 @@ export default class Profile extends Component {
                         return ele
                     })
                     resultList = this.padDummyShot(resultList, this.state.userFollowing.length, 5)
+                    if(this.state.isFetching){
+                        resultList = this.padLoaderShot(resultList)
+                    }
 
                 }
                 
@@ -718,6 +786,9 @@ export default class Profile extends Component {
                         return ele
                     })
                     resultList = this.padDummyShot(resultList, this.state.userSaved.length, 5)
+                    if(this.state.isFetching){
+                        resultList = this.padLoaderShot(resultList)
+                    }
                 }
                 
                 return(
@@ -725,8 +796,6 @@ export default class Profile extends Component {
                         {resultList}
                     </div>
                 )
-                
-
             }
             return <React.Fragment key={"default "+ index}></React.Fragment>
         })
@@ -758,8 +827,6 @@ export default class Profile extends Component {
             return(<React.Fragment><OwlLoader /></React.Fragment>)
         }
         let resultBlock = this.getCompomentData()
-
-        console.log("is self user", this.state.isSelf)
         return (
             <React.Fragment>
                 {this.state.editProf?

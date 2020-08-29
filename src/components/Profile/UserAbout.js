@@ -5,7 +5,7 @@ import {
     FaMapMarkerAlt, FaBirthdayCake, FaIdCard,
     FaFacebookSquare, FaInstagram, FaYoutube, FaPinterest
 } from 'react-icons/fa';
-import { msToDateTime, stringToDate } from '../../utility/Utility';
+import { msToDateTime } from '../../utility/Utility';
 
 export default function UserAbout(props) {
     let data = props.data

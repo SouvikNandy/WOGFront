@@ -17,6 +17,7 @@ import {defaultCoverPic} from '../../utility/userData';
 import HTTPRequestHandler from '../../utility/HTTPRequests';
 import { saveInStorage, retrieveFromStorage, dateObjToReadable } from '../../utility/Utility';
 import { createFloatingNotification } from '../FloatingNotifications';
+import OwlLoader from '../OwlLoader';
 
 export class EditProfile extends Component {
     state ={
@@ -60,20 +61,30 @@ export class EditProfile extends Component {
         skills: [],
         teams: [],
 
-        dataset : JSON.parse(retrieveFromStorage("user_data")),
+        dataset : null,
 
     }
 
     componentDidMount(){
         let dataset = JSON.parse(retrieveFromStorage("user_data"))
+        let skills = [];
+        let teams = [];
+        let social = {}
         if(dataset.profile_data){
             if(dataset.profile_data.skills){
-                this.setState({skills: dataset.profile_data.skills})
+                skills = dataset.profile_data.skills
             }
             if(dataset.profile_data.teams){
-                this.setState({teams: dataset.profile_data.teams})
+                teams = dataset.profile_data.teams
+            }
+            if(dataset.profile_data.social){
+                for (let key in dataset.profile_data.social){
+                    social[key] = dataset.profile_data.social[key]
+                }
             }
         }
+        this.setState({skills: skills, teams: teams,social:social, dataset: dataset})
+
     }    
 
     onChange =(e) =>{
@@ -275,8 +286,10 @@ export class EditProfile extends Component {
                             </div>
                         </div>
                         <div className="basic-details">
-                            <label>Full Name</label>
-                            <input type="text" placeholder="Enter your full name" defaultValue={data.name} 
+                            <label>{data.user_type==="I"?"Full Name":"Team/Organization Name"}</label>
+                            <input type="text" 
+                            placeholder={data.user_type==="I"?"Enter your full name":"Enter your team name"} 
+                            defaultValue={data.name} 
                             name="name" onChange={this.onChange}></input>
                             <div className="details-inline">
                                 <div className="inline-content">
@@ -289,12 +302,11 @@ export class EditProfile extends Component {
                                     <input type="text" value={data.email} placeholder="Enter a email" readOnly></input>
                                 </div>
                             </div>
-                            <label>Bio</label>
+                            <label>{data.user_type==="I"?"Bio":"Write something about your team"}</label>
                             <textarea placeholder="Let others know about you, add a bio" 
                             defaultValue={data.profile_data && data.profile_data.bio? data.profile_data.bio: ""}
                             name="bio" onChange={this.onChange}></textarea>
                             
-
                         </div>
 
                     </React.Fragment>
@@ -319,7 +331,7 @@ export class EditProfile extends Component {
                     <div className="social-details" key={index}>
                         <div className="details-inline">
                             <div className="inline-content">
-                                <label>Pick your Birthday</label>
+                                <label>{data.user_type==="I"?"Pick your Birthday":"Established on"}</label>
                                 <DateTimePicker
                                     disableClock={true}
                                     format={"dd-MM-y"}
@@ -332,8 +344,9 @@ export class EditProfile extends Component {
                         </div>
                         <div className="details-inline">
                             <div className="inline-content">
-                                <label>Home Town</label>
-                                <input type="text" className="inp-box" defaultValue={data.profile_data.hometown} placeholder="Add your hometown"
+                                <label>{data.user_type==="I"?"Home Town":"Headquaters"}</label>
+                                <input type="text" className="inp-box" defaultValue={data.profile_data.hometown} 
+                                placeholder={data.user_type==="I"?"Add your hometown":"Provide headquaters location"}
                                 name="hometown" id="hometown"
                                 onSelect={this.chooseOptions.bind(
                                     this, 
@@ -346,8 +359,9 @@ export class EditProfile extends Component {
                             </div>
 
                             <div className="inline-content">
-                                <label>Current City</label>
-                                <input type="text" className="inp-box" defaultValue={data.profile_data.currentcity} placeholder="Add your current city"
+                                <label>{data.user_type==="I"?"Current City":"Regional Branch"}</label>
+                                <input type="text" className="inp-box" defaultValue={data.profile_data.currentcity} 
+                                placeholder={data.user_type==="I"?"Add your current city":"Provide regional office (if any)"}
                                 name="currentcity" id="currentcity"
                                  onSelect={this.chooseOptions.bind(
                                     this, 
@@ -454,39 +468,40 @@ export class EditProfile extends Component {
                 contentBlock.push(
                     <div className="skills-section" key={index}>
                         <div className="select-profession">
-                            <label>Select your profession</label>
+                            <label>{data.user_type==="I"?"Select your profession":"Select your business"}</label>
                             <Dropdown options={options} onChange={this.selectProfession} 
                             placeHolder={data.profile_data && data.profile_data.profession?data.profile_data.profession:""}/>                          
                         </div>
-                        <label>Enlist your other skills</label>
+                        <label>{data.user_type==="I"?"Enlist your other skills":"Enlist your other services"}Enlist your other skills</label>
                         <span className="info-text">
-                            You can enlist other 5 skills you have. <br/>
-                            providing other skills increase your chances to apprear on other peoples search
+                            You can enlist other 5 {data.user_type==="I"?"skills":"services"} you have. <br/>
+                            providing other keywords increase your chances to apprear on other peoples search
                         </span>
                         <div className="skill-keywords">
-                            <span className="added-skills-text">Added Skills</span>
+                            <span className="added-skills-text">Added {data.user_type==="I"?"Skills":"Services"}</span>
                             {skillList}
                         </div>
                         <div className="add-skills">
-                            <input type="text" id="skill-keywords" placeholder="Add skills to display"></input>
+                            <input type="text" id="skill-keywords" 
+                            placeholder={data.user_type==="I"?"Add skills to display":"Add services to display"}></input>
                             <AiFillPlusCircle className="add-skills-btn" onClick={this.addSkills} />
 
                         </div>
                         
-                        <label>Add teams you are associated with</label>
+                        <label>Add Teams/Members/Affiliates</label>
                         <span className="info-text">
-                            You can only associate with teams you follow. <br/>
+                            You can only affiliate with accounts you follow. <br/>
                         </span>
                         <div className="skill-keywords">
-                            <span className="added-skills-text">Added Teams</span>
+                            <span className="added-skills-text">Added Teams/members/Affiliates</span>
                             {tagList}
                         </div>
-                        <input type="text" id="memo" name="memo" placeholder="Search Teams / organisations" 
+                        <input type="text" id="memo" name="memo" placeholder="Search For Affiliates " 
                             onSelect={this.chooseOptions.bind(
                                 this, 
                                 'memo',
                                 <FriendList 
-                                    displaySideView={this.displaySideView} searchPlaceHolder={"Search For Friends ..."} 
+                                    displaySideView={this.displaySideView} searchPlaceHolder={"Search For Affiliates ..."} 
                                     populateOnDestinationID={'memo'} tagMembers={this.tagMembers}
                                     currentTags={this.state.teams}
                                     currentTagIDs={this.state.teams.map(ele => ele.id )}
@@ -496,7 +511,6 @@ export class EditProfile extends Component {
 
                     </div>
                 )
-
             };
             return ele
         })
@@ -530,11 +544,11 @@ export class EditProfile extends Component {
            requestBody['profile_data']['hometown'] = document.getElementById('hometown').value;
            requestBody['profile_data']['currentcity'] = document.getElementById('currentcity').value;
            for (let s in this.state.social){
-            if(this.state.social[s]){
-                requestBody['profile_data']['social'][s] = this.state.social[s]
+                if(this.state.social[s]){
+                    requestBody['profile_data']['social'][s] = this.state.social[s]
                } 
-
            }
+
            
 
         }
@@ -552,9 +566,17 @@ export class EditProfile extends Component {
     onSuccessfulUpdate = (data) =>{
         // console.log(data.data)
         saveInStorage("user_data",JSON.stringify(data.data));
+        createFloatingNotification("success", "Updated !", "Profile updated");
     }
 
     render() {
+        if(!this.state.dataset){
+            return(
+            <div className="edit-profile-overlay full-width">
+                <OwlLoader />
+
+            </div>)
+        }
         return (
             <React.Fragment>
             <div className={this.state.showSideView? "edit-profile-overlay with-side-width": "edit-profile-overlay full-width"}>

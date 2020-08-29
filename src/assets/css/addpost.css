@@ -334,6 +334,28 @@
 
 }
 
+@media (max-width: 850px){
+    .camera-cover{
+        height: 2.8rem;
+        width: 2.8rem;
+    }
+    .camera-cover .camera-icon {
+        height: 1.2rem;
+        width: 1.2rem;
+    }
+    .camera-cover .cam-plus , .camera-cover .cam-plus-below{
+        font-size: 0.8rem;
+    }
+    .camera-cover .cam-plus{
+        top: 0.25rem;
+        right: 0.25rem;
+    }
+    .camera-cover .cam-plus-below{
+        top: 1.10rem;
+        right: 0.1rem;
+    }
+}
+
 @media (max-height: 500px){
     .doc-form{
         height: 100vh;
@@ -377,3 +399,4 @@
 
     
 }
+

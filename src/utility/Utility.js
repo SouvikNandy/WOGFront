@@ -179,7 +179,7 @@ export const handleErrorResponse = (error, notifierKey) => {
         if(error.response.status=== 401 || error.response.status=== 403){
             createFloatingNotification('error' ,'Request Unautorized!', 'You might not have the permission to access the requested content');
         }
-        else if(error.response.status=== 500){
+        else if(error.response.status=== 404 || error.response.status=== 500){
             createFloatingNotification('error' ,'Something went wrong!', errDefaultMsg);
         }
         // error occurred/reported from response

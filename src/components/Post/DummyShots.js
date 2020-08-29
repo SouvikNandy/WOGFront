@@ -1,12 +1,18 @@
-import React, { Component } from 'react'
+import React from 'react'
+import OwlLoader from '../OwlLoader'
 
-export class DummyShots extends Component {
-    render() {
-        return (
-            <div className="dummy-shot-container">
-            </div>
-        )
-    }
+export function DummyShots(props) {
+
+    return (
+        <div className="dummy-shot-container">
+            {props.loaderShot?
+            <OwlLoader />
+            :
+            ""
+            }
+        </div>
+    )
+    
 }
 
 export default DummyShots

@@ -4,6 +4,7 @@ import "../assets/css/cityList.css";
 import { SideBarHead } from "./SideBar";
 
 import {FaMapMarkerAlt} from 'react-icons/fa';
+import {MdMyLocation} from 'react-icons/md'
 
 
 export class IndianCityList extends Component {
@@ -14,7 +15,8 @@ export class IndianCityList extends Component {
         "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka", "Kerala", "Lakshadweep", 
         "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Orissa", "Puducherry", "Punjab", 
         "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"],
-        output:[]
+        output:[],
+        searchedPhase: ''
     }
 
     selectPlace = (city, populateDestId) =>{
@@ -25,7 +27,15 @@ export class IndianCityList extends Component {
         }
         // after selecting close sidebar
         this.props.displaySideView({sureVal: false});
+    }
 
+    ownPlace = (city, populateDestId) =>{
+        // action on selecting a place
+        if (populateDestId){
+            document.getElementById(populateDestId).value = city;
+        }
+        // after selecting close sidebar
+        this.props.displaySideView({sureVal: false});
     }
     findPlaces = (value) =>{
         let phase = value.toLowerCase();
@@ -44,7 +54,8 @@ export class IndianCityList extends Component {
         let matchedCities = cities.filter(item => item.name.toLowerCase().startsWith(phase));
         // let results = [...matchedStates, ...matchedCities]
         this.setState({
-            output: [...matchedStates, ...matchedCities]
+            output: [...matchedStates, ...matchedCities],
+            searchedPhase: phase
         })
     }
 
@@ -57,13 +68,31 @@ export class IndianCityList extends Component {
                 searchOnChange={this.findPlaces}
                 focusSearchBar={true}
                 />
+                {this.state.searchedPhase !==""?
+                <div className="city-block own-place" key={"manual"}
+                onClick={this.ownPlace.bind(this, this.state.searchedPhase, this.props.populateOnDestinationID)}
+                >
+                <MdMyLocation className="map-icon" /> Add your entered place
+                </div>
+                :
+                ""
+            
+                }
+                
+                {this.state.output.length > 1?
+                <React.Fragment>
+                <div className="select-label">Or select from locations below</div>
                 {this.state.output.map(city =>(
-                    
                     <div key={city.id} className="city-block" 
                     onClick={this.selectPlace.bind(this, city, this.props.populateOnDestinationID)}>
                         <FaMapMarkerAlt className="map-icon" /> {city.name} {city.stateName? <span>, {city.stateName}</span>:""}
                     </div>
                 ))}
+                </React.Fragment>
+                :
+                ""
+                }
+                
             </React.Fragment>
         )
     }
