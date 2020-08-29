@@ -129,10 +129,22 @@ export const getBackendHOST = (env = 'dev') => {
     return setup[env]["BACKEND_HOST"]
 }
 
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
 export const msToDateTime = (secondsVal) =>{
     let dt = new Date(0);
     dt.setUTCSeconds(secondsVal);
-    return dt.toDateString()
+    // return dt.toDateString()
+    return dt.getDate() + ' ' + months[dt.getMonth()] + ' '+ dt.getFullYear()
+}
+
+export const stringToDate = (dtStr) =>{
+    let dt = new Date(dtStr)
+    return dt.getDate() + ' ' + months[dt.getMonth()] + ' '+ dt.getFullYear()
+}
+
+export const dateObjToReadable = (dt) =>{
+    return dt.getDate() + ' ' + months[dt.getMonth()] + ' '+ dt.getFullYear()
 }
 
 // LOCAL STORAGE MANAGEMENT

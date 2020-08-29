@@ -124,7 +124,6 @@ export class UserNavBar extends Component{
     }
 
     sideNFMenu = () =>{
-        console.log("")
         return(
             <div className="side-nfuser-menu">
                 <AiOutlineAlignLeft className="nav-icon hide-left-menu" onClick={this.displaySideView}/>

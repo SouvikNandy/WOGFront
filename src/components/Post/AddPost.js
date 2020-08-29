@@ -144,7 +144,7 @@ export class AddDocumentForm extends Component {
 
     displaySideView = ({content, sureVal, altHeadText=null}) =>{
         let stateVal = !this.state.showSideView
-        console.log("showSideView", stateVal)
+        // console.log("showSideView", stateVal)
         if (sureVal){
             stateVal = sureVal
         }

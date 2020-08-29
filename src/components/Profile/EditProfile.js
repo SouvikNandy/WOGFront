@@ -15,7 +15,7 @@ import FriendList from './FriendList';
 import TagUser from '../Profile/TagUser';
 import {defaultCoverPic} from '../../utility/userData';
 import HTTPRequestHandler from '../../utility/HTTPRequests';
-import { saveInStorage, retrieveFromStorage } from '../../utility/Utility';
+import { saveInStorage, retrieveFromStorage, dateObjToReadable } from '../../utility/Utility';
 import { createFloatingNotification } from '../FloatingNotifications';
 
 export class EditProfile extends Component {
@@ -304,11 +304,11 @@ export class EditProfile extends Component {
             }
             else if (ele.title === "Social" && ele.isActive === true){
                 let dob = ''
-                if (data.profile_data.dob){
-                    dob = new Date(data.profile_data.birthday)
-                }
-                else if (this.state.birthday){
+                if (this.state.birthday){
                     dob = this.state.birthday
+                }
+                else if (data.profile_data.birthday){
+                    dob = new Date(data.profile_data.birthday)
                 }
                 else{
                     dob = new Date()
@@ -451,7 +451,6 @@ export class EditProfile extends Component {
                         ) 
 
                 }
-                console.log("skills data", data.profile_data)   
                 contentBlock.push(
                     <div className="skills-section" key={index}>
                         <div className="select-profession">
@@ -525,7 +524,7 @@ export class EditProfile extends Component {
         else if(activeTab.key === "E-2"){
             requestBody['profile_data']={'social':{}}
            if(this.state.birthday){
-            requestBody['profile_data']['birthday'] = this.state.birthday.getMonth() + '-' + this.state.birthday.getDate() + '-' + this.state.birthday.getFullYear();
+            requestBody['profile_data']['birthday'] = dateObjToReadable(this.state.birthday)
            }
 
            requestBody['profile_data']['hometown'] = document.getElementById('hometown').value;

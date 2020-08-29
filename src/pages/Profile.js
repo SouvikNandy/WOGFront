@@ -94,7 +94,7 @@ export default class Profile extends Component {
             subnav = PublicNav;
             userAbout = null;
             // call api to get user about
-            this.retrieveDataFromAPI('About', this.updateStateOnAPIcall)
+            this.retrieveDataFromAPI('About', this.updateInitialAbout)
 
         }
         let qstr = new URLSearchParams(this.props.location.search);
@@ -119,6 +119,15 @@ export default class Profile extends Component {
         this.setState({
             subNavList: subnav, isSelf: isSelf, userAbout: userAbout
         })
+    }
+
+    updateInitialAbout = (key, data)=>{
+        this.setState({
+            [key]: data.data,
+            isSelf: isSelfUser(data.data.username, this.props.match.params.username)
+        })
+        
+
     }
 
     getStateKeyFromSubmenuName = (name) =>{
@@ -749,6 +758,8 @@ export default class Profile extends Component {
             return(<React.Fragment><OwlLoader /></React.Fragment>)
         }
         let resultBlock = this.getCompomentData()
+
+        console.log("is self user", this.state.isSelf)
         return (
             <React.Fragment>
                 {this.state.editProf?
@@ -760,7 +771,7 @@ export default class Profile extends Component {
                 {this.props.showNav === false?
                 ""
                 :
-                this.props.isAuthenticated?
+                this.props.isAuthenticated || this.state.isSelf?
                 <UserNavBar selectedMenu={"profile"} username={this.state.userAbout.username}/>
                 :
                 <SearchHead />
