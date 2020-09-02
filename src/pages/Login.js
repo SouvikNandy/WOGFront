@@ -157,7 +157,7 @@ class SignUp extends Component {
         
         let requestBody = { 
             name: this.state.name,
-            username: this.state.username,
+            username: this.state.username.toLowerCase(),
             user_type: user_type ==="team"? "T": "I",
             email: this.state.email, 
             password: this.state.password
@@ -198,7 +198,7 @@ class SignUp extends Component {
                 <p className="lead"><FaUser />Create Your Account</p>
                 <form className="login-form" id="signup-form" onSubmit={this.onSubmit}>
                     <div className="form-group f-flex">
-                        <input type="text" placeholder="Username" name="username" onChange={this.onChange} required />
+                        <input type="text" placeholder="Username" name="username" onChange={this.onChange} maxlength="20" required />
                         <div className="i-am">
                             <Dropdown options={["Individual", "Team/Organization"]} placeHolder={"I am"} />
                         </div>

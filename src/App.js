@@ -16,6 +16,7 @@ import Page404 from './pages/Page404';
 import CommmunityGuidelines from './pages/CommunityGuidelines';
 import LogOutPromptModal from './components/LogOutPromptModal';
 import EditPost from './components/Post/EditPost';
+import TextInput from './components/TextInput';
 
 
 export default class App extends Component {
@@ -71,6 +72,7 @@ function ShotModalUrl() {
             <PrivateRoute exact path="/log-out/" component={LogOutPromptModal} />
             <PrivateRoute exact path="/edit-shot/:id" component={EditPost} />
             <Route exact path="/guidelines" component={CommmunityGuidelines} />
+            <Route exact path="/test" component={TextInput} />
             <Route> <Page404 /> </Route>
         </Switch>
         {isModal

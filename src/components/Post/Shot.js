@@ -5,17 +5,13 @@ import DummyShots from './DummyShots';
 
 import { Link } from "react-router-dom";
 import { FaHeart, FaRegHeart, FaRegEye } from "react-icons/fa";
-
-// Images for shot
-import w1 from "../../assets/images/wedding1.jpg";
-import pl2 from "../../assets/images/people/2.jpg";
+import {RegularShotsAPI} from '../../utility/ApiSet';
+import Paginator from '../../utility/Paginator';
+import OwlLoader from '../OwlLoader';
 
 export class ShotPalette extends Component {
     state = {
-        Shots : [
-            {id: 1, shot: w1, name: "John Doe", username: "johndoe11111", likes: 100, comments: 100, shares:0, profile_pic: pl2, is_liked: false}, 
-            {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: w1, is_liked: false}, 
-        ],
+        Shots : null
     }
 
     componentDidMount(){
@@ -24,6 +20,25 @@ export class ShotPalette extends Component {
         if(this.props.shotData){
             this.setState({
                 Shots: this.props.shotData
+            })
+        }
+        else{
+            // api call - get random shots
+            RegularShotsAPI(this.updateStateOnAPIcall)
+
+        }
+    }
+    updateStateOnAPIcall = (data)=>{
+        if('count' in data && 'next' in data && 'previous' in data){
+            // paginated response
+            this.setState({
+                Shots: data.results,
+                paginator: data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null
+            })
+        }
+        else{
+            this.setState({
+                Shots: data.data
             })
         }
     }
@@ -66,11 +81,26 @@ export class ShotPalette extends Component {
     }
 
     render(){
+        if (!this.state.Shots){
+            return(<React.Fragment><OwlLoader /></React.Fragment>)
+        }
         let shotList = [];
-        this.state.Shots.map(ele => 
-            {shotList.push(<Shot key={ele.id}  id={ele} data={ele} onlyShot={this.props.onlyShot} 
-                currLocation={this.props.currLocation} likeShot={this.likeShot} unLikeShot={this.unLikeShot} />)
-            return ele
+        console.log("shotpal", this.props)
+        this.state.Shots.map(portfolio => {
+            portfolio.attachments.map(ele=>{
+                let data ={
+                    id: ele.id, name: portfolio.user.name, username: portfolio.user.username, profile_pic: portfolio.user.profile_pic,
+                    content: ele.content, 
+                    interactions: portfolio.interactions, portfolio_id: portfolio.id
+                }
+                shotList.push(
+                <Shot key={data.id} id={data.id} onlyShot={false} data={data} currLocation={this.props.currLocation} 
+                likeShot={this.likeShot} unLikeShot={this.unLikeShot}
+
+                />)
+                return ele
+            })
+            return portfolio
         })
         shotList = this.padDummyShot(shotList, this.state.Shots.length, 5)
 
@@ -86,8 +116,10 @@ export class ShotPalette extends Component {
 export class Shot extends Component {
     render() {
         let data = this.props.data
+        console.log("data", data)
         let shotClass = this.props.onlyShot ? "shot-preview-alt" : "shot-preview"
         let redirect_key = data.username +'-'+ data.portfolio_id +'-'+ data.id
+        console.log(redirect_key);
         return (
             <React.Fragment>
                 <div className={shotClass}>

@@ -43,7 +43,7 @@ export class ShotModalView extends Component {
         let [username, portfolio_id, shot_id] = param.split("-");
         // get portfolio details
         let url = "api/v1/view-post/" + username + '/?q='+portfolio_id+'&r='+ window.innerWidth
-        HTTPRequestHandler.get({url:url, includeToken:true, callBackFunc: this.updateStateOnAPIcall.bind(this, shot_id, username)})
+        HTTPRequestHandler.get({url:url, includeToken:false, callBackFunc: this.updateStateOnAPIcall.bind(this, shot_id, username)})
     }
 
     getShotData = () =>{

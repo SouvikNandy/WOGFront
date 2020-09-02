@@ -17,6 +17,8 @@ import HTTPRequestHandler from '../../utility/HTTPRequests';
 // video thumbnail
 import videoThumbnail from '../../assets/images/icons/video-thumbnail.jpg'
 import { createFloatingNotification } from '../FloatingNotifications';
+import TextInput from '../TextInput';
+import { convertToRaw } from "draft-js";
 // import { retrieveFromStorage } from '../../utility/Utility';
 
 // Add post button
@@ -113,6 +115,8 @@ export class AddDocumentForm extends Component {
 
     onSubmit =(e) =>{
         e.preventDefault();
+        let extracted_description = this.onExtractData()
+        console.log("descriiption", extracted_description)
         let _validated = this.validateForm()
         if (!_validated){
             return false
@@ -230,6 +234,16 @@ export class AddDocumentForm extends Component {
         [e.target.name]: e.target.value
 
     });
+    onChangeDescription = (val) => this.setState({
+        description : val
+    })
+
+    onExtractData = () => {
+        const contentState = this.state.description.getCurrentContent();
+        const raw = convertToRaw(contentState);
+        console.log(raw);
+        return raw
+      };
 
     chooseOptions =(fieldID, content) =>{
         // clear previous disabled
@@ -328,9 +342,10 @@ export class AddDocumentForm extends Component {
                             </div>
                             
                             <label>Description</label>
-                            <textarea type="text" id="description" name="description" onChange={this.onChange}
+                            <TextInput  id="description" onChange={this.onChangeDescription}/>
+                            {/* <textarea type="text" id="description" name="description" onChange={this.onChange}
                             defaultValue={this.props.description}
-                             />
+                             /> */}
                             <label>Members / Contributes</label>
                             {this.state.taggedMembers.length > 0 ?
                                 <div className="member-list">
