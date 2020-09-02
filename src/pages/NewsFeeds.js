@@ -24,6 +24,8 @@ import AddPost from '../components/Post/AddPost';
 import { createFloatingNotification } from '../components/FloatingNotifications';
 import { UserFeedsAPI, SavePostAPI, LikePostAPI } from '../utility/ApiSet';
 import Paginator from '../utility/Paginator';
+import { JSONToEditState } from '../components/TextInput';
+import { Editor } from 'draft-js';
 
 export class NewsFeeds extends Component {
     render() {
@@ -245,9 +247,20 @@ export class NewFeedPalette extends Component{
     }
     updateStateOnAPIcall = (key, data)=>{
         if('count' in data && 'next' in data && 'previous' in data){
+            let result = data.results
+            console.log("received",result)
+            result.map(ele=> {
+                ele["portfolio_name"] = JSONToEditState(JSON.parse(ele.portfolio_name))
+                if(ele.description){
+                    console.log(ele.description)
+                    ele["description"] = JSONToEditState(JSON.parse(ele.description))
+                }
+                return ele
+            })
             // paginated response
+            console.log("after conversion",result)
             this.setState({
-                [key]: data.results,
+                [key]: result,
                 paginator: data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null
             })
         }
@@ -389,6 +402,7 @@ export class NewsFeedPost extends Component{
     render(){
         let pf = this.props.data;
         let tagText = pf.location
+        console.log(pf.portfolio_name);
         return(
             <div  className="nf-post-conatiner">
                 <div className="nfp-user-preview">
@@ -409,9 +423,9 @@ export class NewsFeedPost extends Component{
                         responsecounts={pf.interactions} />
                 </div>
                 <div className="nfp-details" onClick={this.feedCommentBox.bind(this, "npf-"+ pf.id )}>
-                    <div className="m-display-name">{pf.portfolio_name}</div>
+                    <div className="m-display-name"><Editor editorState={pf.portfolio_name} readOnly /></div>
                     <div className="m-dt">{msToDateTime(pf.created_at)}</div>
-                    <div className="m-description"> {pf.description}</div>
+                    <div className="m-description"><Editor editorState={pf.description} readOnly /> </div>
                     <div className="cmnt-count">
                         {pf.interactions.comments>0? <span>view all {pf.interactions.comments} comments</span>: <span>Be the first to comment</span> }
                     

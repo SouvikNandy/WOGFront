@@ -17,8 +17,7 @@ import HTTPRequestHandler from '../../utility/HTTPRequests';
 // video thumbnail
 import videoThumbnail from '../../assets/images/icons/video-thumbnail.jpg'
 import { createFloatingNotification } from '../FloatingNotifications';
-import TextInput from '../TextInput';
-import { convertToRaw } from "draft-js";
+import TextInput, { ExtractToJSON } from '../TextInput';
 // import { retrieveFromStorage } from '../../utility/Utility';
 
 // Add post button
@@ -115,7 +114,7 @@ export class AddDocumentForm extends Component {
 
     onSubmit =(e) =>{
         e.preventDefault();
-        let extracted_description = this.onExtractData()
+        let extracted_description = ExtractToJSON(this.state.description)
         console.log("descriiption", extracted_description)
         let _validated = this.validateForm()
         if (!_validated){
@@ -125,8 +124,8 @@ export class AddDocumentForm extends Component {
         let formData = new FormData();
         this.state.FileList.map(ele=>  formData.append("attachments", ele))
        
-        formData.append("portfolio_name", this.state.portfolioName)
-        formData.append("description", this.state.description)
+        formData.append("portfolio_name", JSON.stringify(ExtractToJSON(this.state.portfolioName)))
+        formData.append("description", JSON.stringify(ExtractToJSON(this.state.description)))
         formData.append("location", document.getElementById("location").value)
 
         HTTPRequestHandler.post(
@@ -234,16 +233,9 @@ export class AddDocumentForm extends Component {
         [e.target.name]: e.target.value
 
     });
-    onChangeDescription = (val) => this.setState({
-        description : val
+    onChangeDescription = (key, val) => this.setState({
+        [key] : val
     })
-
-    onExtractData = () => {
-        const contentState = this.state.description.getCurrentContent();
-        const raw = convertToRaw(contentState);
-        console.log(raw);
-        return raw
-      };
 
     chooseOptions =(fieldID, content) =>{
         // clear previous disabled
@@ -323,8 +315,9 @@ export class AddDocumentForm extends Component {
                             <div className="pf-loc">
                                 <span className="pf-div">
                                     <label>Portfolio Name <span className="imp-field">*</span> </label>
-                                    <input type="text" id="portfolioName" name="portfolioName" defaultValue={this.props.portfolio_name}
-                                    onChange={this.onChange} required />
+                                    {/* <input type="text" id="portfolioName" name="portfolioName" defaultValue={this.props.portfolio_name} onChange={this.onChange} required /> */}
+                                    <TextInput  id="portfolioName" onChange={this.onChangeDescription.bind(this, 'portfolioName')}/>
+                                    
                                 </span>
                                 <span className="loc-div">
                                     <label>Add Location <span className="imp-field"></span></label>
@@ -342,7 +335,7 @@ export class AddDocumentForm extends Component {
                             </div>
                             
                             <label>Description</label>
-                            <TextInput  id="description" onChange={this.onChangeDescription}/>
+                            <TextInput  id="description" onChange={this.onChangeDescription.bind(this, 'description')}/>
                             {/* <textarea type="text" id="description" name="description" onChange={this.onChange}
                             defaultValue={this.props.description}
                              /> */}

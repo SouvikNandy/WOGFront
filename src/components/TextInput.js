@@ -1,12 +1,11 @@
 import React from "react";
-import { EditorState, convertToRaw } from "draft-js";
+import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import Editor from "draft-js-plugins-editor";
 import createMentionPlugin, {defaultSuggestionsFilter} from "draft-js-mention-plugin";
 import editorStyles from "../assets/css/editorStyles.module.css";
 import mentions from "./mentions";
 import "draft-js-mention-plugin/lib/plugin.css";
 import mentionStyles from '../assets/css/mention.module.css';
-import { stateToHTML } from "draft-js-export-html";
 
 class TextInput extends React.Component {
   constructor(props) {
@@ -86,12 +85,12 @@ class TextInput extends React.Component {
             entryComponent={TagEntryTemplate}
           />
         </div>
-        <div>
+        {/* <div>
           <button onClick={() => this.onExtractData()}>Extract data</button>
           <button onClick={() => this.onExtractMentions()}>
             Extract mentions
           </button>
-        </div>
+        </div> */}
       </React.Fragment>
     );
   }
@@ -159,4 +158,17 @@ const TagEntryTemplate = (props) =>{
         </div>
       );
 }
+
+
+export const ExtractToJSON = (editorState) =>{
+  const contentState = editorState.getCurrentContent();
+  const raw = convertToRaw(contentState);
+  return raw
+}
+
+export const JSONToEditState = (rawState) =>{
+  const editState = convertFromRaw(rawState);
+  return editState
+}
+
 export default TextInput;
