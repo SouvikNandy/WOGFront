@@ -20,6 +20,7 @@ import HTTPRequestHandler from '../../utility/HTTPRequests';
 import OwlLoader from '../OwlLoader';
 import { Link } from 'react-router-dom';
 import { LikePostAPI, SavePostAPI } from '../../utility/ApiSet';
+import { EditorSpan, JSONToEditState } from '../TextInput';
 
 
 export class ShotModalView extends Component {
@@ -306,7 +307,7 @@ export class ShotModalView extends Component {
                         <section className={this.state.showSideView?"modal-about-img hide": "modal-about-img"} id="modal-about-img">
                             <span className="m-display-name">{this.state.shot.portfolio_name}</span>
                             <p className="m-img-content">
-                                {this.state.shot.description}
+                                {EditorSpan(JSONToEditState(JSON.parse(this.state.shot.description)))}
                             </p>
                         </section>
                         {/* Modal likes, comments */}
@@ -318,7 +319,9 @@ export class ShotModalView extends Component {
                                     isLiked={this.state.shot.is_liked}
                                     isSaved={this.state.shot.is_saved}
                                     savePost={this.savePost}
-                                    responsecounts={this.state.shot.interactions} />
+                                    responsecounts={this.state.shot.interactions}
+                                    hideCommentBtn={true}
+                                />
 
                             </div>
                             <div className="m-comments">

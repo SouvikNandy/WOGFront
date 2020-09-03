@@ -360,6 +360,11 @@
     margin-right: 0.5rem;
 }
 
+.m-img-content .editor{
+    border-bottom: none;
+    padding: 0
+}
+
 /* Modal -reviews */
 
 .modal-reviews {
@@ -472,19 +477,38 @@
     align-items: center;
 }
 
-.m-comment-form .m-add-cmnt {
+.m-comment-form .editor {
     flex: 2;
     height: 80%;
     background: var(--dark);
-    color: white;
+    color: white !important;
     border: none;
     outline: none;
     font-size: 0.8rem;
     padding: 0.5rem;
 
     overflow: hidden;
-    resize: none
+    resize: none;
+    border-bottom: none;
+    position: relative;
 }
+
+.m-comment-form .editor a span{
+    color: var(--light) !important;
+}
+
+.m-comment-form .editor a:link, 
+.m-comment-form .editor a:hover,
+.m-comment-form .editor a:active{
+    color: var(--light) !important;
+}
+
+.m-comment-form .mentionSuggestionsEntryContainer{
+    background: red !important;
+    position: absolute;
+    bottom: -50vh;
+}
+
 
 .m-comment-form .m-cmnt-submit {
     background: transparent;

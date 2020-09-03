@@ -8,16 +8,15 @@
     padding: 0.5rem 0;
   }
   
-  .editor :global(.public-DraftEditor-content) {
-    /* min-height: 140px; */
-  }
-  
+  /* .editor :global(.public-DraftEditor-content) {
+    min-height: 140px;
+  } */
+
+  .editor a,
   .editor a:link, 
-  .editor a:link,
   .editor a:hover,
   .editor a:active {
-    color: var(--dark);
-    /* background: var(--border-grey); */
+    color: var(--hover-two);
     font-weight: bold;
   }
   

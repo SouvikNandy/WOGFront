@@ -101,8 +101,8 @@ export class AddDocumentForm extends Component {
         if (this.state.portfolioName && this.state.portfolioName!==this.props.portfolio_name){
             requestBody["portfolio_name"] = this.state.portfolioName
         }
-        if (this.state.description && this.state.description!==this.props.description){
-            requestBody["description"] = this.state.description
+        if (this.state.description){
+            requestBody["description"] = JSON.stringify(ExtractToJSON(this.state.description))
         }
         let location = document.getElementById("location").value
         if(location && location!=="" && location!==this.props.location){
@@ -114,8 +114,6 @@ export class AddDocumentForm extends Component {
 
     onSubmit =(e) =>{
         e.preventDefault();
-        let extracted_description = ExtractToJSON(this.state.description)
-        console.log("descriiption", extracted_description)
         let _validated = this.validateForm()
         if (!_validated){
             return false
@@ -124,7 +122,7 @@ export class AddDocumentForm extends Component {
         let formData = new FormData();
         this.state.FileList.map(ele=>  formData.append("attachments", ele))
        
-        formData.append("portfolio_name", JSON.stringify(ExtractToJSON(this.state.portfolioName)))
+        formData.append("portfolio_name", this.state.portfolioName)
         formData.append("description", JSON.stringify(ExtractToJSON(this.state.description)))
         formData.append("location", document.getElementById("location").value)
 
@@ -315,9 +313,7 @@ export class AddDocumentForm extends Component {
                             <div className="pf-loc">
                                 <span className="pf-div">
                                     <label>Portfolio Name <span className="imp-field">*</span> </label>
-                                    {/* <input type="text" id="portfolioName" name="portfolioName" defaultValue={this.props.portfolio_name} onChange={this.onChange} required /> */}
-                                    <TextInput  id="portfolioName" onChange={this.onChangeDescription.bind(this, 'portfolioName')}/>
-                                    
+                                    <input type="text" id="portfolioName" name="portfolioName" defaultValue={this.props.portfolio_name} onChange={this.onChange} required />                                    
                                 </span>
                                 <span className="loc-div">
                                     <label>Add Location <span className="imp-field"></span></label>
@@ -335,10 +331,7 @@ export class AddDocumentForm extends Component {
                             </div>
                             
                             <label>Description</label>
-                            <TextInput  id="description" onChange={this.onChangeDescription.bind(this, 'description')}/>
-                            {/* <textarea type="text" id="description" name="description" onChange={this.onChange}
-                            defaultValue={this.props.description}
-                             /> */}
+                            <TextInput  id="description" onChange={this.onChangeDescription.bind(this, 'description')} editorState={this.props.description}/>
                             <label>Members / Contributes</label>
                             {this.state.taggedMembers.length > 0 ?
                                 <div className="member-list">

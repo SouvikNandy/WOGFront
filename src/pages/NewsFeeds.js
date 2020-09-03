@@ -24,8 +24,7 @@ import AddPost from '../components/Post/AddPost';
 import { createFloatingNotification } from '../components/FloatingNotifications';
 import { UserFeedsAPI, SavePostAPI, LikePostAPI } from '../utility/ApiSet';
 import Paginator from '../utility/Paginator';
-import { JSONToEditState } from '../components/TextInput';
-import { Editor } from 'draft-js';
+import { JSONToEditState, EditorSpan } from '../components/TextInput';
 
 export class NewsFeeds extends Component {
     render() {
@@ -250,7 +249,6 @@ export class NewFeedPalette extends Component{
             let result = data.results
             console.log("received",result)
             result.map(ele=> {
-                ele["portfolio_name"] = JSONToEditState(JSON.parse(ele.portfolio_name))
                 if(ele.description){
                     console.log(ele.description)
                     ele["description"] = JSONToEditState(JSON.parse(ele.description))
@@ -422,11 +420,11 @@ export class NewsFeedPost extends Component{
                         feedCommentBox={this.feedCommentBox.bind(this, "npf-"+ pf.id )}
                         responsecounts={pf.interactions} />
                 </div>
-                <div className="nfp-details" onClick={this.feedCommentBox.bind(this, "npf-"+ pf.id )}>
-                    <div className="m-display-name"><Editor editorState={pf.portfolio_name} readOnly /></div>
-                    <div className="m-dt">{msToDateTime(pf.created_at)}</div>
-                    <div className="m-description"><Editor editorState={pf.description} readOnly /> </div>
-                    <div className="cmnt-count">
+                <div className="nfp-details">
+                    <div className="m-display-name" onClick={this.feedCommentBox.bind(this, "npf-"+ pf.id )}>{pf.portfolio_name}</div>
+                    <div className="m-dt" onClick={this.feedCommentBox.bind(this, "npf-"+ pf.id )}>{msToDateTime(pf.created_at)}</div>
+                    <div className="m-description">{EditorSpan(pf.description)}</div>
+                    <div className="cmnt-count" onClick={this.feedCommentBox.bind(this, "npf-"+ pf.id )}>
                         {pf.interactions.comments>0? <span>view all {pf.interactions.comments} comments</span>: <span>Be the first to comment</span> }
                     
                     </div>

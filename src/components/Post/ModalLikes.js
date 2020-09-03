@@ -1,5 +1,6 @@
 import React from 'react';
 import '../../assets/css/shotmodalview.css';
+import {ControlledEventFire} from '../../utility/Utility'
 
 import { FaHeart, FaRegEye, FaRegHeart, FaRegComment, FaRegPaperPlane, FaBookmark, FaRegBookmark } from "react-icons/fa";
 
@@ -14,8 +15,13 @@ const ModalLikes = (props) => {
                     <FaRegHeart className="icons" onClick={props.doLike} />
                     }
                 </button>
+                {props.hideCommentBtn?
+                ""
+                :
                 <button className="btn-anc" onClick={props.feedCommentBox? props.feedCommentBox: feedCommentBox}>
                     <FaRegComment className="icons" /></button>
+                }
+                
                 <button className="btn-anc"><FaRegPaperPlane className="icons" /></button>
                 <button className="btn-anc">
                 {props.isSaved ?
@@ -34,7 +40,8 @@ const ModalLikes = (props) => {
 }
 
 const feedCommentBox = () => {
-    document.getElementById("m-add-cmnt").select();
+    // document.getElementById("m-add-cmnt").focus();
+    ControlledEventFire(document.getElementById("m-add-cmnt"), 'click')
 }
 
 export default ModalLikes;

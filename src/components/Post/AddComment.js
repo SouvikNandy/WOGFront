@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../../assets/css/shotmodalview.css';
+import TextInput from '../TextInput';
 
 export default class AddComment extends Component {
     state = {
@@ -16,16 +17,15 @@ export default class AddComment extends Component {
         document.getElementById("m-comment-form").reset();
     }
 
-    onChange = (e) => this.setState({
-        [e.target.name]: e.target.value
+    onChange = (key, val) => this.setState({
+        [key] : val
+    })
 
-    });
     render() {
         return (
             <React.Fragment>
                 <form className="m-comment-form" id="m-comment-form" onSubmit={this.onSubmit}>
-                    <textarea className="m-add-cmnt" name="comment" id="m-add-cmnt"
-                        placeholder="Add a comment" onChange={this.onChange} required ></textarea>
+                    <TextInput  id="m-add-cmnt" onChange={this.onChange.bind(this, 'comment')} placeholder="Add a comment" />
                     <input type="hidden" name="parent" id="setparent"></input>
                     <input type="submit" className="m-cmnt-submit" value="Post" />
                 </form>

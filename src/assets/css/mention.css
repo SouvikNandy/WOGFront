@@ -1,10 +1,10 @@
 @import url('config.css');
 
+
 .mention {
   color: #4a85bb;
   text-decoration: none;
 }
-
 
 .mentionSuggestions {
     background: var(--light);
@@ -12,13 +12,12 @@
     padding: 0.5rem 0.8rem;
     display: flex;
     flex-direction: column;
+    width: 20vw;
     position: absolute;
     top: 20vh;
-    width: 20vw;
     overflow-y: scroll;
     box-shadow: var(--shadow);
     z-index: 2;
-    
   }
   
   .mentionSuggestionsEntryContainer {
@@ -81,11 +80,4 @@
     align-items: center;
     flex-direction: row;
     padding: 0.5rem 0;
-  }
-
-
-  @media(max-width: 900px){
-    .mentionSuggestions{
-      width: auto;
-    }
   }

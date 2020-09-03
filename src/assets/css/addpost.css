@@ -148,6 +148,12 @@
 
 }
 
+.doc-body .editor{
+    width: 100%;
+    border-bottom: 1px solid var(--dark);
+    max-height: 12vh;
+    overflow-y: scroll;
+}
 
 .select-doc {
     width: 100%;
