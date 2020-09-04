@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import '../../assets/css/shotmodalview.css';
 import { FaHeart } from "react-icons/fa";
 import ModalReplies from "./ModalReplies";
+import { Editor } from 'draft-js';
+import { EditorSpan } from '../TextInput';
 
 export class CommentCubes extends Component {
     state = {
@@ -30,7 +32,7 @@ export class CommentCubes extends Component {
 
     feedCommentBox = () => {
         document.getElementById("setparent").value = this.getParent();
-        document.getElementById("m-add-cmnt").select();
+        // document.getElementById("m-add-cmnt").select();
         // document.getElementById("m-add-cmnt").value = this.getParent();
 
     }
@@ -86,7 +88,7 @@ export class CommentCubes extends Component {
                         <div className="m-cmnt-content">
                             <div className="m-cmt-description">
                                 <span className="m-display-name">{cmnt.name}</span>
-                                <span className="m-cmt-adj">{cmnt.comment}</span>
+                                <span className="m-cmt-adj">{EditorSpan(cmnt.comment)}</span>
                             </div>
                             <span className="m-cmt-reaction">
                                 {cmnt.is_liked ?

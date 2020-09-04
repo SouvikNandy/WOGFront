@@ -249,7 +249,6 @@ export class NewFeedPalette extends Component{
             let result = data.results
             result.map(ele=> {
                 if(ele.description){
-                    console.log(ele.description)
                     ele["description"] = JSONToEditState(JSON.parse(ele.description))
                 }
                 return ele

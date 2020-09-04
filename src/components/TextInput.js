@@ -35,90 +35,99 @@ class TextInput extends React.Component {
     super(props);
     
 	this.mentionPlugin = mentionPlugin;
-	this.hashtagPlugin = hashtagPlugin;
+    this.hashtagPlugin = hashtagPlugin;
+    this.setDomEditorRef = ref => this.domEditor = ref;
+    this.focus = () => this.domEditor.focus();
   }
 
-  state = {
-	editorState: null,
-	mSuggestions: mentions,
-	hSuggestions: mentions,
-  };
+    state = {
+        editorState: null,
+        mSuggestions: mentions,
+        hSuggestions: mentions,
+    };
 
-  componentDidMount(){
-      if(this.props.editorState){
-          this.setState({editorState: JSONToEditState(JSON.parse(this.props.editorState))})
-      }
-      else{
-        this.setState({editorState:EditorState.createEmpty()})
-      }
-      if (this.props.commentBox){
-          let positionSuggestions = (settings) => {
-            return {
-              left: window.innerWidth >1100? '58vw': 0,
-              right: window.innerWidth >1100? '10vw': 0,
-              top: settings.decoratorRect.top - 20 + 'px',
-              display: 'block',
-              transform: 'scale(1) translateY(-100%)',
-              transformOrigin: '1em 0% 0px',
-              transition: 'all 0.25s cubic-bezier(0.3, 1.2, 0.2, 1)',
-              position: 'fixed',
-              color: 'black',
-              'width': window.innerWidth >1100?'28.5vw': '100%',
-              'max-height': '70vh',
-              'overflow-y': 'scroll'
+    componentDidMount(){
+        if(this.props.editorState){
+            this.setState({editorState: JSONToEditState(JSON.parse(this.props.editorState))})
+        }
+        else{
+            this.setState({editorState:EditorState.createEmpty()})
+        }
+        if (this.props.commentBox){
+            let positionSuggestions = (settings) => {
+                return {
+                left: window.innerWidth >1100? '58vw': 0,
+                right: window.innerWidth >1100? '10vw': 0,
+                top: settings.decoratorRect.top - 20 + 'px',
+                display: 'block',
+                transform: 'scale(1) translateY(-100%)',
+                transformOrigin: '1em 0% 0px',
+                transition: 'all 0.25s cubic-bezier(0.3, 1.2, 0.2, 1)',
+                position: 'fixed',
+                color: 'black',
+                'width': window.innerWidth >1100?'28.5vw': '100%',
+                'max-height': '70vh',
+                'overflow-y': 'scroll'
 
+                }
             }
-          }
-          this.mentionPlugin = createMentionPlugin({mentionPrefix: "@", theme: mentionStyles, positionSuggestions});
-          this.hashtagPlugin = createMentionPlugin({mentionPrefix: "#", mentionTrigger:'#', theme: mentionStyles, positionSuggestions});          
+            this.mentionPlugin = createMentionPlugin({mentionPrefix: "@", theme: mentionStyles, positionSuggestions});
+            this.hashtagPlugin = createMentionPlugin({mentionPrefix: "#", mentionTrigger:'#', theme: mentionStyles, positionSuggestions}); 
+            console.log("comment box should focus")
+            setTimeout(() => {
+                this.focus();
+            }, 1000);
+                 
+        }
     }
-  }
 
-  onChange = editorState => {
-    this.setState({ editorState });
-    if(this.props.onChange){
-      this.props.onChange(editorState)
+    onChange = editorState => {
+        this.setState({ editorState });
+        if(this.props.onChange){
+        this.props.onChange(editorState)
+        }
+    };
+
+    onSearchChange = ({ value }) => {
+        this.setState({
+        mSuggestions: defaultSuggestionsFilter(value, mentions)
+        });
+    };
+
+    onhashSearchChange = ({ value }) => {
+        this.setState({
+        hSuggestions: defaultSuggestionsFilter(value, mentions)
+        });
+    };
+
+    onExtractData = () => {
+        const contentState = this.state.editorState.getCurrentContent();
+        const raw = convertToRaw(contentState);
+        console.log(raw);
+    };
+
+    onExtractMentions = () => {
+        const contentState = this.state.editorState.getCurrentContent();
+        const raw = convertToRaw(contentState);
+        let mentionedUsers = [];
+        for (let key in raw.entityMap) {
+        const ent = raw.entityMap[key];
+        if (ent.type === "mention") {
+            mentionedUsers.push(ent.data.mention);
+        }
+        }
+        console.log(mentionedUsers);
+  };
+
+    getAreaId = () =>{
+	    return this.props.id? this.props.id: 'editor-default'
     }
-  };
-
-  onSearchChange = ({ value }) => {
-    this.setState({
-      mSuggestions: defaultSuggestionsFilter(value, mentions)
-    });
-  };
-
-  onhashSearchChange = ({ value }) => {
-    this.setState({
-      hSuggestions: defaultSuggestionsFilter(value, mentions)
-    });
-  };
-
-  onExtractData = () => {
-    const contentState = this.state.editorState.getCurrentContent();
-    const raw = convertToRaw(contentState);
-    console.log(raw);
-  };
-
-  onExtractMentions = () => {
-	const contentState = this.state.editorState.getCurrentContent();
-	const raw = convertToRaw(contentState);
-	let mentionedUsers = [];
-	for (let key in raw.entityMap) {
-	  const ent = raw.entityMap[key];
-	  if (ent.type === "mention") {
-		mentionedUsers.push(ent.data.mention);
-	  }
-	}
-	console.log(mentionedUsers);
-  };
-
-  getAreaId = () =>{
-	return this.props.id? this.props.id: 'editor-default'
-}
+ 
 
   render() {
     if(!this.state.editorState){ return (<React.Fragment></React.Fragment>)}
-	const plugins = [this.mentionPlugin, this.hashtagPlugin];
+    const plugins = [this.mentionPlugin, this.hashtagPlugin];
+
 	return (
 	  <React.Fragment>
 		<div className="editor" id={this.getAreaId()}>
@@ -126,7 +135,8 @@ class TextInput extends React.Component {
 			editorState={this.state.editorState}
 			onChange={this.onChange}
 			plugins={plugins}
-			placeholder={this.props.placeholder? this.props.placeholder: ""}
+            placeholder={this.props.placeholder? this.props.placeholder: ""}
+            ref={this.setDomEditorRef}
 		  />
 		  <this.mentionPlugin.MentionSuggestions
 			onSearchChange={this.onSearchChange}
