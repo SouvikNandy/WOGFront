@@ -10,28 +10,24 @@ import "draft-js-mention-plugin/lib/plugin.css";
 import mentionStyles from '../assets/css/mention.module.css';
 import MultiDecorator from "draft-js-plugins-editor/lib/Editor/MultiDecorator";
 
-
-
 let positionSuggestionsDef = (settings) => {
-    console.log(settings.decoratorRect)
     return {
-      left: window.innerWidth >1100? '58vw': 0,
-      right: window.innerWidth >1100? '10vw': 0,
-      top: settings.decoratorRect.top - 20 + 'px',
+      left: window.innerWidth >1100? settings.decoratorRect.left: 0,
+      right: window.innerWidth >1100? settings.decoratorRect.right: 0,
+      top: settings.decoratorRect.top + 25 + 'px',
       display: 'block',
-      transform: 'scale(1) translateY(-100%)',
+      position: 'fixed',
       transformOrigin: '1em 0% 0px',
       transition: 'all 0.25s cubic-bezier(0.3, 1.2, 0.2, 1)',
-      position: 'fixed',
       color: 'black',
-      'width': window.innerWidth >1100?'28.5vw': '100%',
-      'max-height': '70vh',
+      'width': window.innerWidth >1100?'20vw': '100%',
+      'max-height': '40vh',
       'overflow-y': 'scroll'
 
     }
-}
+  }
 
-const mentionPlugin = createMentionPlugin({mentionPrefix: "@", theme: mentionStyles, positionSuggestionsDef});
+const mentionPlugin = createMentionPlugin({mentionPrefix: "@", theme: mentionStyles, positionSuggestions: positionSuggestionsDef});
 const hashtagPlugin = createMentionPlugin({mentionPrefix: "#", mentionTrigger:'#', theme: mentionStyles});
 
 class TextInput extends React.Component {
@@ -75,7 +71,7 @@ class TextInput extends React.Component {
           }
           this.mentionPlugin = createMentionPlugin({mentionPrefix: "@", theme: mentionStyles, positionSuggestions});
           this.hashtagPlugin = createMentionPlugin({mentionPrefix: "#", mentionTrigger:'#', theme: mentionStyles, positionSuggestions});          
-      }
+    }
   }
 
   onChange = editorState => {
