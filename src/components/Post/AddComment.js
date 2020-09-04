@@ -25,7 +25,8 @@ export default class AddComment extends Component {
         return (
             <React.Fragment>
                 <form className="m-comment-form" id="m-comment-form" onSubmit={this.onSubmit}>
-                    <TextInput  id="m-add-cmnt" onChange={this.onChange.bind(this, 'comment')} placeholder="Add a comment" />
+                    <TextInput  id="m-add-cmnt" onChange={this.onChange.bind(this, 'comment')} placeholder="Add a comment" 
+                    commentBox={true} />
                     <input type="hidden" name="parent" id="setparent"></input>
                     <input type="submit" className="m-cmnt-submit" value="Post" />
                 </form>

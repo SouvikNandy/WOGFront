@@ -10,11 +10,28 @@ import "draft-js-mention-plugin/lib/plugin.css";
 import mentionStyles from '../assets/css/mention.module.css';
 import MultiDecorator from "draft-js-plugins-editor/lib/Editor/MultiDecorator";
 
-let positionSuggestionsThe  ={
-	"bottom": "-50vh", "position": "absolute"
+
+
+let positionSuggestionsDef = (settings) => {
+    console.log(settings.decoratorRect)
+    return {
+      left: window.innerWidth >1100? '58vw': 0,
+      right: window.innerWidth >1100? '10vw': 0,
+      top: settings.decoratorRect.top - 20 + 'px',
+      display: 'block',
+      transform: 'scale(1) translateY(-100%)',
+      transformOrigin: '1em 0% 0px',
+      transition: 'all 0.25s cubic-bezier(0.3, 1.2, 0.2, 1)',
+      position: 'fixed',
+      color: 'black',
+      'width': window.innerWidth >1100?'28.5vw': '100%',
+      'max-height': '70vh',
+      'overflow-y': 'scroll'
+
+    }
 }
 
-const mentionPlugin = createMentionPlugin({mentionPrefix: "@", theme: mentionStyles, positionSuggestionsThe});
+const mentionPlugin = createMentionPlugin({mentionPrefix: "@", theme: mentionStyles, positionSuggestionsDef});
 const hashtagPlugin = createMentionPlugin({mentionPrefix: "#", mentionTrigger:'#', theme: mentionStyles});
 
 class TextInput extends React.Component {
@@ -38,31 +55,52 @@ class TextInput extends React.Component {
       else{
         this.setState({editorState:EditorState.createEmpty()})
       }
+      if (this.props.commentBox){
+          let positionSuggestions = (settings) => {
+            return {
+              left: window.innerWidth >1100? '58vw': 0,
+              right: window.innerWidth >1100? '10vw': 0,
+              top: settings.decoratorRect.top - 20 + 'px',
+              display: 'block',
+              transform: 'scale(1) translateY(-100%)',
+              transformOrigin: '1em 0% 0px',
+              transition: 'all 0.25s cubic-bezier(0.3, 1.2, 0.2, 1)',
+              position: 'fixed',
+              color: 'black',
+              'width': window.innerWidth >1100?'28.5vw': '100%',
+              'max-height': '70vh',
+              'overflow-y': 'scroll'
+
+            }
+          }
+          this.mentionPlugin = createMentionPlugin({mentionPrefix: "@", theme: mentionStyles, positionSuggestions});
+          this.hashtagPlugin = createMentionPlugin({mentionPrefix: "#", mentionTrigger:'#', theme: mentionStyles, positionSuggestions});          
+      }
   }
 
   onChange = editorState => {
-	this.setState({ editorState });
-	if(this.props.onChange){
-		this.props.onChange(editorState)
-	}
+    this.setState({ editorState });
+    if(this.props.onChange){
+      this.props.onChange(editorState)
+    }
   };
 
   onSearchChange = ({ value }) => {
-	this.setState({
-		mSuggestions: defaultSuggestionsFilter(value, mentions)
-	});
+    this.setState({
+      mSuggestions: defaultSuggestionsFilter(value, mentions)
+    });
   };
 
   onhashSearchChange = ({ value }) => {
-	this.setState({
-		hSuggestions: defaultSuggestionsFilter(value, mentions)
-	});
+    this.setState({
+      hSuggestions: defaultSuggestionsFilter(value, mentions)
+    });
   };
 
   onExtractData = () => {
-	const contentState = this.state.editorState.getCurrentContent();
-	const raw = convertToRaw(contentState);
-	console.log(raw);
+    const contentState = this.state.editorState.getCurrentContent();
+    const raw = convertToRaw(contentState);
+    console.log(raw);
   };
 
   onExtractMentions = () => {
@@ -120,7 +158,6 @@ const MentionEntryTemplate = (props) => {
 	  isFocused, // eslint-disable-line no-unused-vars
 	  ...parentProps
 	} = props;
-	console.log("MentionEntryTemplate", props)
 	return (
 	  <div {...parentProps}>
 		<div className={theme.mentionSuggestionsEntryContainer}>

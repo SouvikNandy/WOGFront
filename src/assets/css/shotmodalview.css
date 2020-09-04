@@ -362,7 +362,11 @@
 
 .m-img-content .editor{
     border-bottom: none;
-    padding: 0
+    padding: 0;
+    
+}
+.m-img-content .editor .DraftEditor-root{
+    z-index: 0
 }
 
 /* Modal -reviews */

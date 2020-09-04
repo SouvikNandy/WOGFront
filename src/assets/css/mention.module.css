@@ -3,6 +3,7 @@
 .mention {
   color: #4a85bb;
   text-decoration: none;
+  z-index: 2;
 }
 
 

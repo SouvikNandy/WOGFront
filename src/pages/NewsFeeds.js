@@ -247,7 +247,6 @@ export class NewFeedPalette extends Component{
     updateStateOnAPIcall = (key, data)=>{
         if('count' in data && 'next' in data && 'previous' in data){
             let result = data.results
-            console.log("received",result)
             result.map(ele=> {
                 if(ele.description){
                     console.log(ele.description)
@@ -256,7 +255,6 @@ export class NewFeedPalette extends Component{
                 return ele
             })
             // paginated response
-            console.log("after conversion",result)
             this.setState({
                 [key]: result,
                 paginator: data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null
@@ -400,7 +398,6 @@ export class NewsFeedPost extends Component{
     render(){
         let pf = this.props.data;
         let tagText = pf.location
-        console.log(pf.portfolio_name);
         return(
             <div  className="nf-post-conatiner">
                 <div className="nfp-user-preview">
