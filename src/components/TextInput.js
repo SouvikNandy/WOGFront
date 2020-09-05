@@ -9,6 +9,8 @@ import mentions from "./mentions";
 import "draft-js-mention-plugin/lib/plugin.css";
 import mentionStyles from '../assets/css/mention.module.css';
 import MultiDecorator from "draft-js-plugins-editor/lib/Editor/MultiDecorator";
+import {isAuthenticated} from '../utility/Utility';
+import { Redirect } from "react-router-dom";
 
 let positionSuggestionsDef = (settings) => {
     return {
@@ -34,7 +36,7 @@ class TextInput extends React.Component {
   constructor(props) {
     super(props);
     
-	this.mentionPlugin = mentionPlugin;
+	  this.mentionPlugin = mentionPlugin;
     this.hashtagPlugin = hashtagPlugin;
     this.setDomEditorRef = ref => this.domEditor = ref;
     this.focus = () => this.domEditor.focus();
@@ -44,6 +46,7 @@ class TextInput extends React.Component {
         editorState: null,
         mSuggestions: mentions,
         hSuggestions: mentions,
+        loggedIn: null
     };
 
     componentDidMount(){
@@ -84,7 +87,7 @@ class TextInput extends React.Component {
     onChange = editorState => {
         this.setState({ editorState });
         if(this.props.onChange){
-        this.props.onChange(editorState)
+          this.props.onChange(editorState)
         }
     };
 
@@ -122,33 +125,57 @@ class TextInput extends React.Component {
     getAreaId = () =>{
 	    return this.props.id? this.props.id: 'editor-default'
     }
+
+    onSubmit = (e) => {
+      e.preventDefault();
+      let _authenticated = isAuthenticated()
+      if (!_authenticated){
+        this.setState({ editorState: EditorState.createEmpty(), loggedIn: false});
+        return false
+      }
+      let cmntJson = ExtractToJSON(this.state.editorState)
+      // console.log(cmntJson.blocks[0].text, !cmntJson.blocks[0].text)
+      if (!cmntJson.blocks[0].text){
+          return false
+      }
+      // console.log(cmntJson)
+      this.props.onSubmit(this.state.editorState);
+      this.setState({ editorState: EditorState.createEmpty()});
+
+  }
  
 
   render() {
     if(!this.state.editorState){ return (<React.Fragment></React.Fragment>)}
+    if(this.state.loggedIn === false){return(<Redirect to={{ pathname: "/signin/" }}/>)}
     const plugins = [this.mentionPlugin, this.hashtagPlugin];
 
 	return (
 	  <React.Fragment>
-		<div className="editor" id={this.getAreaId()}>
-		  <Editor
-			editorState={this.state.editorState}
-			onChange={this.onChange}
-			plugins={plugins}
-            placeholder={this.props.placeholder? this.props.placeholder: ""}
-            ref={this.setDomEditorRef}
-		  />
-		  <this.mentionPlugin.MentionSuggestions
-			onSearchChange={this.onSearchChange}
-			suggestions={this.state.mSuggestions}
-			entryComponent={MentionEntryTemplate}
-		  />
-		  <this.hashtagPlugin.MentionSuggestions
-			onSearchChange={this.onhashSearchChange}
-			suggestions={this.state.hSuggestions}
-			entryComponent={TagEntryTemplate}
-		  />
-		</div>
+        <div className="editor" id={this.getAreaId()}>
+          <Editor
+          editorState={this.state.editorState}
+          onChange={this.onChange}
+          plugins={plugins}
+                placeholder={this.props.placeholder? this.props.placeholder: ""}
+                ref={this.setDomEditorRef}
+          />
+          <this.mentionPlugin.MentionSuggestions
+          onSearchChange={this.onSearchChange}
+          suggestions={this.state.mSuggestions}
+          entryComponent={MentionEntryTemplate}
+          />
+          <this.hashtagPlugin.MentionSuggestions
+          onSearchChange={this.onhashSearchChange}
+          suggestions={this.state.hSuggestions}
+          entryComponent={TagEntryTemplate}
+          />
+        </div>
+        {this.props.onSubmit?
+          <button className="m-cmnt-submit"  onClick={this.onSubmit} >Post</button>
+        :
+          ""
+        }
 	  </React.Fragment>
 	);
   }

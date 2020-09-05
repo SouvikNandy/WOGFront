@@ -17,7 +17,7 @@ export const storeAuthToken = (token) => {
     // console.log("inmemory token stored", inMemoryToken);
 }
 
-export const isAuthenticaed = () => {
+export const isAuthenticated = () => {
     let inMemoryToken = retrieveFromStorage("tx");
     if (inMemoryToken){
         inMemoryToken = JSON.parse(inMemoryToken);

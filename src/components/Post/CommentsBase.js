@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../../assets/css/shotmodalview.css';
-import {generateId} from '../../utility/Utility.js';
+import {generateId, getCurrentTimeInMS} from '../../utility/Utility.js';
 
 // Images for shot
 import w1 from "../../assets/images/wedding1.jpg";
@@ -40,13 +40,12 @@ class CommentsBase extends Component {
     }
 
     constructComment = (comment, parent) => {
-        var currts = generateId();
-        parent = parent ? parseInt(parent) : null;
+        parent = parent ? parent : null;
         var new_comment = {
-            "id": currts,
+            "id": generateId(),
             "name": "user3",
             "profileimg": w1,
-            "created_at": currts,
+            "created_at": getCurrentTimeInMS(),
             "comment": comment,
             "is_liked": false,
             "likes": 0,
@@ -61,7 +60,7 @@ class CommentsBase extends Component {
         let newcomment = this.constructComment(comment, parent);
         // console.log("new comment base ", newcomment);
         if (newcomment.parent !== null) {
-            // console.log("inside parent !=null ", this);
+            // console.log("inside parent !=null ", newcomment.parent, this.state.data);
             this.setState({
                 data: this.state.data.map(item => {
                     if (item.id === newcomment.parent) {

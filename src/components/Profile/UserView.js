@@ -19,7 +19,7 @@ export function UserFlat(props){
                     }
                 </Link>
                 <Link className="link m-display-name" to={{pathname: `/profile/${ele.username}`}}>
-                    {ele.name} @{ele.username}<br />
+                    {ele.name} <span className="u-name">@{ele.username}</span><br />
                     <span className="m-adj">{props.tagText?props.tagText:ele.profession}</span>
                 </Link>
             </div>
