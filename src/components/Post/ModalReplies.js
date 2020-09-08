@@ -3,48 +3,94 @@ import CommentsBase from './CommentsBase';
 import CommentCubes from './CommentCubes';
 import AddComment from './AddComment';
 import { FaAngleLeft } from "react-icons/fa";
-import { animateScroll } from "react-scroll";
+import { GetRepliesAPI } from '../../utility/ApiSet';
+import Paginator from '../../utility/Paginator';
+import {JSONToEditState} from '../TextInput';
 
 export class ModalReplies extends CommentsBase {
 
     state = {
         data: [],
-        // count: 0
+        replyToUser: null,
+        paginator: null,
+        isFetching: false
     }
+
     componentDidMount() {
-        this.addReplyFromStack();
+        console.log("componentDidMount", this.props)
+        if(this.props.reply_stack.length> 0){
+            this.setState({ 
+                data: this.props.reply_stack,
+                paginator: this.props.paginator
+            })
+        }
+        else{
+            GetRepliesAPI(this.props.post_id, this.props.parentComment.id, this.updateStateOnAPIcall)
+        }
 
     }
 
-    addReplyFromStack = () => {
-        this.setState({ data: [...this.state.data, ...this.props.reply_stack] })
-        // this.setState({ count: this.setState.count + 1 })
+    updateStateOnAPIcall = (data)=>{
+        let result = data.results
+        result.map(ele=> {
+            if(ele.comment){
+                ele["comment"] = JSONToEditState(JSON.parse(ele.comment))
+            }
+            return ele
+        })
+        // paginated response
+        this.setState({
+            data: result,
+            paginator: data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null,
+            count: data.count
+        })
 
     }
-
-    componentDidUpdate(){
-        this.scrollToBottom();
+    
+    updateStateReplyUser =(editorState) =>{
+        this.setState({replyToUser: editorState})
     }
 
-    scrollToBottom() {
-        animateScroll.scrollToBottom({
-          containerId: "m-reply-content",
-          delay: 1,
-          duration:2,
-        });
-    }
-
-    addComment = (comment, parent) => {
-        var new_comment = this.constructComment(comment, parent);
+    addComment = (comment) => {
+        var new_comment = this.constructComment(comment, this.props.parentComment.id);
         var updatedDataLen = this.state.data.length + 1;
-        this.setState({ data: [...this.state.data, new_comment] });
+        // will be rendered in reverse order
+        this.setState({ data: [new_comment, ...this.state.data] }, ()=>{
+                this.scrollToBottom("m-reply-content");
+        });
         this.props.updateRepliesCount(updatedDataLen);
+        
 
+    }
+
+    viewPreviousComments = () => {
+        if(this.state.isFetching) return;
+        if(this.state.paginator){
+            let res = this.state.paginator.getNextPage(this.updateStateOnPagination)
+            if (res !== false){
+                this.setState({isFetching: true})
+            }  
+        }
+        
+    }
+
+    updateStateOnPagination = (results) =>{
+        let result = results
+        result.map(ele=> {
+            if(ele.comment){
+                ele["comment"] = JSONToEditState(JSON.parse(ele.comment))
+            }
+            return ele
+        })
+        this.setState({
+            data:[ ...this.state.data, ...result],
+            isFetching: false
+        })
     }
 
     componentWillUnmount() {
         // store replies on comment model at unmount
-        this.props.parentModal.addOnlyReplies(this.props.parentComment.id, this.state.data);
+        this.props.parentModal.addOnlyReplies(this.props.parentComment.id, this.state.data, this.state.paginator);
     }
 
     render() {
@@ -52,13 +98,16 @@ export class ModalReplies extends CommentsBase {
             key={this.props.parentComment.id} isReply={false}
             comment={this.props.parentComment}
             doLike={this.props.parentModal.doLike} doUnLike={this.props.parentModal.doUnLike}
-            parentModal={null} />
+            parentModal={null} displaySideView={this.props.displaySideView}/>
 
         let allreplies = '';
-        allreplies = this.state.data.map((item) => (
+        allreplies = this.state.data.sort(this.sortByCreationTime).map((item) => (
             <CommentCubes key={item.id} isReply={true} comment={item}
                 doLike={this.doLike} doUnLike={this.doUnLike}
-                parent_id={this.props.parentComment.id} showIfReplies={true} />
+                parent_id={this.props.parentComment.id} showIfReplies={true} 
+                updateStateReplyUser={this.updateStateReplyUser}
+                displaySideView={this.props.displaySideView}
+                />
         ))
         let replyContainerClassName = "";
         if (this.props.parentModal.state.showAll) {
@@ -72,17 +121,24 @@ export class ModalReplies extends CommentsBase {
                 <div className="m-reply-div">
                     <div className={replyContainerClassName} id="m-reply-content">
                         <div className="m-comment-head">
-                            <div className="m-hide-reply-btn">
-                                
+                            <div className="m-hide-reply-btn">    
                                 <button className="btn-anc" onClick={this.props.showReplyList.bind(this)}>
                                     <FaAngleLeft className="icons-active" /></button>
                             </div>
                             <div className="m-show-parent-cmnt">{parrentCmnt}</div>
                         </div>
+                        {this.state.paginator && this.state.paginator.next?
+                            <div className="prev-content">
+                                <span className="prev-link" onClick={this.viewPreviousComments}>View Previous Comments</span>
+                            </div>
+                            :
+                            ""
+                        }
                         <div className="m-reply-list">{allreplies}</div>
                     </div>
                     <div className="m-post-comment z-5" id="replyCommentBox">
-                        <AddComment addComment={this.addComment} />
+                        <AddComment addComment={this.addComment} 
+                        replyTo={this.state.replyToUser? this.state.replyToUser: this.props.replyTo} />
                     </div>
 
                 </div>

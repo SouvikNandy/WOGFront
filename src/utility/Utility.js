@@ -147,6 +147,42 @@ export const dateObjToReadable = (dt) =>{
     return dt.getDate() + ' ' + months[dt.getMonth()] + ' '+ dt.getFullYear()
 }
 
+export const timeDifference = (previous) =>{
+    let current = getCurrentTimeInMS()
+    let msPerMinute = 60 ;
+    let msPerHour = msPerMinute * 60;
+    let msPerDay = msPerHour * 24;
+    let msPerMonth = msPerDay * 30;
+    let msPerYear = msPerDay * 365;
+
+    var elapsed = current - previous;
+
+    if (elapsed < msPerMinute) {
+         return Math.floor(elapsed/1000) + ' sec ago';   
+    }
+
+    else if (elapsed < msPerHour) {
+         return Math.floor(elapsed/msPerMinute) + ' min ago';   
+    }
+
+    else if (elapsed < msPerDay ) {
+         return Math.floor(elapsed/msPerHour ) + ' hrs ago';   
+    }
+
+    else if (elapsed < msPerMonth) {
+        return Math.floor(elapsed/msPerDay) + ' days ago';   
+    }
+
+    else if (elapsed < msPerYear) {
+        return Math.floor(elapsed/msPerMonth) + ' mon ago';   
+    }
+
+    else {
+        return Math.floor(elapsed/msPerYear ) + ' yrs ago';   
+    }
+}
+
+
 // LOCAL STORAGE MANAGEMENT
 export const saveInStorage = (key, value) => {
     localStorage.setItem(key, value);

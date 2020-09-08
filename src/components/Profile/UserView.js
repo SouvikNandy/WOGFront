@@ -11,7 +11,7 @@ export function UserFlat(props){
         const ele = props.data
         return(
             <div className="user-flat-div" >
-                <Link to={{pathname: `/profile/${ele.username}`}} className="link" key={ele.id}>
+                <Link to={{pathname: `/profile/${ele.username}`}} className="link" key={ele.username}>
                     {ele.profile_pic?
                         <img className="tag-img" src={ele.profile_pic} alt={ele.username}/>
                         :
@@ -36,7 +36,7 @@ export function UserCube(props){
     let ele = props.data;
     return(
             <div className="cube-user-attr">
-                <Link className="link" key={ele.id} to={{pathname: `/profile/${ele.username}`}}>
+                <Link className="link" key={ele.username} to={{pathname: `/profile/${ele.username}`}}>
                     {ele.profile_pic?
                         <img className="cube-user-img " src={ele.profile_pic} alt={ele.username}/>
                         :

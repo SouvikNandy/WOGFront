@@ -36,22 +36,28 @@ class TextInput extends React.Component {
   constructor(props) {
     super(props);
     
-	  this.mentionPlugin = mentionPlugin;
-    this.hashtagPlugin = hashtagPlugin;
-    this.setDomEditorRef = ref => this.domEditor = ref;
-    this.focus = () => this.domEditor.focus();
+	    this.mentionPlugin = mentionPlugin;
+        this.hashtagPlugin = hashtagPlugin;
+        this.setDomEditorRef = ref => this.domEditor = ref;
+        this.focus = () => this.domEditor.focus();
   }
 
     state = {
         editorState: null,
         mSuggestions: mentions,
         hSuggestions: mentions,
-        loggedIn: null
+        loggedIn: null,
+        // for replying user
+        prevInitialMention: null
+
     };
 
     componentDidMount(){
         if(this.props.editorState){
             this.setState({editorState: JSONToEditState(JSON.parse(this.props.editorState))})
+        }
+        else if (this.props.rawEditorState){
+            this.setState({editorState: this.props.rawEditorState})
         }
         else{
             this.setState({editorState:EditorState.createEmpty()})
@@ -76,7 +82,6 @@ class TextInput extends React.Component {
             }
             this.mentionPlugin = createMentionPlugin({mentionPrefix: "@", theme: mentionStyles, positionSuggestions});
             this.hashtagPlugin = createMentionPlugin({mentionPrefix: "#", mentionTrigger:'#', theme: mentionStyles, positionSuggestions}); 
-            console.log("comment box should focus")
             setTimeout(() => {
                 this.focus();
             }, 1000);
@@ -86,6 +91,7 @@ class TextInput extends React.Component {
 
     onChange = editorState => {
         this.setState({ editorState });
+        // check if editorState text is empty then reset
         if(this.props.onChange){
           this.props.onChange(editorState)
         }
@@ -140,15 +146,36 @@ class TextInput extends React.Component {
       }
       // console.log(cmntJson)
       this.props.onSubmit(this.state.editorState);
-      this.setState({ editorState: EditorState.createEmpty()});
+      this.setState({ editorState: EditorState.createEmpty(), initialMentionTaken: false});
 
   }
- 
+  
+  getEditorStateInRender = ()=>{
+      if (this.props.initialMention){
+
+        if(!this.state.prevInitialMention || (this.state.prevInitialMention &&
+            this.state.prevInitialMention["blocks"][0]["key"]!== ExtractToJSON(this.props.initialMention)["blocks"][0]["key"])){
+                this.setState({
+                    // editorState: EditorState.push(
+                    //   this.state.editorState,
+                    //   this.props.initialMention,
+                    //   'replace',
+                    // )
+                    editorState: this.props.initialMention,
+                    prevInitialMention: ExtractToJSON(this.props.initialMention)
+                  })
+            }
+
+      }
+      return this.state.editorState
+
+  }
 
   render() {
     if(!this.state.editorState){ return (<React.Fragment></React.Fragment>)}
     if(this.state.loggedIn === false){return(<Redirect to={{ pathname: "/signin/" }}/>)}
     const plugins = [this.mentionPlugin, this.hashtagPlugin];
+    this.getEditorStateInRender()
 
 	return (
 	  <React.Fragment>

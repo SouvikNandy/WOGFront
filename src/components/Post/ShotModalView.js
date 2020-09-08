@@ -32,11 +32,11 @@ export class ShotModalView extends Component {
         showSideView: false,
         sideViewContent: [],
         sideBarFullScreen: false,
+        altHeadText: null,
 
         // report image
         reportBox: false,
-        isSelf: false
-
+        isSelf: false,
     }
 
     componentDidMount(){
@@ -116,19 +116,22 @@ export class ShotModalView extends Component {
 
     }
 
-    displaySideView = ({content, sureVal}) =>{
+    displaySideView = ({content, sureVal, altHeadText=null}) =>{
+        console.log("displaySideView evoked", content, sureVal)
         let stateVal = !this.state.showSideView
         if (sureVal){
             stateVal = sureVal
         }
 
         this.setState({
-            showSideView: stateVal
+            showSideView: stateVal,
+            altHeadText: altHeadText
         })
 
         if(content){
             this.setState({
-                sideViewContent: content
+                sideViewContent: content,
+                
             })
         }
 
@@ -321,11 +324,13 @@ export class ShotModalView extends Component {
                                     savePost={this.savePost}
                                     responsecounts={this.state.shot.interactions}
                                     hideCommentBtn={true}
+                                    displaySideView={this.displaySideView}
+                                    post_id={this.state.shot.id}
                                 />
 
                             </div>
                             <div className="m-comments">
-                                <ModalComments post_id={this.state.shot.id} />
+                                <ModalComments post_id={this.state.shot.id} displaySideView={this.displaySideView} />
                             </div>
 
                         </section>
@@ -337,7 +342,7 @@ export class ShotModalView extends Component {
                 {this.state.showSideView?
                 <div className={this.state.sideBarFullScreen?"form-side-bar-view side-bar-view-active full-width": "form-side-bar-view side-bar-view-active"}>
                     <SideBar displaySideView={this.displaySideView} content={this.state.sideViewContent}
-                    sideBarHead={true}
+                    sideBarHead={true} altHeadText={this.state.altHeadText}
                     searchBarRequired={false} onClick={this.sidebarEmptyClick}/>
                 </div>
                 :

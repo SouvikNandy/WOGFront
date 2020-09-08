@@ -3,6 +3,7 @@ import '../../assets/css/shotmodalview.css';
 import {ControlledEventFire} from '../../utility/Utility'
 
 import { FaHeart, FaRegEye, FaRegHeart, FaRegComment, FaRegPaperPlane, FaBookmark, FaRegBookmark } from "react-icons/fa";
+import LikedBy from './LikedBy';
 
 const ModalLikes = (props) => {
     return (
@@ -32,15 +33,35 @@ const ModalLikes = (props) => {
                 </button>
             </div>
             <div className="m-likes-preview">
-                <FaHeart className="icons" /><span>{props.responsecounts.likes}</span>
-                <FaRegEye className="icons" /><span>{props.responsecounts.views}</span>
+                {props.responsecounts.likes > 0 ?
+                    <span className="m-l" 
+                    onClick={()=>{props.displaySideView(
+                        {
+                            content: <LikedBy phase={"post"} post_id={props.post_id}/>,
+                            sureVal: true,
+                            altHeadText: <div className="s-head-text">
+                                <FaHeart className="icons-active" />{props.responsecounts.likes}
+                                </div>
+                        }
+                    )}}>
+                        <FaHeart className="icons-active" />{props.responsecounts.likes}
+                    </span>
+                    :
+                    ""
+                }
+                {props.responsecounts.views > 0?
+                    <span className="m-l"><FaRegEye className="icons-active" />{props.responsecounts.views}</span>
+                    :
+                    ""
+                }
+                
+                
             </div>
         </React.Fragment>
     )
 }
 
 const feedCommentBox = () => {
-    // document.getElementById("m-add-cmnt").focus();
     ControlledEventFire(document.getElementById("m-add-cmnt"), 'click')
 }
 

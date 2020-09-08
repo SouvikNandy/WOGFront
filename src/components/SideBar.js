@@ -16,7 +16,7 @@ export class SideBar extends Component{
                 ""
                 }
                 
-                <section className="side-bar-content">
+                <section className="side-bar-content" id="side-bar-content">
                     {this.props.content}
                 </section>
             </div>
