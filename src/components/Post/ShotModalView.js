@@ -14,7 +14,7 @@ import TagUser from '../Profile/TagUser';
 import SideBar from '../SideBar';
 import ReportContent from './ReportContent'
 
-import {msToDateTime, isSelfUser, retrieveFromStorage} from '../../utility/Utility'
+import {msToDateTime, isSelfUser, retrieveFromStorage, isAuthenticated} from '../../utility/Utility'
 
 import HTTPRequestHandler from '../../utility/HTTPRequests';
 import OwlLoader from '../OwlLoader';
@@ -37,6 +37,8 @@ export class ShotModalView extends Component {
         // report image
         reportBox: false,
         isSelf: false,
+
+        isAuth: false,
     }
 
     componentDidMount(){
@@ -52,8 +54,14 @@ export class ShotModalView extends Component {
     }
 
     updateStateOnAPIcall = (shot_id, username, data) =>{
-        let currentUser = JSON.parse(retrieveFromStorage('user_data')).username
-        this.setState({shot: data.data, selected_shot_id: shot_id, isSelf: isSelfUser(username, currentUser) })
+        let isAuth = isAuthenticated();
+        let isSelf = false
+        
+        if(isAuth){
+            let currentUser = JSON.parse(retrieveFromStorage('user_data')).username
+            isSelf = isSelfUser(username, currentUser)
+        }
+        this.setState({shot: data.data, selected_shot_id: shot_id, isSelf: isSelf, isAuth: isAuth })
     }
 
     doLike = () => {
@@ -326,11 +334,13 @@ export class ShotModalView extends Component {
                                     hideCommentBtn={true}
                                     displaySideView={this.displaySideView}
                                     post_id={this.state.shot.id}
+                                    isAuth={this.state.isAuth}
+                                    currLocation={this.props.currLocation}
                                 />
 
                             </div>
                             <div className="m-comments">
-                                <ModalComments post_id={this.state.shot.id} displaySideView={this.displaySideView} />
+                                <ModalComments post_id={this.state.shot.id} displaySideView={this.displaySideView} isAuth={this.state.isAuth} />
                             </div>
 
                         </section>

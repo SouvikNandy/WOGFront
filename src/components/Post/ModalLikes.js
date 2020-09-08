@@ -1,11 +1,20 @@
-import React from 'react';
+import React, {useState} from 'react';
 import '../../assets/css/shotmodalview.css';
-import {ControlledEventFire} from '../../utility/Utility'
+import {ControlledEventFire} from '../../utility/Utility';
+
 
 import { FaHeart, FaRegEye, FaRegHeart, FaRegComment, FaRegPaperPlane, FaBookmark, FaRegBookmark } from "react-icons/fa";
 import LikedBy from './LikedBy';
+import { Redirect } from 'react-router-dom';
 
 const ModalLikes = (props) => {
+    const [redirectAction, redirectToSignin] = useState(false)
+    if(redirectAction){
+        return(<Redirect to={{
+            pathname: `/m-auth/`,
+            state: { modal: true, currLocation: props.currLocation }
+        }} />)
+    }
     return (
         <React.Fragment>
             <div className="m-likes-action">
@@ -13,7 +22,7 @@ const ModalLikes = (props) => {
                     {props.isLiked ?
                     <FaHeart className="icons icons-active" onClick={props.doUnLike} /> 
                     :
-                    <FaRegHeart className="icons" onClick={props.doLike} />
+                    <FaRegHeart className="icons" onClick={props.isAuth? props.doLike: ()=> redirectToSignin(!redirectAction)} />
                     }
                 </button>
                 {props.hideCommentBtn?
@@ -26,7 +35,7 @@ const ModalLikes = (props) => {
                 <button className="btn-anc"><FaRegPaperPlane className="icons" /></button>
                 <button className="btn-anc">
                 {props.isSaved ?
-                    <FaBookmark className="icons icons-active" onClick={props.savePost} /> 
+                    <FaBookmark className="icons icons-active" onClick={props.isAuth?props.savePost: ()=> redirectToSignin(!redirectAction)} /> 
                     :
                     <FaRegBookmark className="icons" onClick={props.savePost} />
                 }

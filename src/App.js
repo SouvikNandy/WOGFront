@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, useLocation } from 'react-router-dom';
 import Landing from './pages/Landing';
-import Login from './pages/Login';
+import Login, { LoginModal } from './pages/Login';
 import ShotModalView from './components/Post/ShotModalView';
 import Profile from './pages/Profile';
 import CommunityReview from './pages/CommunityReview';
@@ -60,6 +60,7 @@ function ShotModalUrl() {
             <Route exact path="/home/" component={Landing} />
             <Route exact path="/signup/" component={Login} />
             <Route exact path="/signin/" render={props => (<Login signInReq={true} />)} />
+            <Route exact path="/m-auth/" component={LoginModal} />
             <Route exact path="/profile/:username" component={Profile} />
             <Route exact path="/shot-view/:id" component={ShotModalView} />
             <Route exact path="/reviews/" component={CommunityReview} />
@@ -79,6 +80,10 @@ function ShotModalUrl() {
         }
         {isModal
             ? <Route exact path="/edit-shot/:id" component={EditPost} />
+            : null
+        }
+        {isModal
+            ? <Route exact path="/m-auth/" component={LoginModal} />
             : null
         }
 

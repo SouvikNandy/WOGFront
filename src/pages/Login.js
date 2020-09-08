@@ -8,29 +8,54 @@ import Dropdown from '../components/Dropdown';
 import {LoginAPI, SignupAPI} from '../utility/ApiSet';
 
 
-export class Login extends Component {
-    render() {
-        const selectedComp = this.props.signInReq === true ? <SignIn /> : <SignUp />;
-        // console.log("is Login", this.props.isLogin);
-        return (
-            <React.Fragment>
-                <div className="login-layout">
-                    <section className="img-holder"></section>
-                    <section className="auth-container">
-                        <div className="login-container">
-                            {selectedComp}
-                        </div>
+export function Login(props) {
+    const selectedComp = props.signInReq === true ? <SignIn /> : <SignUp />;
+    return (
+        <React.Fragment>
+            <div className="login-layout">
+                <section className="img-holder"></section>
+                <section className="auth-container">
+                    <div className="login-container">
+                        {selectedComp}
+                    </div>
 
-                    </section>
+                </section>
 
-                </div>
-            </React.Fragment>
-        )
-    }
+            </div>
+        </React.Fragment>
+    )
 }
 
+export class LoginModal extends Component{
+    state ={
+        signInPage : true
+    }
+    changePage = () =>{
+        this.setState({signInPage: !this.state.signInPage})
+    }
+    onRedirection = () =>{
+        this.props.history.goBack();
+    }
+    render(){
+        console.log(this.props)
+        return(
+        <div className="modal-container">
+            <div className="login-container">
+                {this.state.signInPage?
+                    <SignIn onSignup={this.changePage} onRedirection={this.onRedirection}/> 
+                    :
+                    <SignUp onSignIn={this.changePage}/>
+                }
 
-class SignIn extends Component {
+            </div>
+
+        </div>
+        )
+    }
+
+}
+
+export class SignIn extends Component {
     state = {
         email: "",
         password : "",
@@ -87,7 +112,10 @@ class SignIn extends Component {
 
     render() {
         // console.log(this.state.isLoggedIn, this.state.loggedinUser);
-        if (this.state.isLoggedIn){
+        if (this.state.isLoggedIn && this.props.onRedirection){
+            this.props.onRedirection()
+        }
+        else if (this.state.isLoggedIn){
             return <Redirect to={`/user-feeds/${this.state.loggedinUser}`} />
         }
         return (
@@ -107,7 +135,12 @@ class SignIn extends Component {
                     
                 </form>
                 <p className="my-1">
-                    Don't have an account? <Link className="link" to={"/signup/"}> Create One</Link>
+                    Don't have an account? 
+                    {this.props.onSignup? 
+                    <span className="link" onClick={this.props.onSignup}> Create One</span>
+                    : 
+                    <Link className="link" to={"/signup/"}> Create One</Link>
+                    } 
                 </p>
             </React.Fragment>
         )
@@ -115,7 +148,7 @@ class SignIn extends Component {
 }
 
 
-class SignUp extends Component {
+export class SignUp extends Component {
     state = {
         name:"",
         username:"",
@@ -189,7 +222,10 @@ class SignUp extends Component {
 
     });
     render() {
-        if (this.state.signupSuccesful){
+        if( this.state.signupSuccesful && this.props.onSignIn){
+            this.props.onSignIn()
+        }
+        else if (this.state.signupSuccesful){
             return <Redirect to='/signin/' />
         }
         return (
@@ -221,7 +257,13 @@ class SignUp extends Component {
                     
                 </form>
                 <p className="my-1">
-                    Already have an account?<Link className="link" to={"/signin/"}> Sign In</Link>
+                    Already have an account?
+                    {this.props.onSignIn? 
+                    <span className="link" onClick={this.props.onSignIn}> Sign In</span>
+                    : 
+                    <Link className="link" to={"/signin/"}> Sign In</Link>
+                    }
+                    
                 </p>
             </React.Fragment>
         )

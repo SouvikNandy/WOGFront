@@ -116,10 +116,8 @@ export class ShotPalette extends Component {
 export class Shot extends Component {
     render() {
         let data = this.props.data
-        console.log("data", data)
         let shotClass = this.props.onlyShot ? "shot-preview-alt" : "shot-preview"
         let redirect_key = data.username +'-'+ data.portfolio_id +'-'+ data.id
-        console.log(redirect_key);
         return (
             <React.Fragment>
                 <div className={shotClass}>
