@@ -9,7 +9,6 @@ import mentions from "./mentions";
 import "draft-js-mention-plugin/lib/plugin.css";
 import mentionStyles from '../assets/css/mention.module.css';
 import MultiDecorator from "draft-js-plugins-editor/lib/Editor/MultiDecorator";
-import {isAuthenticated} from '../utility/Utility';
 import { Redirect } from "react-router-dom";
 
 let positionSuggestionsDef = (settings) => {
@@ -36,10 +35,10 @@ class TextInput extends React.Component {
   constructor(props) {
     super(props);
     
-	    this.mentionPlugin = mentionPlugin;
+      this.mentionPlugin = mentionPlugin;
         this.hashtagPlugin = hashtagPlugin;
-        this.setDomEditorRef = ref => this.domEditor = ref;
-        this.focus = () => this.domEditor.focus();
+        // this.setDomEditorRef = ref => this.domEditor = ref;
+        // this.focus = () => this.domEditor.focus();
   }
 
     state = {
@@ -82,9 +81,9 @@ class TextInput extends React.Component {
             }
             this.mentionPlugin = createMentionPlugin({mentionPrefix: "@", theme: mentionStyles, positionSuggestions});
             this.hashtagPlugin = createMentionPlugin({mentionPrefix: "#", mentionTrigger:'#', theme: mentionStyles, positionSuggestions}); 
-            setTimeout(() => {
-                this.focus();
-            }, 1000);
+            // setTimeout(() => {
+            //     this.focus();
+            // }, 1000);
                  
         }
     }
@@ -129,13 +128,12 @@ class TextInput extends React.Component {
   };
 
     getAreaId = () =>{
-	    return this.props.id? this.props.id: 'editor-default'
+      return this.props.id? this.props.id: 'editor-default'
     }
 
     onSubmit = (e) => {
       e.preventDefault();
-      let _authenticated = isAuthenticated()
-      if (!_authenticated){
+      if (!this.props.isAuth){
         this.setState({ editorState: EditorState.createEmpty(), loggedIn: false});
         return false
       }
@@ -156,29 +154,29 @@ class TextInput extends React.Component {
         if(!this.state.prevInitialMention || (this.state.prevInitialMention &&
             this.state.prevInitialMention["blocks"][0]["key"]!== ExtractToJSON(this.props.initialMention)["blocks"][0]["key"])){
                 this.setState({
-                    // editorState: EditorState.push(
-                    //   this.state.editorState,
-                    //   this.props.initialMention,
-                    //   'replace',
-                    // )
                     editorState: this.props.initialMention,
                     prevInitialMention: ExtractToJSON(this.props.initialMention)
                   })
             }
-
       }
       return this.state.editorState
 
   }
 
   render() {
+    console.log("text props", this.props)
     if(!this.state.editorState){ return (<React.Fragment></React.Fragment>)}
-    if(this.state.loggedIn === false){return(<Redirect to={{ pathname: "/signin/" }}/>)}
+    if(this.state.loggedIn === false){
+      return(<Redirect to={{
+            pathname: `/m-auth/`,
+            state: { modal: true, currLocation: this.props.currLocation }
+        }} />
+    )}
     const plugins = [this.mentionPlugin, this.hashtagPlugin];
     this.getEditorStateInRender()
 
-	return (
-	  <React.Fragment>
+  return (
+    <React.Fragment>
         <div className="editor" id={this.getAreaId()}>
           <Editor
           editorState={this.state.editorState}
@@ -203,71 +201,71 @@ class TextInput extends React.Component {
         :
           ""
         }
-	  </React.Fragment>
-	);
+    </React.Fragment>
+  );
   }
 }
 
 
 
 const MentionEntryTemplate = (props) => {
-	const {
-	  mention,
-	  theme,
-	  searchValue, // eslint-disable-line no-unused-vars
-	  isFocused, // eslint-disable-line no-unused-vars
-	  ...parentProps
-	} = props;
-	return (
-	  <div {...parentProps}>
-		<div className={theme.mentionSuggestionsEntryContainer}>
-		  <div className={theme.mentionSuggestionsEntryContainerLeft}>
-			<img
-			  src={mention.avatar}
-			  className={theme.mentionSuggestionsEntryAvatar}
-			  role="presentation"
-			  alt=""
-			/>
-		  </div>
+  const {
+    mention,
+    theme,
+    searchValue, // eslint-disable-line no-unused-vars
+    isFocused, // eslint-disable-line no-unused-vars
+    ...parentProps
+  } = props;
+  return (
+    <div {...parentProps}>
+    <div className={theme.mentionSuggestionsEntryContainer}>
+      <div className={theme.mentionSuggestionsEntryContainerLeft}>
+      <img
+        src={mention.avatar}
+        className={theme.mentionSuggestionsEntryAvatar}
+        role="presentation"
+        alt=""
+      />
+      </div>
   
-		  <div className={theme.mentionSuggestionsEntryContainerRight}>
-			<div className={theme.mentionSuggestionsEntryTitle}>
-			  {mention.title}
-			</div>
+      <div className={theme.mentionSuggestionsEntryContainerRight}>
+      <div className={theme.mentionSuggestionsEntryTitle}>
+        {mention.title}
+      </div>
   
-			<div className={theme.mentionSuggestionsEntryContent}>
-			  {mention.name}
-			</div>
-		  </div>
-		</div>
-	  </div>
-	);
+      <div className={theme.mentionSuggestionsEntryContent}>
+        {mention.name}
+      </div>
+      </div>
+    </div>
+    </div>
+  );
   };
 
 const TagEntryTemplate = (props) =>{
-	const {
-		mention,
-		theme,
-		searchValue, // eslint-disable-line no-unused-vars
-		isFocused, // eslint-disable-line no-unused-vars
-		...parentProps
-	  } = props;
-	
-	  return (
-		<div {...parentProps}>
-		  <div className={theme.mentionSuggestionsEntryContainerTag}>
-			<div className={theme.mentionSuggestionsEntryContainerRight}>
-			  <div className={theme.mentionSuggestionsEntryTitle}>
-				#{mention.name}
-			  </div>
-	
-			  <div className={theme.mentionSuggestionsEntryContent}>
-				100 posts
-			  </div>
-			</div>
-		  </div>
-		</div>
-	  );
+  const {
+    mention,
+    theme,
+    searchValue, // eslint-disable-line no-unused-vars
+    isFocused, // eslint-disable-line no-unused-vars
+    ...parentProps
+    } = props;
+  
+    return (
+    <div {...parentProps}>
+      <div className={theme.mentionSuggestionsEntryContainerTag}>
+      <div className={theme.mentionSuggestionsEntryContainerRight}>
+        <div className={theme.mentionSuggestionsEntryTitle}>
+        #{mention.name}
+        </div>
+  
+        <div className={theme.mentionSuggestionsEntryContent}>
+        100 posts
+        </div>
+      </div>
+      </div>
+    </div>
+    );
 }
 
 
@@ -303,12 +301,12 @@ function getDecorators() {
 
 export const JSONToEditState = (rawState) =>{
     let decorator = getDecorators()
-	const editState = EditorState.createWithContent(convertFromRaw(rawState), decorator );
-	return editState
+  const editState = EditorState.createWithContent(convertFromRaw(rawState), decorator );
+  return editState
 }
 
 export const EditorSpan = (editorState, readOnly=true) =>{
-	return (
+  return (
         <div className="editor">
             <Editor editorState={editorState} readOnly={readOnly} />
         </div>

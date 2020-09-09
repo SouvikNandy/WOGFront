@@ -13,7 +13,8 @@ export default class AddComment extends Component {
             <React.Fragment>
                 <form className="m-comment-form" id="m-comment-form">
                     <TextInput  id="m-add-cmnt" placeholder="Add a comment" 
-                    commentBox={true}  onSubmit={this.onSubmit} initialMention={this.props.replyTo} rawEditorState={this.props.replyTo} />
+                    commentBox={true}  onSubmit={this.onSubmit} initialMention={this.props.replyTo} rawEditorState={this.props.replyTo}
+                    isAuth={this.props.isAuth} currLocation={this.props.currLocation} />
                 </form>
             </React.Fragment>
         )

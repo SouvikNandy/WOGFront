@@ -335,12 +335,14 @@ export class ShotModalView extends Component {
                                     displaySideView={this.displaySideView}
                                     post_id={this.state.shot.id}
                                     isAuth={this.state.isAuth}
-                                    currLocation={this.props.currLocation}
+                                    currLocation={this.props.location.state.currLocation}
                                 />
 
                             </div>
                             <div className="m-comments">
-                                <ModalComments post_id={this.state.shot.id} displaySideView={this.displaySideView} isAuth={this.state.isAuth} />
+                                <ModalComments post_id={this.state.shot.id} displaySideView={this.displaySideView} 
+                                isAuth={this.state.isAuth} 
+                                currLocation={this.props.location.state.currLocation} />
                             </div>
 
                         </section>

@@ -98,7 +98,9 @@ export class ModalReplies extends CommentsBase {
             key={this.props.parentComment.id} isReply={false}
             comment={this.props.parentComment}
             doLike={this.props.parentModal.doLike} doUnLike={this.props.parentModal.doUnLike}
-            parentModal={null} displaySideView={this.props.displaySideView}/>
+            parentModal={null} displaySideView={this.props.displaySideView}
+            isAuth={this.props.isAuth} 
+            currLocation={this.props.currLocation}/>
 
         let allreplies = '';
         allreplies = this.state.data.sort(this.sortByCreationTime).map((item) => (
@@ -107,6 +109,8 @@ export class ModalReplies extends CommentsBase {
                 parent_id={this.props.parentComment.id} showIfReplies={true} 
                 updateStateReplyUser={this.updateStateReplyUser}
                 displaySideView={this.props.displaySideView}
+                isAuth={this.props.isAuth} 
+                currLocation={this.props.currLocation}
                 />
         ))
         let replyContainerClassName = "";
@@ -138,7 +142,8 @@ export class ModalReplies extends CommentsBase {
                     </div>
                     <div className="m-post-comment z-5" id="replyCommentBox">
                         <AddComment addComment={this.addComment} 
-                        replyTo={this.state.replyToUser? this.state.replyToUser: this.props.replyTo} />
+                        replyTo={this.state.replyToUser? this.state.replyToUser: this.props.replyTo}
+                        isAuth={this.props.isAuth} currLocation={this.props.currLocation} />
                     </div>
 
                 </div>

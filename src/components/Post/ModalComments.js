@@ -128,6 +128,8 @@ export class ModalComments extends CommentsBase {
                     isReply={false} comment={item} doLike={this.doLike} doUnLike={this.doUnLike}
                     parent_id={null} parentModal={this} showIfReplies={true} post_id={this.props.post_id} 
                     displaySideView={this.props.displaySideView}
+                    isAuth={this.props.isAuth}
+                    currLocation={this.props.currLocation}
                     />
             ))
         };
@@ -152,7 +154,7 @@ export class ModalComments extends CommentsBase {
                     {allComments}
                 </section>
                 <section className="m-post-comment" id="mainCommentBox">
-                    <AddComment addComment={this.addComment} />
+                    <AddComment addComment={this.addComment} isAuth={this.props.isAuth} currLocation={this.props.currLocation}/>
                 </section>
 
             </React.Fragment>

@@ -9,9 +9,9 @@ import {Shot, ShotPalette} from '../components/Post/Shot';
 import Portfolio from '../components/Profile/Portfolio';
 import AddPost from '../components/Post/AddPost';
 import Footer from '../components/Footer';
-import {FollowUserCubeAlt} from '../components/Profile/UserView';
+import {FollowUserCubeAlt, FollowUnfollowUser} from '../components/Profile/UserView';
 import DummyShots from '../components/Post/DummyShots';
-import {generateId, isSelfUser} from '../utility/Utility.js';
+import {generateId, isSelfUser, isAuthenticated} from '../utility/Utility.js';
 import NoContent from '../components/NoContent';
 import CommunityReview from '../pages/CommunityReview'
 import { UserNavBar } from '../components/Navbar/Navbar';
@@ -22,7 +22,7 @@ import {defaultCoverPic} from '../utility/userData';
 import { retrieveFromStorage, saveInStorage } from '../utility/Utility';
 import HTTPRequestHandler from '../utility/HTTPRequests';
 import { createFloatingNotification } from '../components/FloatingNotifications';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import OwlLoader from '../components/OwlLoader';
 import Paginator from '../utility/Paginator';
 
@@ -83,6 +83,7 @@ export default class Profile extends Component {
             ]
         },
         userAbout: null, 
+        isAuth: false,
         isSelf : null,
         editProf: false,
         // forceful rerender
@@ -103,11 +104,17 @@ export default class Profile extends Component {
         // get user portfolio data
         let subnav = ''
         let isSelf = false
-        let userAbout = JSON.parse(retrieveFromStorage("user_data"))
+        let userAbout = ''
+        let isAuth = false
+        if (isAuthenticated()){
+            isAuth = true
+            userAbout = JSON.parse(retrieveFromStorage("user_data"))
+        }
 
-        if(this.props.isAuthenticated && isSelfUser(userAbout.username, this.props.match.params.username)){
+        if(isAuth && isSelfUser(userAbout.username, this.props.match.params.username)){
             subnav = AuthUserNav;
             isSelf = true;
+            
         }
         else{
             subnav = PublicNav;
@@ -139,7 +146,7 @@ export default class Profile extends Component {
         // add event listner
         let eventListnerRef = this.handleScroll.bind(this);
         this.setState({
-            subNavList: subnav, isSelf: isSelf, userAbout: userAbout, eventListnerRef: eventListnerRef
+            subNavList: subnav, isAuth: isAuth, isSelf: isSelf, userAbout: userAbout, eventListnerRef: eventListnerRef
         })
         window.addEventListener('scroll', eventListnerRef);
 
@@ -174,10 +181,9 @@ export default class Profile extends Component {
         })
     }
 
-    updateInitialAbout = (key, data)=>{
+    updateInitialAbout = (key, menu, data)=>{
         this.setState({
             [key]: data.data,
-            isSelf: isSelfUser(data.data.username, this.props.match.params.username)
         })
         
 
@@ -235,9 +241,16 @@ export default class Profile extends Component {
             // don't make api call
             return true
         }
+        if(this.state.isAuth === false &&  ['Saved', 'Followers', 'Following'].includes(selectedMenu)){
+            
+            this.setState({
+                [stateKey]: []
+            })
+            return true
+        }
         if (url){
             HTTPRequestHandler.get(
-                {url:url, includeToken:true, callBackFunc: callbackFunc.bind(this, stateKey, selectedMenu), 
+                {url:url, includeToken:false, callBackFunc: callbackFunc.bind(this, stateKey, selectedMenu), 
                 errNotifierTitle:"Update failed !"})
         }
     } 
@@ -264,29 +277,6 @@ export default class Profile extends Component {
 
     getMenuCount = (key) =>{
         return 0
-        // switch (key) {
-        //     case "Shots":
-        //         return this.state.userPortFolio.length;
-        //     case "Portfolios":
-        //         return this.state.userPortFolio.length;
-        //     case "Tags":
-        //         // default is approved tag values
-        //         return this.state.userTag.approved.length;
-        //     case "Followers":
-        //         return this.state.userFollower.length;
-        //     case "Following":
-        //         return this.state.userFollowing.length;
-        //     case "Approved":
-        //         // approved tags
-        //         return this.state.userTag.approved.length;
-        //     case "Requests":
-        //         // requested tags
-        //         return this.state.userTag.requests.length;
-        //     case "Saved":
-        //         return this.state.userSaved.length;
-        //     default:
-        //         return 0
-        // }
     }
     
     selectSubMenu = (key) =>{
@@ -398,7 +388,7 @@ export default class Profile extends Component {
 
     startFollowing =(record) =>{
         record.is_following = true;
-        if (isSelfUser(2,1)){
+        if (this.state.isSelf){
             this.setState({
                 userFollowing: [...this.state.userFollowing, record]
             })
@@ -407,8 +397,17 @@ export default class Profile extends Component {
 
     stopFollowing =(record) =>{
         record.is_following = false;
+        if(this.isSelf){
+            this.setState({
+                userFollowing: this.state.userFollowing.filter(ele => ele.id!==record.id) 
+            })
+        }  
+    }
+
+    startStopFollowingProfile = (data) =>{
+        data.is_following = !data.is_following
         this.setState({
-            userFollowing: this.state.userFollowing.filter(ele => ele.id!==record.id) 
+            userAbout: data
         })
     }
 
@@ -601,6 +600,7 @@ export default class Profile extends Component {
                 // getSelectedTab.toLowerCase()
                 getSelectedTab = getSelectedTab.title.toLowerCase();
                 // console.log("selected tab ", getSelectedTab);
+                
 
                 if(!this.state.userTag[getSelectedTab]){
                     return(
@@ -609,8 +609,12 @@ export default class Profile extends Component {
                         </div>
                     )
 
-                } 
-                if (getSelectedTab === "approved"){
+                }
+                if(!this.state.isAuth){
+                    let msg = "You need to signIn to view this !!!"
+                    resultList = this.getNoContentDiv(msg)
+                }
+                else if (getSelectedTab === "approved"){
                     if(this.state.userTag[getSelectedTab] && this.state.userTag[getSelectedTab].length === 0){
                         let msg = "No tags made it upto here !!!"
                         resultList = this.getNoContentDiv(msg)
@@ -680,7 +684,11 @@ export default class Profile extends Component {
                     )
 
                 }
-                if(this.state.userFollower.length === 0){
+                if(!this.state.isAuth){
+                    let msg = "You need to signIn to view this !!!"
+                    resultList = this.getNoContentDiv(msg)
+                }
+                else if(this.state.userFollower.length === 0){
                     let msg = "No followers yet !!!"
                     resultList = this.getNoContentDiv(msg)
 
@@ -713,8 +721,12 @@ export default class Profile extends Component {
                     )
 
                 }
+                if(!this.state.isAuth){
+                    let msg = "You need to signIn to view this !!!"
+                    resultList = this.getNoContentDiv(msg)
+                }
 
-                if(this.state.userFollowing.length === 0){
+                else if(this.state.userFollowing.length === 0){
                     let msg = "Currently not following anyone !!!"
                     resultList = this.getNoContentDiv(msg)
 
@@ -749,7 +761,7 @@ export default class Profile extends Component {
                 let comp = <CommunityReview key={item.title} showSubNav={false} headMessgae={"Public reaction about this profile"}
                 requireFooter={false}/>
                 if(this.props.isAuthenticated){
-                return (<div className="activated-nav" key="r-plt">{comp}</div>)
+                    return (<div className="activated-nav" key="r-plt">{comp}</div>)
                 }
                 else{
                     return comp
@@ -846,7 +858,9 @@ export default class Profile extends Component {
                 
                 {/* profile top section */}
                 <ProfileHead data={this.state.userAbout} isSelf={this.state.isSelf} editProfile={this.editProfile} 
-                uploadPicture={this.uploadPicture} />
+                uploadPicture={this.uploadPicture} isAuth={this.state.isAuth} currLocation={this.props.location}
+                startStopFollowingProfile={this.startStopFollowingProfile}
+                 />
                 <Subnav subNavList={this.state.subNavList} selectSubMenu={this.selectSubMenu}  getMenuCount={this.getMenuCount}/>
                 {/* result Component */}
                 {resultBlock}
@@ -867,7 +881,6 @@ function ProfileHead(props) {
             <OwlLoader />
         </div>
         )
-
     }    
     let coverpic = data.profile_data && data.profile_data.cover_pic ? data.profile_data.cover_pic: defaultCoverPic();
     return (
@@ -913,16 +926,32 @@ function ProfileHead(props) {
                             :
                                 <div className="pf-otheruser-btns">
                                     {data.is_following?
-                                    <button className="btn m-fuser"><FaPaperPlane className="ico"/> Message</button>
+                                        props.isAuth?
+                                            <button className="btn m-fuser"><FaPaperPlane className="ico"/> Message</button>
+                                            :
+                                            <Link className="btn m-fuser" to={{
+                                                pathname: `/m-auth/`,
+                                                state: { modal: true, currLocation: props.currLocation }
+                                            }}
+                                            ><FaPaperPlane className="ico"/> Message</Link>
                                     :
-                                    <button className="btn m-fuser"><FaPlus className="ico"/> Follow</button>
+                                        props.isAuth?
+                                            <button className="btn m-fuser" onClick={() => FollowUnfollowUser(data, props.startStopFollowingProfile)}>
+                                                <FaPlus className="ico"/> Follow</button>
+                                            :
+                                            <Link className="btn m-fuser" to={{
+                                                pathname: `/m-auth/`,
+                                                state: { modal: true, currLocation: props.currLocation }
+                                            }}
+                                            ><FaPlus className="ico"/> Follow</Link>
                                     }
                                     <button className="btn m-fuser" onClick={()=> showUserActions(!userActions)}>
                                         <AiFillSetting className="ico"/> Actions</button>
                                     {userActions?
                                         <div className="user-action-menu">
                                             {data.is_following?
-                                            <div className="a-opt">Unfollow</div> : ""
+                                            <div className="a-opt" 
+                                            onClick={() => FollowUnfollowUser(data, props.startStopFollowingProfile)}>Unfollow</div> : ""
                                             }
                                             <div className="a-opt">Block</div>
                                             <div className="a-opt">Report</div>

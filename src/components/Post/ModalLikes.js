@@ -35,9 +35,9 @@ const ModalLikes = (props) => {
                 <button className="btn-anc"><FaRegPaperPlane className="icons" /></button>
                 <button className="btn-anc">
                 {props.isSaved ?
-                    <FaBookmark className="icons icons-active" onClick={props.isAuth?props.savePost: ()=> redirectToSignin(!redirectAction)} /> 
+                    <FaBookmark className="icons icons-active" onClick={props.savePost} /> 
                     :
-                    <FaRegBookmark className="icons" onClick={props.savePost} />
+                    <FaRegBookmark className="icons" onClick={props.isAuth? props.savePost: ()=> redirectToSignin(!redirectAction)} />
                 }
                 </button>
             </div>

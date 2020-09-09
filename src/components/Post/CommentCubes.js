@@ -111,7 +111,9 @@ export class CommentCubes extends Component {
                         post_id={this.props.post_id}
                         replyTo ={this.state.replyTo}
                         displaySideView={this.props.displaySideView}
-                         />
+                        isAuth={this.props.isAuth} 
+                        currLocation={this.props.currLocation}
+                        />
                 </div>;
 
             }

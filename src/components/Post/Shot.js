@@ -8,6 +8,7 @@ import { FaHeart, FaRegHeart, FaRegEye } from "react-icons/fa";
 import {RegularShotsAPI} from '../../utility/ApiSet';
 import Paginator from '../../utility/Paginator';
 import OwlLoader from '../OwlLoader';
+import { isAuthenticated } from '../../utility/Utility';
 
 export class ShotPalette extends Component {
     state = {
@@ -85,7 +86,6 @@ export class ShotPalette extends Component {
             return(<React.Fragment><OwlLoader /></React.Fragment>)
         }
         let shotList = [];
-        console.log("shotpal", this.props)
         this.state.Shots.map(portfolio => {
             portfolio.attachments.map(ele=>{
                 let data ={
@@ -138,7 +138,9 @@ export class Shot extends Component {
                                 <img src={data.profile_pic} alt="" />
                                 <span className="display-name">{data.name} @{data.username}</span>
                             </Link>
-                            <ShotFooterLikePreview data={data} unLikeShot={this.props.unLikeShot} likeShot={this.props.likeShot}/>
+                            <ShotFooterLikePreview data={data} unLikeShot={this.props.unLikeShot} likeShot={this.props.likeShot}
+                            currLocation={this.props.currLocation} 
+                            />
                             
                         </span>
                         : ''}
@@ -152,21 +154,42 @@ export class Shot extends Component {
 }
 
 export class ShotFooterLikePreview extends Component{
+
     render(){
+        let isAuth = isAuthenticated()
         let data = this.props.data;
         return(
             <span className="like-comment-share-preview">
                 {data.is_liked?
-                    <React.Fragment>
-                        <FaHeart className="icons icons-active" onClick={this.props.unLikeShot.bind(this, data.id)}/><span>{data.interactions.likes}</span>
-                    </React.Fragment>
+                    <div className="link">
+                        <FaHeart className="icons icons-active" 
+                        onClick={this.props.unLikeShot.bind(this, data.id)}/><span>{data.interactions.likes}</span>
+                    </div>
                     :
                     <React.Fragment>
-                        <FaRegHeart className="icons" onClick={this.props.likeShot.bind(this, data.id)}/><span>{data.interactions.likes}</span>
+                        {isAuth?
+                        <div className="link">
+                            <FaRegHeart className="icons" 
+                            onClick={this.props.likeShot.bind(this, data.id)}
+                            />
+                            <span>{data.interactions.likes}</span>
+                        </div>
+                        :
+                        <Link className="link"  to={{
+                            pathname: `/m-auth/`,
+                            state: { modal: true, currLocation: this.props.currLocation }
+                        }}>
+                            <FaRegHeart className="icons"/><span>{data.interactions.likes}</span>
+                        </Link>
+                        }
+                        
                     </React.Fragment>                                
                 }
                 
-                <FaRegEye className="icons" /><span>{data.interactions.views}</span>
+                <div className="link">
+                    <FaRegEye className="icons" /><span>{data.interactions.views}</span>
+                </div>
+                
             </span>
         )
     }

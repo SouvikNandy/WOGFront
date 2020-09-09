@@ -142,16 +142,19 @@
 
 .like-comment-share-preview {
     flex: 1;
-    vertical-align: middle;
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .like-comment-share-preview span {
     margin-right: 0.5rem;
     margin-left: 0.2rem;
-    font-size: 0.8rem;
-    font-weight: bold;
+    font-size: 0.8rem !important;
+    font-weight: bold !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* .icons, */
@@ -162,6 +165,14 @@
 
 .like-comment-share-preview .icons{
     cursor: pointer;
+    font-size: 0.9rem;
+    margin-right: 0.15rem;
+}
+
+.like-comment-share-preview .link{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 /* .icons:hover {
     color: var(--hover-one);

@@ -27,7 +27,7 @@ export function UserFlat(props){
 }
 
 
-const FollowUnfollowUser =(ele, callBack)=>{
+export const FollowUnfollowUser =(ele, callBack)=>{
     FollowRequestAPI(ele.username, {}, callBack)
     callBack(ele)
 }

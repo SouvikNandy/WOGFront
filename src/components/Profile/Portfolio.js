@@ -80,7 +80,8 @@ export class Portfolio extends Component{
                     <span className="pf-attr-span">
                         <div className="pf-name">{data.portfolio_name}</div>
                     </span>
-                    <ShotFooterLikePreview data={data} unLikeShot={this.props.unLikePortfolio} likeShot={this.props.likePortfolio} />
+                    <ShotFooterLikePreview data={data} unLikeShot={this.props.unLikePortfolio} likeShot={this.props.likePortfolio}
+                    currLocation={this.props.currLocation} />
                     
                 </div>
                 }

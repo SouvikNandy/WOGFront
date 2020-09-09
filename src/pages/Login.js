@@ -6,6 +6,7 @@ import { createFloatingNotification } from '../components/FloatingNotifications'
 import {saveInStorage, storeAuthToken, silentRefresh } from '../utility/Utility';
 import Dropdown from '../components/Dropdown';
 import {LoginAPI, SignupAPI} from '../utility/ApiSet';
+import {AiFillCloseCircle } from 'react-icons/ai';
 
 
 export function Login(props) {
@@ -33,14 +34,20 @@ export class LoginModal extends Component{
     changePage = () =>{
         this.setState({signInPage: !this.state.signInPage})
     }
-    onRedirection = () =>{
-        this.props.history.goBack();
+    onRedirection = (username) =>{
+        this.props.history.push(
+            this.props.location.state && this.props.location.state.currLocation && this.props.location.state.currLocation.pathname? 
+            this.props.location.state.currLocation.pathname
+            : 
+            '/user-feeds/'+username+'/'
+            );
     }
     render(){
-        console.log(this.props)
+        console.log("LoginModal", this.props)
         return(
         <div className="modal-container">
             <div className="login-container">
+                <AiFillCloseCircle className="close-btn close-container" onClick={this.onRedirection}/>
                 {this.state.signInPage?
                     <SignIn onSignup={this.changePage} onRedirection={this.onRedirection}/> 
                     :
@@ -113,7 +120,7 @@ export class SignIn extends Component {
     render() {
         // console.log(this.state.isLoggedIn, this.state.loggedinUser);
         if (this.state.isLoggedIn && this.props.onRedirection){
-            this.props.onRedirection()
+            this.props.onRedirection(this.state.loggedinUser)
         }
         else if (this.state.isLoggedIn){
             return <Redirect to={`/user-feeds/${this.state.loggedinUser}`} />
