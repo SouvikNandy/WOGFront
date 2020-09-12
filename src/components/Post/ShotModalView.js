@@ -299,7 +299,7 @@ export class ShotModalView extends Component {
                                     
                                 </span>
                             </span>
-                            {this.state.isSelf?
+                            {this.state.isSelf || !this.isAuth?
                             ""
                             :
                             <span className="m-follow">

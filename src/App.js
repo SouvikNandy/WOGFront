@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, useLocation } from 'react-router-dom';
 import Landing from './pages/Landing';
-import Login, { LoginModal } from './pages/Login';
+import LoginModal, {Login}  from './pages/Login';
 import ShotModalView from './components/Post/ShotModalView';
 import Profile from './pages/Profile';
 import CommunityReview from './pages/CommunityReview';

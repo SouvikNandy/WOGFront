@@ -110,7 +110,6 @@ export default class Profile extends Component {
             isAuth = true
             userAbout = JSON.parse(retrieveFromStorage("user_data"))
         }
-
         if(isAuth && isSelfUser(userAbout.username, this.props.match.params.username)){
             subnav = AuthUserNav;
             isSelf = true;
@@ -125,7 +124,6 @@ export default class Profile extends Component {
         }
         let qstr = new URLSearchParams(this.props.location.search);
         let activeTab = qstr.get('active');
-        // console.log("active tab", activeTab);
         if(activeTab){
             subnav.map(ele=>{
                 if(ele.title.toLowerCase()=== activeTab.toLowerCase()){
@@ -141,7 +139,8 @@ export default class Profile extends Component {
         else{
             activeTab = subnav.filter(ele=>ele.isActive === true)[0].title   
         }
-        this.retrieveDataFromAPI(activeTab, this.updateStateOnAPIcall)
+        console.log("active tab", activeTab);
+        this.retrieveDataFromAPI(activeTab, this.updateStateOnAPIcall, isAuth)
 
         // add event listner
         let eventListnerRef = this.handleScroll.bind(this);
@@ -234,23 +233,28 @@ export default class Profile extends Component {
 
     }
 
-    retrieveDataFromAPI = (selectedMenu, callbackFunc)=>{
+    retrieveDataFromAPI = (selectedMenu, callbackFunc, isAuth=null)=>{
         let url = this.getAPIUrl(selectedMenu)
         let stateKey = this.getStateKeyFromSubmenuName(selectedMenu)
+        if(isAuth === null) {
+            isAuth = this.state.isAuth
+        }
         if (this.state[stateKey]!== null){
             // don't make api call
             return true
         }
-        if(this.state.isAuth === false &&  ['Saved', 'Followers', 'Following'].includes(selectedMenu)){
+        if(isAuth === false &&  ['Saved', 'Followers', 'Following'].includes(selectedMenu)){
             
             this.setState({
                 [stateKey]: []
             })
             return true
         }
+
+
         if (url){
             HTTPRequestHandler.get(
-                {url:url, includeToken:false, callBackFunc: callbackFunc.bind(this, stateKey, selectedMenu), 
+                {url:url, includeToken: isAuth , callBackFunc: callbackFunc.bind(this, stateKey, selectedMenu), 
                 errNotifierTitle:"Update failed !"})
         }
     } 

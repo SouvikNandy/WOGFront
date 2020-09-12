@@ -10,6 +10,7 @@ import {GetCommentsAPI} from '../../utility/ApiSet';
 import {JSONToEditState} from '../TextInput';
 import Paginator from '../../utility/Paginator';
 import OwlLoader from '../OwlLoader';
+import {Redirect} from 'react-router-dom';
 
 
 export class ModalComments extends CommentsBase {
@@ -20,11 +21,16 @@ export class ModalComments extends CommentsBase {
         count: 0,
         rootCommentBox: null,
         paginator: null,
-        isFetching: false
+        isFetching: false,
+        redirectLogin: false
     }
 
     componentDidMount(){
         GetCommentsAPI(this.props.post_id, this.updateStateOnAPIcall)
+    }
+
+    redirectToLogin = () =>{
+        this.setState({redirectLogin: !this.state.redirectLogin})
     }
 
     updateStateOnAPIcall = (data)=>{
@@ -41,7 +47,7 @@ export class ModalComments extends CommentsBase {
         this.setState({
             data: result,
             paginator: data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null,
-            count: data.count
+            count: data.count, 
         })
 
     }
@@ -85,6 +91,7 @@ export class ModalComments extends CommentsBase {
     }
 
     viewPreviousComments = () => {
+        if(!this.props.isAuth) return;
         if(this.state.isFetching) return;
         if(this.state.paginator){
             let res = this.state.paginator.getNextPage(this.updateStateOnPagination)
@@ -113,6 +120,12 @@ export class ModalComments extends CommentsBase {
 
     render() {
         if(!this.state.data) return(<span className="m-no-comments"><OwlLoader /></span>)
+        if(this.state.redirectLogin){
+            return(<Redirect to={{
+                  pathname: `/m-auth/`,
+                  state: { modal: true, currLocation: this.props.currLocation }
+              }} />
+          )}
 
         let allComments = <span className="m-no-comments"><NoContent message={"No comments yet"}/></span>
         if (this.state.data.length > 0) {
@@ -139,14 +152,18 @@ export class ModalComments extends CommentsBase {
             this.state.count > 0 ?
                 <span className="count-txt">{this.state.count} comments</span> :
                 <span className="count-txt">No comments</span>
-
         return (
             <React.Fragment>
                 <section className="m-show-all-coments">{totalComments}</section>
                 <section className="m-comments-view" id="m-comments-view">
                     {this.state.paginator && this.state.paginator.next?
                         <div className="prev-content">
+                            {this.props.isAuth?
                             <span className="prev-link" onClick={this.viewPreviousComments}>View Previous Comments</span>
+                            :
+                            <span className="prev-link" onClick={this.redirectToLogin}>Sign In to View Previous Comments</span>
+                            }
+                            
                         </div>
                         :
                         ""

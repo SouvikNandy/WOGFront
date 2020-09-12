@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FaUser } from "react-icons/fa";
 import '../assets/css/login.css';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, withRouter } from 'react-router-dom';
 import { createFloatingNotification } from '../components/FloatingNotifications';
 import {saveInStorage, storeAuthToken, silentRefresh } from '../utility/Utility';
 import Dropdown from '../components/Dropdown';
@@ -34,9 +34,15 @@ export class LoginModal extends Component{
     changePage = () =>{
         this.setState({signInPage: !this.state.signInPage})
     }
+    
+    gotoPrev = (e) => {
+        e.stopPropagation();
+        this.props.history.goBack()
+    }
+
     onRedirection = (username) =>{
         this.props.history.push(
-            this.props.location.state && this.props.location.state.currLocation && this.props.location.state.currLocation.pathname? 
+            this.props.location.state && this.props.location.state.currLocation && this.props.location.state.currLocation.pathname && this.props.location.state.currLocation.pathname !== "/"? 
             this.props.location.state.currLocation.pathname
             : 
             '/user-feeds/'+username+'/'
@@ -47,7 +53,7 @@ export class LoginModal extends Component{
         return(
         <div className="modal-container">
             <div className="login-container">
-                <AiFillCloseCircle className="close-btn close-container" onClick={this.onRedirection}/>
+                <AiFillCloseCircle className="close-btn close-container" onClick={this.gotoPrev}/>
                 {this.state.signInPage?
                     <SignIn onSignup={this.changePage} onRedirection={this.onRedirection}/> 
                     :
@@ -276,4 +282,4 @@ export class SignUp extends Component {
         )
     }
 }
-export default Login;
+export default withRouter(LoginModal);

@@ -44,7 +44,7 @@ const ModalLikes = (props) => {
             <div className="m-likes-preview">
                 {props.responsecounts.likes > 0 ?
                     <span className="m-l" 
-                    onClick={()=>{props.displaySideView(
+                    onClick={!props.displaySideView?"" :()=>{props.displaySideView(
                         {
                             content: <LikedBy phase={"post"} post_id={props.post_id}/>,
                             sureVal: true,

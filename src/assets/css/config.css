@@ -427,6 +427,29 @@ ul {
 }
 
 
+.tooltip {
+    position: relative;
+}
+
+.toolpit .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: var(--light);
+    text-align: center;
+    border-radius: 0.7rem;
+    padding: 0.5rem 0.2rem;
+    position: absolute;
+    z-index: 1;
+    top: 120%;
+    font-size: 0.8rem;
+}
+  
+
+.tooltip:hover .tooltiptext {
+    visibility: visible !important;
+}
+
 @media(max-width:900px) {
     .side-bar-view-active {
         width: 100vw;

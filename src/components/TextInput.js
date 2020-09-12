@@ -164,7 +164,6 @@ class TextInput extends React.Component {
   }
 
   render() {
-    console.log("text props", this.props)
     if(!this.state.editorState){ return (<React.Fragment></React.Fragment>)}
     if(this.state.loggedIn === false){
       return(<Redirect to={{

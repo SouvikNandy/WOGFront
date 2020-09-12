@@ -6,6 +6,7 @@ import { FaAngleLeft } from "react-icons/fa";
 import { GetRepliesAPI } from '../../utility/ApiSet';
 import Paginator from '../../utility/Paginator';
 import {JSONToEditState} from '../TextInput';
+import {Redirect} from 'react-router-dom';
 
 export class ModalReplies extends CommentsBase {
 
@@ -13,7 +14,8 @@ export class ModalReplies extends CommentsBase {
         data: [],
         replyToUser: null,
         paginator: null,
-        isFetching: false
+        isFetching: false,
+        redirectLogin: false
     }
 
     componentDidMount() {
@@ -28,6 +30,10 @@ export class ModalReplies extends CommentsBase {
             GetRepliesAPI(this.props.post_id, this.props.parentComment.id, this.updateStateOnAPIcall)
         }
 
+    }
+
+    redirectToLogin = () =>{
+        this.setState({redirectLogin: !this.state.redirectLogin})
     }
 
     updateStateOnAPIcall = (data)=>{
@@ -64,6 +70,7 @@ export class ModalReplies extends CommentsBase {
     }
 
     viewPreviousComments = () => {
+        if(!this.props.isAuth) return;
         if(this.state.isFetching) return;
         if(this.state.paginator){
             let res = this.state.paginator.getNextPage(this.updateStateOnPagination)
@@ -94,6 +101,13 @@ export class ModalReplies extends CommentsBase {
     }
 
     render() {
+        if(this.state.redirectLogin){
+            return(<Redirect to={{
+                  pathname: `/m-auth/`,
+                  state: { modal: true, currLocation: this.props.currLocation }
+              }} />
+          )}
+
         let parrentCmnt = <CommentCubes
             key={this.props.parentComment.id} isReply={false}
             comment={this.props.parentComment}
@@ -133,7 +147,11 @@ export class ModalReplies extends CommentsBase {
                         </div>
                         {this.state.paginator && this.state.paginator.next?
                             <div className="prev-content">
-                                <span className="prev-link" onClick={this.viewPreviousComments}>View Previous Comments</span>
+                                {this.props.isAuth?
+                                    <span className="prev-link" onClick={this.viewPreviousComments}>View Previous Replies</span>
+                                    :
+                                    <span className="prev-link" onClick={this.redirectToLogin}>Sign In to View Previous Replies</span>
+                                }
                             </div>
                             :
                             ""

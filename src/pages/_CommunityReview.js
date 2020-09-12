@@ -225,7 +225,6 @@ export class CommunityReview extends Component{
             {key: "rv-1", "title": "All Reviews", "isActive": true},
             {key: "rv-2", "title": "Suggest Us", "isActive": false}
         ],
-        isAuth: false
     }
 
     addNewReview = (record) =>{
@@ -345,35 +344,41 @@ export class CommunityReview extends Component{
                                 </div>
                                 
                             </div>
-                            <div className="rating-div">
-                                <div className="rating-cube toolpit">
-                                    <FaRegKissWinkHeart className="reaction-icon icons-active " />
-                                    <span className="reaction-count">{this.state.reactionCount["kiss"]}</span>
-                                    <span class="tooltiptext">Oh Lovely!</span>
+                            <div className="rating-row">
+                                <FaKissWinkHeart className="reaction-icon icons-active " />
+                                <div className="rating-bar">
+                                    <div className="rating-fill" style={{width: this.getReactionPercent('kiss')}}></div>
                                 </div>
-                                <div className="rating-cube toolpit">
-                                    <FaRegLaughWink className="reaction-icon icons-active " />
-                                    <span className="reaction-count">{this.state.reactionCount["wink"]}</span>
-                                    <span class="tooltiptext">It's Great</span>
-                                </div>
-                                <div className="rating-cube toolpit">
-                                    <FaRegLaugh className="reaction-icon icons-active " />
-                                    <span className="reaction-count">{this.state.reactionCount["laugh"]}</span>
-                                    <span class="tooltiptext">It's Good</span>
-                                </div>
-                                <div className="rating-cube toolpit">
-                                    <FaRegMeh className="reaction-icon icons-active " />
-                                    <span className="reaction-count">{this.state.reactionCount["meh"]}</span>
-                                    <span class="tooltiptext">It's Ok Ok</span>
-                                </div>
-                                <div className="rating-cube toolpit">
-                                    <FaRegFrown className="reaction-icon icons-active " />
-                                    <span className="reaction-count">{this.state.reactionCount["frown"]}</span>
-                                    <span class="tooltiptext">Pathetic</span>
-                                </div>
-                               
+                                <span className="reaction-count">{this.state.reactionCount["kiss"]}</span>
                             </div>
-
+                            <div className="rating-row">
+                                <FaLaughWink className="reaction-icon icons-active " />
+                                <div className="rating-bar">
+                                    <div className="rating-fill" style={{width: this.getReactionPercent('wink')}}></div>
+                                </div>
+                                <span className="reaction-count">{this.state.reactionCount["wink"]}</span>
+                            </div>
+                            <div className="rating-row">
+                                <FaLaugh className="reaction-icon icons-active " />
+                                <div className="rating-bar">
+                                    <div className="rating-fill" style={{width: this.getReactionPercent('laugh')}}></div>
+                                </div>
+                                <span className="reaction-count">{this.state.reactionCount["laugh"]}</span>
+                            </div>
+                            <div className="rating-row">
+                                <FaMeh className="reaction-icon icons-active " />
+                                <div className="rating-bar">
+                                    <div className="rating-fill" style={{width: this.getReactionPercent('meh')}}></div>
+                                </div>
+                                <span className="reaction-count">{this.state.reactionCount["meh"]}</span>
+                            </div>
+                            <div className="rating-row">
+                                <FaFrown className="reaction-icon icons-active " />
+                                <div className="rating-bar">
+                                    <div className="rating-fill" style={{width: this.getReactionPercent('frown')}}></div>
+                                </div>
+                                <span className="reaction-count">{this.state.reactionCount["frown"]}</span>
+                            </div>
                         </div>
                     </div>
                     {this.props.showSubNav=== false?
@@ -388,7 +393,7 @@ export class CommunityReview extends Component{
                 <div className="review-container">
                     {this.getContent()}
                 </div>
-                {this.state.SubNavOptions[0].isActive && this.state.isAuth?
+                {this.state.SubNavOptions[0].isActive?
                 <AddReviewBTN addNewReview = {this.addNewReview}/>
                 :
                 ""

@@ -35,7 +35,7 @@ export const LikePostAPI = (requestBody, callBackFunc) =>{
 
 export const PostLikedByUsers = (pid, callBackFunc) =>{
     let url = 'api/v1/like-post/?pid='+pid;
-    HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
+    HTTPRequestHandler.get({url:url, includeToken: false, callBackFunc: callBackFunc})
 }
 
 export const SavePostAPI = (requestBody, callBackFunc) =>{
@@ -74,7 +74,7 @@ export const LikeCommentAPI = (requestBody, callBackFunc) =>{
 
 export const CommentLikedByUsers = (pid, cid, callBackFunc) =>{
     let url = 'api/v1/like-comment/?pid='+pid +'&cid='+cid;
-    HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
+    HTTPRequestHandler.get({url:url, includeToken: false, callBackFunc: callBackFunc})
 }
 
 export default {LoginAPI}
