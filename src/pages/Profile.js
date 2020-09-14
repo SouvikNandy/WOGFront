@@ -516,13 +516,17 @@ export default class Profile extends Component {
                     let msg = "No shots yet !!!"
                     resultList = this.getNoContentDiv(msg);
                     return(
-                        <div key={item.title} className="profile-portfolio-grid">
-                            {resultList}
-                            {this.state.isSelf?
-                            <AddPost onSuccessfulUpload={this.addNewPortfolioToState} />
-                            :
-                            ""}
-                        </div>
+                        <React.Fragment>
+                            <div key={item.title} className="profile-portfolio-grid">
+                                {resultList}
+                                
+                                {this.state.isSelf?
+                                <AddPost onSuccessfulUpload={this.addNewPortfolioToState} />
+                                :
+                                ""}
+                            </div>
+                            <Footer />
+                        </React.Fragment>
                     )
                 }
                 else if (this.state.userPortFolio && this.state.userPortFolio.length > 0){
@@ -543,13 +547,18 @@ export default class Profile extends Component {
                         resultList = this.padLoaderShot(resultList)
                     }
                     return(
-                        <div key={item.title} className="profile-shots">
-                            {resultList}
-                            {this.state.isSelf?
-                            <AddPost onSuccessfulUpload={this.addNewPortfolioToState} />
-                            :
-                            ""}
-                        </div>
+                        <React.Fragment>
+                            <div key={item.title} className="profile-shots">
+                                {resultList}
+                                {this.state.isSelf?
+                                <AddPost onSuccessfulUpload={this.addNewPortfolioToState} />
+                                :
+                                ""}
+                            </div>
+                            {!this.state.portfolioPaginator || !this.state.portfolioPaginator.next?
+                            <Footer /> : ""
+                            }
+                        </React.Fragment>
                     )
                 }
                 else{
@@ -588,13 +597,18 @@ export default class Profile extends Component {
                 }
                 
                 return(
-                    <div key={item.title} className="profile-portfolio-grid">
-                        {resultList}
-                        {this.state.isSelf?
-                        <AddPost />
-                        :
-                        ""}
-                    </div>
+                    <React.Fragment>
+                        <div key={item.title} className="profile-portfolio-grid">
+                            {resultList}
+                            {this.state.isSelf?
+                            <AddPost />
+                            :
+                            ""}
+                        </div>
+                        {!this.state.portfolioPaginator || !this.state.portfolioPaginator.next?
+                            <Footer /> : ""
+                            }
+                    </React.Fragment>
                 )
             }
             else if (item.title === "Tags" && item.isActive === true){
@@ -646,7 +660,6 @@ export default class Profile extends Component {
                                     <Shot  id={ele} data={ele} currLocation={this.props.location} likeShot={this.likeTagRequestShot} 
                                     unLikeShot={this.unLikeTagRequestShot}/>
                                 </div>
-                            
                             )
                             return ele
                         })
@@ -710,9 +723,14 @@ export default class Profile extends Component {
                 }
                 
                 return (
-                <div key={item.title} className="profile-user-grid">
-                        {resultList}
-                </div>
+                    <React.Fragment>
+                        <div key={item.title} className="profile-user-grid">
+                                {resultList}
+                        </div>
+                        {!this.state.followerPaginator || !this.state.followerPaginator.next?
+                            <Footer /> : ""
+                        }
+                    </React.Fragment>
                 )
             }
             else if (item.title === "Following" && item.isActive === true){
@@ -749,9 +767,14 @@ export default class Profile extends Component {
                 }
                 
                 return (
-                    <div key={item.title} className="profile-user-grid">
-                            {resultList}
-                    </div>
+                    <React.Fragement>
+                        <div key={item.title} className="profile-user-grid">
+                                {resultList}
+                        </div>
+                        {!this.state.followingPaginator || !this.state.followingPaginator.next?
+                            <Footer /> : ""
+                        }
+                        </React.Fragement>
                     )
             }
 
@@ -763,7 +786,7 @@ export default class Profile extends Component {
             else if (item.title === "Reviews" && item.isActive === true){
                 // USER reviews
                 let comp = <CommunityReview key={item.title} showSubNav={false} headMessgae={"Public reaction about this profile"}
-                requireFooter={false}/>
+                requireFooter={false} username={this.state.userAbout.username}/>
                 if(this.props.isAuthenticated){
                     return (<div className="activated-nav" key="r-plt">{comp}</div>)
                 }
@@ -808,9 +831,14 @@ export default class Profile extends Component {
                 }
                 
                 return(
-                    <div key={item.title} className="profile-portfolio-grid">
-                        {resultList}
-                    </div>
+                    <React.Fragment>
+                        <div key={item.title} className="profile-portfolio-grid">
+                            {resultList}
+                        </div>
+                        {!this.state.savedPaginator || !this.state.savedPaginator.next?
+                            <Footer /> : ""
+                        }
+                    </React.Fragment>
                 )
             }
             return <React.Fragment key={"default "+ index}></React.Fragment>
@@ -840,7 +868,10 @@ export default class Profile extends Component {
             
         }
         if(!this.state.userAbout){
-            return(<React.Fragment><OwlLoader /></React.Fragment>)
+            return(<React.Fragment>
+                    <OwlLoader />
+                    <Footer />
+                </React.Fragment>)
         }
         let resultBlock = this.getCompomentData()
         return (
@@ -868,7 +899,6 @@ export default class Profile extends Component {
                 <Subnav subNavList={this.state.subNavList} selectSubMenu={this.selectSubMenu}  getMenuCount={this.getMenuCount}/>
                 {/* result Component */}
                 {resultBlock}
-                <Footer />
             </React.Fragment>
         )
     }

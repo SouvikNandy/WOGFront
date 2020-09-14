@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { PostLikedByUsers, CommentLikedByUsers } from '../../utility/ApiSet';
+import { PostLikedByUsers, CommentLikedByUsersAPI } from '../../utility/ApiSet';
 import Paginator from '../../utility/Paginator';
 import OwlLoader from '../OwlLoader';
 import { UserFlat } from '../Profile/UserView';
@@ -18,7 +18,7 @@ export class LikedBy extends Component {
 
         }
         else if(this.props.phase === "comment"){
-            CommentLikedByUsers(this.props.post_id, this.props.comment_id, this.updateStateOnAPIcall)
+            CommentLikedByUsersAPI(this.props.post_id, this.props.comment_id, this.updateStateOnAPIcall)
         }
     }
 

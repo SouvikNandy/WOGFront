@@ -10,7 +10,7 @@ import { FaPencilAlt, FaPlus,
     FaRegKissWinkHeart, FaKissWinkHeart,
 } from 'react-icons/fa';
 import {AiFillHeart} from 'react-icons/ai';
-import {generateId} from '../utility/Utility.js';
+import {generateId, isAuthenticated} from '../utility/Utility.js';
 import Subnav from '../components/Navbar/Subnav';
 
 import pl1 from "../assets/images/wedding1.jpg";
@@ -18,6 +18,9 @@ import pl2 from "../assets/images/people/2.jpg";
 import StickyBoard from '../components/Review/StickyBoard';
 import Footer from '../components/Footer';
 import NoContent from '../components/NoContent';
+import { UserReviewsAPI } from '../utility/ApiSet';
+import Paginator from '../utility/Paginator';
+import OwlLoader from '../components/OwlLoader';
 
 // Add review button
 export class AddReviewBTN extends Component {
@@ -190,42 +193,76 @@ class AddReviewForm extends Component{
 
 export class CommunityReview extends Component{
     state ={
-        reviews :[
-            {id: 1, name: "John Doe", username: "johndoe", designation: "Creative Director", profile_pic: pl2,  cover_pic: pl1,
-            review:"where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.",
-            reaction: "meh"
-            },
-            {id: 2, name: "John Doe", username: "johndoe", designation: "Creative Director", profile_pic: pl2,  cover_pic: pl1,
-            review:"where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.",
-            reaction: "laugh"
-            },
-            {id: 3, name: "John Doe", username: "johndoe", designation: "Creative Director", profile_pic: pl2,  cover_pic: pl1,
-            review:"where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.",
-            reaction: "frown"
-            },
-            {id: 4, name: "John Doe", username: "johndoe", designation: "Creative Director", profile_pic: pl2,  cover_pic: pl1,
-            review:"where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.",
-            reaction: "wink"
-            },            
-            {id: 5, name: "John Doe", username: "johndoe", designation: "Creative Director", profile_pic: pl2,  cover_pic: pl1,
-            review:"where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.",
-            reaction: "kiss"
-            },        
-        ],
-        
-        reactionCount :{
-            "kiss": 150,
-            "wink": 63,
-            "laugh": 15,
-            "meh": 6,
-            "frown": 12,
-            "total": 246
-        },
+        reviews : null,
+        reaction_count : {},
         SubNavOptions:[
             {key: "rv-1", "title": "All Reviews", "isActive": true},
             {key: "rv-2", "title": "Suggest Us", "isActive": false}
         ],
-        isAuth: false
+        isAuth: isAuthenticated(),
+        paginator: null,
+        isFetching: false,
+        eventListnerRef: null,
+
+    }
+
+    componentDidMount(){
+        // if requested for user then fetch user reviews
+        // if requested for platform then fetch platform reviews
+        // else no reviews avaliable 
+        if (this.props.username){
+            if(this.props.username === "platform"){
+                // fetch for platform
+
+            }
+            else{
+                // fetch for user
+                UserReviewsAPI(this.props.username, this.updateStateOnAPIcall)
+            }
+
+        }
+        else{
+            // no reviews
+
+        }
+        let eventListnerRef = this.handleScroll.bind(this);
+        this.setState({
+            eventListnerRef: eventListnerRef
+        })
+        window.addEventListener('scroll', eventListnerRef);
+    }
+
+    componentWillUnmount(){
+        window.removeEventListener('scroll', this.state.eventListnerRef);
+        
+    }
+
+    updateStateOnAPIcall = (data)=>{
+        console.log("data", data)
+        this.setState({
+            reviews : data.results,
+            reaction_count: data.reaction_count,
+            paginator: data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null
+        })
+    }
+
+    handleScroll() {
+        if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+        if(this.state.isFetching) return;
+        if(this.state.paginator){
+            let res = this.state.paginator.getNextPage(this.updateStateOnPagination)
+            if (res !== false){
+                this.setState({isFetching: true})
+            }  
+        }
+        
+    }
+
+    updateStateOnPagination = (results) =>{
+        this.setState({
+            feeds:[...this.state.feeds, ...results],
+            isFetching: false
+        })
     }
 
     addNewReview = (record) =>{
@@ -258,21 +295,21 @@ export class CommunityReview extends Component{
     }
     
     getReactionPercent = (key) =>{
-        let total = this.state.reactionCount.total;
+        let total = this.state.reaction_count.total;
         let percentVal = 0
         if (total > 0){
-            let keyCount = this.state.reactionCount[key]
+            let keyCount = this.state.reaction_count[key]
             percentVal = parseInt((keyCount /total) * 100)
         }
         return percentVal + '%'
     }
 
     getWeightedAvg = () =>{
-        let total = this.state.reactionCount.total;
+        let total = this.state.reaction_count.total;
         let wavg = 0;
         if (total > 0){
-            wavg = (5*this.state.reactionCount["kiss"] + 4*this.state.reactionCount["wink"] + 3 * this.state.reactionCount["laugh"] 
-            + 2 * this.state.reactionCount["meh"] + 1* this.state.reactionCount["frown"]) / total
+            wavg = (5*this.state.reaction_count["kiss"] + 4*this.state.reaction_count["wink"] + 3 * this.state.reaction_count["laugh"] 
+            + 2 * this.state.reaction_count["meh"] + 1* this.state.reaction_count["frown"]) / total
         }
         return wavg
     }
@@ -308,9 +345,13 @@ export class CommunityReview extends Component{
     }
 
     render(){
-        
-        
-        
+        if(!this.state.reviews){
+            return(
+            <div className="review-container-head">
+                <OwlLoader />
+
+            </div>)
+        }
         let wavg = Math.round(this.getWeightedAvg() *10)/10;
         let wHeartSym = [];
         for(let i=1; i<6 ; i++){
@@ -340,7 +381,7 @@ export class CommunityReview extends Component{
                                     <div className="w-avg">
                                         {wHeartSym}
                                     </div>
-                                    <span className="w-line">{wavg} average based on {this.state.reactionCount["total"]} reviews</span>
+                                    <span className="w-line">{wavg} average based on {this.state.reaction_count["total"]} reviews</span>
 
                                 </div>
                                 
@@ -348,27 +389,27 @@ export class CommunityReview extends Component{
                             <div className="rating-div">
                                 <div className="rating-cube toolpit">
                                     <FaRegKissWinkHeart className="reaction-icon icons-active " />
-                                    <span className="reaction-count">{this.state.reactionCount["kiss"]}</span>
+                                    <span className="reaction-count">{this.state.reaction_count["kiss"]}</span>
                                     <span class="tooltiptext">Oh Lovely!</span>
                                 </div>
                                 <div className="rating-cube toolpit">
                                     <FaRegLaughWink className="reaction-icon icons-active " />
-                                    <span className="reaction-count">{this.state.reactionCount["wink"]}</span>
+                                    <span className="reaction-count">{this.state.reaction_count["wink"]}</span>
                                     <span class="tooltiptext">It's Great</span>
                                 </div>
                                 <div className="rating-cube toolpit">
                                     <FaRegLaugh className="reaction-icon icons-active " />
-                                    <span className="reaction-count">{this.state.reactionCount["laugh"]}</span>
+                                    <span className="reaction-count">{this.state.reaction_count["laugh"]}</span>
                                     <span class="tooltiptext">It's Good</span>
                                 </div>
                                 <div className="rating-cube toolpit">
                                     <FaRegMeh className="reaction-icon icons-active " />
-                                    <span className="reaction-count">{this.state.reactionCount["meh"]}</span>
+                                    <span className="reaction-count">{this.state.reaction_count["meh"]}</span>
                                     <span class="tooltiptext">It's Ok Ok</span>
                                 </div>
                                 <div className="rating-cube toolpit">
                                     <FaRegFrown className="reaction-icon icons-active " />
-                                    <span className="reaction-count">{this.state.reactionCount["frown"]}</span>
+                                    <span className="reaction-count">{this.state.reaction_count["frown"]}</span>
                                     <span class="tooltiptext">Pathetic</span>
                                 </div>
                                

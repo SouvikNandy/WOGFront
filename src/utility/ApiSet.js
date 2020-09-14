@@ -72,9 +72,31 @@ export const LikeCommentAPI = (requestBody, callBackFunc) =>{
 
 }
 
-export const CommentLikedByUsers = (pid, cid, callBackFunc) =>{
+export const CommentLikedByUsersAPI = (pid, cid, callBackFunc) =>{
     let url = 'api/v1/like-comment/?pid='+pid +'&cid='+cid;
     HTTPRequestHandler.get({url:url, includeToken: false, callBackFunc: callBackFunc})
+}
+
+// user - reviews
+export const UserReviewsAPI = (username, callBackFunc) =>{
+    let url = "api/v1/user-review/"+username+'/'
+    let includeToken = isAuthenticated()? true: false
+    HTTPRequestHandler.get({url:url, includeToken: includeToken, callBackFunc: callBackFunc})
+}
+
+export const AddUserReviewsAPI = (username, requestBody, callBackFunc) =>{
+    let url = "api/v1/user-review/"+username +'/'
+    HTTPRequestHandler.post({url:url, requestBody: requestBody, includeToken: true, callBackFunc: callBackFunc})
+}
+
+export const UpdateUserReviewsAPI = (username, requestBody, callBackFunc) =>{
+    let url = "api/v1/user-review/"+username+'/'
+    HTTPRequestHandler.put({url:url, requestBody: requestBody, includeToken: true, callBackFunc: callBackFunc})
+}
+
+export const DeleteUserReviewsAPI = (username, revID, callBackFunc) =>{
+    let url = "api/v1/user-review/"+username+"/?rid="+revID
+    HTTPRequestHandler.delete({url:url, includeToken: true, callBackFunc: callBackFunc})
 }
 
 export default {LoginAPI}
