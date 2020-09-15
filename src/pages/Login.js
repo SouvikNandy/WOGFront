@@ -168,6 +168,7 @@ export class SignUp extends Component {
         email: "",
         password : "",
         confirmPassword: "",
+        user_type: "",
 
         signupSuccesful : false
     }
@@ -195,8 +196,7 @@ export class SignUp extends Component {
 
         }
 
-        let user_type = document.getElementById('i-am');
-        if (!user_type || user_type === ""){
+        if (!this.state.user_type || this.state.user_type === ""){
             createFloatingNotification("error", "Signup failed!", "You must choose between individual/team account.");
             return false
         }
@@ -204,7 +204,7 @@ export class SignUp extends Component {
         let requestBody = { 
             name: this.state.name,
             username: this.state.username.toLowerCase(),
-            user_type: user_type ==="team"? "T": "I",
+            user_type: this.state.user_type ==="Team/Organization"? "T": "I",
             email: this.state.email, 
             password: this.state.password
         }
@@ -220,7 +220,9 @@ export class SignUp extends Component {
             email: "",
             password : "",
             confirmPassword: "",
-            signupSuccesful : true
+            user_type: "",
+            signupSuccesful : true,
+        
         })
         createFloatingNotification("success", "Successful Signup", data.message);
     }
@@ -234,6 +236,9 @@ export class SignUp extends Component {
         [e.target.name]: e.target.value
 
     });
+    updateUserType = (value) => this.setState({
+        user_type: value
+    })
     render() {
         if( this.state.signupSuccesful && this.props.onSignIn){
             this.props.onSignIn()
@@ -249,7 +254,7 @@ export class SignUp extends Component {
                     <div className="form-group f-flex">
                         <input type="text" placeholder="Username" name="username" onChange={this.onChange} maxlength="20" required />
                         <div className="i-am">
-                            <Dropdown options={["Individual", "Team/Organization"]} placeHolder={"I am"} />
+                            <Dropdown options={["Individual", "Team/Organization"]} placeHolder={"I am"} onChange={this.updateUserType} />
                         </div>
                     </div>
                     <div className="form-group">

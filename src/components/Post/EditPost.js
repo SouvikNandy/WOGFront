@@ -8,6 +8,7 @@ import {AddDocumentForm} from './AddPost';
 import { withRouter, Redirect } from 'react-router-dom';
 import { createFloatingNotification } from '../FloatingNotifications';
 import ImgCompressor from '../../utility/ImgCompressor';
+import { checkNotEmptyObject } from '../../utility/Utility';
 
 
 export class EditPost extends Component {
@@ -91,7 +92,7 @@ export class EditPost extends Component {
     }
 
     updatePostDetails =(requestBody)=>{
-        if(Object.keys(requestBody).length !==0){
+        if(!checkNotEmptyObject(requestBody)){
             let url = 'api/v1/add-post/';
             requestBody['portfolio_id']= this.state.shot.id; 
             HTTPRequestHandler.put(
@@ -129,7 +130,6 @@ export class EditPost extends Component {
                         <AddDocumentForm sideViewOnChange={this.activeSideView} showModal={this.gotoPrev} 
                         portfolio_name={this.state.shot.portfolio_name} description={this.state.shot.description} 
                         location={this.state.shot.location} updatePostDetails={this.updatePostDetails} />
-
                     </div>
                 </div>
                 

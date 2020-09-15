@@ -156,9 +156,10 @@ export const timeDifference = (previous) =>{
     let msPerYear = msPerDay * 365;
 
     var elapsed = current - previous;
+    console.log("elapsed",current, previous, elapsed )
 
     if (elapsed < msPerMinute) {
-         return Math.floor(elapsed/1000) + ' sec ago';   
+         return Math.floor(elapsed) + ' sec ago';   
     }
 
     else if (elapsed < msPerHour) {
@@ -257,6 +258,10 @@ export const ControlledEventFire = (el, etype) =>{
       evObj.initEvent(etype, true, false);
       el.dispatchEvent(evObj);
     }
+}
+
+export const checkNotEmptyObject = (ele) =>{
+    return Object.keys(ele).length > 0 ? true: false
 }
 
 export default {

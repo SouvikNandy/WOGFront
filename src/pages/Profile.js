@@ -792,7 +792,7 @@ export default class Profile extends Component {
             else if (item.title === "Reviews" && item.isActive === true){
                 // USER reviews
                 let comp = <CommunityReview key={item.title} showSubNav={false} headMessgae={"Public reaction about this profile"}
-                requireFooter={false} username={this.state.userAbout.username}/>
+                username={this.state.userAbout.username} isSelf={this.state.isSelf}/>
                 if(this.props.isAuthenticated){
                     return (<div className="activated-nav" key="r-plt">{comp}</div>)
                 }

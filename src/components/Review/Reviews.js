@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import Swiper from "swiper";
 import "swiper/css/swiper.css";
 import '../../assets/css/review.css';
 import pl1 from "../../assets/images/wedding1.jpg"
 import pl2 from "../../assets/images/people/2.jpg";
-import { FaQuoteLeft, FaQuoteRight, FaFrown, FaMeh, FaLaugh, FaLaughWink, FaKissWinkHeart } from "react-icons/fa";
+import { FaQuoteLeft, FaQuoteRight, FaFrown, FaMeh, FaLaugh, FaLaughWink, FaKissWinkHeart, FaUserCircle } from "react-icons/fa";
+import { timeDifference } from '../../utility/Utility';
 
 
 const getReactionIcon = (key) =>{
@@ -55,33 +56,52 @@ export function ReviewBlock(props) {
 
 export function ReviewCurved(props){
     let data = props.data
+    const [deleteConfirmation, showDeleteConfirmation] = useState(false)
     return(
         <React.Fragment>
             <div className="rev-curved">
                 <div className="rev-curved-imgbox">
-                    <img src={data.profile_pic} alt="" />
+                    {data.provider.profile_pic?
+                    <img className="user-logo" src={data.provider.profile_pic} alt="" />
+                    :
+                    <FaUserCircle className="user-logo default-user-logo" />
+                    }
+                    
                 </div>
                 <div className="rev-curved-context">
-                    
-                    <FaQuoteLeft  className="quotes-icon quote-left"/>
-                    <div>
-                        <div className="rev-user-reaction">
-                            <div className="rev-u">
-                                <h4 className="rev-u-name">{data.name}
-                                <span className="rev-u-adj">{data.designation}</span>
-                                </h4>
+                    <div className="rev-ctx-txt">
+                        <FaQuoteLeft  className="quotes-icon quote-left"/>
+                        <div>
+                            <div className="rev-user-reaction">
+                                <div className="rev-u">
+                                    <h4 className="rev-u-name">{data.provider.username}
+                                    <span className="rev-u-adj">{data.provider.profession}</span>
+                                    </h4>
+                                </div>
+                                <div className="rev-reaction">
+                                    {getReactionIcon(data.review.reaction)}
+                                </div>
                             </div>
-                            <div className="rev-reaction">
-                                {getReactionIcon(data.reaction)}
-                            </div>
-                            
-
+                            {data.review.text}
                         </div>
                         
-                        {data.review}
+                        <FaQuoteRight className="quotes-icon quote-right" />
+                    </div>
+                    <div className="rev-contect-edit-options">
+                        {deleteConfirmation?
+                            <React.Fragment>
+                                <span>Continue delete?</span>
+                                <span className="e-opt" onClick={()=> props.removeReview(data.id)}>Yes</span>
+                                <span className="e-opt" onClick={()=> showDeleteConfirmation(!deleteConfirmation)}>No</span>
+                            </React.Fragment>
+                            :
+                            <React.Fragment>
+                                <span>{timeDifference(data.created_at)}</span>
+                                {data.delete_perm? <span className="e-opt" onClick={()=> showDeleteConfirmation(!deleteConfirmation)}>Delete</span>: ""}
+                            </React.Fragment>                        
+                        }
                     </div>
                     
-                    <FaQuoteRight className="quotes-icon quote-right" />
                 </div>
             </div>
         </React.Fragment>

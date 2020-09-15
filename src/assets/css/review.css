@@ -145,6 +145,17 @@
     padding: 0 6%;
 }
 
+
+.review-container .self-rev{
+    width: 100%;
+    padding: 0.5rem 0.8rem;
+}
+
+.review-container .self-rev .rev-curved-context{
+    background: var(--hover-two);
+    color: var(--light);
+}
+
 .review-box {
     display: flex;
     width: 100%;
@@ -165,7 +176,7 @@
     flex: 1
 }
 
-.rev-curved-imgbox img {
+.rev-curved-imgbox .user-logo {
     height: 7rem;
     width: 7rem;
     object-fit: cover;
@@ -184,7 +195,33 @@
     align-items: center;
     border-radius: 2rem 0;
     cursor: default;
+    flex-direction: column;
 }
+
+.rev-curved-context .rev-ctx-txt{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.rev-curved-context .rev-contect-edit-options{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0.4rem;
+}
+.rev-curved-context .rev-contect-edit-options span{
+    margin-left: 0.5rem;
+}
+
+.rev-curved-context .rev-contect-edit-options .e-opt{
+    font-weight: bold;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
 
 .rev-curved-context .rev-user-reaction {
     display: flex;
@@ -466,7 +503,7 @@
         max-width: 100%;
     }
 
-    .rev-curved-imgbox img {
+    .rev-curved-imgbox .user-logo {
         height: 6rem;
         width: 6rem;
     }
