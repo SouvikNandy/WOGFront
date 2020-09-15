@@ -63,7 +63,7 @@ function ShotModalUrl() {
             <Route exact path="/m-auth/" component={LoginModal} />
             <Route exact path="/profile/:username" component={Profile} />
             <Route exact path="/shot-view/:id" component={ShotModalView} />
-            <Route exact path="/reviews/" render={props => (<CommunityReview username={"wogplatform"} />)} />
+            <Route exact path="/reviews/" render={props => (<CommunityReview username={"weddingograffiti"} />)} />
             <Route exact path="/explore/" component={Explore} />
             <PrivateRoute exact path="/user-feeds/:username" component={NewsFeeds} />
             <PrivateRoute exact path="/user-profile/:username" component={Profile} AuthenticatedOnly={true} />

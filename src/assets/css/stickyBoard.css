@@ -40,7 +40,7 @@
     width: 100%;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px solid var(--dark);
+    /* border-bottom: 1px solid var(--dark); */
 
 }
 
@@ -74,6 +74,21 @@
     justify-content: flex-end;
 }
 
+.sticky-notes .notes-bottom .delete-options{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 0.8rem;
+}
+
+.sticky-notes .notes-bottom .delete-options .e-opt{
+    font-size: 0.7rem;
+    font-weight: bold;
+    margin-left: 0.5rem;
+    cursor: pointer;
+}
+
 .sticky-notes .notes-bottom .pin-btn {
     width: 30%;
     background: var(--dark);
@@ -91,6 +106,12 @@
     border-bottom: 1px solid var(--dark);
     padding-bottom: 0.2rem;
     margin-bottom: 0.8rem;
+    display: flex;
+    flex-direction: column;
+}
+.sticky-notes .note-title .note-identitity{
+    font-size: 0.7rem;
+    font-weight: normal;
 }
 
 .sticky-notes .note-body {
@@ -120,6 +141,9 @@
 @media (max-width:800px) {
     .sticky-notes .note-title {
         font-size: 0.8rem;
+    }
+    .sticky-notes .note-title .note-identitity{
+        font-size: 0.5rem;
     }
 
     .sticky-notes .note-body {

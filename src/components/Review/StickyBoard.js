@@ -3,18 +3,21 @@ import "../../assets/css/addpost.css";
 import '../../assets/css/stickyBoard.css';
 
 import { FaPlus } from 'react-icons/fa';
-import {generateId} from '../../utility/Utility';
+import {generateId, getCurrentTimeInMS, timeDifference} from '../../utility/Utility';
 
 
 export class StickyBoard extends Component {
     state ={
         notes : [
-            {id:1, title: "Demo title 1", body : "where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book."},
-            {id:2, title: "Demo title 2", body : "where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book."}
+            {id:1, title: "Demo title 1", body : "where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.", username: "1amsid", "created_at": 1600172582, delete_perm: true},
+            {id:2, title: "Demo title 2", body : "where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.", username: "1amsid", "created_at": 1600172582, delete_perm: false }
         ],
+        paginator: null,
+        isFetching: false,
+        eventListnerRef: null,
     }
     addNote = (record) =>{
-        this.setState({notes: [...this.state.notes, record]})
+        this.setState({notes: [record, ...this.state.notes ]})
     }
     removeNote = (idx) =>{
         this.setState({
@@ -25,7 +28,8 @@ export class StickyBoard extends Component {
         let allNotes = [];
         this.state.notes.map(ele =>{
             allNotes.push(
-                <StickyNotes key={ele.id} data={ele} removeNote={this.removeNote.bind(this, ele.id)}/>
+                <StickyNotes key={ele.id} data={ele} removeNote={this.removeNote.bind(this, ele.id)} username={this.props.username} published={true} 
+                isAuth={this.props.isAuth}/>
             )
             return ele
         })
@@ -33,7 +37,8 @@ export class StickyBoard extends Component {
         return (
             <div className="sticky-board">
                 {allNotes}
-                <AddNoteBTN  addNote={this.addNote} />
+                {this.props.isAuth? <AddNoteBTN  addNote={this.addNote} username={this.props.username} isAuth={this.props.isAuth}/>: ""}
+                
                 
             </div>
         )
@@ -44,8 +49,10 @@ export class StickyBoard extends Component {
 export class StickyNotes extends Component{
     state ={
         title: '',
-        body: ''
+        body: '',
+        deleteConfirmation: false
     }
+    showDeleteConfirmation = () => this.setState({deleteConfirmation: !this.state.deleteConfirmation})
 
     onChange = (e) =>{
         this.setState({
@@ -54,7 +61,8 @@ export class StickyNotes extends Component{
     }
 
     pinNote = () =>{
-        let newRecord = {"title": this.state.title, "body": this.state.body, "id": generateId()}
+        let newRecord = {"title": this.state.title, "body": this.state.body, "id": generateId(), "username": this.props.username, 
+        "created_at": getCurrentTimeInMS()}
         this.props.addNote(newRecord);
         document.getElementById("note-title").value ="";
         document.getElementById("note-body").value ="";
@@ -67,7 +75,15 @@ export class StickyNotes extends Component{
                 <div className="note-text">
                     {this.props.data?
                     <React.Fragment>
-                        <div className="note-title">{this.props.data.title}</div>
+                        <div className="note-title">
+                            <span>{this.props.data.title}</span>
+                            {this.props.published?
+                                <span className="note-identitity">by {this.props.data.username}, {timeDifference(this.props.data.created_at)}</span>
+                                :
+                                ""
+                            }
+                            
+                            </div>
                         <div className="note-body">{this.props.data.body}</div>
                     </React.Fragment>
                     :
@@ -79,10 +95,23 @@ export class StickyNotes extends Component{
                     
                 </div>
                 <div className= "notes-bottom">
-                    {this.props.data?
-                        <button className="btn pin-btn" onClick={this.props.removeNote}>Remove</button>
+                    {this.props.isAuth && this.props.published?
+                        this.state.deleteConfirmation? 
+                            <div className="delete-options">
+                                <span>Continue delete?</span>
+                                <span className="e-opt" onClick={this.props.removeNote}>Yes</span>
+                                <span className="e-opt" onClick={this.showDeleteConfirmation}>No</span>
+                            </div>
+                            :
+                            this.props.data.delete_perm?
+                            <button className="btn pin-btn" onClick={this.showDeleteConfirmation}>Remove</button>
+                            :
+                            ""
                         :
+                        this.props.isAuth? 
                         <button className="btn pin-btn" onClick={this.pinNote}>Pin</button>
+                        :
+                        ""
                     }
                 </div>
                 
@@ -107,7 +136,7 @@ export class AddNoteBTN extends Component {
             <React.Fragment>
                 {this.state.isModalOpen?
                 <div className="add-notes-modal">
-                    <StickyNotes addNote={this.props.addNote}/>
+                    <StickyNotes addNote={this.props.addNote} username={this.props.username} isAuth={this.props.isAuth}/>
                 </div>
                 :
                 ""

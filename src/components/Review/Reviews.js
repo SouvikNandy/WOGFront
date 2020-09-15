@@ -97,7 +97,7 @@ export function ReviewCurved(props){
                             :
                             <React.Fragment>
                                 <span>{timeDifference(data.created_at)}</span>
-                                {data.delete_perm? <span className="e-opt" onClick={()=> showDeleteConfirmation(!deleteConfirmation)}>Delete</span>: ""}
+                                {data.delete_perm? <span className="e-opt" onClick={()=> showDeleteConfirmation(!deleteConfirmation)}>Remove</span>: ""}
                             </React.Fragment>                        
                         }
                     </div>

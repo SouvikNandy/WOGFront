@@ -256,8 +256,6 @@ export class CommunityReview extends Component{
         if (this.props.username){
             // fetch for user
             UserReviewsAPI(this.props.username, this.updateStateOnAPIcall)
-            
-
         }
         else{
             // no reviews
@@ -408,7 +406,7 @@ export class CommunityReview extends Component{
                 
             }
             else if(item.title === "Suggest Us" && item.isActive=== true){
-                revList = <StickyBoard />
+                revList = <StickyBoard username={this.state.currUser.username} isAuth={this.state.isAuth}/>
 
             }
             return item
