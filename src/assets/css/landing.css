@@ -363,13 +363,18 @@
 
 }
 
-.f-lower .f-mod-1 span {
+.f-lower .f-mod span {
     margin: 0;
     padding: 0;
-    vertical-align: middle;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9rem;
 }
-
+.f-lower .f-mod span .icons-active{
+    font-size: 0.9rem;
+    margin: 0 0.2rem;
+}
 
 
 /* potrait tablet, e-readers, kindle */

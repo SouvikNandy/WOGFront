@@ -734,7 +734,6 @@ export default class Profile extends Component {
                 )
             }
             else if (item.title === "Following" && item.isActive === true){
-
                 if(!this.state.userFollowing){
                     return(
                         <div key={item.title} className="profile-portfolio-grid">
@@ -765,22 +764,29 @@ export default class Profile extends Component {
                     }
 
                 }
+                console.log("came till here", resultList)
                 
                 return (
-                    <React.Fragement>
+                    <React.Fragment>
                         <div key={item.title} className="profile-user-grid">
                                 {resultList}
                         </div>
                         {!this.state.followingPaginator || !this.state.followingPaginator.next?
                             <Footer /> : ""
                         }
-                        </React.Fragement>
+                    </React.Fragment>
                     )
             }
 
             else if (item.title === "About" && item.isActive === true){
                 // USER ABOUT
-                return (<UserAbout key={item.title} data={this.state.userAbout}/>)
+                return (
+                    <React.Fragment>
+                        <UserAbout key={item.title} data={this.state.userAbout}/>
+                        <Footer />
+                    </React.Fragment>
+                
+                )
             }
 
             else if (item.title === "Reviews" && item.isActive === true){

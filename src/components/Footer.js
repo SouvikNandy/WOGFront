@@ -43,7 +43,7 @@ export default function Footer() {
                 </div>
                 <div className="f-lower">
                     <div className="f-mod">
-                        <span>&copy; copyright 2020.<FaHeart className="icons" /> from WOG team.</span>
+                        <span>We call it WOG with <FaHeart className="icons-active" />2020 &copy;copyright</span>
                     </div>
                 </div>
             </section>
