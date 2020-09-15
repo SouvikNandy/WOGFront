@@ -274,7 +274,7 @@ export class CommunityReview extends Component{
     }
 
     updateStateOnAPIcall = (data)=>{
-        console.log("data", data)
+        // console.log("data", data)
         this.setState({
             reviews : data.results,
             reaction_count: data.reaction_count,

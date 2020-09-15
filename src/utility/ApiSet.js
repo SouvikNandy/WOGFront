@@ -99,4 +99,21 @@ export const DeleteUserReviewsAPI = (username, revID, callBackFunc) =>{
     HTTPRequestHandler.delete({url:url, includeToken: true, callBackFunc: callBackFunc})
 }
 
+// platform suggestions
+export const UserSuggestionAPI = (callBackFunc) =>{
+    let url = "api/v1/user-suggestion/"
+    let includeToken = isAuthenticated()? true: false
+    HTTPRequestHandler.get({url:url, includeToken: includeToken, callBackFunc: callBackFunc})
+}
+
+export const AddSuggestionAPI = (requestBody, callBackFunc) =>{
+    let url = "api/v1/user-suggestion/"
+    HTTPRequestHandler.post({url:url, requestBody: requestBody, includeToken: true, callBackFunc: callBackFunc})
+}
+
+export const DeleteSuggestionAPI = (revID, callBackFunc) =>{
+    let url = "api/v1/user-suggestion/?rid="+revID
+    HTTPRequestHandler.delete({url:url, includeToken: true, callBackFunc: callBackFunc})
+}
+
 export default {LoginAPI}

@@ -108,11 +108,19 @@
     margin-bottom: 0.8rem;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 .sticky-notes .note-title .note-identitity{
     font-size: 0.7rem;
     font-weight: normal;
 }
+.sticky-notes .note-title .verified{
+    position: absolute;
+    top: 0.2rem;
+    right: 0.5rem;
+    font-size: 0.9rem;
+}
+
 
 .sticky-notes .note-body {
     max-height: 80%;

@@ -4,27 +4,69 @@ import '../../assets/css/stickyBoard.css';
 
 import { FaPlus } from 'react-icons/fa';
 import {generateId, getCurrentTimeInMS, timeDifference} from '../../utility/Utility';
+import OwlLoader from '../OwlLoader';
+import Paginator from '../../utility/Paginator';
+import { AddSuggestionAPI, DeleteSuggestionAPI, UserSuggestionAPI } from '../../utility/ApiSet';
+import {GoVerified} from 'react-icons/go';
 
 
 export class StickyBoard extends Component {
     state ={
-        notes : [
-            {id:1, title: "Demo title 1", body : "where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.", username: "1amsid", "created_at": 1600172582, delete_perm: true},
-            {id:2, title: "Demo title 2", body : "where entrepreneurs can easily find the right design for their company.The book cover for us was a very important part of the success of the book.", username: "1amsid", "created_at": 1600172582, delete_perm: false }
-        ],
+        notes: null,
         paginator: null,
         isFetching: false,
         eventListnerRef: null,
     }
-    addNote = (record) =>{
-        this.setState({notes: [record, ...this.state.notes ]})
-    }
-    removeNote = (idx) =>{
+    componentDidMount(){
+        UserSuggestionAPI(this.updateStateOnAPIcall)
+        let eventListnerRef = this.handleScroll.bind(this);
         this.setState({
-            notes: this.state.notes.filter(ele => ele.id!==idx)
+            eventListnerRef: eventListnerRef
+        })
+        window.addEventListener('scroll', eventListnerRef);
+    }
+
+    componentWillUnmount(){
+        window.removeEventListener('scroll', this.state.eventListnerRef);
+        
+    }
+
+    updateStateOnAPIcall = (data)=>{
+        this.setState({
+            notes : data.results,
+            paginator: data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null
         })
     }
+
+    handleScroll() {
+        if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+        if(this.state.isFetching) return;
+        if(this.state.paginator){
+            let res = this.state.paginator.getNextPage(this.updateStateOnPagination)
+            if (res !== false){
+                this.setState({isFetching: true})
+            }  
+        }
+        
+    }
+
+    updateStateOnPagination = (results) =>{
+        this.setState({
+            notes:[...results , ...this.state.notes],
+            isFetching: false
+        })
+    }
+
+    addNote = (record) => AddSuggestionAPI(record, this.addOnSuccess.bind(this, record))
+
+    addOnSuccess = (record) => this.setState({notes: [record, ...this.state.notes ]})
+
+    removeNote = (idx) =>DeleteSuggestionAPI(idx, this.deleteOnSuccess.bind(this, idx))
+        
+    deleteOnSuccess = (idx) => this.setState({ notes: this.state.notes.filter(ele => ele.id!==idx)})
+
     render() {
+        if (!this.state.notes) return(<div className="sticky-board"><OwlLoader /></div>)
         let allNotes = [];
         this.state.notes.map(ele =>{
             allNotes.push(
@@ -61,8 +103,9 @@ export class StickyNotes extends Component{
     }
 
     pinNote = () =>{
-        let newRecord = {"title": this.state.title, "body": this.state.body, "id": generateId(), "username": this.props.username, 
-        "created_at": getCurrentTimeInMS()}
+        let newRecord = {"title": this.state.title, "body": this.state.body, 
+        "id": generateId(), "username": this.props.username, "created_at": getCurrentTimeInMS(), 
+        is_approved: false, delete_perm: true}
         this.props.addNote(newRecord);
         document.getElementById("note-title").value ="";
         document.getElementById("note-body").value ="";
@@ -82,6 +125,7 @@ export class StickyNotes extends Component{
                                 :
                                 ""
                             }
+                            {this.props.data.is_approved? <GoVerified  className="verified" /> : ""}
                             
                             </div>
                         <div className="note-body">{this.props.data.body}</div>

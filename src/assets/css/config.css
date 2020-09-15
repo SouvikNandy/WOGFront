@@ -450,6 +450,11 @@ ul {
     visibility: visible !important;
 }
 
+.verified{
+    /* color: var(--hover-two) ; */
+    color: #5851DB;
+}
+
 @media(max-width:900px) {
     .side-bar-view-active {
         width: 100vw;

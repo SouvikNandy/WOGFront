@@ -258,7 +258,7 @@ export class EditProfile extends Component {
     pageContent = () =>{
         let contentBlock = [];
         let data = this.state.dataset;
-        let coverpic = data.profile_data.cover_pic? data.profile_data.cover_pic: defaultCoverPic();
+        let coverpic =data.profile_data && data.profile_data.cover_pic? data.profile_data.cover_pic: defaultCoverPic();
         this.state.SubNavOptions.map((ele, index) =>{
             if(ele.title === "Basic" && ele.isActive === true){
                 contentBlock.push(
@@ -271,7 +271,7 @@ export class EditProfile extends Component {
                             <img className="e-cover-img" src={this.state.cover_pic? this.state.cover_pic:coverpic} alt="" />
                             <div className="prof-img-section">
                                 <div className="e-user-img-back">
-                                    {(this.state.profile_pic || data.profile_data.profile_pic )?
+                                    {this.state.profile_pic ||  (data.profile_data && data.profile_data.profile_pic )?
                                     <img className="e-user-img" 
                                     src={this.state.profile_pic? this.state.profile_pic: data.profile_data.profile_pic} alt="" />
                                     :
@@ -319,7 +319,7 @@ export class EditProfile extends Component {
                 if (this.state.birthday){
                     dob = this.state.birthday
                 }
-                else if (data.profile_data.birthday){
+                else if (data.profile_data && data.profile_data.birthday){
                     dob = new Date(data.profile_data.birthday)
                 }
                 else{
@@ -345,7 +345,7 @@ export class EditProfile extends Component {
                         <div className="details-inline">
                             <div className="inline-content">
                                 <label>{data.user_type==="I"?"Home Town":"Headquaters"}</label>
-                                <input type="text" className="inp-box" defaultValue={data.profile_data.hometown} 
+                                <input type="text" className="inp-box" defaultValue={data.profile_data && data.profile_data.hometown? data.profile_data.hometown: ""} 
                                 placeholder={data.user_type==="I"?"Add your hometown":"Provide headquaters location"}
                                 name="hometown" id="hometown"
                                 onSelect={this.chooseOptions.bind(
@@ -360,7 +360,7 @@ export class EditProfile extends Component {
 
                             <div className="inline-content">
                                 <label>{data.user_type==="I"?"Current City":"Regional Branch"}</label>
-                                <input type="text" className="inp-box" defaultValue={data.profile_data.currentcity} 
+                                <input type="text" className="inp-box" defaultValue={data.profile_data && data.profile_data.currentcity? data.profile_data.currentcity: ""} 
                                 placeholder={data.user_type==="I"?"Add your current city":"Provide regional office (if any)"}
                                 name="currentcity" id="currentcity"
                                  onSelect={this.chooseOptions.bind(
@@ -380,29 +380,29 @@ export class EditProfile extends Component {
                             <label>Add your Social handles</label>
                             <div className="s-link">
                                 <label> <FiGlobe /> </label>
-                                <input type="text" defaultValue={data.profile_data.social?data.profile_data.social["web"]:""} 
+                                <input type="text" defaultValue={data.profile_data && data.profile_data.social?data.profile_data.social["web"]:""} 
                                 placeholder="Add your website" name="social-web" onChange={this.onChange}/>
                             </div>
                             <div className="s-link">
                                 <label> <FaFacebookSquare /> </label>
-                                <input type="text" defaultValue={data.profile_data.social?data.profile_data.social["facebook"]:""} 
+                                <input type="text" defaultValue={data.profile_data && data.profile_data.social?data.profile_data.social["facebook"]:""} 
                                 placeholder="Add your facebook account" name="social-facebook" onChange={this.onChange}/>
                             </div>
 
                             <div className="s-link">
                                 <label> <FaInstagram /> </label>
-                                <input type="text" defaultValue={data.profile_data.social?data.profile_data.social["instagram"]:""} 
+                                <input type="text" defaultValue={data.profile_data && data.profile_data.social?data.profile_data.social["instagram"]:""} 
                                 placeholder="Add your instagram account" name="social-instagram" onChange={this.onChange}/>
                             </div>
                             <div className="s-link">
                                 <label> <FaYoutube /> </label>
-                                <input type="text" defaultValue={data.profile_data.social?data.profile_data.social["youtube"]:""} 
+                                <input type="text" defaultValue={data.profile_data && data.profile_data.social?data.profile_data.social["youtube"]:""} 
                                 placeholder="Add your youtube channel" name="social-youtube" onChange={this.onChange} />
                             </div>
 
                             <div className="s-link">
                                 <label> <FaPinterest /> </label>
-                                <input type="text" defaultValue={data.profile_data.social?data.profile_data.social["pinterest"]:""} 
+                                <input type="text" defaultValue={data.profile_data && data.profile_data.social?data.profile_data.social["pinterest"]:""} 
                                 placeholder="Add your pinterest account" name="social-pinterest" onChange={this.onChange} />
                             </div>
                         </div>
