@@ -166,6 +166,57 @@
     border-bottom: none;
 }
 
+.user-intro{
+    width: 100%;
+    padding: 0.8rem 6%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.user-intro h4{
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.user-intro .bio-div{
+    width: 60%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.user-intro .bio-div-full{
+    width: 100% !important;
+}
+
+.user-intro .bio-div .u-content-datadiv{
+    font-size: 0.8rem;
+}
+
+.user-intro .rate-div{
+    width: 38%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.user-intro .reaction-palette{
+    align-items: initial;
+}
+.user-intro .reaction-palette .reaction-cube{
+    padding: 0.5rem 0;
+}
+
+.user-intro .rate-div .rate-head-text{
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
 /* profile about */
 .user-about {
     display: flex;
@@ -502,6 +553,16 @@
     
     .profile-user-grid .cu-prof-details .cu-p-content {
         font-size: 0.7rem;
+    }
+    .user-intro{
+        flex-direction: column;
+    }
+    .user-intro .bio-div,
+    .user-intro .rate-div{
+        width: 100%;
+    }
+    .user-intro .reaction-palette .reaction-icon{
+        font-size: 1.2rem !important;
     }
 }
 

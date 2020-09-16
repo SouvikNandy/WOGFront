@@ -34,7 +34,7 @@ export const isAuthenticated = () => {
     
 }
 
-
+let fetchingToken = false
 
 export const silentRefresh = () => {
     let inMemoryToken = retrieveFromStorage("tx");
@@ -60,10 +60,13 @@ export const silentRefresh = () => {
             
         } 
         else {
-            // console.log("refresh token each in " + diff +" seconds");
+            if(fetchingToken) return;
+            console.log("refresh token each in " + diff +" seconds");
+            fetchingToken = true
             setInterval(() => {
                 refreshToken().then(res =>{
                     if (res !== false){
+                        fetchingToken = false
                         silentRefresh();
                     }
                     else{

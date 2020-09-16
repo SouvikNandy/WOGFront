@@ -51,7 +51,7 @@ export function UserCube(props){
                         </div>
                     :   
                         <React.Fragment>
-                            <span className="m-adj">@{ele.username}</span>
+                            <span className="m-adj username">@{ele.username}</span>
                             <span className="m-adj">{ele.designation}</span>
                         </React.Fragment> 
                     }

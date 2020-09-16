@@ -305,7 +305,7 @@ export class EditProfile extends Component {
                             <label>{data.user_type==="I"?"Bio":"Write something about your team"}</label>
                             <textarea placeholder="Let others know about you, add a bio" 
                             defaultValue={data.profile_data && data.profile_data.bio? data.profile_data.bio: ""}
-                            name="bio" onChange={this.onChange}></textarea>
+                            name="bio" onChange={this.onChange} maxLength="250" ></textarea>
                             
                         </div>
 

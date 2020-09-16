@@ -13,7 +13,7 @@ import {FollowUserCubeAlt, FollowUnfollowUser} from '../components/Profile/UserV
 import DummyShots from '../components/Post/DummyShots';
 import {generateId, isSelfUser, isAuthenticated} from '../utility/Utility.js';
 import NoContent from '../components/NoContent';
-import CommunityReview from '../pages/CommunityReview'
+import CommunityReview, { ReactionPalette } from '../pages/CommunityReview'
 import { UserNavBar } from '../components/Navbar/Navbar';
 import { TiEdit } from 'react-icons/ti';
 import EditProfile from '../components/Profile/EditProfile';
@@ -25,6 +25,7 @@ import { createFloatingNotification } from '../components/FloatingNotifications'
 import { Redirect, Link } from 'react-router-dom';
 import OwlLoader from '../components/OwlLoader';
 import Paginator from '../utility/Paginator';
+import { AddUserReviewsAPI, UpdateUserReviewsAPI } from '../utility/ApiSet';
 
 
 
@@ -119,7 +120,7 @@ export default class Profile extends Component {
             subnav = PublicNav;
             userAbout = null;
             // call api to get user about
-            this.retrieveDataFromAPI('About', this.updateInitialAbout)
+            this.retrieveDataFromAPI('About', this.updateInitialAbout, isAuth)
 
         }
         let qstr = new URLSearchParams(this.props.location.search);
@@ -516,7 +517,7 @@ export default class Profile extends Component {
                     let msg = "No shots yet !!!"
                     resultList = this.getNoContentDiv(msg);
                     return(
-                        <React.Fragment>
+                        <React.Fragment key={item.title}>
                             <div key={item.title} className="profile-portfolio-grid">
                                 {resultList}
                                 
@@ -547,7 +548,7 @@ export default class Profile extends Component {
                         resultList = this.padLoaderShot(resultList)
                     }
                     return(
-                        <React.Fragment>
+                        <React.Fragment key={item.title}>
                             <div key={item.title} className="profile-shots">
                                 {resultList}
                                 {this.state.isSelf?
@@ -597,7 +598,7 @@ export default class Profile extends Component {
                 }
                 
                 return(
-                    <React.Fragment>
+                    <React.Fragment key={item.title}>
                         <div key={item.title} className="profile-portfolio-grid">
                             {resultList}
                             {this.state.isSelf?
@@ -723,7 +724,7 @@ export default class Profile extends Component {
                 }
                 
                 return (
-                    <React.Fragment>
+                    <React.Fragment key={item.title}>
                         <div key={item.title} className="profile-user-grid">
                                 {resultList}
                         </div>
@@ -763,11 +764,9 @@ export default class Profile extends Component {
                         resultList = this.padLoaderShot(resultList)
                     }
 
-                }
-                console.log("came till here", resultList)
-                
+                }                
                 return (
-                    <React.Fragment>
+                    <React.Fragment key={item.title}>
                         <div key={item.title} className="profile-user-grid">
                                 {resultList}
                         </div>
@@ -781,7 +780,7 @@ export default class Profile extends Component {
             else if (item.title === "About" && item.isActive === true){
                 // USER ABOUT
                 return (
-                    <React.Fragment>
+                    <React.Fragment key={item.title}>
                         <UserAbout key={item.title} data={this.state.userAbout}/>
                         <Footer />
                     </React.Fragment>
@@ -837,7 +836,7 @@ export default class Profile extends Component {
                 }
                 
                 return(
-                    <React.Fragment>
+                    <React.Fragment key={item.title}>
                         <div key={item.title} className="profile-portfolio-grid">
                             {resultList}
                         </div>
@@ -850,6 +849,11 @@ export default class Profile extends Component {
             return <React.Fragment key={"default "+ index}></React.Fragment>
         })
         return resultBlock
+    }
+    updateReaction = (rev) =>{
+        let userAbout = this.state.userAbout
+        userAbout.review = rev
+        this.setState({userAbout: userAbout})
     }
 
     forceRerenderOnce = (renderKey) =>{
@@ -892,9 +896,9 @@ export default class Profile extends Component {
                 ""
                 :
                 this.props.isAuthenticated || this.state.isSelf?
-                <UserNavBar selectedMenu={"profile"} username={this.state.userAbout.username}/>
-                :
-                <SearchHead />
+                    <UserNavBar selectedMenu={"profile"} username={this.state.userAbout.username}/>
+                    :
+                    <SearchHead />
                 }
                 
                 {/* profile top section */}
@@ -902,6 +906,10 @@ export default class Profile extends Component {
                 uploadPicture={this.uploadPicture} isAuth={this.state.isAuth} currLocation={this.props.location}
                 startStopFollowingProfile={this.startStopFollowingProfile}
                  />
+                 {/* intor div */}
+                {!this.state.isSelf && ['Shots', 'Portfolios'].includes(this.state.subNavList.filter(ele => ele.isActive)[0].title)? 
+                <UserIntro data={this.state.userAbout} isAuth={this.state.isAuth} updateReview={this.updateReaction} /> : ""}
+                {/* subnav menu */}
                 <Subnav subNavList={this.state.subNavList} selectSubMenu={this.selectSubMenu}  getMenuCount={this.getMenuCount}/>
                 {/* result Component */}
                 {resultBlock}
@@ -1009,4 +1017,65 @@ function ProfileHead(props) {
             </div>
         </React.Fragment>
     );
+}
+
+
+class UserIntro extends Component{
+    selectReaction = (key) =>{
+        let newrev = this.createReviewobject(key)
+        if (this.props.data.review.id){
+            // update review
+            UpdateUserReviewsAPI(this.props.data.username, newrev, this.successfulUpdate.bind(this, newrev))
+        }
+        else{
+            AddUserReviewsAPI(this.props.data.username, newrev, this.successfulUpdate.bind(this, newrev))
+        }
+    }
+    createReviewobject = (newReaction) =>{
+        let newRev = ''
+        if (this.props.data.review.id){
+            let rev = this.props.data.review
+            newRev = {
+                id: rev.id, review: {text: rev.text, reaction: newReaction}
+            }
+        }
+        else{
+            newRev = {
+                id: generateId(), 
+                review: { text: "", reaction: newReaction},
+            }
+
+        }
+        return newRev
+    }
+
+    successfulUpdate = (rev, response) =>{
+        let rv = {"id": rev.id ,"text": rev.review.text, "reaction": rev.review.reaction}
+        this.props.updateReview(rv)
+    }
+
+    render(){
+        let data = this.props.data
+        return(
+            <div className="user-intro">
+                <div className={this.props.isAuth?"bio-div": "bio-div bio-div-full"}>
+                    <h4>Bio</h4>
+                    <div className="u-content-datadiv">
+                        <p>{data.profile_data && data.profile_data.bio? data.profile_data.bio: "Not updated by user"}</p>
+                    </div>
+                </div>
+                {this.props.isAuth?
+                    <div className="rate-div">
+                        <span className="rate-head-text">Let <span className="username">{data.username}</span> know that you appriciate their creativity.<br/>
+                        Drop a reaction</span>
+                        <ReactionPalette selectReaction={this.selectReaction} reaction={data.review.reaction} />
+                    </div>
+                :
+                    ""
+                }
+            </div>
+            
+        )
+
+    } 
 }

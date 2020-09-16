@@ -16,6 +16,7 @@
     --div-underline: rgba(0, 0, 0, 0.4);
     --success-color: #47d147;
     --peacock: rgba(0, 255, 255, 0.9);
+    --username-color: #a7a7a7
 }
 
 * {
@@ -453,6 +454,10 @@ ul {
 .verified{
     /* color: var(--hover-two) ; */
     color: #5851DB;
+}
+
+.username{
+    color: var(--username-color);
 }
 
 @media(max-width:900px) {

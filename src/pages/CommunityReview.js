@@ -167,49 +167,7 @@ class AddReviewForm extends Component{
                         <section className="doc-body">
                             <div className="rev-doc-body">
                                 <label>Drop a reaction<span className="imp-field">*</span></label>
-                                <div className="reaction-palette">
-                                    <div className="reaction-cube" onClick={this.selectReaction.bind(this, 'frown')}>
-                                        {this.state.reaction === "frown"?
-                                        <FaFrown className="reaction-icon icons-active" />
-                                        :
-                                        <FaRegFrown className="reaction-icon" />
-                                        }
-                                        
-                                        <div className="reaction-text">Pathetic</div>
-                                    </div>
-                                    <div className="reaction-cube" onClick={this.selectReaction.bind(this, 'meh')}>
-                                        {this.state.reaction === "meh"?
-                                        <FaMeh className="reaction-icon icons-active " />
-                                        :
-                                        <FaRegMeh className="reaction-icon" />
-                                        }
-                                        <div className="reaction-text">It's Ok Ok</div>
-                                    </div>
-                                    <div className="reaction-cube" onClick={this.selectReaction.bind(this, 'laugh')}>
-                                        {this.state.reaction === "laugh"?
-                                        <FaLaugh className="reaction-icon icons-active " />
-                                        :
-                                        <FaRegLaugh className="reaction-icon" />
-                                        }
-                                        <div className="reaction-text">It's Good</div>
-                                    </div>
-                                    <div className="reaction-cube" onClick={this.selectReaction.bind(this, 'wink')}>
-                                        {this.state.reaction === "wink"?
-                                        <FaLaughWink className="reaction-icon icons-active " />
-                                        :
-                                        <FaRegLaughWink className="reaction-icon" />
-                                        }
-                                        <div className="reaction-text">It's Great</div>
-                                    </div>
-                                    <div className="reaction-cube" onClick={this.selectReaction.bind(this, 'kiss')}>
-                                        {this.state.reaction === "kiss"?
-                                        <FaKissWinkHeart className="reaction-icon icons-active " />
-                                        :
-                                        <FaRegKissWinkHeart className="reaction-icon" />
-                                        }
-                                        <div className="reaction-text">Oh Lovely!</div>
-                                    </div>
-                                </div>
+                                <ReactionPalette selectReaction={this.selectReaction} reaction={this.state.reaction} />
                                 <label>Add Review</label>
                                 <textarea type="text" id="user-rev" name="text" onChange={this.onChange} 
                                 placeholder="type your review ..." defaultValue={this.props.previousReview? this.props.previousReview.review.text: ""}/>
@@ -497,7 +455,7 @@ export class CommunityReview extends Component{
                     
                 </div>
                 <div className="review-container">
-                    {this.state.SubNavOptions[0].isActive && checkNotEmptyObject(this.state.self_review)?
+                    {this.state.SubNavOptions[0].isActive && checkNotEmptyObject(this.state.self_review) && this.state.self_review.review.text?
                         <div className="self-rev">
                             <ReviewCurved key={this.state.self_review.id} data={this.state.self_review} removeReview={this.removeReview}/>
                         </div>
@@ -529,5 +487,53 @@ export class CommunityReview extends Component{
     }
 }
 
+
+export function ReactionPalette(props){
+    return(
+        <div className="reaction-palette">
+            <div className="reaction-cube" onClick={ () => props.selectReaction('frown')}>
+                {props.reaction === "frown"?
+                <FaFrown className="reaction-icon icons-active" />
+                :
+                <FaRegFrown className="reaction-icon" />
+                }
+                
+                <div className="reaction-text">Pathetic</div>
+            </div>
+            <div className="reaction-cube" onClick={ () => props.selectReaction('meh')}>
+                {props.reaction === "meh"?
+                <FaMeh className="reaction-icon icons-active " />
+                :
+                <FaRegMeh className="reaction-icon" />
+                }
+                <div className="reaction-text">It's Ok Ok</div>
+            </div>
+            <div className="reaction-cube" onClick={() => props.selectReaction('laugh')}>
+                {props.reaction === "laugh"?
+                <FaLaugh className="reaction-icon icons-active " />
+                :
+                <FaRegLaugh className="reaction-icon" />
+                }
+                <div className="reaction-text">It's Good</div>
+            </div>
+            <div className="reaction-cube" onClick={() => props.selectReaction('wink')}>
+                {props.reaction === "wink"?
+                <FaLaughWink className="reaction-icon icons-active " />
+                :
+                <FaRegLaughWink className="reaction-icon" />
+                }
+                <div className="reaction-text">It's Great</div>
+            </div>
+            <div className="reaction-cube" onClick={() =>props.selectReaction('kiss')}>
+                {props.reaction === "kiss"?
+                <FaKissWinkHeart className="reaction-icon icons-active " />
+                :
+                <FaRegKissWinkHeart className="reaction-icon" />
+                }
+                <div className="reaction-text">Oh Lovely!</div>
+            </div>
+        </div>
+    )
+}
 
 export default CommunityReview;
