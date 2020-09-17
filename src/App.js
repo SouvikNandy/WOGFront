@@ -16,7 +16,8 @@ import Page404 from './pages/Page404';
 import CommmunityGuidelines from './pages/CommunityGuidelines';
 import LogOutPromptModal from './components/LogOutPromptModal';
 import EditPost from './components/Post/EditPost';
-
+import Join from './components/ChatClient/Join/Join';
+import Chat from './components/ChatClient/Chat/Chat'
 
 export default class App extends Component {
     componentDidMount(){
@@ -65,6 +66,8 @@ function ShotModalUrl() {
             <Route exact path="/shot-view/:id" component={ShotModalView} />
             <Route exact path="/reviews/" render={props => (<CommunityReview username={"weddingograffiti"} />)} />
             <Route exact path="/explore/" component={Explore} />
+            <Route exact path="/join/" component={Join} />
+            <Route exact path="/chat/" component={Chat} />
             <PrivateRoute exact path="/user-feeds/:username" component={NewsFeeds} />
             <PrivateRoute exact path="/user-profile/:username" component={Profile} AuthenticatedOnly={true} />
             <PrivateRoute exact path="/user-notifications/:username" component={Notifications} />

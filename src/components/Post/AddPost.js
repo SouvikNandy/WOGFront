@@ -15,7 +15,8 @@ import HTTPRequestHandler from '../../utility/HTTPRequests';
 
 
 // video thumbnail
-import videoThumbnail from '../../assets/images/icons/video-thumbnail.jpg'
+// import videoThumbnail from '../../assets/images/icons/video-thumbnail.jpg'
+import videoThumbnail from '../../assets/images/icons/demo-logo.png';
 import { createFloatingNotification } from '../FloatingNotifications';
 import TextInput, { ExtractToJSON } from '../TextInput';
 // import { retrieveFromStorage } from '../../utility/Utility';
