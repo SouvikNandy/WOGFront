@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import queryString from 'query-string';
-import io from "socket.io-client";
+// import io from "socket.io-client";
 
 import TextContainer from '../TextContainer/TextContainer';
 import Messages from '../Messages/Messages';
@@ -9,13 +9,14 @@ import Input from '../Input/Input';
 
 import '../../../assets/css/ChatClient/Chat.css';
 import { getBackendHOST } from "../../../utility/Utility";
+import SocketInterface from "../../../utility/SocketInterface";
 
-let socket;
+let socket = null;
 
 const Chat = ({ location }) => {
     const [name, setName] = useState('');
     const [room, setRoom] = useState('');
-    const [users, setUsers] = useState('');
+    // const [users, setUsers] = useState('');
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const ENDPOINT = getBackendHOST();
@@ -23,35 +24,36 @@ const Chat = ({ location }) => {
     useEffect(() => {
         const { name, room } = queryString.parse(location.search);
 
-        socket = io(ENDPOINT+'chat');
+        // socket = io(ENDPOINT+'chat');
+        socket = new SocketInterface('chat')
 
         setRoom(room);
         setName(name)
         console.log(socket)
 
-    socket.emit('join', { name, room }, (error) => {
-        if(error) {
-            alert(error);
-            }
-        });
+        socket.joinRoom(name, room,  (error) => {
+            if(error) {
+                alert(error);
+                }
+            })
     }, [ENDPOINT, location.search]);
   
     useEffect(() => {
-        socket.on('getMessage', message => {
-        setMessages(messages => [ ...messages, message ]);
-        });
+        socket.receiveMessage(message => {setMessages(messages => [ ...messages, message ]);});
+        socket.roomUser(()=>{});
     
-        socket.on("roomData", ({ users }) => {
-            setUsers(users);
-            });
+        // socket.on("roomData", ({ users }) => {
+        //     setUsers(users);
+        //     });
     }, []);
 
     const sendMessage = (event) => {
         event.preventDefault();
         if(message) {
-        socket.emit('message', message, () => setMessage(''));
+            socket.sendMessage(message, () => setMessage(''));
         }
     }
+    if(!socket) return(<React.Fragment></React.Fragment>);
     return (
         <div className="outerContainer">
             <div className="container">
@@ -59,7 +61,7 @@ const Chat = ({ location }) => {
                 <Messages messages={messages} name={name} />
                 <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
             </div>
-            <TextContainer users={users}/>
+            <TextContainer users={socket.getConnectedUsers()}/>
         </div>
   );
 }

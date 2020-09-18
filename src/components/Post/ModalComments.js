@@ -11,7 +11,11 @@ import {JSONToEditState} from '../TextInput';
 import Paginator from '../../utility/Paginator';
 import OwlLoader from '../OwlLoader';
 import {Redirect} from 'react-router-dom';
+import getUserData from '../../utility/userData';
+import SocketInterface from '../../utility/SocketInterface';
+import { isAuthenticated } from '../../utility/Utility';
 
+let socket = null;
 
 export class ModalComments extends CommentsBase {
     state = {
@@ -22,7 +26,10 @@ export class ModalComments extends CommentsBase {
         rootCommentBox: null,
         paginator: null,
         isFetching: false,
-        redirectLogin: false
+        redirectLogin: false,
+        sockRoom: '',
+        sockUser: '',
+        
     }
 
     componentDidMount(){
@@ -35,6 +42,7 @@ export class ModalComments extends CommentsBase {
 
     updateStateOnAPIcall = (data)=>{
         let result = data.results
+        console.log("comments", result)
         result.map(ele=> {
             if(ele.comment){
                 ele["comment"] = JSONToEditState(JSON.parse(ele.comment))
@@ -43,11 +51,34 @@ export class ModalComments extends CommentsBase {
             }
             return ele
         })
+        let sockRoom = null
+        let sockUser = null
+        if(isAuthenticated()){
+            sockRoom= 'P-'+this.props.post_id
+            sockUser= getUserData().username
+            socket = new SocketInterface('commentbox')
+            socket.joinRoom(sockUser, sockRoom,  (error) => {
+                if(error) {
+                    console.log("unable to join room on ns: commentbox")
+                    }
+                })
+            socket.receiveMessage(message => {
+                let newrecv = message.text
+                console.log("new received", newrecv)
+                newrecv["comment"] = JSONToEditState(JSON.parse(newrecv.comment))
+                this.setState({ data: [newrecv, ...this.state.data], count: this.state.count + 1 }, ()=>{
+                    this.scrollToBottom("m-comments-view");
+                })
+            });
+            socket.roomUser(()=>{});
+        }
         // paginated response
         this.setState({
             data: result,
             paginator: data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null,
             count: data.count, 
+            sockRoom: sockRoom,
+            sockUser: sockUser
         })
 
     }
@@ -64,6 +95,7 @@ export class ModalComments extends CommentsBase {
     }
     addComment = (comment) => {
         let newcomment = this.constructComment(comment, null);
+        socket.sendMessage(newcomment, () => {});
         // data will be rendered in reverse format
         this.setState({ data: [newcomment, ...this.state.data], count: this.state.count + 1 }, ()=>{
             this.scrollToBottom("m-comments-view");
@@ -135,7 +167,7 @@ export class ModalComments extends CommentsBase {
             else {
                 allComments = this.state.data.slice(Math.max(this.state.data.length - this.state.commentLimit, 0))
             }
-
+            console.log("all comments", allComments);
             allComments = allComments.sort(this.sortByCreationTime).map((item) => (
                 <CommentCubes key={item.id}
                     isReply={false} comment={item} doLike={this.doLike} doUnLike={this.doUnLike}

@@ -7,27 +7,33 @@ const ENDPOINT = getBackendHOST()
 
 export class SocketInterface{
     constructor(namespace) {
-        this.socket = io( ENDPOINT + namespace);
+        this.namespace = namespace
+        this.room = ''
+        this.socket = io( ENDPOINT + this.namespace);
         this.connectedUsers = [];
     }
 
     joinRoom = (name, room, errCallback) =>{
+        this.room = room
         this.socket.emit('join', { name, room }, (error) => {
             if(error) {
                 errCallback(error);
             }
         });
+        console.log("join request sent", this.namespace, name, room)
     }
 
     receiveMessage = (callBack)=>{
         this.socket.on('getMessage', message => {
+            console.log("receiveMessage", this.namespace, this.room, message)
             callBack(message)
         });
     }
 
     roomUser = (callBack) =>{
-        this.socket.on('getMessage', ({ users }) => {
+        this.socket.on('roomData', ({ users }) => {
             this.connectedUsers = users
+            console.log("roomUser", this.namespace, this.room, users)
             if (callBack) callBack(users)
         });
     }
@@ -36,8 +42,8 @@ export class SocketInterface{
         return this.connectedUsers
     }
 
-    sendMessage = (callBack) =>{
-        socket.emit('message', message, callBack);
+    sendMessage = (message, callBack) =>{
+        this.socket.emit('message', message, callBack);
     }
     
 }

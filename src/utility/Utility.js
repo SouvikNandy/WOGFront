@@ -166,7 +166,7 @@ export const timeDifference = (previous) =>{
     let msPerYear = msPerDay * 365;
 
     var elapsed = current - previous;
-    console.log("elapsed",current, previous, elapsed )
+    // console.log("elapsed",current, previous, elapsed )
 
     if (elapsed < msPerMinute) {
          return Math.floor(elapsed) + ' sec ago';   
