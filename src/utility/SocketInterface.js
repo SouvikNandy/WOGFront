@@ -28,7 +28,7 @@ export class SocketInterface{
     roomUser = (callBack) =>{
         this.socket.on('getMessage', ({ users }) => {
             this.connectedUsers = users
-            callBack(users)
+            if (callBack) callBack(users)
         });
     }
 

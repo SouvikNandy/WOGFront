@@ -35,8 +35,15 @@ export const isAuthenticated = () => {
 }
 
 let fetchingToken = false
+let intervalFunc = null
 
 export const silentRefresh = () => {
+    // clear previous interval funcs
+    if(intervalFunc !== null){
+        clearInterval(intervalFunc)
+        intervalFunc = null
+    }
+     
     let inMemoryToken = retrieveFromStorage("tx");
     if (inMemoryToken) {
         // console.log("inMemoryToken exists! ")
@@ -63,7 +70,7 @@ export const silentRefresh = () => {
             if(fetchingToken) return;
             console.log("refresh token each in " + diff +" seconds");
             fetchingToken = true
-            setInterval(() => {
+            intervalFunc = setInterval(() => {
                 refreshToken().then(res =>{
                     if (res !== false){
                         fetchingToken = false
