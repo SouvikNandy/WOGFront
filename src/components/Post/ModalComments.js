@@ -36,6 +36,11 @@ export class ModalComments extends CommentsBase {
         GetCommentsAPI(this.props.post_id, this.updateStateOnAPIcall)
     }
 
+    componentWillUnmount() {
+        // leave sock room
+        socket.leaveRoom(getUserData().username) 
+    }
+
     redirectToLogin = () =>{
         this.setState({redirectLogin: !this.state.redirectLogin})
     }

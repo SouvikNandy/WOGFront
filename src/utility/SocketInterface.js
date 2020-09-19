@@ -45,6 +45,13 @@ export class SocketInterface{
     sendMessage = (message, callBack) =>{
         this.socket.emit('message', message, callBack);
     }
+
+    leaveRoom = (name) =>{
+        let room = this.room
+        this.socket.emit('leave', () => {});
+        console.log("leave request sent", this.namespace, name, room)
+
+    }
     
 }
 

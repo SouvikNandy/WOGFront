@@ -7,6 +7,12 @@ import { GetRepliesAPI } from '../../utility/ApiSet';
 import Paginator from '../../utility/Paginator';
 import {JSONToEditState} from '../TextInput';
 import {Redirect} from 'react-router-dom';
+import getUserData from '../../utility/userData';
+import SocketInterface from '../../utility/SocketInterface';
+import { isAuthenticated } from '../../utility/Utility';
+
+
+let socket = null;
 
 export class ModalReplies extends CommentsBase {
 
@@ -15,7 +21,9 @@ export class ModalReplies extends CommentsBase {
         replyToUser: null,
         paginator: null,
         isFetching: false,
-        redirectLogin: false
+        redirectLogin: false,
+        sockRoom: '',
+        sockUser: '',
     }
 
     componentDidMount() {
@@ -28,6 +36,28 @@ export class ModalReplies extends CommentsBase {
         }
         else{
             GetRepliesAPI(this.props.post_id, this.props.parentComment.id, this.updateStateOnAPIcall)
+        }
+
+        let sockRoom = null
+        let sockUser = null
+        if(isAuthenticated()){
+            sockRoom= 'C-'+this.props.parentComment.id;
+            sockUser= getUserData().username;
+            socket = new SocketInterface('replycomment')
+            socket.joinRoom(sockUser, sockRoom,  (error) => {
+                if(error) {
+                    console.log("unable to join room on ns: commentbox")
+                    }
+                })
+            socket.receiveMessage(message => {
+                let newrecv = message.text
+                console.log("new received", newrecv)
+                newrecv["comment"] = JSONToEditState(JSON.parse(newrecv.comment))
+                this.setState({ data: [newrecv, ...this.state.data], count: this.state.count + 1 }, ()=>{
+                    this.scrollToBottom("m-comments-view");
+                })
+            });
+            socket.roomUser(()=>{});
         }
 
     }
@@ -59,6 +89,7 @@ export class ModalReplies extends CommentsBase {
 
     addComment = (comment) => {
         var new_comment = this.constructComment(comment, this.props.parentComment.id);
+        socket.sendMessage(this.jsonifyComment(new_comment), () => {});
         var updatedDataLen = this.state.data.length + 1;
         // will be rendered in reverse order
         this.setState({ data: [new_comment, ...this.state.data] }, ()=>{
@@ -96,8 +127,11 @@ export class ModalReplies extends CommentsBase {
     }
 
     componentWillUnmount() {
+        // leave sock room
+        socket.leaveRoom(getUserData().username) 
         // store replies on comment model at unmount
         this.props.parentModal.addOnlyReplies(this.props.parentComment.id, this.state.data, this.state.paginator);
+        
     }
 
     render() {
