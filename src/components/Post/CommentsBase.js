@@ -70,6 +70,12 @@ class CommentsBase extends Component {
         AddCommentAPI(requestBody, null)
     }
 
+    jsonifyComment = (cmnt) =>{
+        let newComment = {...cmnt};
+        newComment.comment = JSON.stringify(ExtractToJSON(cmnt.comment))
+        return newComment
+    }
+
     constructComment = (comment, parent=null) => {
         let user = getUserData()
         var new_comment = {

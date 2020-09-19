@@ -95,7 +95,8 @@ export class ModalComments extends CommentsBase {
     }
     addComment = (comment) => {
         let newcomment = this.constructComment(comment, null);
-        socket.sendMessage(newcomment, () => {});
+        // console.log("new comment to add", newcomment)
+        socket.sendMessage(this.jsonifyComment(newcomment), () => {});
         // data will be rendered in reverse format
         this.setState({ data: [newcomment, ...this.state.data], count: this.state.count + 1 }, ()=>{
             this.scrollToBottom("m-comments-view");
@@ -167,7 +168,7 @@ export class ModalComments extends CommentsBase {
             else {
                 allComments = this.state.data.slice(Math.max(this.state.data.length - this.state.commentLimit, 0))
             }
-            console.log("all comments", allComments);
+            // console.log("all comments", allComments);
             allComments = allComments.sort(this.sortByCreationTime).map((item) => (
                 <CommentCubes key={item.id}
                     isReply={false} comment={item} doLike={this.doLike} doUnLike={this.doUnLike}

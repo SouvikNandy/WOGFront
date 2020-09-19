@@ -19,7 +19,7 @@ export class ModalReplies extends CommentsBase {
     }
 
     componentDidMount() {
-        console.log("componentDidMount", this.props)
+        // console.log("componentDidMount", this.props)
         if(this.props.reply_stack.length> 0){
             this.setState({ 
                 data: this.props.reply_stack,
