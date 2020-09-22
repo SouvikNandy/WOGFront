@@ -116,4 +116,10 @@ export const DeleteSuggestionAPI = (revID, callBackFunc) =>{
     HTTPRequestHandler.delete({url:url, includeToken: true, callBackFunc: callBackFunc})
 }
 
+// fetch notifications
+export const FetchNotifications = (callBackFunc) =>{
+    let url = "api/v1/user-notifications/"
+    HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
+
+}
 export default {LoginAPI}

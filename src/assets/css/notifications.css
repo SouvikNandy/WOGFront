@@ -6,6 +6,7 @@
     padding: 0.8rem;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .noti-cube:last-child{
@@ -18,7 +19,7 @@
 }
 .noti-content .m-display-name{
     font-size: 0.9rem;
-    margin-right: 0.5rem;
+    margin: 0 0.12rem;
 }
 
 .noti-content .noti-body{
