@@ -12,11 +12,22 @@ import {getUserData} from '../utility/userData';
 
 export class DiscoverPeople extends Component {
     state ={
-        people: null
+        people: null,
+        paginator: null,
+        isFetching: false,
+        eventListnerRef: null,
     }
 
     componentDidMount(){
-        DiscoverPeopleAPI(this.updateStateOnAPIcall.bind(this, 'people'))
+        DiscoverPeopleAPI(this.updateStateOnAPIcall.bind(this, 'people'));
+        let eventListnerRef = this.handleScroll.bind(this);
+        this.setState({eventListnerRef: eventListnerRef});
+        window.addEventListener('scroll', eventListnerRef);
+    }
+
+    componentWillUnmount(){
+        window.removeEventListener('scroll', this.state.eventListnerRef);
+        
     }
 
     updateStateOnAPIcall = (key, data)=>{
@@ -33,6 +44,25 @@ export class DiscoverPeople extends Component {
             })
         }
 
+    }
+
+    handleScroll() {
+        if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+        if(this.state.isFetching) return;
+        if(this.state.paginator){
+            let res = this.state.paginator.getNextPage(this.updateStateOnPagination)
+            if (res !== false){
+                this.setState({isFetching: true})
+            }  
+        }
+        
+    }
+
+    updateStateOnPagination = (results) =>{
+        this.setState({
+            people:[...this.state.people, ...results],
+            isFetching: false
+        })
     }
 
 

@@ -170,7 +170,14 @@ export class ShotModalView extends Component {
     
     render() {
         // if component not loaded yet return
-        // console.log(this.state.shot)
+        // console.log(this.props)
+        let currLocation = ''
+        try{
+            currLocation = this.props.location.state.currLocation
+        }
+        catch{
+            currLocation = this.props.location
+        }
         if(!this.state.shot){
             return(
                 <div className="bg-modal full-width"><OwlLoader /></div>
@@ -239,7 +246,7 @@ export class ShotModalView extends Component {
                                                             pathname: `/edit-shot/${this.props.match.params.id}`,
                                                             // This is the trick! This link sets
                                                             // the `background` in location state.
-                                                            state: { modal: true, currLocation: this.props.location.state.currLocation }
+                                                            state: { modal: true, currLocation: currLocation }
                                                         }}
                                                         >
                                                             <GoReport className="close-btn" />
@@ -335,14 +342,14 @@ export class ShotModalView extends Component {
                                     displaySideView={this.displaySideView}
                                     post_id={this.state.shot.id}
                                     isAuth={this.state.isAuth}
-                                    currLocation={this.props.location.state.currLocation}
+                                    currLocation={currLocation}
                                 />
 
                             </div>
                             <div className="m-comments">
                                 <ModalComments post_id={this.state.shot.id} displaySideView={this.displaySideView} 
                                 isAuth={this.state.isAuth} 
-                                currLocation={this.props.location.state.currLocation} />
+                                currLocation={currLocation} />
                             </div>
 
                         </section>

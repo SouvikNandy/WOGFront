@@ -82,8 +82,17 @@
     color: var(--hover-one);
 }
 
+.empty-notifications{
+    margin-top: 0.5rem;
+    padding: 5rem 0;
+    width: 70%;
+    padding: 5rem;
+    background: var(--light);
+}
 @media (max-width: 850px){
-    .noti-cube{
+    .noti-cube, 
+    .empty-notifications
+    {
         width: 95%;
         margin-top: 0.5rem;
     }

@@ -13,6 +13,7 @@ import { FetchNotifications } from '../utility/ApiSet';
 import Paginator from '../utility/Paginator';
 import OwlLoader from '../components/OwlLoader';
 import { FaUserCircle } from 'react-icons/fa';
+import NoContent from '../components/NoContent';
 
 
 export class Notifications extends Component {
@@ -115,7 +116,12 @@ export class NotificationPalette extends Component{
         })
         return(
             <React.Fragment>
-                {notificationList}
+                {notificationList.length > 0?
+                    notificationList
+                    :
+                    <div className="empty-notifications"><NoContent message="No notifications yet"/></div>
+                }
+                {/* {notificationList} */}
             </React.Fragment>
         )
     }

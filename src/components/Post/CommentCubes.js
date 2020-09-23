@@ -37,7 +37,7 @@ export class CommentCubes extends Component {
     }
 
     feedCommentBox = (replyTo = null) => {
-        console.log("inside feedCommentBox", replyTo)
+        // console.log("inside feedCommentBox", replyTo)
         // construct draft js editor readable object
         if(replyTo){
             replyTo = this.editorReadableState(replyTo)
@@ -123,7 +123,9 @@ export class CommentCubes extends Component {
             }
 
             if (totalRepliesCount > 0) {
-                viewReplies = <button className="btn-anc" onClick={this.showReplyList}>{viewReplyBtnMsg}</button>
+                
+                // viewReplies = <button className="btn-anc" onClick={this.showReplyList}>{viewReplyBtnMsg}</button>
+                viewReplies = <button className="btn-anc" onClick={this.feedCommentBox.bind(this, cmnt.user)}>{viewReplyBtnMsg}</button>
             }
 
         }
