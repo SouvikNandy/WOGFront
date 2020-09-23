@@ -14,6 +14,7 @@ import Paginator from '../utility/Paginator';
 import OwlLoader from '../components/OwlLoader';
 import { FaUserCircle } from 'react-icons/fa';
 import NoContent from '../components/NoContent';
+import { timeDifference } from '../utility/Utility';
 
 
 export class Notifications extends Component {
@@ -132,25 +133,25 @@ const constructText = (userList, text) =>{
     if (userList.length === 0) return '';
     else if (userList.length === 1){
         return(
-            <React.Fragment>
+            <div className="n-user-text">
                 <span className="m-display-name">{userList[0]}</span> <span>{text}</span>
-            </React.Fragment>
+            </div>
             
         )
     }
     else if (userList.length === 2){
         return(
-            <React.Fragment>
+            <div className="n-user-text">
                 <span className="m-display-name">{userList[0]}</span> and <span className="m-display-name">{userList[1]}</span> <span>{text}</span>
-            </React.Fragment>
+            </div>
             
         )
     }
     else if(userList.length > 2){
         return(
-            <React.Fragment>
+            <div className="n-user-text">
                 <span className="m-display-name">{userList[0]}</span>,<span className="m-display-name">{userList[1]}</span> and {userList.length-2} others <span>{text}</span>
-            </React.Fragment>
+            </div>
         )
     }
     
@@ -181,9 +182,8 @@ export class NotificationCube extends Component{
                     }
                     
                     <div className="noti-content" onClick={this.props.markAsRead}>
-                        {/* <span className="m-display-name">{user.username}</span> */}
                         <span className="noti-body">{constructText(body.user_list, body.text)}</span>
-
+                        <span className="noti-time">{timeDifference(body.updated_at)}</span>
                     </div>
                     <div className="noti-options">
                         <BsThreeDotsVertical className="close-btn" onClick={this.showOptions}/> 

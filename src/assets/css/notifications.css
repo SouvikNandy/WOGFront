@@ -14,16 +14,34 @@
 }
 .noti-content{
     flex: 2;
-    margin: 0 0.5rem
+    margin: 0 0.5rem;
+    display: flex;
+    flex-direction: column;
     
 }
+
 .noti-content .m-display-name{
     font-size: 0.9rem;
     margin: 0 0.12rem;
+    /* display: flex;
+    flex-direction: row;
+    justify-content: center; */
 }
 
 .noti-content .noti-body{
     font-size: 0.9rem;
+}
+
+.noti-content .n-user-text{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.noti-content .noti-time{
+    font-size: 0.7rem;
+    margin: 0.2rem 0;
 }
 
 .noti-cube .noti-options{
