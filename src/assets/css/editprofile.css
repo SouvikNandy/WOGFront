@@ -261,15 +261,33 @@
     flex-direction: column;
 }
 
+.content-div .skills-section .profession-matter{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
 .content-div .skills-section .select-profession {
     width: 100%;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     margin-bottom: 0.8rem;
 
 }
 
+.content-div .skills-section .free-workshop{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+.content-div .skills-section .free-workshop input{
+    width: 2vw;
+}
+
+.content-div .skills-section .free-workshop label{
+    color: var(--hover-two);
+}
 .content-div .skills-section .select-profession label {
     width: 30%;
 }
@@ -450,5 +468,14 @@
 
     .content-div .skills-section .review-tags{
         font-size: 0.6rem;
+    }
+    .content-div .skills-section .select-profession{
+        justify-content: flex-start;
+        width: 50%;
+    }
+
+    .content-div .skills-section .profession-matter{
+        flex-direction: row;
+
     }
 }

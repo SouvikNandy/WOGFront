@@ -105,7 +105,7 @@
 .img-upload-form .doc-body label {
     display: block;
     width: 100%;
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: var(--dark);
 }
 
@@ -122,7 +122,7 @@
     outline: none;
     border-bottom: 1px solid var(--dark);
     line-height: 1;
-    margin-bottom: 1rem;
+    margin-bottom: 0.9rem;
     resize: none;
 }
 
@@ -157,8 +157,8 @@
 
 .select-doc {
     width: 100%;
-    height: 8vh;
-    margin: 1rem;
+    height: 5.5vh;
+    margin: 0.8rem;
     background: #1cd5ff;
     border: 1px dashed blue;
     border-radius: 0.4rem;
@@ -173,6 +173,7 @@
     opacity: 0;
     z-index: 2;
     cursor: pointer;
+    margin: 0;
 }
 
 
@@ -181,7 +182,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: bold;
 }
 
@@ -268,9 +269,15 @@
 
 .check-t-c {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: flex-start;
     width: 100%;
+    padding: 0.2rem 0;
+}
+
+.check-t-c .check-box{
+    margin: 0 !important;
+    margin-right: 0.2rem !important;
 }
 
 .check-t-c input {
@@ -297,6 +304,47 @@
     font-weight: bold;
 }
 
+
+.allow-price{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.allow-price .attach-label{
+    width: auto !important;
+    margin-right: 0.8rem;
+}
+
+.allow-price .pricing-container{
+    flex: 4;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.35rem 0.8rem;
+    border: 1px solid #1cd5ff;
+    border-radius: 0.5rem;
+}
+
+.allow-price .pricing-container .custom-select{
+    width: 10vw !important;
+    margin-right: 0.5rem;
+}
+
+.allow-price .pricing-container .add-price{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9rem;
+}
+.allow-price .pricing-container .add-price input {
+    border: 1px solid var(--border-grey);
+    padding: 0.4rem;
+    margin: 0;
+    margin-left: 0.5rem;
+}
 
 @media (max-width: 900px) {
     .camera-cover {
@@ -360,6 +408,13 @@
         top: 1.10rem;
         right: 0.1rem;
     }
+    .allow-price {
+        flex-direction: column;
+    }
+    .allow-price .pricing-container .custom-select{
+        width: 18vw !important;
+    }
+    
 }
 
 @media (max-height: 500px){
@@ -401,6 +456,10 @@
     }
     .check-t-c .t-c-line .t-c-highlight{
         font-size: 0.7rem;
+    }
+
+    .select-doc{
+        height: 8vh;
     }
 
     

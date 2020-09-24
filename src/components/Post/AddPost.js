@@ -19,6 +19,7 @@ import HTTPRequestHandler from '../../utility/HTTPRequests';
 import videoThumbnail from '../../assets/images/icons/demo-logo.png';
 import { createFloatingNotification } from '../FloatingNotifications';
 import TextInput, { ExtractToJSON } from '../TextInput';
+import Dropdown from '../Dropdown';
 // import { retrieveFromStorage } from '../../utility/Utility';
 
 // Add post button
@@ -299,6 +300,7 @@ export class AddDocumentForm extends Component {
             }
             return true
         })
+        console.log("file index",[this.state.FileList.map((ele, index)=> {return index+1})][0])
 
         return (
             <React.Fragment>
@@ -378,8 +380,20 @@ export class AddDocumentForm extends Component {
                                     </span>
 
                                 }
-                                
                             </div>
+                            <div className="allow-price">
+                                <label className="attach-label">Add pricing to product</label>
+                                <div className="pricing-container">
+                                    <Dropdown options={[this.state.FileList.map((ele, index)=> {return index+1})][0]} placeHolder="select image index"/>
+                                    <div className="add-price">
+                                        <span>&#8377;</span>
+                                        <input type="number" placeHolder="Price" min="0"></input>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
 
                             <div className="check-t-c">
                                 <input type="checkbox" className="check-box" id="tc-checked" />

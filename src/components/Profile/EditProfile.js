@@ -19,12 +19,13 @@ import { saveInStorage, retrieveFromStorage, dateObjToReadable } from '../../uti
 import { createFloatingNotification } from '../FloatingNotifications';
 import OwlLoader from '../OwlLoader';
 
+
 export class EditProfile extends Component {
     state ={
         SubNavOptions:[
             {key: "E-1", title: "Basic", isActive: true},
             {key: "E-2", title: "Social", isActive: false},
-            {key: "E-3", title: "Skills & Teams", isActive: false},
+            {key: "E-3", title: "Affiliates", isActive: false},
 
         ],
         // sidebar states
@@ -410,7 +411,7 @@ export class EditProfile extends Component {
                         
                     )
             }
-            else if(ele.title === "Skills & Teams" && ele.isActive === true){
+            else if(ele.title === "Affiliates" && ele.isActive === true){
                 let options = ['Photographer', 'Editor', 'Makeup Artist']
                 let skillList = [];
                 this.state.skills.map(item => {
@@ -467,11 +468,25 @@ export class EditProfile extends Component {
                 }
                 contentBlock.push(
                     <div className="skills-section" key={index}>
-                        <div className="select-profession">
-                            <label>{data.user_type==="I"?"Select your profession":"Select your business"}</label>
-                            <Dropdown options={options} onChange={this.selectProfession} 
-                            placeHolder={data.profile_data && data.profile_data.profession?data.profile_data.profession:""}/>                          
+                        <div className="profession-matter">
+                            <div className="select-profession">
+                                <label>{data.user_type==="I"?"Select your profession":"Select your business"}</label>
+                                <Dropdown options={options} onChange={this.selectProfession} 
+                                placeHolder={data.profile_data && data.profile_data.profession?data.profile_data.profession:""}/>                          
+                            </div>
+                            {data.user_type === "I" && ((data.profile_data && data.profile_data.profession) || (this.state.profession))?
+                                <div className="free-workshop">
+                                    <input type="checkbox" id="free_workshop" 
+                                    defaultChecked={data.profile_data && data.profile_data.free_workshop? data.profile_data.free_workshop : false} /> 
+                                    <label>Let others know if you are availabe for free workshop.</label>
+                                </div>
+                                :
+                                ""
+                            }
+                            
                         </div>
+                        
+
                         <label>{data.user_type==="I"?"Enlist your other skills":"Enlist your other services"}Enlist your other skills</label>
                         <span className="info-text">
                             You can enlist other 5 {data.user_type==="I"?"skills":"services"} you have. <br/>
@@ -511,7 +526,7 @@ export class EditProfile extends Component {
 
                     </div>
                 )
-            };
+            }
             return ele
         })
         return contentBlock
@@ -555,6 +570,7 @@ export class EditProfile extends Component {
         else if(activeTab.key === "E-3"){
             // console.log("skills page", this.state.profession, this.state.skills, this.state.teams.map(ele=> ele.id));
             requestBody['profile_data']["profession"] = this.state.profession;
+            requestBody['profile_data']["free_workshop"] = document.getElementById("free_workshop").checked;
             requestBody['profile_data']["skills"] = this.state.skills;
             requestBody['profile_data']["teams"] = this.state.teams.map(ele=> ele.id)
         }
