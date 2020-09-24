@@ -55,7 +55,6 @@ export class Dropdown extends Component {
         for (i = 0; i < l; i++) {
         selElmnt = x[i].getElementsByTagName("select")[0];
         ll = selElmnt.length;
-        console.log("len of x", l, "len of select", ll)
         /*for each element, create a new DIV that will act as the selected item:*/
         a = document.createElement("DIV");
         a.setAttribute("class", "select-selected");
