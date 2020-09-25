@@ -92,12 +92,16 @@ export class EditPost extends Component {
     }
 
     updatePostDetails =(requestBody)=>{
-        if(!checkNotEmptyObject(requestBody)){
+        if(checkNotEmptyObject(requestBody)){
+            console.log("processing request")
             let url = 'api/v1/add-post/';
             requestBody['portfolio_id']= this.state.shot.id; 
             HTTPRequestHandler.put(
                 {url:url, requestBody: requestBody, includeToken:true,  
                 callBackFunc: this.successfulUpdate, errNotifierTitle:"Uplading failed !"})
+        }
+        else{
+            console.log("put request not fired")
         }
 
     }
@@ -129,7 +133,8 @@ export class EditPost extends Component {
                     <div className={this.state.showSideView?"edit-container-bottom edit-container-bottom-resize": "edit-container-bottom"}>
                         <AddDocumentForm sideViewOnChange={this.activeSideView} showModal={this.gotoPrev} 
                         portfolio_name={this.state.shot.portfolio_name} description={this.state.shot.description} 
-                        location={this.state.shot.location} updatePostDetails={this.updatePostDetails} />
+                        location={this.state.shot.location} updatePostDetails={this.updatePostDetails} 
+                        FileList={this.state.shot.attachments} pricingContainer={this.state.shot.pricing_container}/>
                     </div>
                 </div>
                 

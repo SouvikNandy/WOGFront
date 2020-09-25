@@ -15,12 +15,10 @@ import HTTPRequestHandler from '../../utility/HTTPRequests';
 
 
 // video thumbnail
-// import videoThumbnail from '../../assets/images/icons/video-thumbnail.jpg'
 import videoThumbnail from '../../assets/images/icons/demo-logo.png';
 import { createFloatingNotification } from '../FloatingNotifications';
 import TextInput, { ExtractToJSON } from '../TextInput';
-// import Dropdown from '../Dropdown';
-// import { retrieveFromStorage } from '../../utility/Utility';
+import getUserData from '../../utility/userData';
 
 // Add post button
 export class AddPost extends Component {
@@ -43,7 +41,6 @@ export class AddPost extends Component {
                     <FaPlus className="cam-plus" />
                 </button>
                 }                
-
             </React.Fragment>
         );
 
@@ -55,6 +52,7 @@ export class AddPost extends Component {
 // Document Form
 export class AddDocumentForm extends Component {
     state = {
+        currUser : getUserData(),
         // sidebar states
         showSideView: false,
         sideBarHead: true,
@@ -72,6 +70,12 @@ export class AddDocumentForm extends Component {
         taggedMembers: [],
         pricingContainer: {}
 
+    }
+    componentDidMount(){
+        if (this.props.pricingContainer){
+            this.setState({pricingContainer: this.props.pricingContainer})
+        }
+        
     }
 
     validateForm = () =>{
@@ -107,6 +111,9 @@ export class AddDocumentForm extends Component {
         if (this.state.description){
             requestBody["description"] = JSON.stringify(ExtractToJSON(this.state.description))
         }
+        if (this.state.currUser.user_type==="T"){
+            requestBody["pricing_container"] = this.state.pricingContainer
+        }
         let location = document.getElementById("location").value
         if(location && location!=="" && location!==this.props.location){
             requestBody["location"] = location
@@ -127,7 +134,11 @@ export class AddDocumentForm extends Component {
        
         formData.append("portfolio_name", this.state.portfolioName)
         formData.append("description", JSON.stringify(ExtractToJSON(this.state.description)))
-        formData.append("location", document.getElementById("location").value)
+        formData.append("location", document.getElementById("location").value);
+        if(this.state.currUser.user_type==="T"){
+            formData.append("pricing_container", JSON.stringify(this.state.pricingContainer))
+        }
+        
 
         HTTPRequestHandler.post(
             {url:url, requestBody: formData, includeToken:true, uploadType: 'file', 
@@ -261,6 +272,17 @@ export class AddDocumentForm extends Component {
         })
 
     }
+    feedPriceOfIndex = (sidx) =>{
+        if(this.props.pricingContainer.hasOwnProperty(sidx)){
+            document.getElementById("item-price").value= this.props.pricingContainer[sidx]
+        }
+        else{
+            document.getElementById("item-price").value = 0
+        }
+                                                
+
+    }
+
 
     render() {
         let memberlist = [];
@@ -301,7 +323,8 @@ export class AddDocumentForm extends Component {
             }
             return true
         })
-        console.log("pricing container",this.state.pricingContainer)
+
+        let fileListForPricing = this.props.FileList? this.props.FileList: this.state.FileList
 
         return (
             <React.Fragment>
@@ -382,44 +405,50 @@ export class AddDocumentForm extends Component {
 
                                 }
                             </div>
-                            <div className="allow-price">
-                                <label className="attach-label">Add pricing to product</label>
-                                <div className="pricing-container">
-                                    {/* <Dropdown options={[this.state.FileList.map((ele, index)=> {return index+1})][0]} placeHolder="select image index"/> */}
-                                    <select className="select-pricing" id="img-index-dropdown" onChange={(ele) =>{
-                                        let oldPricing = this.state.pricingContainer;
-                                        if (!(ele.target.value in oldPricing)) {
-                                            oldPricing[ele.target.value] = document.getElementById("item-price").value? document.getElementById("item-price").value: 0;
-                                            this.setState({pricingContainer: oldPricing});
-                                        }
-                                        
-                                    }}>
-                                        <option value="none" selected disabled hidden> Select image index </option>
-                                        {this.state.FileList.map((ele, index)=>{
-                                            return (<option value={index+1}>{index+1}</option>)
-                                            })
-                                        }
-                                        
-                                        
-                                    </select>
-                                    <div className="add-price">
-                                        <span>&#8377;</span>
-                                        <input type="number" placeHolder="Price" min="0" id="item-price" onChange={(ele)=>{
-                                            let currIndex = document.getElementById("img-index-dropdown").value;
-                                            let oldPricing = this.state.pricingContainer;
-                                            if (currIndex in oldPricing) {
-                                                oldPricing[currIndex] = ele.target.value;
-                                                this.setState({pricingContainer: oldPricing});
+                            {this.state.currUser.user_type === "T"?
+                                <div className="allow-price">
+                                    <label className="price-label">Add pricing to product</label>
+                                    <div className="pricing-container">
+                                        <select className="select-pricing" id="img-index-dropdown" onChange={(ele) =>{
+                                            if(this.props.pricingContainer){
+                                                this.feedPriceOfIndex(ele.target.value)
+                                            }
+                                            else{
+                                                let oldPricing = this.state.pricingContainer;
+                                                if (!(oldPricing.hasOwnProperty(ele.target.value))) {
+                                                    oldPricing[ele.target.value] = document.getElementById("item-price").value? document.getElementById("item-price").value: 0
+                                                    this.setState({pricingContainer: oldPricing});
+                                                }
+
+                                            }
+                                        }}>
+                                            <option value="0" selected disabled hidden> Select image index </option>
+                                            {fileListForPricing.map((ele, index)=>{
+                                                return (<option value={index+1}>{index+1}</option>)
+                                                })
                                             }
                                             
-                                        }}></input>
+                                            
+                                        </select>
+                                        <div className="add-price">
+                                            <span>&#8377;</span>
+                                            <input type="number" placeHolder="Price" min="0" id="item-price"  
+                                            onChange={(ele)=>{
+                                                let currIndex = document.getElementById("img-index-dropdown").value;
+                                                let oldPricing = this.state.pricingContainer;
+                                                if (oldPricing.hasOwnProperty(currIndex)) {
+                                                    oldPricing[currIndex] = ele.target.value;
+                                                    this.setState({pricingContainer: oldPricing});
+                                                }
+                                                
+                                            }}></input>
+                                        </div>
                                     </div>
-
                                 </div>
-
-                            </div>
-
-
+                                :
+                                ""
+                            
+                            }
                             <div className="check-t-c">
                                 <input type="checkbox" className="check-box" id="tc-checked" />
                                 <span className="t-c-line">I have read and accepted the following 
@@ -427,9 +456,6 @@ export class AddDocumentForm extends Component {
                                 </span>
                                 
                             </div>
-
-                            
-
                         </section>
                         <section className="doc-btn">
                             <input type="button"
@@ -513,7 +539,6 @@ class UploadedSlider extends Component {
                         <div className="swiper-wrapper">
                             {previewList}
                         </div>
-
                         {/* <div className="swiper-pagination"></div> */}
                         <div className="swiper-button-next"></div>
                         <div className="swiper-button-prev"></div>
