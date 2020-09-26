@@ -424,7 +424,7 @@ export class AddDocumentForm extends Component {
                                         }}>
                                             <option value="0" selected disabled hidden> Select image index </option>
                                             {fileListForPricing.map((ele, index)=>{
-                                                return (<option value={index+1}>{index+1}</option>)
+                                                return (<option key={'0-'+index+1} value={index+1}>{index+1}</option>)
                                                 })
                                             }
                                             
@@ -432,7 +432,7 @@ export class AddDocumentForm extends Component {
                                         </select>
                                         <div className="add-price">
                                             <span>&#8377;</span>
-                                            <input type="number" placeHolder="Price" min="0" id="item-price"  
+                                            <input type="number" placeholder="Price" min="0" id="item-price"  
                                             onChange={(ele)=>{
                                                 let currIndex = document.getElementById("img-index-dropdown").value;
                                                 let oldPricing = this.state.pricingContainer;

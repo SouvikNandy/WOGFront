@@ -362,7 +362,9 @@
     margin-left: 0.5rem;
 }
 
-@media (max-width: 900px) {
+
+
+@media (max-width: 1100px) {
     .camera-cover {
         bottom: 1.2rem;
         right: 1.2rem;
@@ -427,6 +429,9 @@
     .allow-price {
         flex-direction: column;
     }
+    .allow-price .pricing-container{
+        width: 100%;
+    }
     .allow-price .pricing-container .custom-select{
         width: 18vw !important;
     }
@@ -477,7 +482,4 @@
     .select-doc{
         height: 8vh;
     }
-
-    
 }
-

@@ -86,7 +86,7 @@ export class ShotPalette extends Component {
             return(<React.Fragment><OwlLoader /></React.Fragment>)
         }
         let shotList = [];
-        this.state.Shots.map(portfolio => {
+        this.state.Shots.map((portfolio, index) => {
             portfolio.attachments.map(ele=>{
                 let data ={
                     id: ele.id, name: portfolio.user.name, username: portfolio.user.username, profile_pic: portfolio.user.profile_pic,
@@ -94,7 +94,7 @@ export class ShotPalette extends Component {
                     interactions: portfolio.interactions, portfolio_id: portfolio.id
                 }
                 shotList.push(
-                <Shot key={data.id} id={data.id} onlyShot={false} data={data} currLocation={this.props.currLocation} 
+                <Shot key={data.id} id={data.id} onlyShot={false} data={data} currIndex={index} currLocation={this.props.currLocation} 
                 likeShot={this.likeShot} unLikeShot={this.unLikeShot}
 
                 />)
@@ -117,7 +117,8 @@ export class Shot extends Component {
     render() {
         let data = this.props.data
         let shotClass = this.props.onlyShot ? "shot-preview-alt" : "shot-preview"
-        let redirect_key = data.username +'-'+ data.portfolio_id +'-'+ data.id
+        let redirect_key = data.username +'-'+ data.portfolio_id +'-'+ data.id;
+        console.log("curent index", this.props.currIndex + 1, this.props.pricingContainer[this.props.currIndex + 1])
         return (
             <React.Fragment>
                 <div className={shotClass}>
@@ -131,6 +132,14 @@ export class Shot extends Component {
                         }}>
 
                         <img src={data.content} alt="" />
+                        {this.props.pricingContainer?
+                            this.props.pricingContainer.hasOwnProperty(this.props.currIndex + 1)?
+                                <div className="price-counter"><span className="rupee-sym">&#8377;</span> {this.props.pricingContainer[this.props.currIndex + 1]}</div>
+                                :
+                                ""
+                            :
+                            ""
+                        }
                     </Link>
                     {!this.props.onlyShot ?
                         <span className="attribution-user">

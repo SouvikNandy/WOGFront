@@ -61,6 +61,7 @@ export class ShotModalView extends Component {
             let currentUser = JSON.parse(retrieveFromStorage('user_data')).username
             isSelf = isSelfUser(username, currentUser)
         }
+        console.log("shot modal", data.data)
         this.setState({shot: data.data, selected_shot_id: shot_id, isSelf: isSelf, isAuth: isAuth })
     }
 
@@ -282,7 +283,8 @@ export class ShotModalView extends Component {
                                 
                             </div>
                             {/* preview image */}
-                            <ImageSlider attachments={this.state.shot.attachments} selected_shot_id={this.state.selected_shot_id} />
+                            <ImageSlider attachments={this.state.shot.attachments} selected_shot_id={this.state.selected_shot_id} 
+                            pricingContainer={this.state.shot.pricing_container}/>
 
                             <div className="m-img-attribute fade-up">
                                 <span className="p-attr-name">
@@ -484,6 +486,14 @@ export class ImageSlider extends Component{
                         <div className="slide-middle-view"></div>
                         <AiFillRightCircle className ="slide-btn" onClick={this.getNextShot}/>
                         <div className="attachment-counter">{this.state.currIndex + 1}/{this.props.attachments.length}</div>
+                        {this.props.pricingContainer?
+                            this.props.pricingContainer.hasOwnProperty(this.state.currIndex + 1)?
+                                <div className="price-counter"><span className="rupee-sym">&#8377;</span> {this.props.pricingContainer[this.state.currIndex + 1]}</div>
+                                :
+                                ""
+                            :
+                            ""
+                        }
                     </div>
                     :
                     ""

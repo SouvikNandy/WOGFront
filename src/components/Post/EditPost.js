@@ -121,13 +121,15 @@ export class EditPost extends Component {
                 <div className="bg-modal full-width"><OwlLoader /></div>
                 )
         }
+        console.log("pricing_container", this.state.shot.pricing_container)
         return (
             <div className={this.state.showSideView?"bg-modal with-side-width": "bg-modal full-width"}>
                 <div className={this.state.showSideView?"edit-container edit-container-resize": "edit-container"} >
                     <div className={this.state.showSideView?"edit-container-top-hide": "edit-container-top"}>
                         <div className="modal-imgbox">
                             <ImageSlider attachments={this.state.shot.attachments} actionBtn={true} 
-                            addShot={this.uploadPicture} deleteShot={this.deleteShot} deletePortfolio={this.deletePortfolio} />
+                            addShot={this.uploadPicture} deleteShot={this.deleteShot} deletePortfolio={this.deletePortfolio}
+                            pricingContainer={this.state.shot.pricing_container}/>
                         </div>
                     </div>
                     <div className={this.state.showSideView?"edit-container-bottom edit-container-bottom-resize": "edit-container-bottom"}>
