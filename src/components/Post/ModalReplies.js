@@ -148,7 +148,9 @@ export class ModalReplies extends CommentsBase {
             doLike={this.props.parentModal.doLike} doUnLike={this.props.parentModal.doUnLike}
             parentModal={null} displaySideView={this.props.displaySideView}
             isAuth={this.props.isAuth} 
-            currLocation={this.props.currLocation}/>
+            currLocation={this.props.currLocation}
+            updateStateReplyUser={this.updateStateReplyUser}
+            />
 
         let allreplies = '';
         allreplies = this.state.data.sort(this.sortByCreationTime).map((item) => (

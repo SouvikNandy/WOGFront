@@ -61,7 +61,7 @@ export class ShotModalView extends Component {
             let currentUser = JSON.parse(retrieveFromStorage('user_data')).username
             isSelf = isSelfUser(username, currentUser)
         }
-        console.log("shot modal", data.data)
+        // console.log("shot modal", data.data)
         this.setState({shot: data.data, selected_shot_id: shot_id, isSelf: isSelf, isAuth: isAuth })
     }
 

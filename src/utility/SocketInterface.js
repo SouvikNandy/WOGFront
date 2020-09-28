@@ -33,7 +33,7 @@ export class SocketInterface{
     roomUser = (callBack) =>{
         this.socket.on('roomData', ({ users }) => {
             this.connectedUsers = users
-            console.log("roomUser", this.namespace, this.room, users)
+            // console.log("roomUser", this.namespace, this.room, users)
             if (callBack) callBack(users)
         });
     }

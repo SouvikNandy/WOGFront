@@ -532,15 +532,20 @@ export default class Profile extends Component {
                 }
                 else if (this.state.userPortFolio && this.state.userPortFolio.length > 0){
                     // get all shots
-                    this.state.userPortFolio.map((portfolio, index) => {
-                        portfolio.attachments.reverse().map(ele=>{
+                    this.state.userPortFolio.map(portfolio => {
+
+                        portfolio.attachments.reverse().map((ele, index)=>{
+                            let cidx = portfolio.attachments.length - index;
+                            let price = null;
+                            if (portfolio.pricing_container && portfolio.pricing_container.hasOwnProperty(cidx)){
+                                price = portfolio.pricing_container[cidx];
+                            }
                             let data ={
                                 id: ele.id, name: portfolio.user.name, username: portfolio.user.username, content: ele.content, 
-                                interactions: portfolio.interactions, portfolio_id: portfolio.id
+                                interactions: portfolio.interactions, portfolio_id: portfolio.id, price : price
                             }
                             resultList.push(<Shot key={data.id} id={data.id} onlyShot={true} 
-                                data={data} currIndex={index} currLocation={this.props.location}
-                                pricingContainer={portfolio.pricing_container} />)
+                                data={data} currLocation={this.props.location} />)
                             return ele
                         })
                         return portfolio

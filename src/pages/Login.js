@@ -7,6 +7,7 @@ import {saveInStorage, storeAuthToken, silentRefresh } from '../utility/Utility'
 import Dropdown from '../components/Dropdown';
 import {LoginAPI, SignupAPI} from '../utility/ApiSet';
 import {AiFillCloseCircle } from 'react-icons/ai';
+import { setNotificationHandler } from '../utility/userData';
 
 
 export function Login(props) {
@@ -96,6 +97,8 @@ export class SignIn extends Component {
         storeAuthToken(data.token.access);
         // activate silent refresh
         silentRefresh();
+        // initialize notification handler
+        setNotificationHandler(data.data.username);
                 
         // reset 
         document.getElementById("login-form").reset();

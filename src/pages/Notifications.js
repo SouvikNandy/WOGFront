@@ -7,7 +7,7 @@ import {BsThreeDotsVertical} from "react-icons/bs";
 import {FiBellOff} from 'react-icons/fi';
 import {AiFillCloseCircle} from 'react-icons/ai'
 import {UserNavBar} from "../components/Navbar/Navbar";
-import getUserData from '../utility/userData';
+import getUserData, { getNotificationHandler, setNotificationHandler } from '../utility/userData';
 
 import { FetchNotifications } from '../utility/ApiSet';
 import Paginator from '../utility/Paginator';
@@ -27,7 +27,7 @@ export class Notifications extends Component {
                     <NewsFeedUserMenu {...this.props} userData={userData}/>
                     
                     <div className="nf-feeds">
-                        <NotificationPalette />
+                        <NotificationPalette curLocation={this.props.location}/>
                     </div>
                     <NewsFeedSuggestions />
                 
@@ -45,17 +45,24 @@ export class NotificationPalette extends Component{
         paginator: null,
         isFetching: false,
         eventListnerRef: null,
+        notificationHandler : getNotificationHandler()
     }
     componentDidMount(){
         FetchNotifications(this.updateStateOnAPIcall)
         let eventListnerRef = this.handleScroll.bind(this);
         this.setState({eventListnerRef: eventListnerRef})
         window.addEventListener('scroll', eventListnerRef);
+
+        if (!this.state.notificationHandler) {
+            this.setState({notificationHandler: setNotificationHandler()})
+        }
     }
 
     componentWillUnmount(){
         window.removeEventListener('scroll', this.state.eventListnerRef);
-        
+        // get unseen notification and mark them as seen
+        let unseenNid = this.state.notification.filter(ele => ele.is_seen === false).map(ele =>{return ele.id})
+        this.state.notificationHandler.markAsSeen(unseenNid)
     }
 
     updateStateOnAPIcall = (data)=>{
@@ -87,10 +94,14 @@ export class NotificationPalette extends Component{
     }
 
     markAsRead = (idx) =>{
+        // mark as read
+        console.log("mark as read called with id", idx)
+        
         this.setState({
             notification: this.state.notification.map(ele=>{
-                if(ele.id === idx){
+                if(ele.id === idx && !ele.is_read){
                     ele.is_read = true;
+                    this.state.notificationHandler.markAsRead(idx);
                 }
                 return ele
             })
@@ -111,7 +122,9 @@ export class NotificationPalette extends Component{
             notificationList.push(
                 <NotificationCube key={ele.id} data={ele}
                 markAsRead={this.markAsRead.bind(this, ele.id)}
-                removeNotification={this.removeNotification.bind(this, ele.id)}/>
+                removeNotification={this.removeNotification.bind(this, ele.id)}
+                curLocation={this.props.curLocation}
+                />
             )
             return ele
         })
@@ -170,21 +183,37 @@ export class NotificationCube extends Component{
 
     render(){
         let user = this.props.data.user;
-        let body = this.props.data
+        let body = this.props.data;
+        let redirectionLink = '';
+        let redirection_context = body.redirection_context
+        if (['POST', 'COMMENT', 'REPLY'].includes(body.type)){
+            redirectionLink = '/shot-view/'+redirection_context.post_user+'-'+redirection_context.post+'-'+redirection_context.shot
+        }
+        else if(body.type === "FOLLOW"){
+            redirectionLink ='/profile/'+redirection_context.user
+
+        }
+        // console.log("redirectionLink", redirectionLink);
         return(
             <React.Fragment>
-                <div className={body.is_read? "noti-cube" : "noti-cube unread-content"}>
-                    {/* <Link key={user.id} to={{pathname: `/profile/${user.username}`}}><img className="link tag-img" src={user.profile_pic} alt="" /></Link> */}
+                <div className={body.is_read? "noti-cube" : "noti-cube unread-content"} >
                     {user.profile_pic?
                     <img className="tag-img" src={user.profile_pic} alt="" />
                     :
                     <FaUserCircle className="tag-img"/>
                     }
                     
-                    <div className="noti-content" onClick={this.props.markAsRead}>
+                    <Link className="link noti-content" onClick={()=> {
+                    this.props.markAsRead()
+                    }}
+                    key={this.props.data.id}
+                    to={{
+                        pathname: redirectionLink,
+                        state: { modal: true, currLocation: this.props.curLocation }
+                    }}>
                         <span className="noti-body">{constructText(body.user_list, body.text)}</span>
                         <span className="noti-time">{timeDifference(body.updated_at)}</span>
-                    </div>
+                    </Link>
                     <div className="noti-options">
                         <BsThreeDotsVertical className="close-btn" onClick={this.showOptions}/> 
                         

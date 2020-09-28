@@ -47,7 +47,7 @@ export class ModalComments extends CommentsBase {
 
     updateStateOnAPIcall = (data)=>{
         let result = data.results
-        console.log("comments", result)
+        // console.log("comments", result)
         result.map(ele=> {
             if(ele.comment){
                 ele["comment"] = JSONToEditState(JSON.parse(ele.comment))

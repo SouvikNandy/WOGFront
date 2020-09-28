@@ -42,7 +42,7 @@ export class CommentCubes extends Component {
         if(replyTo){
             replyTo = this.editorReadableState(replyTo)
         }
-        if (this.props.isReply){
+        if (this.props.updateStateReplyUser){
             this.props.updateStateReplyUser(replyTo)
         }
         else{

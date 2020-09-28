@@ -1,24 +1,42 @@
 import React, { Component } from 'react';
 import { FiBell } from "react-icons/fi";
-// import {FaBell} from "react-icons/fa";
 import '../assets/css/navbar.css';
 import {Redirect } from 'react-router-dom';
-
+import { getNotificationHandler } from '../utility/userData';
 
 export class NotificationButton extends Component{
     state={
-        unreadMsgs: true,
-        redirectNow: false
+        unreadMsg: false,
+        redirectNow: false,
+        notificationHandler : getNotificationHandler()
     }
 
     componentDidMount(){
+        // set initial state
         if(this.props.pthName==="user-notifications"){
-            this.setState({unreadMsgs: false})
+            this.setState({unreadMsg: false})
         }
+        else{
+            this.setState({unreadMsg: this.state.notificationHandler.isUnreadExists()})
+            
+        }
+        // update on new notification
+        this.state.notificationHandler.registerCallbackList(this.onNewNotification)
     }
 
-    markAsRead =() =>{
-        this.setState({unreadMsgs: false, redirectNow: true})
+    componentWillUnmount(){
+        this.state.notificationHandler.deregisterCallback()
+    }
+
+    onNewNotification = (data) =>{
+        if(data){
+            this.setState({unreadMsg: true})
+        }
+
+    }
+
+    readNotifications =() =>{
+        this.setState({unreadMsg: false, redirectNow: true})
     }
     render(){
         if (this.state.redirectNow){
@@ -26,14 +44,18 @@ export class NotificationButton extends Component{
         }
         return(
             <React.Fragment>
-                {this.state.unreadMsgs?
-                <div className="unread-msgs" onClick={this.markAsRead}>
-                    <div className="unread-icon"></div>
-                    <FiBell className="nav-icon"/>
-                </div>
+                {this.props.pthName!=="user-notifications"?
+                    <div className="unread-msgs" onClick={this.readNotifications}>
+                        {this.state.unreadMsg? 
+                        <div className="unread-icon"></div>
+                        :
+                        ""
+                        }
+                        <FiBell className="nav-icon"/>
+                    </div>
                 
-                :
-                <FiBell className="nav-icon"/>
+                    :
+                    <FiBell className="nav-icon"/>
                 }
                 
             </React.Fragment>

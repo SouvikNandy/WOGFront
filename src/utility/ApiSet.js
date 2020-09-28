@@ -122,4 +122,20 @@ export const FetchNotifications = (callBackFunc) =>{
     HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
 
 }
+export const FetchUnreadNotificationCount =(callBackFunc) =>{
+    let url = "api/v1/notification-action/"
+    HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
+}
+export const MarkNotificationAsSeen =(nidList, callBackFunc) =>{
+    let url = "api/v1/notification-action/"
+    HTTPRequestHandler.post({url:url, requestBody:{action: 'markseen', nid: nidList}, includeToken: true, callBackFunc: callBackFunc})
+}
+export const MarkNotificationAsRead =(nid, callBackFunc) =>{
+    let url = "api/v1/notification-action/"
+    HTTPRequestHandler.post({url:url, requestBody:{action: 'markread', nid: nid}, includeToken: true, callBackFunc: callBackFunc})
+}
+export const MuteNotification =(nid, callBackFunc) =>{
+    let url = "api/v1/notification-action/"
+    HTTPRequestHandler.post({url:url, requestBody:{action: 'turnoff', nid: nid}, includeToken: true, callBackFunc: callBackFunc})
+}
 export default {LoginAPI}

@@ -7,7 +7,7 @@ import Profile from './pages/Profile';
 import CommunityReview from './pages/CommunityReview';
 import {NotificationContainer} from 'react-notifications';
 import Explore from './pages/Explore';
-import {silentRefresh} from './utility/Utility';
+import {isAuthenticated, silentRefresh} from './utility/Utility';
 import {PrivateRoute} from './utility/PrivateRoute';
 import NewsFeeds from './pages/NewsFeeds';
 import Notifications from './pages/Notifications'
@@ -18,11 +18,17 @@ import LogOutPromptModal from './components/LogOutPromptModal';
 import EditPost from './components/Post/EditPost';
 import Join from './components/ChatClient/Join/Join';
 import Chat from './components/ChatClient/Chat/Chat'
+import getUserData, { setNotificationHandler } from './utility/userData';
 
 export default class App extends Component {
     componentDidMount(){
         // check if tx in localstorage
-        silentRefresh();
+        
+        if(isAuthenticated()){
+            // set notification handler on each refresh
+            setNotificationHandler(getUserData().username);
+            silentRefresh();
+        }
     }
 
     render() {

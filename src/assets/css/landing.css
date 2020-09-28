@@ -87,6 +87,7 @@
 .sp-img {
     overflow: hidden;
     border-radius: 0.7rem;
+    position: relative;
 
 }
 
@@ -103,6 +104,21 @@
     object-fit: cover;
     border-radius: 0.7rem;
 
+}
+.sp-img .price-counter{
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    background: rgba(0, 0, 0, 0.6);
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: var(--light);
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.7rem;
+}
+.sp-img .price-counter .rupee-sym{
+    margin-right: 0.15rem;
 }
 
 .shot-preview .attribution-user {

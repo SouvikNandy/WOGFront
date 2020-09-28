@@ -460,6 +460,10 @@ ul {
     color: var(--username-color);
 }
 
+.rupee-sym{
+    color: var(--hover-one);
+}
+
 @media(max-width:900px) {
     .side-bar-view-active {
         width: 100vw;
