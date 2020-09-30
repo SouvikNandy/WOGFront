@@ -307,7 +307,7 @@ export const JSONToEditState = (rawState) =>{
 export const EditorSpan = (editorState, readOnly=true) =>{
   return (
         <div className="editor">
-            <Editor editorState={editorState} readOnly={readOnly} />
+            <Editor editorState={editorState} onChange={()=>{}} readOnly={readOnly} />
         </div>
     )
 }

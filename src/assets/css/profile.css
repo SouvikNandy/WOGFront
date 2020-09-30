@@ -364,6 +364,14 @@
     line-height: 1.8;
 }
 
+.explore-context{
+    padding: 0.8rem 6%;
+    height: auto;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+
 /* PROFILE SHOTS */
 .profile-shots {
     padding: 0 6%;
@@ -581,6 +589,9 @@
         font-size: 0.8rem;
     }
 
+    .explore-context{
+        padding: 0 2%;
+    }
 
     .profile-shots {
         padding: 0 2%;

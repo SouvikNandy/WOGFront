@@ -139,6 +139,45 @@
     z-index: 1;
 }
 
+.explore-preview{
+    width: 100%;
+    /* background: red; */
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.explore-preview .ex-1{
+    width: 30%;
+    height: 12vh;
+    /* padding: 0.2rem; */
+    margin: 0.2rem;
+    border: 1px solid var(--border-grey);
+    object-fit: cover;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.explore-preview .ex-1 .explore-more{
+    padding: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: var(--hover-two);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.explore-preview .ex-1 img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 @media(max-width: 1250px) {
     .e-head-suggestions .e-fixed-sug {
         display: none;

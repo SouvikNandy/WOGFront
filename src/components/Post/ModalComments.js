@@ -15,9 +15,9 @@ import getUserData from '../../utility/userData';
 import SocketInterface from '../../utility/SocketInterface';
 import { isAuthenticated } from '../../utility/Utility';
 
-let socket = null;
 
 export class ModalComments extends CommentsBase {
+    socket = null
     state = {
         showAll: false,
         commentLimit: 10,
@@ -38,7 +38,7 @@ export class ModalComments extends CommentsBase {
 
     componentWillUnmount() {
         // leave sock room
-        socket.leaveRoom(getUserData().username) 
+        this.socket.leaveRoom(getUserData().username) 
     }
 
     redirectToLogin = () =>{
@@ -61,13 +61,13 @@ export class ModalComments extends CommentsBase {
         if(isAuthenticated()){
             sockRoom= 'P-'+this.props.post_id
             sockUser= getUserData().username
-            socket = new SocketInterface('commentbox')
-            socket.joinRoom(sockUser, sockRoom,  (error) => {
+            this.socket = new SocketInterface('commentbox')
+            this.socket.joinRoom(sockUser, sockRoom,  (error) => {
                 if(error) {
                     console.log("unable to join room on ns: commentbox")
                     }
                 })
-            socket.receiveMessage(message => {
+            this.socket.receiveMessage(message => {
                 let newrecv = message.text
                 console.log("new received", newrecv)
                 newrecv["comment"] = JSONToEditState(JSON.parse(newrecv.comment))
@@ -75,7 +75,7 @@ export class ModalComments extends CommentsBase {
                     this.scrollToBottom("m-comments-view");
                 })
             });
-            socket.roomUser(()=>{});
+            this.socket.roomUser(()=>{});
         }
         // paginated response
         this.setState({
@@ -101,7 +101,7 @@ export class ModalComments extends CommentsBase {
     addComment = (comment) => {
         let newcomment = this.constructComment(comment, null);
         // console.log("new comment to add", newcomment)
-        socket.sendMessage(this.jsonifyComment(newcomment), () => {});
+        this.socket.sendMessage(this.jsonifyComment(newcomment), () => {});
         // data will be rendered in reverse format
         this.setState({ data: [newcomment, ...this.state.data], count: this.state.count + 1 }, ()=>{
             this.scrollToBottom("m-comments-view");

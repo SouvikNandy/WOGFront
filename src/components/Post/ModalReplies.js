@@ -12,10 +12,10 @@ import SocketInterface from '../../utility/SocketInterface';
 import { isAuthenticated } from '../../utility/Utility';
 
 
-let socket = null;
+// let socket = null;
 
 export class ModalReplies extends CommentsBase {
-
+    socket = null
     state = {
         data: [],
         replyToUser: null,
@@ -43,13 +43,13 @@ export class ModalReplies extends CommentsBase {
         if(isAuthenticated()){
             sockRoom= 'C-'+this.props.parentComment.id;
             sockUser= getUserData().username;
-            socket = new SocketInterface('replycomment')
-            socket.joinRoom(sockUser, sockRoom,  (error) => {
+            this.socket = new SocketInterface('replycomment')
+            this.socket.joinRoom(sockUser, sockRoom,  (error) => {
                 if(error) {
                     console.log("unable to join room on ns: commentbox")
                     }
                 })
-            socket.receiveMessage(message => {
+            this.socket.receiveMessage(message => {
                 let newrecv = message.text
                 console.log("new received", newrecv)
                 newrecv["comment"] = JSONToEditState(JSON.parse(newrecv.comment))
@@ -57,7 +57,7 @@ export class ModalReplies extends CommentsBase {
                     this.scrollToBottom("m-comments-view");
                 })
             });
-            socket.roomUser(()=>{});
+            this.socket.roomUser(()=>{});
         }
 
     }
@@ -89,7 +89,7 @@ export class ModalReplies extends CommentsBase {
 
     addComment = (comment) => {
         var new_comment = this.constructComment(comment, this.props.parentComment.id);
-        socket.sendMessage(this.jsonifyComment(new_comment), () => {});
+        this.socket.sendMessage(this.jsonifyComment(new_comment), () => {});
         var updatedDataLen = this.state.data.length + 1;
         // will be rendered in reverse order
         this.setState({ data: [new_comment, ...this.state.data] }, ()=>{
@@ -128,7 +128,7 @@ export class ModalReplies extends CommentsBase {
 
     componentWillUnmount() {
         // leave sock room
-        socket.leaveRoom(getUserData().username) 
+        this.socket.leaveRoom(getUserData().username) 
         // store replies on comment model at unmount
         this.props.parentModal.addOnlyReplies(this.props.parentComment.id, this.state.data, this.state.paginator);
         

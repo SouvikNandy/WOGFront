@@ -22,3 +22,16 @@
     padding: 0 0.8rem;
     background: var(--light);
 }
+
+.discover-list{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-grey);
+    border-radius: 0.7rem;
+    padding: 0 0.4rem;
+}
+
+.discover-list .user-flat-div{
+    width: 80%;
+}

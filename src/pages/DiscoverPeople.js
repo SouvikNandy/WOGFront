@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {FollowUserCubeAlt} from '../components/Profile/UserView';
+import {FollowUnfollowUser, FollowUserCubeAlt, UserFlat} from '../components/Profile/UserView';
 import DummyShots from '../components/Post/DummyShots';
 import '../assets/css/profile.css';
 import {NewsFeedUserMenu, NewsFeedSuggestions} from './NewsFeeds';
@@ -104,7 +104,7 @@ export class DiscoverPeople extends Component {
             resultList = <div className="profile-user-grid"> <OwlLoader /></div>
         }
         else{
-            console.log(this.state.people)
+            // console.log(this.state.people)
             this.state.people.map(ele => 
                 {resultList.push(<FollowUserCubeAlt key={ele.username} data={ele} isFollowing={ele.is_following} 
                     startFollowing={this.startFollowing} stopFollowing={this.stopFollowing} />)
@@ -134,6 +134,73 @@ export class DiscoverPeople extends Component {
 
             </React.Fragment>
             
+        )
+    }
+}
+
+export class DiscoverUserFlat extends Component{
+    state={
+        people: null
+    }
+    componentDidMount(){
+        DiscoverPeopleAPI(this.updateStateOnAPIcall.bind(this, 'people'));
+    }
+
+    updateStateOnAPIcall = (key, data)=>{
+        // paginated response
+        this.setState({
+            [key]: data.results
+        })
+        
+    }
+    startFollowing =(record) =>{
+        this.setState({
+            people: this.state.people.map(ele =>{
+                if(ele.id===record.id){
+                    record.is_following = true;
+                }
+                return ele
+            })
+        })
+        
+    }
+
+    stopFollowing =(record) =>{
+        this.setState({
+            people: this.state.people.map(ele =>{
+                if(ele.id===record.id){
+                    record.is_following = false;
+                }
+                return ele
+            })
+        })
+    }
+    render(){
+        let resultList = [];
+        if (!this.state.people){
+            return(<div className="profile-user-grid"> <OwlLoader /></div>)
+        }
+        else{
+            this.state.people.map(ele => 
+                {resultList.push(
+                    <div className="discover-list" key={ele.username}>
+                        <UserFlat data={ele} tagText={"hello"}/>
+                        {ele.is_following?
+                            <span className="text-button" onClick={() => FollowUnfollowUser(ele, this.stopFollowing)}> Remove</span>
+                            :
+                            <span className="text-button" onClick={() => FollowUnfollowUser(ele, this.startFollowing)}> Add</span>
+                        }
+                    </div>
+                        
+                    )
+                return ele
+            })
+        }
+        resultList = resultList.slice(0, this.props.counter)
+        return(
+            <React.Fragment>
+                {resultList}
+            </React.Fragment>
         )
     }
 }

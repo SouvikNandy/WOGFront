@@ -87,7 +87,7 @@ export class ShotPalette extends Component {
         }
         let shotList = [];
         this.state.Shots.map((portfolio, index) => {
-            console.log("portfolio", portfolio)
+            // console.log("portfolio", portfolio)
             portfolio.attachments.map(ele=>{
                 let data ={
                     id: ele.id, name: portfolio.user.name, username: portfolio.user.username, profile_pic: portfolio.user.profile_pic,

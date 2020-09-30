@@ -10,19 +10,23 @@ import { FollowRequestAPI } from '../../utility/ApiSet';
 export function UserFlat(props){
         const ele = props.data
         return(
-            <div className="user-flat-div" >
-                <Link to={{pathname: `/profile/${ele.username}`}} className="link" key={ele.username}>
-                    {ele.profile_pic?
-                        <img className="tag-img" src={ele.profile_pic} alt={ele.username}/>
-                        :
-                        <FaUserCircle className="tag-img default-user-logo" />
-                    }
-                </Link>
-                <Link className="link m-display-name" to={{pathname: `/profile/${ele.username}`}}>
-                    {ele.name} <span className="u-name">@{ele.username}</span><br />
-                    <span className="m-adj">{props.tagText?props.tagText:ele.profession}</span>
-                </Link>
-            </div>
+                <div className="user-flat-div" >
+                        <Link to={{pathname: `/profile/${ele.username}`}} className="link" key={ele.username}>
+                            {ele.profile_pic?
+                                <img className="tag-img" src={ele.profile_pic} alt={ele.username}/>
+                                :
+                                <FaUserCircle className="tag-img default-user-logo" />
+                            }
+                        </Link>
+                        <Link className="link m-display-name" to={{pathname: `/profile/${ele.username}`}}>
+                            <div className="head-name">
+                                <span className="main-title">{ele.name}</span> 
+                                <span className="u-name">@{ele.username}</span>
+                            </div>
+                            <span className="m-adj">{props.tagText?props.tagText:ele.profession}</span>
+                        </Link>
+                        
+                </div>
         )
 }
 

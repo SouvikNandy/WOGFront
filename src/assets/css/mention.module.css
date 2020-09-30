@@ -62,7 +62,7 @@
   .mentionSuggestionsEntryContent {
     font-size: 80%;
     font-weight: bold;
-    color: #a7a7a7;
+    color: var(--username-color);
   }
   
   .mentionSuggestionsEntryTitle {

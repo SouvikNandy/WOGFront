@@ -302,9 +302,51 @@
 
 .nf-rest {
     width: 30vw;
+    position: relative;
+    
 }
 
+.nf-rest .nf-fixed{
+    position: fixed;
+    padding: 0.5rem 1rem ;
+}
 
+.nf-rest .s-label{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.nf-rest .s-label h4{
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+}
+
+.nf-rest .s-label .s-tag{
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+    color: var(--username-color);
+    font-weight: bold;
+}
+
+.nf-rest .nf-discover{
+    margin-top: 0.5rem;
+}
+
+.nf-rest .see-more{
+    /* background: red; */
+    /* width: 100%; */
+    display: flex;
+    justify-content: center;
+    padding: 0.3rem 0;
+}
+
+.nf-rest .see-more .link{
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--hover-two);
+
+}
 .empty-feeds{
     height: 50%;
     width: 70%;
@@ -355,6 +397,12 @@
     }
     .nf-feeds .add-pst-btn .camera-cover{
         right: 2rem;
+    }
+    .nf-container .nf-feeds {
+        width: 100%;
+        margin-left: 0;
+
+
     }
 }
 

@@ -142,7 +142,16 @@ export class NotificationPalette extends Component{
 }
 
 
-const constructText = (userList, text) =>{
+const constructText = (userList, text, _type, redirection_context) =>{
+
+    if (_type === "FOLLOW"){
+        return(
+            <div className="n-user-text">
+                <span className="m-display-name">{redirection_context["username"]}</span> <span>{text}</span>
+            </div>
+        )
+    }
+
     if (userList.length === 0) return '';
     else if (userList.length === 1){
         return(
@@ -163,7 +172,7 @@ const constructText = (userList, text) =>{
     else if(userList.length > 2){
         return(
             <div className="n-user-text">
-                <span className="m-display-name">{userList[0]}</span>,<span className="m-display-name">{userList[1]}</span> and {userList.length-2} others <span>{text}</span>
+                <span className="m-display-name">{userList[0]}</span>,<span className="m-display-name">{userList[1]}</span> <span>and {userList.length-2} others</span> <span>{text}</span>
             </div>
         )
     }
@@ -185,15 +194,15 @@ export class NotificationCube extends Component{
         let user = this.props.data.user;
         let body = this.props.data;
         let redirectionLink = '';
+        let redirectionState = {};
         let redirection_context = body.redirection_context
         if (['POST', 'COMMENT', 'REPLY'].includes(body.type)){
-            redirectionLink = '/shot-view/'+redirection_context.post_user+'-'+redirection_context.post+'-'+redirection_context.shot
+            redirectionLink = '/shot-view/'+redirection_context.post_user+'-'+redirection_context.post+'-'+redirection_context.shot;
+            redirectionState = { modal: true, currLocation: this.props.curLocation };
         }
         else if(body.type === "FOLLOW"){
-            redirectionLink ='/profile/'+redirection_context.user
-
+            redirectionLink ='/profile/'+redirection_context.username;
         }
-        // console.log("redirectionLink", redirectionLink);
         return(
             <React.Fragment>
                 <div className={body.is_read? "noti-cube" : "noti-cube unread-content"} >
@@ -209,9 +218,9 @@ export class NotificationCube extends Component{
                     key={this.props.data.id}
                     to={{
                         pathname: redirectionLink,
-                        state: { modal: true, currLocation: this.props.curLocation }
+                        state: redirectionState
                     }}>
-                        <span className="noti-body">{constructText(body.user_list, body.text)}</span>
+                        <span className="noti-body">{constructText(body.user_list, body.text, body.type, body.redirection_context)}</span>
                         <span className="noti-time">{timeDifference(body.updated_at)}</span>
                     </Link>
                     <div className="noti-options">

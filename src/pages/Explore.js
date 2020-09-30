@@ -4,33 +4,85 @@ import '../assets/css/profile.css';
 import SearchHead from '../components/Search/SearchHead';
 import {Shot} from '../components/Post/Shot';
 // Images for shot
-import w1 from "../assets/images/wedding1.jpg";
-import pl2 from "../assets/images/people/2.jpg";
 import Footer from '../components/Footer';
 import FeatureSlider from '../components/FeatureSlider';
+import { RegularShotsAPI } from '../utility/ApiSet';
+import Paginator from '../utility/Paginator';
+import OwlLoader from '../components/OwlLoader';
+import DummyShots from '../components/Post/DummyShots';
 
 
 export class Explore extends Component {
     state ={
-        userShot : [
-            {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
-            {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
-            {id: 3, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
-            {id: 4, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
-            {id: 5, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1},
-            {id: 6, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
-            {id: 7, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
-            {id: 8, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}, 
-            {id: 9, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: pl2}, 
-            {id: 10, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, profile_pic: w1}
-        ],
+        userShot : null,
+        paginator: null,
+        isFetching: false,
+        eventListnerRef: null,
+    }
+    componentDidMount(){
+        RegularShotsAPI(this.updateStateOnAPIcall);
+        let eventListnerRef = this.handleScroll.bind(this);
+        this.setState({
+            eventListnerRef: eventListnerRef
+        })
+        window.addEventListener('scroll', eventListnerRef);
+    }
+    componentWillUnmount(){
+        window.removeEventListener('scroll', this.state.eventListnerRef);   
+    }
+    updateStateOnAPIcall = (data)=>{
+        // paginated response
+        this.setState({
+            userShot: data.results,
+            paginator: data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null
+        })
+    }
+    handleScroll() {
+        if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+        if(this.state.isFetching) return;
+        if(this.state.paginator){
+            let res = this.state.paginator.getNextPage(this.updateStateOnPagination)
+            if (res !== false){
+                this.setState({isFetching: true})
+            }  
+        }
+        
+    }
+
+    updateStateOnPagination = (results) =>{
+        this.setState({
+            userShot:[...this.state.userShot, ...results],
+            isFetching: false
+        })
+    }
+    padDummyShot = (resultList, len, maxlen=5) =>{
+        if (len < maxlen){
+            for(let i =0; i< maxlen - len ; i++){
+                resultList.push(<DummyShots key={ "DS"+ i } />)
+            }
+        }
+        return resultList
     }
     render() {
+        if(!this.state.userShot){return(<div className="explore-container"><OwlLoader/></div>)}
         let resultList = [];
-        this.state.userShot.map(ele => 
-            {resultList.push(<Shot key={ele.id} id={ele} onlyShot={true} data={ele} currLocation={this.props.location} />)
-            return ele
+        this.state.userShot.map((portfolio, index) => {
+            // console.log("portfolio", portfolio)
+            portfolio.attachments.map(ele=>{
+                let data ={
+                    id: ele.id, name: portfolio.user.name, username: portfolio.user.username, profile_pic: portfolio.user.profile_pic,
+                    content: ele.content, 
+                    interactions: portfolio.interactions, portfolio_id: portfolio.id
+                }
+                resultList.push(
+                <Shot key={data.id} id={data.id} onlyShot={true} data={data} currLocation={this.props.location} 
+                    likeShot={this.likeShot} unLikeShot={this.unLikeShot}
+                />)
+                return ele
+            })
+            return portfolio
         })
+        resultList = this.padDummyShot(resultList, this.state.userShot.length, 5)
         return (
             <div className="explore-container">
                 {/* hero section */}
@@ -64,14 +116,57 @@ export class Explore extends Component {
                 <section className="featured-slider">
                     <FeatureSlider />
                 </section>
+                <section className="explore-context">
+                    <label>Trending</label>
+                </section>
                 <section className="explore-shots">
                     <div className="profile-shots">
                         {resultList}
                     </div>
                 </section>
-                <Footer />
+                {!this.state.paginator || !this.state.paginator.next? <Footer />:""}
+                
 
 
+            </div>
+        )
+    }
+}
+
+
+export class ExplorePreview extends Component{
+    state ={
+        userShot : null,
+    }
+    componentDidMount(){
+        RegularShotsAPI(this.updateStateOnAPIcall);
+    }
+    updateStateOnAPIcall = (data)=>{
+        // paginated response
+        // but we require only first page shots here
+        this.setState({
+            userShot: data.results,
+        })
+    }
+    render(){
+        if(!this.state.userShot){return(<div className="explore-container"><OwlLoader/></div>)}
+        let resultList = [];
+        this.state.userShot.map(portfolio => {
+            portfolio.attachments.map(ele=>{
+                resultList.push(<div key={ele.id} className="ex-1"><img src={ele.content} alt="" /></div>)
+                return ele
+            })
+            return portfolio
+        })
+
+        resultList = resultList.slice(0, this.props.counter)
+
+        return(
+            <div className="explore-preview">
+                {resultList}
+                <div key={"e-more"} className="ex-1">
+                    <div className="explore-more">Explore More</div>
+                </div>
             </div>
         )
     }

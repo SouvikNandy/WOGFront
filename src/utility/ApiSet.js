@@ -46,7 +46,7 @@ export const SavePostAPI = (requestBody, callBackFunc) =>{
 
 export const RegularShotsAPI = (callBackFunc) =>{
     let url = 'api/v1/regular-shots/'
-    HTTPRequestHandler.get({url: url, includeToken:false, callBackFunc: callBackFunc })
+    HTTPRequestHandler.get({url: url, includeToken:isAuthenticated()?true: false, callBackFunc: callBackFunc })
 }
 
 export const AddCommentAPI = (requestBody, callBackFunc) =>{

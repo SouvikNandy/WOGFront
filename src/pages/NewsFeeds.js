@@ -25,10 +25,13 @@ import { createFloatingNotification } from '../components/FloatingNotifications'
 import { UserFeedsAPI, SavePostAPI, LikePostAPI } from '../utility/ApiSet';
 import Paginator from '../utility/Paginator';
 import { JSONToEditState, EditorSpan } from '../components/TextInput';
+import { ExplorePreview } from './Explore';
+import { DiscoverUserFlat } from './DiscoverPeople';
 
 export class NewsFeeds extends Component {
     render() {
         let userData = getUserData();
+
         return (
             <React.Fragment>
                 <UserNavBar selectedMenu={"feeds"} username={userData.username}/>
@@ -37,7 +40,8 @@ export class NewsFeeds extends Component {
                     <div className="nf-feeds">
                         <NewFeedPalette currLocation={this.props.location}/>
                     </div>
-                    <NewsFeedSuggestions />
+                    {window.innerWidth >900? <NewsFeedSuggestions />: ""}
+                    
                     <AddPost />
                 </div>
             </React.Fragment>
@@ -212,13 +216,33 @@ export class NewsFeedUserMenu extends Component{
 
 
 export function NewsFeedSuggestions (){
+    // console.log("NewsFeedSuggestions mounted")
     return(
         <div className="nf-rest">
-            <div className="nf-suggestions">
-                
+            <div className="nf-fixed">
+                <div className="nf-suggestions">
+                    <div className="s-label">
+                        <h4>Explore</h4>
+                        <span className="s-tag">#trending</span>
+                    </div>
+                    
+                    <ExplorePreview counter={2}/>
+                </div>
+                <div className="nf-discover">
+                    <div className="s-label">
+                        <h4>Discover</h4>
+                        <span className="s-tag">people around you</span>
+                    </div>
+                    <DiscoverUserFlat counter={2}/>
+                    <div className="see-more">
+                        <Link className="link">See more</Link>
+                    </div>
+                    
+                </div>
+                <div className="nf-active"></div>
+
             </div>
-            <div className="nf-sponsers"></div>
-            <div className="nf-explore-more"></div>
+            
         </div>
 
     )
