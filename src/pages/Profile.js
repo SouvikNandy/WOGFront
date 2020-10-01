@@ -401,7 +401,8 @@ export default class Profile extends Component {
     }
 
     stopFollowing =(record) =>{
-        record.is_following = false;
+        console.log("stopFollowing called", record)
+        // record.is_following = false;
         if(this.isSelf){
             this.setState({
                 userFollowing: this.state.userFollowing.filter(ele => ele.id!==record.id) 

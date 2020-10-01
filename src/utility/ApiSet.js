@@ -138,4 +138,9 @@ export const MuteNotification =(nid, callBackFunc) =>{
     let url = "api/v1/notification-action/"
     HTTPRequestHandler.post({url:url, requestBody:{action: 'turnoff', nid: nid}, includeToken: true, callBackFunc: callBackFunc})
 }
+
+export const RemoveNotification =(nid, callBackFunc) =>{
+    let url = "api/v1/notification-action/"
+    HTTPRequestHandler.post({url:url, requestBody:{action: 'remove', nid: nid}, includeToken: true, callBackFunc: callBackFunc})
+}
 export default {LoginAPI}

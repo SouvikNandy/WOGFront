@@ -9,7 +9,7 @@ import {AiFillCloseCircle} from 'react-icons/ai'
 import {UserNavBar} from "../components/Navbar/Navbar";
 import getUserData, { getNotificationHandler, setNotificationHandler } from '../utility/userData';
 
-import { FetchNotifications } from '../utility/ApiSet';
+import { FetchNotifications, MuteNotification, RemoveNotification } from '../utility/ApiSet';
 import Paginator from '../utility/Paginator';
 import OwlLoader from '../components/OwlLoader';
 import { FaUserCircle } from 'react-icons/fa';
@@ -110,9 +110,16 @@ export class NotificationPalette extends Component{
     
 
     removeNotification = (idx) =>{
+        // backend call
+        RemoveNotification(idx, null)
         this.setState ({ 
             notification: this.state.notification.filter(ele=> ele.id !== idx)
         })
+    }
+
+    muteNotification = (idx) =>{
+        // backend call to mute
+        MuteNotification(idx, null)
 
     }
     render(){
@@ -123,6 +130,7 @@ export class NotificationPalette extends Component{
                 <NotificationCube key={ele.id} data={ele}
                 markAsRead={this.markAsRead.bind(this, ele.id)}
                 removeNotification={this.removeNotification.bind(this, ele.id)}
+                muteNotification={this.muteNotification.bind(this, ele.id)}
                 curLocation={this.props.curLocation}
                 />
             )
@@ -232,7 +240,9 @@ export class NotificationCube extends Component{
                 {this.state.showMenu?
                     <div className="selection-overlay">
                         <div className="selection-option">
-                            <div className="s-noti"><FiBellOff className="close-btn" /><span>Turn Off further notifications</span></div>
+                            <div className="s-noti" onClick={this.props.muteNotification}>
+                                <FiBellOff className="close-btn" />
+                                <span>Turn Off further notifications</span></div>
                             <div className="s-noti" onClick={this.props.removeNotification}>
                                 <AiFillCloseCircle className="close-btn" />
                                 <span>Remove notification</span>
