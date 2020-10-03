@@ -473,6 +473,26 @@
 
 /* media queries */
 
+.profile-report-screen{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-report-screen .report-profile{
+    background: var(--light);
+    padding: 0.8rem 1.2rem;
+    border-radius: 0.7rem;
+
+}
+
 @media(max-width: 900px) {
     .p-user {
         flex-direction: column;
@@ -516,9 +536,12 @@
             "u-social";
     }
 
-
+    .profile-report-screen .report-profile{
+        max-height: 100%;
+        max-width: 100%;
+    
+    }
 }
-
 
 @media(max-width: 850px) {
     .tag-req {
@@ -605,6 +628,8 @@
         grid-template-rows: 10rem;
         border-radius: 0.7rem;
     }
+
+    
 
 }
 
@@ -703,5 +728,9 @@
 
     .p-display-name .m-fuser .ico {
         display: none;
+    }
+
+    .profile-report-screen .report-profile{
+        overflow-y: scroll;
     }
 }

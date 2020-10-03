@@ -116,7 +116,6 @@ export class ShotPalette extends Component {
 
 export class Shot extends Component {
     render() {
-        console.log("props", this.props)
         let data = this.props.data
         let shotClass = this.props.onlyShot ? "shot-preview-alt" : "shot-preview"
         let redirect_key = data.username +'-'+ data.portfolio_id +'-'+ data.id;

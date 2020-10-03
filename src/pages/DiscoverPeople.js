@@ -153,11 +153,11 @@ export class DiscoverUserFlat extends Component{
         })
         
     }
-    startFollowing =(record) =>{
+    startFollowing =(record, res) =>{
         this.setState({
             people: this.state.people.map(ele =>{
-                if(ele.id===record.id){
-                    record.is_following = true;
+                if(ele.username===record.username){
+                    ele.is_following = true;
                 }
                 return ele
             })
@@ -165,11 +165,11 @@ export class DiscoverUserFlat extends Component{
         
     }
 
-    stopFollowing =(record) =>{
+    stopFollowing =(record, res) =>{
         this.setState({
             people: this.state.people.map(ele =>{
-                if(ele.id===record.id){
-                    record.is_following = false;
+                if(ele.username===record.username){
+                    ele.is_following = false;
                 }
                 return ele
             })
@@ -186,9 +186,9 @@ export class DiscoverUserFlat extends Component{
                     <div className="discover-list" key={ele.username}>
                         <UserFlat data={ele} tagText={"hello"}/>
                         {ele.is_following?
-                            <span className="text-button" onClick={() => FollowUnfollowUser(ele, this.stopFollowing)}> Remove</span>
+                            <span className="text-button" onClick={() => FollowUnfollowUser(ele, this.stopFollowing.bind(this, ele))}> Remove</span>
                             :
-                            <span className="text-button" onClick={() => FollowUnfollowUser(ele, this.startFollowing)}> Add</span>
+                            <span className="text-button" onClick={() => FollowUnfollowUser(ele, this.startFollowing.bind(this, ele))}> Add</span>
                         }
                     </div>
                         

@@ -26,6 +26,7 @@ import { Redirect, Link } from 'react-router-dom';
 import OwlLoader from '../components/OwlLoader';
 import Paginator from '../utility/Paginator';
 import { AddUserReviewsAPI, UpdateUserReviewsAPI } from '../utility/ApiSet';
+import ReportContent from '../components/Post/ReportContent';
 
 
 
@@ -140,7 +141,7 @@ export default class Profile extends Component {
         else{
             activeTab = subnav.filter(ele=>ele.isActive === true)[0].title   
         }
-        console.log("active tab", activeTab);
+        // console.log("active tab", activeTab);
         this.retrieveDataFromAPI(activeTab, this.updateStateOnAPIcall, isAuth)
 
         // add event listner
@@ -391,29 +392,42 @@ export default class Profile extends Component {
         this.setState({ userTag: newUsertag})
     }
 
-    startFollowing =(record) =>{
+    startFollowing =(record, response) =>{
         record.is_following = true;
-        if (this.state.isSelf){
+        if (this.state.isSelf && this.state.userFollowing){
             this.setState({
                 userFollowing: [...this.state.userFollowing, record]
             })
         }
+        
     }
 
-    stopFollowing =(record) =>{
-        console.log("stopFollowing called", record)
+    stopFollowing =(record, response) =>{
         // record.is_following = false;
-        if(this.isSelf){
+        if(this.state.isSelf){
             this.setState({
-                userFollowing: this.state.userFollowing.filter(ele => ele.id!==record.id) 
+                userFollowing: this.state.userFollowing.filter(ele => ele.username!==record.username) 
             })
+
+            if (this.state.userFollower){
+                this.setState({
+                    userFollower: this.state.userFollower.map(ele => {
+                        if(ele.username === record.username){
+                            ele.is_following = false;
+                        }
+                        return ele
+                    })
+                })
+    
+            }
         }  
     }
 
     startStopFollowingProfile = (data) =>{
-        data.is_following = !data.is_following
+        let userAbout = this.state.userAbout
+        userAbout.is_following = !userAbout.is_following
         this.setState({
-            userAbout: data
+            userAbout: userAbout
         })
     }
 
@@ -720,9 +734,10 @@ export default class Profile extends Component {
 
                 }
                 else{
-                    this.state.userFollower.map(ele => 
-                        {resultList.push(<FollowUserCubeAlt key={ele.id} data={ele} isFollowing={ele.isFollowing} 
-                            startFollowing={this.startFollowing} stopFollowing={this.stopFollowing} />)
+                    this.state.userFollower.map((ele, index) => 
+                        
+                        {resultList.push(<FollowUserCubeAlt key={index} data={ele} isFollowing={ele.is_following} 
+                            startFollowing={this.startFollowing.bind(this, ele)} stopFollowing={this.stopFollowing.bind(this, ele)} />)
                         return ele
                     })
                     resultList = this.padDummyShot(resultList, this.state.userFollower.length, 5)
@@ -763,8 +778,8 @@ export default class Profile extends Component {
                 }
                 else{
                     this.state.userFollowing.map((ele, index) => 
-                        {resultList.push(<FollowUserCubeAlt key={index} data={ele} isFollowing={ele.isFollowing} 
-                            stopFollowing={this.stopFollowing} />)
+                        {resultList.push(<FollowUserCubeAlt key={index} data={ele} isFollowing={ele.is_following} 
+                            stopFollowing={this.stopFollowing.bind(this, ele)} />)
                         return ele
                     })
                     resultList = this.padDummyShot(resultList, this.state.userFollowing.length, 5)
@@ -930,6 +945,8 @@ export default class Profile extends Component {
 function ProfileHead(props) {
     let data = props.data;
     const [userActions, showUserActions] = useState(false);
+    const [blockModal, showBlockModal] = useState(false);
+    const [reportModal, showReportModal] = useState(false);
 
     if (!props.data){
         return(
@@ -1009,8 +1026,8 @@ function ProfileHead(props) {
                                             <div className="a-opt" 
                                             onClick={() => FollowUnfollowUser(data, props.startStopFollowingProfile)}>Unfollow</div> : ""
                                             }
-                                            <div className="a-opt">Block</div>
-                                            <div className="a-opt">Report</div>
+                                            <div className="a-opt" onClick={()=> showBlockModal(!blockModal)}>Block</div>
+                                            <div className="a-opt" onClick={()=> showReportModal(!reportModal)}>Report</div>
                                         </div>
                                         :
                                         ""
@@ -1020,6 +1037,16 @@ function ProfileHead(props) {
                             }
                             
                         </span>
+                        {reportModal?
+                            <div className="profile-report-screen">
+                                <div className="report-profile">
+                                    <ReportContent />
+
+                                </div>
+                                
+                            </div>
+                            :
+                        ""}
                     </div>
                 </div>
             </div>

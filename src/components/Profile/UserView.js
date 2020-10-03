@@ -33,7 +33,6 @@ export function UserFlat(props){
 
 export const FollowUnfollowUser =(ele, callBack)=>{
     FollowRequestAPI(ele.username, {}, callBack)
-    callBack(ele)
 }
 
 export function UserCube(props){
