@@ -214,13 +214,18 @@ export class AccountData extends Component{
     }
 }
 
-export function DownloadData(props){
+export function ConfirmationPopup(props){
     return(
         <div className="user-input-popup-container">
             <div className="user-input-popup">
-                <span>Are you sure to coninue ?</span>
+                {props.confMessage?
+                    <span>{props.confMessage}</span>
+                    :
+                    <span>Are you sure to coninue ?</span>
+                }
+                
                 <div className="pop-up-action">
-                    <span className="pop-up-option-opt">Yes</span>
+                    <span className="pop-up-option-opt" onClick={props.onContinue}>Yes</span>
                     <span className="pop-up-option-opt" onClick={props.prvBtnClick}>No</span>
                 </div>
             </div>
@@ -267,4 +272,4 @@ export class SearchHistory extends Component{
         )
     }
 }
-export default {ChangePassword, LoginActivity, AccountData, DownloadData, SearchHistory}
+export default {ChangePassword, LoginActivity, AccountData, ConfirmationPopup, SearchHistory}

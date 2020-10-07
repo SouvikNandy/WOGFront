@@ -490,7 +490,17 @@
     background: var(--light);
     padding: 0.8rem 1.2rem;
     border-radius: 0.7rem;
+    position: relative;
 
+}
+
+.profile-report-screen .report-profile .pop-up-close{
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 1.5rem;
+    color: var(--hover-two);
+    cursor: pointer;
 }
 
 @media(max-width: 900px) {

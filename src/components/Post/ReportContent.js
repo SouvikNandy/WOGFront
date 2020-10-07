@@ -3,6 +3,26 @@ import '../../assets/css/reportContent.css';
 import {GoReport} from "react-icons/go";
 import {AiFillPlusCircle, AiOutlineCopyright, AiFillWarning} from 'react-icons/ai';
 
+
+
+
+const copyrightClaims = [
+    "I appear in this content without permission",
+    "Abuse/Harassment (Someone is attacking me)",
+    "Privacy (Someone is using my image)",
+    "Trademark infringement (Someone is using my trademark)",
+    "Copyright infringement (Someone copied my creation)",
+    "Other legal issue (including the circumvention of technological measures, such as providing keygens or serial numbers)"
+]
+
+const reportPostClaims = ["Violence", "Harassment", "Spam", "Explicit content", "Terrorism", "Spreading hatred"]
+
+
+const reportProfileClaims = [
+    "Pretending to be someone else", "Fake Account", "Posting inappropiate contents", 
+    "Harassment or bullying", "I can't access my account"
+]
+
 export class ReportContent extends Component {
     state ={
         reason: '',
@@ -31,16 +51,13 @@ export class ReportContent extends Component {
     render() {
         let reportReasons = [];
         if (this.props.copyrightClaim === true){
-            reportReasons = [
-            "I appear in this content without permission",
-            "Abuse/Harassment (Someone is attacking me)",
-            "Privacy (Someone is using my image)",
-            "Trademark infringement (Someone is using my trademark)",
-            "Copyright infringement (Someone copied my creation)",
-            "Other legal issue (including the circumvention of technological measures, such as providing keygens or serial numbers)"]
+            reportReasons = copyrightClaims
+        }
+        else if (this.props.reportUser === true){
+            reportReasons = reportProfileClaims
         }
         else{
-            reportReasons = ["Violence", "Harassment", "Spam", "Explicit content", "Terrorism", "Spreading hatred"]
+            reportReasons = reportPostClaims
 
         }
         let reportReasonBlock = [];
@@ -71,6 +88,9 @@ export class ReportContent extends Component {
                     <span className="info-text">
                         {this.props.copyrightClaim === true?
                         "Claim copyright to take down content from other's profile."
+                        :
+                        this.props.reportUser?
+                        "You can report the profile after providing a problem."
                         :
                         "You can report the content after providing a problem."
                         }

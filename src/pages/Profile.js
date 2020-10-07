@@ -27,6 +27,7 @@ import OwlLoader from '../components/OwlLoader';
 import Paginator from '../utility/Paginator';
 import { AddUserReviewsAPI, UpdateUserReviewsAPI } from '../utility/ApiSet';
 import ReportContent from '../components/Post/ReportContent';
+import { ConfirmationPopup } from '../components/Settings/SecurityOptions';
 
 
 
@@ -1040,13 +1041,24 @@ function ProfileHead(props) {
                         {reportModal?
                             <div className="profile-report-screen">
                                 <div className="report-profile">
-                                    <ReportContent />
-
+                                    <div className="pop-up-close" onClick={()=>showReportModal(!reportModal)}>
+                                        <AiFillCloseCircle /></div>
+                                    <ReportContent reportUser={true}/>
                                 </div>
-                                
                             </div>
                             :
                         ""}
+                        {blockModal?
+                            <div className="profile-report-screen">
+                                <ConfirmationPopup 
+                                confMessage={"Are you sure to block this account?"}
+                                prvBtnClick={()=>showBlockModal(!blockModal)}
+                                onContinue={()=>{}}
+                                />
+                            </div> 
+                            :
+                            ""
+                        }
                     </div>
                 </div>
             </div>

@@ -4,7 +4,7 @@ import {FaMapMarkerAlt, FaRegUser} from 'react-icons/fa';
 import {FiKey, FiDownload} from 'react-icons/fi';
 import {RiSearchEyeLine} from 'react-icons/ri';
 
-import {ChangePassword, LoginActivity, AccountData, DownloadData, SearchHistory} from './SecurityOptions';
+import {ChangePassword, LoginActivity, AccountData, ConfirmationPopup, SearchHistory} from './SecurityOptions';
 
 
 export class Security extends Component {
@@ -42,7 +42,7 @@ export class Security extends Component {
                     newContentblock = <AccountData  prvBtnClick={this.prvBtnClick}/>
                 }
                 else if (ele.name === "Download Data"){
-                    newContentblock = <DownloadData  prvBtnClick={this.prvBtnClick}/>
+                    newContentblock = <ConfirmationPopup  prvBtnClick={this.prvBtnClick}/>
                 }
                 else if (ele.name === "Search History"){
                     newContentblock = <SearchHistory  prvBtnClick={this.prvBtnClick}/>
