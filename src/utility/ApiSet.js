@@ -143,4 +143,10 @@ export const RemoveNotification =(nid, callBackFunc) =>{
     let url = "api/v1/notification-action/"
     HTTPRequestHandler.post({url:url, requestBody:{action: 'remove', nid: nid}, includeToken: true, callBackFunc: callBackFunc})
 }
+
+export const BlockUser = (username, callBackFunc) =>{
+    let url = "api/v1/block-profile/"
+    HTTPRequestHandler.post({url:url, requestBody:{username: username}, includeToken: true, callBackFunc: callBackFunc})
+}
+
 export default {LoginAPI}

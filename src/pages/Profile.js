@@ -25,7 +25,7 @@ import { createFloatingNotification } from '../components/FloatingNotifications'
 import { Redirect, Link } from 'react-router-dom';
 import OwlLoader from '../components/OwlLoader';
 import Paginator from '../utility/Paginator';
-import { AddUserReviewsAPI, UpdateUserReviewsAPI } from '../utility/ApiSet';
+import { AddUserReviewsAPI, BlockUser, UpdateUserReviewsAPI } from '../utility/ApiSet';
 import ReportContent from '../components/Post/ReportContent';
 import { ConfirmationPopup } from '../components/Settings/SecurityOptions';
 
@@ -239,9 +239,21 @@ export default class Profile extends Component {
     retrieveDataFromAPI = (selectedMenu, callbackFunc, isAuth=null)=>{
         let url = this.getAPIUrl(selectedMenu)
         let stateKey = this.getStateKeyFromSubmenuName(selectedMenu)
+        // don't make calls if user is blocked
+        if (this.state.userAbout && stateKey === "userAbout"){
+            return true
+        }
+        if (this.state.userAbout && this.state.userAbout.is_blocked){
+            this.setState({
+                [stateKey]: null
+            })
+            return true
+
+        }
         if(isAuth === null) {
             isAuth = this.state.isAuth
         }
+
         if (this.state[stateKey]!== null){
             // don't make api call
             return true
@@ -526,8 +538,29 @@ export default class Profile extends Component {
         let resultList = [];
         let resultBlock = '';
         resultBlock = this.state.subNavList.map((item, index) => {
-            if(item.title === "Shots" && item.isActive === true){
+            if (item.title === "About" && item.isActive === true){
+                // USER ABOUT
+                return (
+                    <React.Fragment key={item.title}>
+                        <UserAbout key={item.title} data={this.state.userAbout}/>
+                        <Footer />
+                    </React.Fragment>
+                
+                )
+            }
+            else if (this.state.userAbout && this.state.userAbout.is_blocked){
+                return(
+                    <React.Fragment key={"blocked-content"+ index} >
+                        <div className="profile-portfolio-grid">
+                            {this.getNoContentDiv("Unblock the user to view updates !!!")}
+                        
+                        </div>
+                        <Footer />
+                    </React.Fragment>
+                )
 
+            }
+            else if(item.title === "Shots" && item.isActive === true){
                 // SHOTS
                 if (this.state.userPortFolio && this.state.userPortFolio.length === 0){
                     let msg = "No shots yet !!!"
@@ -800,18 +833,6 @@ export default class Profile extends Component {
                     </React.Fragment>
                     )
             }
-
-            else if (item.title === "About" && item.isActive === true){
-                // USER ABOUT
-                return (
-                    <React.Fragment key={item.title}>
-                        <UserAbout key={item.title} data={this.state.userAbout}/>
-                        <Footer />
-                    </React.Fragment>
-                
-                )
-            }
-
             else if (item.title === "Reviews" && item.isActive === true){
                 // USER reviews
                 let comp = <CommunityReview key={item.title} showSubNav={false} headMessgae={"Public reaction about this profile"}
@@ -893,6 +914,12 @@ export default class Profile extends Component {
         }
     }
 
+    BlockUnblock = () =>{
+        let userAbout = this.state.userAbout
+        userAbout.is_blocked = !userAbout.is_blocked
+        this.setState({userAbout:userAbout})
+    }
+
     render() {
         if (this.props.AuthenticatedOnly && this.state.isSelf === false){
             return(<Redirect to={{ pathname: "/page-404/" }} />)
@@ -928,7 +955,7 @@ export default class Profile extends Component {
                 {/* profile top section */}
                 <ProfileHead data={this.state.userAbout} isSelf={this.state.isSelf} editProfile={this.editProfile} 
                 uploadPicture={this.uploadPicture} isAuth={this.state.isAuth} currLocation={this.props.location}
-                startStopFollowingProfile={this.startStopFollowingProfile}
+                startStopFollowingProfile={this.startStopFollowingProfile} BlockUnblock={this.BlockUnblock}
                  />
                  {/* intor div */}
                 {!this.state.isSelf && ['Shots', 'Portfolios'].includes(this.state.subNavList.filter(ele => ele.isActive)[0].title)? 
@@ -1010,8 +1037,11 @@ function ProfileHead(props) {
                                             ><FaPaperPlane className="ico"/> Message</Link>
                                     :
                                         props.isAuth?
-                                            <button className="btn m-fuser" onClick={() => FollowUnfollowUser(data, props.startStopFollowingProfile)}>
-                                                <FaPlus className="ico"/> Follow</button>
+                                            !data.is_blocked?
+                                                <button className="btn m-fuser" onClick={() => FollowUnfollowUser(data, props.startStopFollowingProfile)}>
+                                                    <FaPlus className="ico"/> Follow</button>
+                                                :
+                                                ""
                                             :
                                             <Link className="btn m-fuser" to={{
                                                 pathname: `/m-auth/`,
@@ -1027,7 +1057,13 @@ function ProfileHead(props) {
                                             <div className="a-opt" 
                                             onClick={() => FollowUnfollowUser(data, props.startStopFollowingProfile)}>Unfollow</div> : ""
                                             }
-                                            <div className="a-opt" onClick={()=> showBlockModal(!blockModal)}>Block</div>
+                                            {data.is_blocked?
+                                                <div className="a-opt" 
+                                                onClick={()=> BlockUser(data.username, ()=>{props.BlockUnblock()})}>Unblock</div>
+                                                :
+                                                <div className="a-opt" onClick={()=> showBlockModal(!blockModal)}>Block</div>
+                                            }
+                                            
                                             <div className="a-opt" onClick={()=> showReportModal(!reportModal)}>Report</div>
                                         </div>
                                         :
@@ -1053,7 +1089,10 @@ function ProfileHead(props) {
                                 <ConfirmationPopup 
                                 confMessage={"Are you sure to block this account?"}
                                 prvBtnClick={()=>showBlockModal(!blockModal)}
-                                onContinue={()=>{}}
+                                onContinue={()=>{ BlockUser(data.username, ()=>{
+                                    showBlockModal(!blockModal)
+                                    props.BlockUnblock()
+                                }) }}
                                 />
                             </div> 
                             :
