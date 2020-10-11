@@ -40,7 +40,7 @@ export class NewsFeeds extends Component {
                     <div className="nf-feeds">
                         <NewFeedPalette currLocation={this.props.location}/>
                     </div>
-                    {window.innerWidth >900? <NewsFeedSuggestions />: ""}
+                    {window.innerWidth >900? <NewsFeedSuggestions  username={userData.username}/>: ""}
                     
                     <AddPost />
                 </div>
@@ -215,7 +215,7 @@ export class NewsFeedUserMenu extends Component{
 }
 
 
-export function NewsFeedSuggestions (){
+export function NewsFeedSuggestions (props){
     // console.log("NewsFeedSuggestions mounted")
     return(
         <div className="nf-rest">
@@ -235,7 +235,7 @@ export function NewsFeedSuggestions (){
                     </div>
                     <DiscoverUserFlat counter={2}/>
                     <div className="see-more">
-                        <Link className="link">See more</Link>
+                        <Link className="link" to={`/discover-people/${props.username}`}>See more</Link>
                     </div>
                     
                 </div>

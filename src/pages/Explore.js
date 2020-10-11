@@ -10,6 +10,7 @@ import { RegularShotsAPI } from '../utility/ApiSet';
 import Paginator from '../utility/Paginator';
 import OwlLoader from '../components/OwlLoader';
 import DummyShots from '../components/Post/DummyShots';
+import { Link } from 'react-router-dom';
 
 
 export class Explore extends Component {
@@ -165,7 +166,7 @@ export class ExplorePreview extends Component{
             <div className="explore-preview">
                 {resultList}
                 <div key={"e-more"} className="ex-1">
-                    <div className="explore-more">Explore More</div>
+                    <Link className="link explore-more" to={'/explore/'}>Explore More</Link>
                 </div>
             </div>
         )

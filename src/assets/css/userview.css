@@ -65,6 +65,7 @@
     flex-direction: column;
     width: 90%;
     border-bottom: 1px solid var(--border-grey);
+    padding: 0.5rem;
 }
 
 .cube-grid .cube-user-img {
