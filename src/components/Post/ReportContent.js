@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import '../../assets/css/reportContent.css';
 import {GoReport} from "react-icons/go";
 import {AiFillPlusCircle, AiOutlineCopyright, AiFillWarning} from 'react-icons/ai';
+import { createFloatingNotification } from '../FloatingNotifications';
+import { ReportContentAPI } from '../../utility/ApiSet';
 
 
 
@@ -45,6 +47,33 @@ export class ReportContent extends Component {
         this.setState({tcApproved: !this.state.tcApproved})
     }
     onSubmit = () =>{
+        console.log("onsubmit called")
+        if (!this.state.reason){
+            createFloatingNotification('error', "Please provide a reason to report", "You must provide a reason why are you reporting this")
+            return false
+        }
+
+        if(!this.state.tcApproved) {
+            createFloatingNotification('error', "You must accept the terms!", "This is an acknowledgement that you have agreed to the terms above")
+            return false
+        }
+
+        let requestBody ={
+            id: this.props.contentId,
+            content_key: this.props.reportUser? "profile": "post",
+            report_message: this.state.reason
+        }
+
+        ReportContentAPI(requestBody, this.successCallBack);
+        this.setState({
+            reason: '',
+            tcApproved: false
+
+        })
+
+    }
+    successCallBack = (data) =>{
+        createFloatingNotification('success', "We have received your report", "Actions will be taken on behalf your report")
 
     }
 
@@ -121,12 +150,12 @@ export class ReportContent extends Component {
                         <span className="report-reason">{this.state.reason}</span>
                     </span>
                 </div>
-                <DisclaimerBox approveTC={this.approveTC}/>
+                <DisclaimerBox approveTC={this.approveTC} tcApproved={this.state.tcApproved}/>
                 <div className="submission-box">
                     {this.state.tcApproved?
                     <button className="btn s-btn" onClick={this.onSubmit}>Proceed</button>
                     :
-                    <button className="btn s-btn">Proceed</button>
+                    <button className="btn s-btn" disabled>Proceed</button>
                     }
                         
                 </div>
@@ -152,7 +181,7 @@ function DisclaimerBox(props){
                             Misuse of this process may result in the suspension of your account or other legal consequences.</span>
                     </div>
                     <div className="db-bottom">
-                        <input type="checkbox" onChange={props.approveTC}/> I have read and agreed to the terms above
+                        <input type="checkbox" onChange={props.approveTC} checked={props.tcApproved}/> I have read and agreed to the terms above
                     </div>
                 </div>
 

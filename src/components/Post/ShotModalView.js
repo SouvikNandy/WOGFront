@@ -258,14 +258,16 @@ export class ShotModalView extends Component {
                                                     :
                                                     <React.Fragment>
                                                         <div className="r-opt"
-                                                        onClick={this.displaySideView.bind(this, {content: <ReportContent />, sureVal: true})}
+                                                        onClick={this.displaySideView.bind(this, 
+                                                            {content: <ReportContent contentId={this.state.shot.id}/>, sureVal: true})}
                                                         >
                                                             <GoReport className="close-btn" />
                                                             <span>Report content</span>
                                                         </div>
                                                         <div className="r-opt"
                                                         onClick={this.displaySideView.bind(this, 
-                                                            {content: <ReportContent copyrightClaim={true} />, sureVal: true})}
+                                                            {content: <ReportContent 
+                                                                copyrightClaim={true} contentId={this.state.shot.id}/>, sureVal: true})}
                                                         >
                                                             <AiOutlineCopyright className="close-btn" />
                                                             <span>Claim copyright</span>

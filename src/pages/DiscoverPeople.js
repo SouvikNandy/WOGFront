@@ -184,7 +184,7 @@ export class DiscoverUserFlat extends Component{
             this.state.people.map(ele => 
                 {resultList.push(
                     <div className="discover-list" key={ele.username}>
-                        <UserFlat data={ele} tagText={"hello"}/>
+                        <UserFlat data={ele}/>
                         {ele.is_following?
                             <span className="text-button" onClick={() => FollowUnfollowUser(ele, this.stopFollowing.bind(this, ele))}> Remove</span>
                             :

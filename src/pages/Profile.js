@@ -972,6 +972,8 @@ export default class Profile extends Component {
 
 function ProfileHead(props) {
     let data = props.data;
+
+    // states
     const [userActions, showUserActions] = useState(false);
     const [blockModal, showBlockModal] = useState(false);
     const [reportModal, showReportModal] = useState(false);
@@ -1079,7 +1081,7 @@ function ProfileHead(props) {
                                 <div className="report-profile">
                                     <div className="pop-up-close" onClick={()=>showReportModal(!reportModal)}>
                                         <AiFillCloseCircle /></div>
-                                    <ReportContent reportUser={true}/>
+                                    <ReportContent reportUser={true} contentId={data.username}/>
                                 </div>
                             </div>
                             :

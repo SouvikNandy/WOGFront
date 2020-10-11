@@ -128,7 +128,7 @@ export class ModalReplies extends CommentsBase {
 
     componentWillUnmount() {
         // leave sock room
-        this.socket.leaveRoom(getUserData().username) 
+        if(this.socket) this.socket.leaveRoom(getUserData().username) 
         // store replies on comment model at unmount
         this.props.parentModal.addOnlyReplies(this.props.parentComment.id, this.state.data, this.state.paginator);
         

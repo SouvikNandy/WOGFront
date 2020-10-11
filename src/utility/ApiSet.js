@@ -149,4 +149,9 @@ export const BlockUser = (username, callBackFunc) =>{
     HTTPRequestHandler.post({url:url, requestBody:{username: username}, includeToken: true, callBackFunc: callBackFunc})
 }
 
+export const ReportContentAPI = (requestBody, callBackFunc) =>{
+    let url = "api/v1/report-request/"
+    HTTPRequestHandler.post({url:url, requestBody:requestBody, includeToken: true, callBackFunc: callBackFunc})
+}
+
 export default {LoginAPI}

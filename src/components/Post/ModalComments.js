@@ -38,7 +38,7 @@ export class ModalComments extends CommentsBase {
 
     componentWillUnmount() {
         // leave sock room
-        this.socket.leaveRoom(getUserData().username) 
+        if(this.socket) this.socket.leaveRoom(getUserData().username) 
     }
 
     redirectToLogin = () =>{
