@@ -4,7 +4,7 @@ import DummyShots from './DummyShots';
 
 
 import { Link } from "react-router-dom";
-import { FaHeart, FaRegHeart, FaRegEye } from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaRegEye, FaUserCircle } from "react-icons/fa";
 import {RegularShotsAPI} from '../../utility/ApiSet';
 import Paginator from '../../utility/Paginator';
 import OwlLoader from '../OwlLoader';
@@ -142,7 +142,12 @@ export class Shot extends Component {
                     {!this.props.onlyShot ?
                         <span className="attribution-user">
                             <Link className="link user-preview" to={{pathname: `/profile/${data.username}`}}>
-                                <img src={data.profile_pic} alt="" />
+                                {data.profile_pic?
+                                    <img className="user-pro-pic" src={data.profile_pic} alt="" />
+                                    :
+                                    <FaUserCircle className="user-pro-pic" />
+                                }
+                                
                                 <span className="display-name">{data.name} @{data.username}</span>
                             </Link>
                             <ShotFooterLikePreview data={data} unLikeShot={this.props.unLikeShot} likeShot={this.props.likeShot}

@@ -236,7 +236,12 @@ export class ShotModalView extends Component {
                             <div className="m-options fade-down">
                                 <div className="m-options-menu">
                                         <GoBack activeIcon={true} clickMethod={this.props.openModalView} />
-                                        <BsThreeDotsVertical className="close-btn" onClick={this.showReportOptions}/>
+                                        {this.state.isAuth?
+                                            <BsThreeDotsVertical className="close-btn" onClick={this.showReportOptions}/>
+                                            :
+                                            ""
+                                        }
+                                        
 
                                         {this.state.reportBox?
                                             <div className="report-box">
