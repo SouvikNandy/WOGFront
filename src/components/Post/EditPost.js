@@ -121,7 +121,7 @@ export class EditPost extends Component {
                 <div className="bg-modal full-width"><OwlLoader /></div>
                 )
         }
-        console.log("pricing_container", this.state.shot.pricing_container)
+        // console.log("pricing_container", this.state.shot.pricing_container)
         return (
             <div className={this.state.showSideView?"bg-modal with-side-width": "bg-modal full-width"}>
                 <div className={this.state.showSideView?"edit-container edit-container-resize": "edit-container"} >
@@ -135,7 +135,9 @@ export class EditPost extends Component {
                     <div className={this.state.showSideView?"edit-container-bottom edit-container-bottom-resize": "edit-container-bottom"}>
                         <AddDocumentForm sideViewOnChange={this.activeSideView} showModal={this.gotoPrev} 
                         portfolio_name={this.state.shot.portfolio_name} description={this.state.shot.description} 
-                        location={this.state.shot.location} updatePostDetails={this.updatePostDetails} 
+                        location={this.state.shot.location} 
+                        members ={this.state.shot.members}
+                        updatePostDetails={this.updatePostDetails} 
                         FileList={this.state.shot.attachments} pricingContainer={this.state.shot.pricing_container}/>
                     </div>
                 </div>

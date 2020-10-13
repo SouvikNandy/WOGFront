@@ -4,6 +4,7 @@ import "../../assets/css/userview.css";
 import { Link } from "react-router-dom";
 import { FaPlus, FaUserCircle } from "react-icons/fa";
 import { FollowRequestAPI } from '../../utility/ApiSet';
+import { UpdateRecentFriends } from '../../utility/userData';
 // import w1 from "../assets/images/wedding1.jpg";
 
 
@@ -31,8 +32,16 @@ export function UserFlat(props){
 }
 
 
-export const FollowUnfollowUser =(ele, callBack)=>{
-    FollowRequestAPI(ele.username, {}, callBack)
+export const FollowUnfollowUser =(ele, callBackFunc)=>{
+    FollowRequestAPI(ele.username, {}, callBackFunc)
+}
+
+export const ConstructUserRecord = (data) =>{
+    return {
+        "username": data.username,
+        "name": data.name,
+        "profile_pic": data.profile_pic
+    }
 }
 
 export function UserCube(props){
@@ -50,7 +59,11 @@ export function UserCube(props){
                     <Link to={{pathname: `/profile/${ele.username}`}} className="link">{ele.name}</Link>
                     {props.showRemoveBtn? 
                         <div className="unfollow-div">
-                            <button className="btn m-fuser" onClick={() => FollowUnfollowUser(ele, props.stopFollowing) }> Remove </button>
+                            <button className="btn m-fuser" onClick={() => {
+                                FollowUnfollowUser(ele, props.stopFollowing)
+                                UpdateRecentFriends("unfollow", ConstructUserRecord(ele)) 
+                                }
+                                }> Remove </button>
                         </div>
                     :   
                         <React.Fragment>
@@ -88,7 +101,11 @@ export function FollowUserCube(props){
                         </div>
                     </div>
                     :
-                    <button className="btn m-fuser" onClick={() => FollowUnfollowUser(ele, props.startFollowing)}><FaPlus className="add-btn"/> Follow</button>}
+                    <button className="btn m-fuser" onClick={() => {
+                    FollowUnfollowUser(ele, props.startFollowing)
+                    UpdateRecentFriends("follow", ConstructUserRecord(ele))
+                    }
+                    }><FaPlus className="add-btn"/> Follow</button>}
                     
                 </div>
                 
@@ -108,9 +125,15 @@ export function FollowUserCubeAlt(props){
                 <UserCube data={ele} showRemoveBtn={false}/>
                 <div className="cube-user-prof">
                     {is_following?
-                    <button className="btn m-fuser dark-btn" onClick={() => FollowUnfollowUser(ele, props.stopFollowing)}> Unfollow</button>
+                    <button className="btn m-fuser dark-btn" onClick={() => {
+                        FollowUnfollowUser(ele, props.stopFollowing)
+                        UpdateRecentFriends("unfollow", ConstructUserRecord(ele))
+                    }}> Unfollow</button>
                     :
-                    <button className="btn m-fuser" onClick={() => FollowUnfollowUser(ele, props.startFollowing)}>< FaPlus /> Follow</button>}
+                    <button className="btn m-fuser" onClick={() => {
+                        FollowUnfollowUser(ele, props.startFollowing)
+                        UpdateRecentFriends("follow", ConstructUserRecord(ele))
+                        }}>< FaPlus /> Follow</button>}
                     
                 </div>
                 

@@ -8,6 +8,7 @@ import {AiFillCloseCircle} from 'react-icons/ai';
 
 export default class SearchBar extends Component {
     timer = 0;
+    startedTyping= false;
 
     componentDidMount(){
         if(this.props.focusSearchBar){
@@ -20,15 +21,27 @@ export default class SearchBar extends Component {
         let val = evt.target.value;
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
-        if (val) {
+        if(!this.startedTyping && val){
+            this.startedTyping = true;
+            // console.log("startedTyping", this.startedTyping, val)
+        }
+        
+        if(this.startedTyping && !val){
             this.props.searchOnChange(val)
+            this.startedTyping = false;
+            // console.log("startedTyping", this.startedTyping, val)
+        }
+        else if (this.startedTyping && val && val.length >= 3) {
+            this.props.searchOnChange(val)
+            // console.log("startedTyping", this.startedTyping, val)
           }
         }, 500);
       }
       
 
     render(){
-        const placeHolder = this.props.searchPlaceHolder? this.props.searchPlaceHolder : "Search Shots/People/Hashtags ...";
+        const placeHolder = this.props.searchPlaceHolder? 
+        this.props.searchPlaceHolder + " (enter first 3 letters to start)" : "Search Shots/People/Hashtags ... (enter first 3 letters to start)";
         let outerDivClass = this.props.searchBarRequired ===false ? "search-div invisible": "search-div"
         return (
             <div className={outerDivClass}>
@@ -55,9 +68,6 @@ export default class SearchBar extends Component {
                         ""
                     }
                 </div>
-                
-                
-                
                 {/* <button className="btn-anc search-btn"><GrSearchAdvanced className="srch-icon" /></button> */}
             </div>
         )

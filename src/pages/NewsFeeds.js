@@ -308,8 +308,15 @@ export class NewFeedPalette extends Component{
     }
 
     updateStateOnPagination = (results) =>{
+        let newResult = results
+            newResult.map(ele=> {
+                if(ele.description){
+                    ele["description"] = JSONToEditState(JSON.parse(ele.description))
+                }
+                return ele
+            })
         this.setState({
-            feeds:[...this.state.feeds, ...results],
+            feeds:[...this.state.feeds, ...newResult],
             isFetching: false
         })
     }

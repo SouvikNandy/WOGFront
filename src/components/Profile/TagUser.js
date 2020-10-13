@@ -16,7 +16,7 @@ export class TagUser extends Component{
                 
                 {this.props.allowFollow?
                     <span className="m-follow">
-                        <button className="btn m-fuser" onClick={this.props.allowFollow.bind(this, data.id)}>< FaPlus /> Follow</button>
+                        <button className="btn m-fuser" onClick={this.props.allowFollow.bind(this, data.id? data.id: data.username)}>< FaPlus /> Follow</button>
                     </span>
                     :
                     ""
@@ -24,19 +24,19 @@ export class TagUser extends Component{
 
                 {this.props.allowUnblock?
                     <span className="m-follow">
-                        <button className="btn m-fuser dark-btn" onClick={this.props.allowUnblock.bind(this, data.id)}> Unblock </button>
+                        <button className="btn m-fuser dark-btn" onClick={this.props.allowUnblock.bind(this, data.id? data.id: data.username)}> Unblock </button>
                     </span>
                     :
                     ""
                 }
                 
                 {this.props.onRemoveMember?
-                    <AiFillCloseCircle className="close-btn tag-div-btn" onClick={this.props.onRemoveMember.bind(this, data.id)}/>
+                    <AiFillCloseCircle className="close-btn tag-div-btn" onClick={this.props.onRemoveMember.bind(this, data.id? data.id: data.username)}/>
                     :
                     ""
                 }
                 {this.props.onAddMember?
-                    <AiFillPlusCircle className="close-btn tag-div-btn add-fill" onClick={this.props.onAddMember.bind(this, data.id)}/>
+                    <AiFillPlusCircle className="close-btn tag-div-btn add-fill" onClick={this.props.onAddMember.bind(this, data.id? data.id: data.username)}/>
                     :
                     ""
                 }

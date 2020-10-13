@@ -9,7 +9,7 @@ import {Shot, ShotPalette} from '../components/Post/Shot';
 import Portfolio from '../components/Profile/Portfolio';
 import AddPost from '../components/Post/AddPost';
 import Footer from '../components/Footer';
-import {FollowUserCubeAlt, FollowUnfollowUser} from '../components/Profile/UserView';
+import {FollowUserCubeAlt, FollowUnfollowUser, ConstructUserRecord} from '../components/Profile/UserView';
 import DummyShots from '../components/Post/DummyShots';
 import {generateId, isSelfUser, isAuthenticated} from '../utility/Utility.js';
 import NoContent from '../components/NoContent';
@@ -18,7 +18,7 @@ import { UserNavBar } from '../components/Navbar/Navbar';
 import { TiEdit } from 'react-icons/ti';
 import EditProfile from '../components/Profile/EditProfile';
 import ImgCompressor from '../utility/ImgCompressor';
-import {defaultCoverPic} from '../utility/userData';
+import {defaultCoverPic, UpdateRecentFriends} from '../utility/userData';
 import { retrieveFromStorage, saveInStorage } from '../utility/Utility';
 import HTTPRequestHandler from '../utility/HTTPRequests';
 import { createFloatingNotification } from '../components/FloatingNotifications';
@@ -1040,7 +1040,10 @@ function ProfileHead(props) {
                                     :
                                         props.isAuth?
                                             !data.is_blocked?
-                                                <button className="btn m-fuser" onClick={() => FollowUnfollowUser(data, props.startStopFollowingProfile)}>
+                                                <button className="btn m-fuser" onClick={() => {
+                                                    FollowUnfollowUser(data, props.startStopFollowingProfile)
+                                                    UpdateRecentFriends("follow", ConstructUserRecord(data))
+                                                    }}>
                                                     <FaPlus className="ico"/> Follow</button>
                                                 :
                                                 ""
@@ -1057,7 +1060,10 @@ function ProfileHead(props) {
                                         <div className="user-action-menu">
                                             {data.is_following?
                                             <div className="a-opt" 
-                                            onClick={() => FollowUnfollowUser(data, props.startStopFollowingProfile)}>Unfollow</div> : ""
+                                            onClick={() => {
+                                                FollowUnfollowUser(data, props.startStopFollowingProfile)
+                                                UpdateRecentFriends("unfollow", ConstructUserRecord(data))
+                                            }}>Unfollow</div> : ""
                                             }
                                             {data.is_blocked?
                                                 <div className="a-opt" 

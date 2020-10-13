@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {FollowUnfollowUser, FollowUserCubeAlt, UserFlat} from '../components/Profile/UserView';
+import {FollowUnfollowUser, FollowUserCubeAlt, UserFlat, ConstructUserRecord} from '../components/Profile/UserView';
 import DummyShots from '../components/Post/DummyShots';
 import '../assets/css/profile.css';
 import {NewsFeedUserMenu, NewsFeedSuggestions} from './NewsFeeds';
@@ -8,7 +8,7 @@ import '../assets/css/discoverPeople.css';
 import {UserNavBar} from "../components/Navbar/Navbar";
 import { DiscoverPeopleAPI } from '../utility/ApiSet';
 import OwlLoader from '../components/OwlLoader';
-import {getUserData, UserRecentFriends} from '../utility/userData';
+import {getUserData, UpdateRecentFriends, UserRecentFriends} from '../utility/userData';
 
 export class DiscoverPeople extends Component {
     state ={
@@ -75,10 +75,11 @@ export class DiscoverPeople extends Component {
         return resultList
     }
 
-    startFollowing =(record) =>{
+    startFollowing =(record, res) =>{
+        console.log(" startFollowing called", record)
         this.setState({
             people: this.state.people.map(ele =>{
-                if(ele.id===record.id){
+                if(ele.username===record.username){
                     record.is_following = true;
                 }
                 return ele
@@ -87,10 +88,10 @@ export class DiscoverPeople extends Component {
         
     }
 
-    stopFollowing =(record) =>{
+    stopFollowing =(record, res) =>{
         this.setState({
             people: this.state.people.map(ele =>{
-                if(ele.id===record.id){
+                if(ele.username===record.username){
                     record.is_following = false;
                 }
                 return ele
@@ -106,8 +107,10 @@ export class DiscoverPeople extends Component {
         else{
             // console.log(this.state.people)
             this.state.people.map(ele => 
-                {resultList.push(<FollowUserCubeAlt key={ele.username} data={ele} isFollowing={ele.is_following} 
-                    startFollowing={this.startFollowing} stopFollowing={this.stopFollowing} />)
+                {
+                    console.log(ele)
+                    resultList.push(<FollowUserCubeAlt key={ele.username} data={ele} isFollowing={ele.is_following} 
+                    startFollowing={this.startFollowing.bind(this, ele)} stopFollowing={this.stopFollowing.bind(this, ele)} />)
                 return ele
             })
             resultList = this.padDummyShot(resultList, this.state.people.length, 5)
@@ -186,9 +189,16 @@ export class DiscoverUserFlat extends Component{
                     <div className="discover-list" key={ele.username}>
                         <UserFlat data={ele}/>
                         {ele.is_following?
-                            <span className="text-button" onClick={() => FollowUnfollowUser(ele, this.stopFollowing.bind(this, ele))}> Remove</span>
+                            <span className="text-button" onClick={() => {
+                                FollowUnfollowUser(ele, this.stopFollowing.bind(this, ele))
+                                UpdateRecentFriends("unfollow", ConstructUserRecord(ele))
+                                
+                            }}> Remove</span>
                             :
-                            <span className="text-button" onClick={() => FollowUnfollowUser(ele, this.startFollowing.bind(this, ele))}> Add</span>
+                            <span className="text-button" onClick={() => {
+                                FollowUnfollowUser(ele, this.startFollowing.bind(this, ele))
+                                UpdateRecentFriends("follow", ConstructUserRecord(ele))
+                            }}> Add</span>
                         }
                     </div>
                         
@@ -211,13 +221,13 @@ export class RecentFriendsPallette extends Component{
     }
 
     componentDidMount(){
-        UserRecentFriends(this.updateStateOnAPIcall);
+        UserRecentFriends(this.updateStateOnAPIcall, true);
     }
 
     updateStateOnAPIcall = (data)=>{
         // paginated response
         this.setState({
-            friends: data
+            friends: data.results
         })
         
     }

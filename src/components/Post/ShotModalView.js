@@ -21,6 +21,7 @@ import OwlLoader from '../OwlLoader';
 import { Link } from 'react-router-dom';
 import { LikePostAPI, SavePostAPI } from '../../utility/ApiSet';
 import { EditorSpan, JSONToEditState } from '../TextInput';
+import { defaultProfilePic } from '../../utility/userData';
 
 
 export class ShotModalView extends Component {
@@ -192,7 +193,7 @@ export class ShotModalView extends Component {
         // add all members to show
         if(this.state.shot && this.state.shot.members){
             this.state.shot.members.map( item =>{
-                existingList.push(<TagUser key={item.id} data={item} onRemoveMember={this.onRemoveMember}/>)
+                existingList.push(<TagUser key={item.id} data={item}/>)
                 return existingList
                     
             })
@@ -201,14 +202,16 @@ export class ShotModalView extends Component {
                 let tagUsers =  this.state.shot.members
                 let remainingTagsCount = tagUsers.length - maxCount
                 for(let i=0; i<maxCount; i++){
-                    tagList.push(<span key={tagUsers[i].id}><img className="tag-img" src={tagUsers[i].profile_pic} alt={tagUsers[i].username}/></span>)
+                    tagList.push(<span key={tagUsers[i].id}>
+                        <img className="tag-img" src={tagUsers[i].profile_pic? tagUsers[i].profile_pic: defaultProfilePic()} alt={tagUsers[i].username}/></span>)
                 }
                 tagList.push(<span key="tag-img-count" className="tag-img-count" 
                 onClick={this.displaySideView.bind(this, {content: existingList, sureVal: true})}>+{remainingTagsCount}</span>)
             }
             else{
                 this.state.shot.members.map(ele => {
-                    tagList.push(<span key={ele.id}><img className="tag-img" src={ele.profile_pic} alt={ele.username}/></span>)
+                    tagList.push(<span key={ele.id}><img className="tag-img" 
+                    src={ele.profile_pic? ele.profile_pic: defaultProfilePic()} alt={ele.username}/></span>)
                     return ele
                 })
 

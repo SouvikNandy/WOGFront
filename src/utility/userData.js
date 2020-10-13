@@ -1,7 +1,8 @@
 import cover from '../assets/images/default-cover-img.jpg'
+import default_profile_pic from '../assets/images/icons/default_profile.png'
 import { FetchUnreadNotificationCount, MarkNotificationAsRead, MarkNotificationAsSeen, MuteNotification, SearchOnFriendsAPI } from './ApiSet';
 import SocketInterface from './SocketInterface';
-import { saveInStorage } from './Utility';
+import { getCurrentTimeInMS, retrieveFromStorage, saveInStorage } from './Utility';
 // import { retrieveFromStorage } from './Utility';
 
 let NotificationSocket = null
@@ -15,6 +16,9 @@ export const defaultCoverPic = () =>{
     return cover
 }
 
+export const defaultProfilePic = () =>{
+    return default_profile_pic
+}
 
 export const setNotificationHandler = (username) =>{
     NotificationSocket = new UserNotificationHandler(username)
@@ -80,21 +84,61 @@ export class UserNotificationHandler{
     
 }
 
-export const UserRecentFriends =(callBackFunc =null) =>{
-    if('recent_friends' in localStorage){
-        let retrieved =  JSON.parse (localStorage.getItem("recent_friends"));
-        if (callBackFunc) {
-            callBackFunc( retrieved);
+
+// manage recent friends
+export const UserRecentFriends =(callBackFunc =null, refresh = false) =>{
+    let retrieved =  retrieveFromStorage("recent_friends");
+    if(retrieved){
+        retrieved =  JSON.parse (retrieved);
+        if(refresh && getCurrentTimeInMS() - retrieved["updated_at"]> 1000){
+            SeachFriendsFromBackend(callBackFunc) 
+        }
+
+        else if (callBackFunc) {
+            callBackFunc(retrieved);
         }
         else {
             return retrieved
         }
     }
     else{
-        SearchOnFriendsAPI(null, (data)=>{
-            saveInStorage('recent_friends', JSON.stringify (data.results));
-            callBackFunc(data.results)
-        })
+        SeachFriendsFromBackend(callBackFunc)
     }
 }
+
+const SeachFriendsFromBackend = (callBackFunc)=>{
+    SearchOnFriendsAPI(null, (data)=>{
+        let resultToStore ={
+            totalFriends: data.count,
+            results: data.results,
+            updated_at: getCurrentTimeInMS()
+        }
+        saveInStorage('recent_friends', JSON.stringify (resultToStore));
+        callBackFunc(resultToStore)
+    })
+
+}
+
+export const UpdateRecentFriends = (key, userRecord) =>{
+    let retrieved =  retrieveFromStorage("recent_friends");
+    if(!retrieved) return false
+    retrieved =  JSON.parse (retrieved);
+    let resultToStore = {}
+    if(key=== "follow"){
+        resultToStore ={
+            totalFriends: retrieved.totalFriends + 1,
+            results: [...retrieved.results, userRecord],
+            updated_at: getCurrentTimeInMS()
+        }
+    }
+    else{
+        resultToStore ={
+            totalFriends: retrieved.totalFriends - 1,
+            results: retrieved.results.filter(ele => ele.username !== userRecord.username),
+            updated_at: getCurrentTimeInMS()
+        }
+    }
+    saveInStorage('recent_friends', JSON.stringify (resultToStore));
+}
+
 export default getUserData;

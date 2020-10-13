@@ -75,6 +75,9 @@ export class AddDocumentForm extends Component {
         if (this.props.pricingContainer){
             this.setState({pricingContainer: this.props.pricingContainer})
         }
+        if (this.props.members){
+            this.setState({taggedMembers: this.props.members})
+        }
         
     }
 
@@ -111,6 +114,9 @@ export class AddDocumentForm extends Component {
         if (this.state.description){
             requestBody["description"] = JSON.stringify(ExtractToJSON(this.state.description))
         }
+        if (this.state.taggedMembers){
+            requestBody["members"] = this.state.taggedMembers.map(ele=> ele.username)
+        }
         if (this.state.currUser.user_type==="T"){
             requestBody["pricing_container"] = this.state.pricingContainer
         }
@@ -135,6 +141,7 @@ export class AddDocumentForm extends Component {
         formData.append("portfolio_name", this.state.portfolioName)
         formData.append("description", JSON.stringify(ExtractToJSON(this.state.description)))
         formData.append("location", document.getElementById("location").value);
+        formData.append("members", JSON.stringify(this.state.taggedMembers.map(ele=> ele.username)))
         if(this.state.currUser.user_type==="T"){
             formData.append("pricing_container", JSON.stringify(this.state.pricingContainer))
         }
