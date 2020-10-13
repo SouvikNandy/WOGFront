@@ -166,7 +166,7 @@ export class AddDocumentForm extends Component {
 
     displaySideView = ({content, sureVal, altHeadText=null}) =>{
         let stateVal = !this.state.showSideView
-        // console.log("showSideView", stateVal)
+        // console.log("displaySideView called")
         if (sureVal){
             stateVal = sureVal
         }
@@ -459,7 +459,7 @@ export class AddDocumentForm extends Component {
                             <div className="check-t-c">
                                 <input type="checkbox" className="check-box" id="tc-checked" />
                                 <span className="t-c-line">I have read and accepted the following 
-                                    <button className="btn-anc t-c-highlight" onClick={this.displaySideView.bind(this, {content: <TandCTemplate />, sureVal: true, altHeadText: "Terms of use"})}> Terms and Conditions</button>
+                                    <div className="btn-anc t-c-highlight" onClick={this.displaySideView.bind(this, {content: <TandCTemplate />, sureVal: true, altHeadText: "Terms of use"})}> Terms and Conditions</div>
                                 </span>
                                 
                             </div>

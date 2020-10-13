@@ -241,9 +241,9 @@ export class RecentFriendsPallette extends Component{
             this.state.friends.map(ele => 
                 {resultList.push(
                     <div className="discover-list" key={ele.username}>
-                        <UserFlat data={ele}/>
+                        <UserFlat data={ele} redirectPage={false}/>
                         
-                        <span className="text-button" onClick={() => {}}> Send</span>
+                        {/* <span className="text-button" onClick={() => {}}> Send</span> */}
 
                     </div>
                         

@@ -118,7 +118,7 @@ export class Explore extends Component {
                     <FeatureSlider />
                 </section>
                 <section className="explore-context">
-                    <label>Trending</label>
+                    <label>#Trending</label>
                 </section>
                 <section className="explore-shots">
                     <div className="profile-shots">

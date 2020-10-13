@@ -220,7 +220,7 @@ export class ShotModalView extends Component {
             if(this.state.shot.members.length> 0){
                 tagList.push(
                     <button key="review-tags" className="btn-anc review-tags" 
-                    onClick={this.displaySideView.bind(this, {content: existingList, sureVal: true})}>Review all tags</button>
+                    onClick={this.displaySideView.bind(this, {content: existingList, sureVal: true, altHeadText: "People tagged"})}>Review all tags</button>
                 )
     
             }

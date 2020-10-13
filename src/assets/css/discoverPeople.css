@@ -40,3 +40,16 @@
     width: 100%;
     overflow-y: scroll;
 }
+
+.new-friends-container .discover-list{
+    cursor: pointer;
+}
+
+.new-friends-container .discover-list .user-flat-div{
+    background: transparent;
+}
+
+.new-friends-container .discover-list:hover{
+    /* background: rgba(143, 142, 142, 0.2); */
+    background: #cce7ff;
+}
