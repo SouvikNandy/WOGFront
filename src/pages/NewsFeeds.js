@@ -26,7 +26,7 @@ import { UserFeedsAPI, SavePostAPI, LikePostAPI } from '../utility/ApiSet';
 import Paginator from '../utility/Paginator';
 import { JSONToEditState, EditorSpan } from '../components/TextInput';
 import { ExplorePreview } from './Explore';
-import { DiscoverUserFlat } from './DiscoverPeople';
+import { DiscoverUserFlat, RecentFriendsPallette } from './DiscoverPeople';
 
 export class NewsFeeds extends Component {
     render() {
@@ -239,7 +239,13 @@ export function NewsFeedSuggestions (props){
                     </div>
                     
                 </div>
-                <div className="nf-active"></div>
+                <div className="nf-active">
+                    <div className="s-label">
+                        <h4>Send Notes</h4>
+                        <span className="s-tag">send a note to your new friends</span>
+                    </div>
+                    <RecentFriendsPallette />
+                </div>
 
             </div>
             

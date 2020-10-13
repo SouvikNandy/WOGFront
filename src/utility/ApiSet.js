@@ -154,4 +154,9 @@ export const ReportContentAPI = (requestBody, callBackFunc) =>{
     HTTPRequestHandler.post({url:url, requestBody:requestBody, includeToken: true, callBackFunc: callBackFunc})
 }
 
+export const SearchOnFriendsAPI = (searchKey, callBackFunc) =>{
+    let url = searchKey? "api/v1/search-friends/?search="+searchKey : "api/v1/search-friends/"
+    console.log("url", url)
+    HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
+}
 export default {LoginAPI}

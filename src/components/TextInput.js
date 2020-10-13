@@ -10,6 +10,7 @@ import "draft-js-mention-plugin/lib/plugin.css";
 import mentionStyles from '../assets/css/mention.module.css';
 import MultiDecorator from "draft-js-plugins-editor/lib/Editor/MultiDecorator";
 import { Redirect } from "react-router-dom";
+import { UserRecentFriends } from "../utility/userData";
 
 let positionSuggestionsDef = (settings) => {
     return {
@@ -34,8 +35,7 @@ const hashtagPlugin = createMentionPlugin({mentionPrefix: "#", mentionTrigger:'#
 class TextInput extends React.Component {
   constructor(props) {
     super(props);
-    
-      this.mentionPlugin = mentionPlugin;
+        this.mentionPlugin = mentionPlugin;
         this.hashtagPlugin = hashtagPlugin;
         // this.setDomEditorRef = ref => this.domEditor = ref;
         // this.focus = () => this.domEditor.focus();
@@ -98,7 +98,7 @@ class TextInput extends React.Component {
 
     onSearchChange = ({ value }) => {
         this.setState({
-        mSuggestions: defaultSuggestionsFilter(value, mentions)
+        mSuggestions: defaultSuggestionsFilter(value, UserRecentFriends())
         });
     };
 
@@ -220,7 +220,7 @@ const MentionEntryTemplate = (props) => {
     <div className={theme.mentionSuggestionsEntryContainer}>
       <div className={theme.mentionSuggestionsEntryContainerLeft}>
       <img
-        src={mention.avatar}
+        src={mention.profile_pic}
         className={theme.mentionSuggestionsEntryAvatar}
         role="presentation"
         alt=""
@@ -229,11 +229,11 @@ const MentionEntryTemplate = (props) => {
   
       <div className={theme.mentionSuggestionsEntryContainerRight}>
       <div className={theme.mentionSuggestionsEntryTitle}>
-        {mention.title}
+        {mention.name}
       </div>
   
       <div className={theme.mentionSuggestionsEntryContent}>
-        {mention.name}
+        {mention.username}
       </div>
       </div>
     </div>

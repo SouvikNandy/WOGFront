@@ -8,7 +8,7 @@ import '../assets/css/discoverPeople.css';
 import {UserNavBar} from "../components/Navbar/Navbar";
 import { DiscoverPeopleAPI } from '../utility/ApiSet';
 import OwlLoader from '../components/OwlLoader';
-import {getUserData} from '../utility/userData';
+import {getUserData, UserRecentFriends} from '../utility/userData';
 
 export class DiscoverPeople extends Component {
     state ={
@@ -203,6 +203,51 @@ export class DiscoverUserFlat extends Component{
             </React.Fragment>
         )
     }
+}
+
+export class RecentFriendsPallette extends Component{
+    state ={
+        friends: null
+    }
+
+    componentDidMount(){
+        UserRecentFriends(this.updateStateOnAPIcall);
+    }
+
+    updateStateOnAPIcall = (data)=>{
+        // paginated response
+        this.setState({
+            friends: data
+        })
+        
+    }
+
+    render(){
+        let resultList = [];
+        if (!this.state.friends){
+            return(<div className="profile-user-grid"> <OwlLoader /></div>)
+        }
+        else{
+            this.state.friends.map(ele => 
+                {resultList.push(
+                    <div className="discover-list" key={ele.username}>
+                        <UserFlat data={ele}/>
+                        
+                        <span className="text-button" onClick={() => {}}> Send</span>
+
+                    </div>
+                        
+                    )
+                return ele
+            })
+        }
+        return(
+            <div className="new-friends-container">
+                {resultList}
+            </div>
+        )
+    }
+
 }
 
 export default DiscoverPeople

@@ -1,6 +1,7 @@
 import cover from '../assets/images/default-cover-img.jpg'
-import { FetchUnreadNotificationCount, MarkNotificationAsRead, MarkNotificationAsSeen, MuteNotification } from './ApiSet';
+import { FetchUnreadNotificationCount, MarkNotificationAsRead, MarkNotificationAsSeen, MuteNotification, SearchOnFriendsAPI } from './ApiSet';
 import SocketInterface from './SocketInterface';
+import { saveInStorage } from './Utility';
 // import { retrieveFromStorage } from './Utility';
 
 let NotificationSocket = null
@@ -77,5 +78,23 @@ export class UserNotificationHandler{
     }
 
     
+}
+
+export const UserRecentFriends =(callBackFunc =null) =>{
+    if('recent_friends' in localStorage){
+        let retrieved =  JSON.parse (localStorage.getItem("recent_friends"));
+        if (callBackFunc) {
+            callBackFunc( retrieved);
+        }
+        else {
+            return retrieved
+        }
+    }
+    else{
+        SearchOnFriendsAPI(null, (data)=>{
+            saveInStorage('recent_friends', JSON.stringify (data.results));
+            callBackFunc(data.results)
+        })
+    }
 }
 export default getUserData;

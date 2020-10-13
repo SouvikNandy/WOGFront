@@ -3,24 +3,27 @@ import { TagUser } from './TagUser';
 import { SideBarHead } from "../SideBar";
 // Images for shot
 import w1 from "../../assets/images/wedding1.jpg";
+import { UserRecentFriends } from '../../utility/userData';
+import OwlLoader from '../OwlLoader';
 
 export class FriendList extends Component {
     state = {
-        allFriends:[
-            {"id": 1, "name":"John Doe", "username": "johndoe", "profile_pic": w1, "designation": "photographer"},
-            {"id": 2, "name":"James Jr.", "username": "jamesjr", "profile_pic": w1, "designation": "photographer"},
-            {"id": 3, "name":"Mike Hussy", "username": "mikehussy", "profile_pic": w1, "designation": "photographer"},
-            {"id": 4, "name":"Jane Doe", "username": "janedoe", "profile_pic": w1, "designation": "photographer"},
-            {"id": 5, "name":"Peter Parker", "username": "peterparker", "profile_pic": w1, "designation": "photographer"},
-            {"id": 6, "name":"mery Jane", "username": "meryjane", "profile_pic": w1, "designation": "photographer"},
-            {"id": 7, "name":"harry Potter", "username": "harrypotter", "profile_pic": w1, "designation": "photographer"},
-            {"id": 8, "name":"Albus Dumbledore", "username": "albusdumbledore", "profile_pic": w1, "designation": "photographer"},
-            {"id": 9, "name":"Prof. Snape", "username": "snapehere", "profile_pic": w1, "designation": "photographer"},
-            {"id": 10, "name":"Eve Mendis", "username": "evemendis", "profile_pic": w1, "designation": "photographer"}
-
-        ],
+        allFriends: null,
         output: [],
         tagged_users: []
+    }
+
+    componentDidMount(){
+        UserRecentFriends(this.updateStateOnAPIcall);
+    }
+
+    updateStateOnAPIcall = (data)=>{
+        // paginated response
+        this.setState({
+            allFriends: data,
+            tagged_users: this.props.currentTags,
+            output: data.filter(item=> !this.props.currentTagIDs.includes(item.id) ).slice(0,15)
+        })
     }
 
     findFriends = (value) =>{
@@ -62,15 +65,8 @@ export class FriendList extends Component {
         
     }
 
-    componentDidMount(){
-        this.setState({
-            tagged_users: this.props.currentTags,
-            output: this.state.allFriends.filter(item=> !this.props.currentTagIDs.includes(item.id) ).slice(0,15)
-        })
-    }
-
-
     render() {
+        if(!this.state.allFriends) return(<React.Fragment><OwlLoader /></React.Fragment>)
         return (
             <React.Fragment>
                 <SideBarHead 
