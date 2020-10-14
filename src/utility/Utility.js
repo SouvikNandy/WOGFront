@@ -140,6 +140,7 @@ export const getBackendHOST = (env = 'dev') => {
 }
 
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
 export const msToDateTime = (secondsVal) =>{
     let dt = new Date(0);
@@ -155,6 +156,12 @@ export const stringToDate = (dtStr) =>{
 
 export const dateObjToReadable = (dt) =>{
     return dt.getDate() + ' ' + months[dt.getMonth()] + ' '+ dt.getFullYear()
+}
+
+export const ChatTime = (secondsVal) =>{
+    let dt = new Date(0);
+    dt.setUTCSeconds(secondsVal);
+    return weekdays[dt.getDay()] + ' ' + dt.getHours() + ':'+ dt.getMinutes() 
 }
 
 export const timeDifference = (previous) =>{

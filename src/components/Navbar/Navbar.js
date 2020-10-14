@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import '../../assets/css/navbar.css';
 // import { FaAlignRight } from "react-icons/fa";
-import { FaRegUserCircle, FaRegPaperPlane } from "react-icons/fa";
+import { FaRegUserCircle } from "react-icons/fa";
 import { MdWallpaper } from "react-icons/md";
 
 import { FiCompass } from "react-icons/fi";
@@ -10,6 +10,7 @@ import {AiOutlineAlignRight, AiOutlineAlignLeft} from 'react-icons/ai';
 import SideBar from "../SideBar";
 import {NewsFeedUserMenu} from "../../pages/NewsFeeds";
 import NotificationButton from '../NotificationButton';
+import ChatMainButton from '../ChatModule/ChatMainButton';
 
 
 
@@ -55,15 +56,10 @@ export class Navbar extends Component {
                             </ul>
                         </div>
                     </nav>
-                    {this.props.enableChat?
-                    <div className="chat-icon-div">
-                        <div className="chat-icon-circle" onClick={this.props.displaySideView}>
-                            <FaRegPaperPlane className="nav-icon" />
-                        </div>
-                        
-                    </div>
-                    :
-                    ""
+                    {this.props.getChatButton?
+                        this.props.getChatButton(this.props.displaySideView)
+                        :
+                        ""
                     }
                 </div>
 
@@ -82,6 +78,7 @@ export class UserNavBar extends Component{
         sideBarHead: false,
         searchBarRequired: false,
         sideViewContent: [],
+        isMounted: false
     }
 
     componentDidMount(){
@@ -99,7 +96,8 @@ export class UserNavBar extends Component{
         ]
 
         this.setState({
-            navLinks: navLinks
+            navLinks: navLinks,
+            isMounted: true
         })
     }
 
@@ -121,6 +119,10 @@ export class UserNavBar extends Component{
                 return "WOG"
         }
 
+    }
+    getChatButton =(onClickMethod) =>{
+        if(this.state.isMounted) return (<ChatMainButton onClick={onClickMethod}/>)
+        else return false
     }
 
     sideNFMenu = () =>{
@@ -164,7 +166,7 @@ export class UserNavBar extends Component{
     render(){
         return(
             <React.Fragment>
-                <Navbar navLinks={this.state.navLinks} displaySidePanel={this.displaySidePanel} enableChat={true} displaySideView={this.displaySideView}/>
+                <Navbar navLinks={this.state.navLinks} displaySidePanel={this.displaySidePanel} getChatButton={this.getChatButton} displaySideView={this.displaySideView}/>
                 {this.state.showSideView?
                 <div className="form-side-bar-view side-bar-view-active">
                     <SideBar displaySideView={this.displaySideView} content={this.state.sideViewContent} 

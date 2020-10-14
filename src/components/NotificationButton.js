@@ -20,6 +20,7 @@ export class NotificationButton extends Component{
             this.setState({unreadMsg: this.state.notificationHandler.isUnreadExists()})
             
         }
+        console.log("notificationHandler from NotificationButton", this.state.notificationHandler)
         // update on new notification
         this.state.notificationHandler.registerCallbackList(this.onNewNotification)
     }
@@ -29,7 +30,7 @@ export class NotificationButton extends Component{
     }
 
     onNewNotification = (data) =>{
-        if(data){
+        if(data && data.key==="NOTIFICATION"){
             this.setState({unreadMsg: true})
         }
 

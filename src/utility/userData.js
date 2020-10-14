@@ -21,6 +21,7 @@ export const defaultProfilePic = () =>{
 }
 
 export const setNotificationHandler = (username) =>{
+    console.log("setNotificationHandler called")
     NotificationSocket = new UserNotificationHandler(username)
     return NotificationSocket
 }
@@ -31,8 +32,10 @@ export const getNotificationHandler = () =>{
 
 export class UserNotificationHandler{
     constructor(username){
+        // class to hadle any private data broadcasted on notification channel
+        // received data will have a `key` to distinguish data
         this.username = username;
-        this.unreadCount = 0;
+        this.unreadCount = {NOTIFICATON: 0, CHAT: 0};
         this.onRecvCallback = [];
         this.socket = new SocketInterface('notification')
         this.socket.joinRoom(this.username, this.username,  (error) => {
@@ -42,19 +45,19 @@ export class UserNotificationHandler{
             })
         this.socket.receiveMessage(message => {
             // saveInStorage('unreadMsgCount', message.text)
-            this.unreadCount += message.text
+            this.unreadCount[message.text.key] += 1
             this.onRecvCallback.map(cb => cb(message.text))
 
         });
-        FetchUnreadNotificationCount(this.getUnreadCount.bind(this))
+        FetchUnreadNotificationCount(this.getUnreadNotificationCount.bind(this))
     }
 
 
-    getUnreadCount(data){
+    getUnreadNotificationCount(data){
         // saveInStorage('unreadMsgCount', data.data)
-        this.unreadCount += data.data
+        this.unreadCount["NOTIFICATON"] += data.data
         // console.log("getUnreadCount this", this.unreadCount)
-        this.onRecvCallback.map(cb => cb(this.unreadCount))
+        this.onRecvCallback.map(cb => cb(this.unreadCount["NOTIFICATON"]))
     }
 
     registerCallbackList = (callBack) =>{
@@ -64,20 +67,23 @@ export class UserNotificationHandler{
         this.onRecvCallback.pop()
     }
 
-    isUnreadExists = () =>{
-        if(this.unreadCount > 0) return true;
+    isUnreadExists = (key="NOTIFICATION") =>{
+        if(this.unreadCount[key] > 0) return true;
         return false
     }
 
     markAsSeen = (nidArr) =>{
+        // notification specific
         MarkNotificationAsSeen(nidArr, null)
     }
 
     markAsRead = (nid) =>{
+        // notification specific
         MarkNotificationAsRead(nid, null)
     }
 
     turnOffNotification = (nid)=>{
+        // notification specific
         MuteNotification(nid, null)
     }
 

@@ -1,0 +1,13 @@
+@import url('../config.css');
+
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #FFFFFF;
+    border-radius: 8px;
+    height: 100%;
+    width: 100%;
+    border-radius: 0.9rem;
+    /* border: 1px solid black */
+  }

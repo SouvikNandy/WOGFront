@@ -26,7 +26,8 @@ import { UserFeedsAPI, SavePostAPI, LikePostAPI } from '../utility/ApiSet';
 import Paginator from '../utility/Paginator';
 import { JSONToEditState, EditorSpan } from '../components/TextInput';
 import { ExplorePreview } from './Explore';
-import { DiscoverUserFlat, RecentFriendsPallette } from './DiscoverPeople';
+import { DiscoverUserFlat } from './DiscoverPeople';
+import { RecentFriends } from '../components/Profile/RecentFriends';
 
 export class NewsFeeds extends Component {
     render() {
@@ -220,32 +221,37 @@ export function NewsFeedSuggestions (props){
     return(
         <div className="nf-rest">
             <div className="nf-fixed">
-                <div className="nf-suggestions">
-                    <div className="s-label">
-                        <h4>Explore</h4>
-                        <span className="s-tag">#trending</span>
+                <div className="nf-cont">
+                    <div className="nf-suggestions">
+                        <div className="s-label">
+                            <h4>Explore</h4>
+                            <span className="s-tag">#trending</span>
+                        </div>
+                        
+                        <ExplorePreview counter={2}/>
                     </div>
-                    
-                    <ExplorePreview counter={2}/>
+                    <div className="nf-discover">
+                        <div className="s-label">
+                            <h4>Discover</h4>
+                            <span className="s-tag">People around you</span>
+                        </div>
+                        <DiscoverUserFlat counter={2}/>
+                        <div className="see-more">
+                            <Link className="link" to={`/discover-people/${props.username}`}>See more</Link>
+                        </div>
+                        
+                    </div>
+                    <div className="nf-active">
+                        <div className="s-label">
+                            <h4>Say Hi</h4>
+                            <span className="s-tag">Send hi, start a conversation</span>
+                        </div>
+                        {/* <RecentFriendsPallette /> */}
+                        <RecentFriends />
+                    </div>
+
                 </div>
-                <div className="nf-discover">
-                    <div className="s-label">
-                        <h4>Discover</h4>
-                        <span className="s-tag">people around you</span>
-                    </div>
-                    <DiscoverUserFlat counter={2}/>
-                    <div className="see-more">
-                        <Link className="link" to={`/discover-people/${props.username}`}>See more</Link>
-                    </div>
-                    
-                </div>
-                <div className="nf-active">
-                    <div className="s-label">
-                        <h4>Send Notes</h4>
-                        <span className="s-tag">send a note to your new friends</span>
-                    </div>
-                    <RecentFriendsPallette />
-                </div>
+                
 
             </div>
             

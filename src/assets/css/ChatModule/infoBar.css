@@ -1,0 +1,62 @@
+@import url('../config.css');
+
+.infoBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #2979FF;
+  border-radius: 0.9rem 0.9rem 0 0;
+  height: 4.5rem;
+  width: 100%;
+}
+
+.leftInnerContainer {
+  /* flex: 0.5; */
+  width: 20%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 5%;
+  color: white;
+}
+
+.leftInnerContainer .icons{
+  color: white;
+  font-size: 1.3rem;
+  opacity: 1;
+  margin-right: 0.2rem;
+  cursor: pointer;
+}
+
+.leftInnerContainer .icons:hover{
+  color: var(--hover-one);
+}
+.rightInnerContainer {
+  display: flex;
+  /* flex: 0.5; */
+  justify-content: flex-end;
+  width: 78%;
+  /* justify-content: space-between; */
+  margin-right: 5%;
+}
+
+.rightInnerContainer .m-display-name{
+  display: flex !important;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 0.5rem;
+  color: var(--light);
+  line-height: 1.2;
+}
+
+.rightInnerContainer .m-display-name .head-name{
+  font-size: 1rem;
+  font-size: bold;
+  padding: 0.2rem 0;
+}
+
+.rightInnerContainer .m-display-name .m-adj{
+  font-size: 0.75rem;
+  font-weight: lighter;
+}

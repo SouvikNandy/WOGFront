@@ -308,7 +308,16 @@
 
 .nf-rest .nf-fixed{
     position: fixed;
-    padding: 0.5rem 1rem ;
+    /* padding: 0.5rem 1rem ; */
+}
+
+.nf-rest .nf-fixed .nf-cont{
+    position: relative;
+    height: 86vh;
+    width: 30vw;
+    padding: 0.5rem 1rem;
+    overflow-y: auto;
+    
 }
 
 .nf-rest .s-label{

@@ -59,7 +59,6 @@
 
 .menu-link {
     color: var(--dark);
-    /* display: inline-block; */
     height: 100%;
     font-size: 1rem;
     text-decoration: none;
@@ -142,11 +141,15 @@
     height: 2rem;
     width: 2rem;
     border-radius: 50%;
+    position: relative;
 }
 .chat-icon-div .chat-icon-circle:hover{
     background-color: var(--hover-one);
 }
 
+.chat-icon-div .chat-icon-circle .unread-icon{
+    right: -0.3rem;
+}
 
 .menu-link--active .nav-icon path{
     stroke: black;
@@ -154,7 +157,7 @@
 }
 
 
-@media(min-width: 801px){
+@media(min-width: 901px){
     .left-menu{
         opacity: 0;
         visibility: 0;

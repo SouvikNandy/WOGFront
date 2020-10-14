@@ -38,7 +38,7 @@
 
 .new-friends-container{
     width: 100%;
-    overflow-y: scroll;
+    position: relative;
 }
 
 .new-friends-container .discover-list{
@@ -52,4 +52,74 @@
 .new-friends-container .discover-list:hover{
     /* background: rgba(143, 142, 142, 0.2); */
     background: #cce7ff;
+}
+
+.friends-search{
+    width: 100%;
+    padding: 1rem 0.5rem;
+    position: relative;
+}
+
+.friends-search .search-div input{
+    border: 1px solid var(--border-grey);
+    padding: 0.15rem 0.8rem;
+    border-radius: 0.9rem;
+    font-size: 0.75rem;
+    font-size: bold;
+    color: var(--username-color);
+
+}
+
+.friends-search .search-icon{
+    position: absolute;
+    text-align: center;
+    top: 40%;
+    right: 1.6rem;
+    font-size: 0.9rem;
+}
+
+.new-friends-container .chat-short{
+    position: fixed;
+    bottom: 0.4rem;
+    right: 8vw;
+    width: 20vw;
+    height: 45vh;
+    border-radius: 0.9rem;
+    box-shadow: var(--shadow);
+
+}
+
+.new-friends-container .open-chats{
+    position: fixed;
+    bottom: 0.4rem;
+    right: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0.2rem;
+}
+
+.new-friends-container .open-chats .user-img{
+    background: var(--peacock);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.05rem;
+    margin-bottom: 0.3rem;
+    box-shadow: var(--shadow);
+    position: relative;
+    cursor: pointer;
+}
+
+.new-friends-container .open-chats .user-img .close-chathead{
+    position: absolute;
+    top: -0.3rem;
+    right: 0;
+    color: rgba(0, 0, 0, 0.7);
+    box-shadow: var(--shadow);
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
 }

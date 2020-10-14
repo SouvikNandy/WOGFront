@@ -1,17 +1,23 @@
+@import url('../config.css');
+
 .messageBox {
   background: #F3F3F3;
-  border-radius: 20px;
-  padding: 5px 20px;
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.7rem;
   color: white;
   display: inline-block;
   max-width: 80%;
+  min-width: 8vw;
+  margin: 0.18rem 0;
 }
 
 .messageText {
   width: 100%;
   letter-spacing: 0;
   float: left;
-  font-size: 1.1em;
+  font-size: 0.95em;
+  margin:0;
+  padding: 0;;
   word-wrap: break-word;
 }
 
@@ -31,7 +37,8 @@
   align-items: center;
   font-family: Helvetica;
   color: #828282;
-  letter-spacing: 0.3px;
+  /* letter-spacing: 0.3px; */
+  font-size: 0.75rem;
 }
 
 .pl-10 {
