@@ -1,5 +1,11 @@
 @import url('../config.css');
 
+
+.messages-container{
+  padding: 5% 0;
+  overflow: auto;
+  flex: auto;
+}
 .messageBox {
   background: #F3F3F3;
   border-radius: 0.75rem;
@@ -7,8 +13,11 @@
   color: white;
   display: inline-block;
   max-width: 80%;
-  min-width: 8vw;
+  /* min-width: 8vw; */
   margin: 0.18rem 0;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
 }
 
 .messageText {
@@ -19,6 +28,10 @@
   margin:0;
   padding: 0;;
   word-wrap: break-word;
+  /* display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap; */
 }
 
 .messageText img {
@@ -30,6 +43,7 @@
   justify-content: flex-end;
   padding: 0 5%;
   margin-top: 3px;
+  align-items: center;
 }
 
 .sentText {
@@ -46,7 +60,7 @@
 }
 
 .pr-10 {
-  padding-right: 10px;
+  padding-right: 0.8rem;
 }
 
 .justifyStart {
@@ -66,7 +80,7 @@
 }
 
 .backgroundBlue {
-  background: #2979FF;
+  background: var(--hover-two);
 }
 
 .backgroundLight {

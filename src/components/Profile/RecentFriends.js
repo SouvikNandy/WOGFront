@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import { UserRecentFriends } from '../../utility/userData';
+import getUserData, { UserRecentFriends } from '../../utility/userData';
 import OwlLoader from '../OwlLoader';
 import { SearchOnFriendsAPI } from '../../utility/ApiSet';
 import { UserFlat } from './UserView';
 import SearchBar from '../Search/SearchBar';
 import '../../assets/css/discoverPeople.css';
-import { FiSearch } from 'react-icons/fi';
+import '../../assets/css/ChatModule/chatbox.css'
+import { FiArrowRightCircle, FiSearch } from 'react-icons/fi';
 import Chatbox, { OpenChatRecord } from '../ChatModule/Chatbox';
+import { ChatTime, retrieveFromStorage } from '../../utility/Utility';
+import { FaShare } from 'react-icons/fa';
 
 export class RecentFriends extends Component {
     state = {
@@ -24,9 +27,18 @@ export class RecentFriends extends Component {
         UserRecentFriends(this.updateStateOnAPIcall);
     }
 
-    moveToOpenChats = (ele) => this.setState({openChats: [ele, ...this.state.openChats], showChatBox:false, chatBoxUser: null})
+    moveToOpenChats = (ele) => {
+        // keep last 8 open chat records
+        let newOpenChat = [ele, ...this.state.openChats];
+        if (newOpenChat.length> 8) {
+            newOpenChat.slice(0, 8)
+        }
+
+        this.setState({openChats: newOpenChat, showChatBox:false, chatBoxUser: null})
+    }
         
     removeFromOpenChat = (ele) => this.setState({openChats: this.state.openChats.filter(item=> item.username!== ele.username)})
+
     updateStateOnAPIcall = (data)=>{
         // paginated response
         this.setState({
@@ -148,6 +160,163 @@ export class RecentFriends extends Component {
             </React.Fragment>
         )
     }
+}
+
+export class RecentChats extends Component{
+    state = {
+        allChats: null,
+        totalFriendsCount: 0,
+        output: [],
+        lastSearched: null,
+        lastSearchedCount: 0,
+        showChatBox: false,
+        chatBoxUser: null,
+    }
+    
+    componentDidMount(){
+        // check on chat history. if chat history exists and chethistory length == 10 then call backend api
+        let chatHistory = JSON.parse( retrieveFromStorage('chatHistory'))
+        if(chatHistory && chatHistory.length < 10){
+            this.setState({
+                allChats: chatHistory,
+                totalFriendsCount: chatHistory.length,
+                output: chatHistory
+            })
+        }
+        else{
+            // get user recent chats
+            UserRecentFriends(this.updateStateOnAPIcall);
+        }
+        
+    }
+    updateStateOnAPIcall = (data)=>{
+        // paginated response
+        this.setState({
+            allChats: data.results,
+            totalFriendsCount: data.totalFriends,
+            output: data.results
+        })
+    }
+
+    updateChatboxState = (chatUser=null) =>{
+        this.setState({
+            showChatBox: !this.state.showChatBox,
+            chatBoxUser: chatUser,
+        })
+    }
+
+    findFriends = (value) =>{
+        let phase = value.toLowerCase();
+        if(!phase){
+            // show last filtered results
+            this.setState({
+                output: this.state.allChats
+            })
+            return true
+        }
+
+        let matchedRecords = this.state.allChats.filter(item => 
+            (item.name.toLowerCase().startsWith(phase) || item.username.toLowerCase().startsWith(phase))
+            );
+
+        if (this.state.totalFriendsCount <= this.state.allChats.length ){
+            this.setState({
+                output: [...matchedRecords],
+                lastSearched: phase
+            })
+        }
+
+        else if (this.state.lastSearched && phase.includes(this.state.lastSearched) && phase.length > this.state.lastSearched.length){            
+            // check if matched records found. if not searched with the new term
+            if(matchedRecords.length < this.state.lastSearchedCount ){
+                // search with new term
+                this.searchFromAPI(phase)
+            }
+        }
+        else{
+            this.searchFromAPI(phase)
+        }
+    }
+
+    searchFromAPI = (searchKey) =>{
+        SearchOnFriendsAPI(searchKey, this.ShowSearchedResult.bind(this, searchKey))
+    }
+
+    ShowSearchedResult = (searchKey, data) =>{
+        let prevUsernames = this.state.allChats.map(ele => ele.username)
+        let dataset = data.results.filter(ele=> !prevUsernames.includes(ele.username))
+        this.setState({
+            allChats: [...this.state.allChats, ...dataset],
+            output: data.results,
+            lastSearched: searchKey,
+            lastSearchedCount: data.count
+        })
+    }
+
+    render(){
+        let currUser = getUserData().username
+        return(
+            <React.Fragment>
+                <div className="messagebox-head">
+                    <div className="dark-overlay"></div>
+                    <div className="header-conatiner">
+                        <FiArrowRightCircle className="close-btn" onClick={this.props.onClose.bind(this, {sureVal: false})}/>   
+                        <span className="title-text">Messages</span>
+                    </div>
+                    
+                    <a href="https://www.pexels.com/photo/assorted-map-pieces-2859169/" className="link img-credits">
+                    Shot by <span className="contributor-name">Andrew Neel</span>
+                    </a>
+                    <div className="friends-search">
+                        <SearchBar className="srch-bar" searchPlaceHolder={"Search friends ..."} 
+                        focusSearchBar ={false}
+                        searchOnChange={this.findFriends}/>
+                        <FiSearch className="icons search-icon" />
+                    </div>
+
+                </div>
+                
+
+                <div className="new-friends-container chat-user-container">
+                    {this.state.output.map(ele =>{
+                        let chatEle = ele.chats[ele.chats.length -1]
+                        let created_at = chatEle? chatEle.created_at : ""
+                        let altText = ""
+                        if (!chatEle){
+                            altText = <span className="suggested-text">Send hi, start a conversation</span>
+                        }
+                        else if(chatEle.user===currUser){
+                            altText = <span className="sent-text"><FaShare className="self-sent"/> {chatEle.text}</span>
+                        }
+                        else{
+                            altText = <span className="sent-text">{chatEle.text}</span>
+                        }
+
+                        return(
+                            <div className="discover-list" key={ele.otherUser.id} onClick={this.updateChatboxState.bind(this, ele.otherUser)}>
+                                <UserFlat data={ele.otherUser} redirectPage={false} tagText={altText}/>
+                                <span className="chat-time">{ChatTime(created_at)}</span>
+
+                                {this.state.showChatBox?
+                                    <div className="chat-short chat-full-length">
+                                        <Chatbox chatBoxUser={this.state.chatBoxUser}
+                                        closeChat={this.props.onClose.bind(this, {sureVal: false})} 
+                                        moveToOpenChats={this.updateChatboxState}/>
+                                    </div>
+                    
+                        :
+                        ""
+                    }
+                            </div>
+                        )}
+                        
+                    )}
+                </div>
+
+            </React.Fragment>
+        )
+    }
+
 }
 
 export default RecentFriends

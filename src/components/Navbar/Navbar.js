@@ -11,6 +11,7 @@ import SideBar from "../SideBar";
 import {NewsFeedUserMenu} from "../../pages/NewsFeeds";
 import NotificationButton from '../NotificationButton';
 import ChatMainButton from '../ChatModule/ChatMainButton';
+import { RecentChats } from '../Profile/RecentFriends';
 
 
 
@@ -57,7 +58,7 @@ export class Navbar extends Component {
                         </div>
                     </nav>
                     {this.props.getChatButton?
-                        this.props.getChatButton(this.props.displaySideView)
+                        this.props.getChatButton(this.props.displaySideView.bind(this, {content: <RecentChats onClose={this.props.displaySideView}/>}))
                         :
                         ""
                     }
@@ -152,7 +153,7 @@ export class UserNavBar extends Component{
 
         this.setState({
             showSideView: stateVal,
-            sideBarHead: true,
+            // sideBarHead: true,
             
         })
 

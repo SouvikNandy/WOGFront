@@ -46,7 +46,7 @@ export class UserNotificationHandler{
         this.socket.receiveMessage(message => {
             // saveInStorage('unreadMsgCount', message.text)
             this.unreadCount[message.text.key] += 1
-            this.onRecvCallback.map(cb => cb(message.text))
+            this.onRecvCallback.map(cb => cb.callBack(message.text))
 
         });
         FetchUnreadNotificationCount(this.getUnreadNotificationCount.bind(this))
@@ -57,14 +57,15 @@ export class UserNotificationHandler{
         // saveInStorage('unreadMsgCount', data.data)
         this.unreadCount["NOTIFICATON"] += data.data
         // console.log("getUnreadCount this", this.unreadCount)
-        this.onRecvCallback.map(cb => cb(this.unreadCount["NOTIFICATON"]))
+        this.onRecvCallback.map(cb => cb.callBack(this.unreadCount["NOTIFICATON"]))
     }
 
-    registerCallbackList = (callBack) =>{
-        this.onRecvCallback.push(callBack)
+    registerCallbackList = (handlerId, callBack) =>{
+        this.onRecvCallback.push({key: handlerId, callBack: callBack} )
     }
-    deregisterCallback = () =>{
-        this.onRecvCallback.pop()
+    deregisterCallback = (handlerId) =>{
+        this.onRecvCallback = this.onRecvCallback.filter(ele => ele.key!==handlerId)
+        // this.onRecvCallback.pop()
     }
 
     isUnreadExists = (key="NOTIFICATION") =>{

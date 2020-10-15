@@ -88,6 +88,10 @@ export class Explore extends Component {
             <div className="explore-container">
                 {/* hero section */}
                 <section className="explore-hero">
+                        <a 
+                        href="https://www.pexels.com/photo/art-painting-on-walls-1227497/" className="link img-credits">
+                        Shot by <span className="contributor-name">ShonEjai</span>
+                        </a>
                         <div className="dark-overlay"></div>
                         <div className="e-head-content">
                             <SearchHead />

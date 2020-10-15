@@ -161,7 +161,12 @@ export const dateObjToReadable = (dt) =>{
 export const ChatTime = (secondsVal) =>{
     let dt = new Date(0);
     dt.setUTCSeconds(secondsVal);
-    return weekdays[dt.getDay()] + ' ' + dt.getHours() + ':'+ dt.getMinutes() 
+    let dtHours = dt.getHours();
+    let dtMinutes = dt.getMinutes();
+    if (dtHours.length <2) dtHours = "0"+dtHours;
+    if (dtMinutes.length <2) dtMinutes = "0"+dtMinutes;
+    
+    return weekdays[dt.getDay()] + ' ' + dtHours + ':'+ dtMinutes;
 }
 
 export const timeDifference = (previous) =>{

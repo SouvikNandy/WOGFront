@@ -175,8 +175,8 @@
     z-index: 0 !important;
 }
 
-.nf-feeds .add-pst-btn .camera-cover{
-    right: 28vw;
+.nf-container .camera-cover{
+    right: 30.5vw !important;
 }
 
 .nf-post-conatiner {
@@ -404,7 +404,7 @@
     .nf-container .nf-feeds .nf-post-conatiner .pf-grid {
         max-width: 100%;
     }
-    .nf-feeds .add-pst-btn .camera-cover{
+    .nf-container .camera-cover{
         right: 2rem;
     }
     .nf-container .nf-feeds {

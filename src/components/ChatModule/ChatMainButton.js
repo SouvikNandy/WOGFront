@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { getNotificationHandler } from '../../utility/userData';
 import { FaRegPaperPlane } from "react-icons/fa";
+import { generateId } from '../../utility/Utility';
 
 export class ChatMainButton extends Component {
     state={
         unreadMsg: true,
-        notificationHandler : getNotificationHandler()
+        notificationHandler : getNotificationHandler(),
+        handlerId: generateId()
     }
     componentDidMount(){
         // set initial state
@@ -16,20 +18,18 @@ export class ChatMainButton extends Component {
         //     this.setState({unreadMsg: this.state.notificationHandler.isUnreadExists("CHAT")})
             
         // }
-        // update on new notification
-        this.state.notificationHandler.registerCallbackList(this.onNewMessage)
+        // update on new message
+        this.state.notificationHandler.registerCallbackList(this.state.handlerId, this.onNewMessage)
     }
 
     onNewMessage = (data) =>{
         if(data && data.key==="CHAT"){
             this.setState({unreadMsg: true})
         }
-
     }
 
-
     componentWillUnmount(){
-        // if(this.state.notificationHandler) this.state.notificationHandler.deregisterCallback()
+        if(this.state.notificationHandler) this.state.notificationHandler.deregisterCallback(this.state.handlerId)
     }
     render() {
         return (

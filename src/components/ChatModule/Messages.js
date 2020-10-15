@@ -7,12 +7,12 @@ import '../../assets/css/ChatModule/message.css'
 import { ChatTime } from '../../utility/Utility';
 
 const Messages = ({ messages, name }) => (
-    <ScrollToBottom className="messages">
+    <ScrollToBottom className="messages-container">
         {messages.map((message, i) => <div key={i}><Message message={message} name={name}/></div>)}
     </ScrollToBottom>
 );
 
-const Message = ({ message: { text, user }, name }) => {
+const Message = ({ message: { text, user, created_at }, name }) => {
     let isSentByCurrentUser = false;
   
     const trimmedName = name.trim().toLowerCase();
@@ -25,9 +25,9 @@ const Message = ({ message: { text, user }, name }) => {
         isSentByCurrentUser? 
         (
             <div className="messageContainer justifyEnd">
-                <span className="sentText pr-10">{ChatTime(text.created_at)}</span>
+                <span className="sentText pr-10">{ChatTime(created_at)}</span>
                 <div className="messageBox backgroundBlue">
-                    <span className="messageText colorWhite">{ReactEmoji.emojify(text.text)}</span>
+                    <span className="messageText colorWhite">{ReactEmoji.emojify(text)}</span>
                 </div>
             </div>
         )
@@ -35,9 +35,9 @@ const Message = ({ message: { text, user }, name }) => {
         (
             <div className="messageContainer justifyStart">
                 <div className="messageBox backgroundLight">
-                    <p className="messageText colorDark">{ReactEmoji.emojify(text.text)}</p>
+                    <p className="messageText colorDark">{ReactEmoji.emojify(text)}</p>
                 </div>
-                <span className="sentText pl-10 ">{ChatTime(text.created_at)}</span>
+                <span className="sentText pl-10 ">{ChatTime(created_at)}</span>
             </div>
           )
     );

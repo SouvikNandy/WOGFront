@@ -3,11 +3,13 @@ import { FiBell } from "react-icons/fi";
 import '../assets/css/navbar.css';
 import {Redirect } from 'react-router-dom';
 import { getNotificationHandler } from '../utility/userData';
+import { generateId } from '../utility/Utility';
 
 export class NotificationButton extends Component{
     state={
         unreadMsg: false,
         redirectNow: false,
+        handlerId: generateId(),
         notificationHandler : getNotificationHandler()
     }
 
@@ -22,11 +24,11 @@ export class NotificationButton extends Component{
         }
         console.log("notificationHandler from NotificationButton", this.state.notificationHandler)
         // update on new notification
-        this.state.notificationHandler.registerCallbackList(this.onNewNotification)
+        this.state.notificationHandler.registerCallbackList(this.state.handlerId, this.onNewNotification)
     }
 
     componentWillUnmount(){
-        this.state.notificationHandler.deregisterCallback()
+        this.state.notificationHandler.deregisterCallback(this.state.handlerId)
     }
 
     onNewNotification = (data) =>{

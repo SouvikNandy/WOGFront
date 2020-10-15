@@ -86,6 +86,7 @@
     height: 45vh;
     border-radius: 0.9rem;
     box-shadow: var(--shadow);
+    overflow: hidden;
 
 }
 

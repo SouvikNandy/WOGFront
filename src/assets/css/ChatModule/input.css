@@ -19,7 +19,7 @@ input:focus, textarea:focus, select:focus{
 
 .send-button {
   color: #fff !important;
-  background: #2979FF;
+  background: var(--hover-two);
   padding: 1rem;
   display: flex;
   justify-content: center;

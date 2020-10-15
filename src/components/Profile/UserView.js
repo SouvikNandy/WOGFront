@@ -24,7 +24,12 @@ export function UserFlat(props){
                         <div className="link m-display-name" >
                             <div className="head-name">
                                 <span className="main-title">{ele.name}</span> 
+                                {ele.username?
                                 <span className="u-name">@{ele.username}</span>
+                                :
+                                ""
+                                }
+                                
                             </div>
                             <span className="m-adj">{props.tagText?props.tagText:ele.profession}</span>
                         </div>
