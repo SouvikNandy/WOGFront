@@ -123,6 +123,7 @@ export class Chatbox extends Component {
     componentWillUnmount() {
         // leave sock room
         if(this.socket) this.socket.leaveRoom(getUserData().username)
+        if(this.props.onUnmount) this.props.onUnmount()
     }
 
     render() {

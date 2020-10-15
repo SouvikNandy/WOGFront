@@ -405,7 +405,7 @@
         max-width: 100%;
     }
     .nf-container .camera-cover{
-        right: 2rem;
+        right: 1.2rem !important;
     }
     .nf-container .nf-feeds {
         width: 100%;

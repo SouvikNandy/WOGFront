@@ -66,6 +66,10 @@
   color: var(--hover-one);
 }
 
+.chat-user-container{
+  z-index: 3;
+}
+
 .chat-user-container .suggested-text{
   color: var(--username-color);
   font-size: 0.75rem !important;
@@ -119,6 +123,16 @@
   font-size: 0.8rem;
 }
 
+.chat-user-container .chat-full-length .send-button .send-icon{
+  font-size: 1.3rem;
+}
+.chat-user-container .chat-full-length .input{
+  font-size: 0.9rem;
+}
+
+.chat-user-container .chat-full-length .messageBox{
+  padding: 0.6rem 0.8rem;
+}
 @media(max-width: 900px){
   .chat-user-container .chat-full-length{
     width: 100vw;

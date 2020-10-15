@@ -8,7 +8,7 @@ import '../../assets/css/discoverPeople.css';
 import '../../assets/css/ChatModule/chatbox.css'
 import { FiArrowRightCircle, FiSearch } from 'react-icons/fi';
 import Chatbox, { OpenChatRecord } from '../ChatModule/Chatbox';
-import { ChatTime, retrieveFromStorage } from '../../utility/Utility';
+import { ChatTime, getCurrentTimeInMS, retrieveFromStorage } from '../../utility/Utility';
 import { FaShare } from 'react-icons/fa';
 
 export class RecentFriends extends Component {
@@ -171,6 +171,7 @@ export class RecentChats extends Component{
         lastSearchedCount: 0,
         showChatBox: false,
         chatBoxUser: null,
+        currUser : getUserData().username,
     }
     
     componentDidMount(){
@@ -253,8 +254,19 @@ export class RecentChats extends Component{
         })
     }
 
+    ReloadChats = (room, record)=>{
+        let chatHistory = JSON.parse( retrieveFromStorage('chatHistory'))
+        if(chatHistory){
+            this.setState({
+                allChats: chatHistory,
+                totalFriendsCount: chatHistory.length,
+                output: chatHistory
+            })
+        }
+
+    }
+
     render(){
-        let currUser = getUserData().username
         return(
             <React.Fragment>
                 <div className="messagebox-head">
@@ -280,12 +292,12 @@ export class RecentChats extends Component{
                 <div className="new-friends-container chat-user-container">
                     {this.state.output.map(ele =>{
                         let chatEle = ele.chats[ele.chats.length -1]
-                        let created_at = chatEle? chatEle.created_at : ""
+                        let created_at = chatEle? chatEle.created_at : getCurrentTimeInMS()
                         let altText = ""
                         if (!chatEle){
                             altText = <span className="suggested-text">Send hi, start a conversation</span>
                         }
-                        else if(chatEle.user===currUser){
+                        else if(chatEle.user===this.state.currUser){
                             altText = <span className="sent-text"><FaShare className="self-sent"/> {chatEle.text}</span>
                         }
                         else{
@@ -296,21 +308,22 @@ export class RecentChats extends Component{
                             <div className="discover-list" key={ele.otherUser.id} onClick={this.updateChatboxState.bind(this, ele.otherUser)}>
                                 <UserFlat data={ele.otherUser} redirectPage={false} tagText={altText}/>
                                 <span className="chat-time">{ChatTime(created_at)}</span>
-
-                                {this.state.showChatBox?
-                                    <div className="chat-short chat-full-length">
-                                        <Chatbox chatBoxUser={this.state.chatBoxUser}
-                                        closeChat={this.props.onClose.bind(this, {sureVal: false})} 
-                                        moveToOpenChats={this.updateChatboxState}/>
-                                    </div>
-                    
-                        :
-                        ""
-                    }
                             </div>
                         )}
                         
                     )}
+                    {this.state.showChatBox?
+                        <div className="chat-short chat-full-length">
+                            <Chatbox chatBoxUser={this.state.chatBoxUser}
+                            closeChat={this.props.onClose.bind(this, {sureVal: false})} 
+                            moveToOpenChats={this.updateChatboxState}
+                            onUnmount={this.ReloadChats}
+                            />
+                        </div>
+                    
+                        :
+                        ""
+                    }
                 </div>
 
             </React.Fragment>
