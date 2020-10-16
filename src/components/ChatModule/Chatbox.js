@@ -6,6 +6,7 @@ import InfoBar, { InfoImage } from './InfoBar'
 import Input from './Input'
 import Messages from './Messages'
 import '../../assets/css/ChatModule/chatbox.css'
+import { GetChatRoomName, GetPreviousChats, StoreChat } from './chatUtils'
 
 /* 
 we are goin gto maintain a chatHistory in localstorage
@@ -34,8 +35,8 @@ export class Chatbox extends Component {
         let sockUser = null
         if(isAuthenticated){
             sockUser= getUserData().username
-            let allusers = [sockUser, this.props.chatBoxUser.username].sort()
-            sockRoom= allusers.join(":")
+            let allusers = [sockUser, this.props.chatBoxUser.username]
+            sockRoom= GetChatRoomName(allusers)
             this.socket = new SocketInterface('chat')
             this.socket.joinRoom(sockUser, sockRoom,  (error) => {
                 if(error) {
@@ -44,48 +45,19 @@ export class Chatbox extends Component {
                 })
             this.socket.receiveMessage(message => {
                 this.setState({allMessage : [ ...this.state.allMessage, message ]});
-                this.storeInCache(message); 
+                StoreChat(message, this.state.sockRoom, this.props.chatBoxUser);
             });
             this.socket.roomUser(()=>{});
         }
         
         // retrieve previous messages
-        let chatHistory = []
-        let existingChats = []
-
-        if ('chatHistory' in localStorage){
-            chatHistory = JSON.parse( retrieveFromStorage('chatHistory'))
-        }
-        if (chatHistory.length> 0){
-            let targetRoom = chatHistory.filter(ele => ele.room === sockRoom)[0]
-            if (targetRoom){
-                let targetIndex = chatHistory.findIndex(ele => ele.room === sockRoom)
-                existingChats = targetRoom.chats
-                chatHistory.splice(targetIndex, 1)
-                chatHistory.unshift({room: sockRoom , chats: existingChats, otherUser: this.props.chatBoxUser})
-
-            }
-            else{
-                chatHistory.unshift({room: sockRoom , chats: [], otherUser: this.props.chatBoxUser})
-            }
-        }
-        else{
-            chatHistory = [{room: sockRoom , chats: [], otherUser: this.props.chatBoxUser}]
-        }
-        if (chatHistory.length > 8){
-            chatHistory = chatHistory.slice(0, 8)
-        }
-        // save in localstorage
-        saveInStorage("chatHistory", JSON.stringify(chatHistory))
-        // console.log("existingChats", existingChats)
-
+        let existingChats = GetPreviousChats(sockRoom, this.props.chatBoxUser)
         this.setState({
             sockUser: sockUser, sockRoom: sockRoom, allMessage: existingChats
         })
     }
 
     setMessage = (val) => {
-        console.log("set message called")
         let messageBody = {user: this.state.sockUser, text: val, created_at: getCurrentTimeInMS()};
         this.setState({ message: messageBody})
     }

@@ -418,8 +418,10 @@ ul {
     background: var(--peacock);
     top: 0;
     right: 0.2rem;
-    border: 1px solid rgba(11, 187, 187, 1)
+    border: 1px solid rgba(11, 187, 187, 1);
+    box-shadow: var(--shadow);
 }
+
 
 
 .default-user-logo{

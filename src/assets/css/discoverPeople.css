@@ -121,6 +121,8 @@
     color: rgba(0, 0, 0, 0.7);
     box-shadow: var(--shadow);
     border-radius: 50%;
-    font-size: 1.2rem;
+    /* font-size: 1.2rem; */
+    height: 1.2rem;
+    width: 1.2rem;
     cursor: pointer;
 }

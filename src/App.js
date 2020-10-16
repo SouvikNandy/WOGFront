@@ -17,6 +17,7 @@ import CommmunityGuidelines from './pages/CommunityGuidelines';
 import LogOutPromptModal from './components/LogOutPromptModal';
 import EditPost from './components/Post/EditPost';
 import getUserData, { setNotificationHandler } from './utility/userData';
+import InitializeChatHistory from './components/ChatModule/chatUtils';
 
 export default class App extends Component {
     componentDidMount(){
@@ -24,6 +25,7 @@ export default class App extends Component {
         
         if(isAuthenticated()){
             // set notification handler on each refresh
+            InitializeChatHistory();
             setNotificationHandler(getUserData().username);
             silentRefresh();
         }

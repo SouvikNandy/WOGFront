@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import getUserData, { UserRecentFriends } from '../../utility/userData';
+import getUserData, { getNotificationHandler, UserRecentFriends } from '../../utility/userData';
 import OwlLoader from '../OwlLoader';
 import { SearchOnFriendsAPI } from '../../utility/ApiSet';
 import { UserFlat } from './UserView';
@@ -8,8 +8,9 @@ import '../../assets/css/discoverPeople.css';
 import '../../assets/css/ChatModule/chatbox.css'
 import { FiArrowRightCircle, FiSearch } from 'react-icons/fi';
 import Chatbox, { OpenChatRecord } from '../ChatModule/Chatbox';
-import { ChatTime, getCurrentTimeInMS, retrieveFromStorage } from '../../utility/Utility';
+import { ChatTime, generateId, getCurrentTimeInMS, retrieveFromStorage } from '../../utility/Utility';
 import { FaShare } from 'react-icons/fa';
+import { GetOpenChats, StoreChat, UpdateOpenChat } from '../ChatModule/chatUtils';
 
 export class RecentFriends extends Component {
     state = {
@@ -20,32 +21,67 @@ export class RecentFriends extends Component {
         lastSearchedCount: 0,
         showChatBox: false,
         chatBoxUser: null,
-        openChats: []
+        openChats: [],
+        // make sure it is registered first among other places listning chat
+        notificationHandler : null,
+        handlerId: generateId()
     }
     
     componentDidMount(){
-        UserRecentFriends(this.updateStateOnAPIcall);
+        UserRecentFriends(this.updateStateOnAPIcall);  
     }
-
+    
     moveToOpenChats = (ele) => {
         // keep last 8 open chat records
+        // to track unread messages
+        ele.is_unread= false
         let newOpenChat = [ele, ...this.state.openChats];
         if (newOpenChat.length> 8) {
             newOpenChat.slice(0, 8)
         }
 
-        this.setState({openChats: newOpenChat, showChatBox:false, chatBoxUser: null})
+        this.setState({openChats: newOpenChat, showChatBox:false, chatBoxUser: null});
+        UpdateOpenChat(newOpenChat);
     }
         
-    removeFromOpenChat = (ele) => this.setState({openChats: this.state.openChats.filter(item=> item.username!== ele.username)})
+    removeFromOpenChat = (ele) => {
+        let newOpenChat = this.state.openChats.filter(item=> item.username!== ele.username)
+        this.setState({openChats: newOpenChat});
+        UpdateOpenChat(newOpenChat);
+    }
 
     updateStateOnAPIcall = (data)=>{
         // paginated response
+        let notificationHandler= getNotificationHandler()
         this.setState({
             allFriends: data.results,
             totalFriendsCount: data.totalFriends,
-            output: data.results
+            output: data.results,
+            openChats: GetOpenChats(),
+            notificationHandler: notificationHandler
         })
+        notificationHandler.registerCallbackList(this.state.handlerId, this.onNewNotification);
+    }
+
+    onNewNotification = (data) =>{
+        console.log("onNewNotification called", data)
+        if(data && data.key==="CHAT"){
+            let newOpenChat = this.state.openChats
+            newOpenChat.map(ele=> {
+                if(ele.username===data.data.user){
+                    ele.is_unread = true;
+                }
+                return ele
+            })
+            let sockRoom = data.data.room
+            let userDetails = data.data.user_details
+            delete data.data.room
+            delete data.data.user_details
+
+            StoreChat(data.data, sockRoom, userDetails)
+            this.setState({openChats: newOpenChat})
+            UpdateOpenChat(newOpenChat);
+        }
     }
 
     updateChatboxState = (chatUser=null) =>{
@@ -53,12 +89,14 @@ export class RecentFriends extends Component {
         let openChats = this.state.openChats
         if(showChatBox){
             openChats = this.state.openChats.filter(ele => ele.username!==chatUser.username)
+            UpdateOpenChat(openChats);
         }
         this.setState({
             showChatBox: !this.state.showChatBox,
             chatBoxUser: chatUser,
             openChats: openChats
         })
+
     }
 
     findFriends = (value) =>{

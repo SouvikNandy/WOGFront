@@ -21,13 +21,20 @@ export const defaultProfilePic = () =>{
 }
 
 export const setNotificationHandler = (username) =>{
-    console.log("setNotificationHandler called")
-    NotificationSocket = new UserNotificationHandler(username)
+    // console.log("setNotificationHandler called")
+    if(!NotificationSocket){
+        NotificationSocket = new UserNotificationHandler(username)
+    }
+ 
     return NotificationSocket
 }
 
 export const getNotificationHandler = () =>{
-    return NotificationSocket
+    let notificationSock = NotificationSocket
+    if(!notificationSock) {
+        notificationSock = setNotificationHandler(getUserData().username)
+    }
+    return notificationSock
 }
 
 export class UserNotificationHandler{

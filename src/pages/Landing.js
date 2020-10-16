@@ -67,10 +67,10 @@ export class Landing extends Component {
                             <ShotPalette currLocation={currLocation}/>
                         </div>
                         <div className="shots-reminder">
-                            <p className="s-lead">Create your own portfolios, share shots and get connected to others of your domain  </p>
+                            <span className="s-lead">Create your own portfolios, share shots and get connected to others of your domain  </span>
                             <div className="s-buttons">
                                 <Link to={"/signup/"} className="btn" >Sign up</Link>
-                                <span>/</span>
+                                <span>or</span>
                                 <Link to={"/signin/"} className="btn" >Login</Link>
                             </div>
                         </div>

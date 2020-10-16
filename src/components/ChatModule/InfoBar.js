@@ -30,7 +30,12 @@ const InfoBar = ({ user , closeChat, moveToOpenChats}) => (
 export const InfoImage = ({user, reOpenChat, removeFromOpenChat}) =>{
     return (
         <div className="user-img" >
-            <AiFillCloseCircle className="close-chathead" onClick={removeFromOpenChat}/>
+            {user.is_unread?
+                <div className="close-chathead unread-icon"></div>
+            :
+                <AiFillCloseCircle className="close-chathead" onClick={removeFromOpenChat}/>
+            }
+            
             <img className="tag-img" alt="" src={user.profile_pic? user.profile_pic: defaultProfilePic()} onClick={reOpenChat}/>
         </div>
     )

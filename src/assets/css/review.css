@@ -16,6 +16,7 @@
     background: var(--hover-two);
     border-radius: 0.7rem;
     overflow: hidden;
+    box-shadow: var(--shadow);
 
 }
 
@@ -33,6 +34,7 @@
     text-align: center;
     background: var(--light);
     border-radius: 0.7rem;
+    box-shadow: var(--shadow);
 
 }
 
@@ -144,6 +146,7 @@
 /* Review Curved */
 .review-container {
     padding: 0 6%;
+    min-height: 45vh;
 }
 
 
