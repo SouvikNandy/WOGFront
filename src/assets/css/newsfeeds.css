@@ -389,6 +389,7 @@
 
 }
 
+
 @media(max-width: 900px) {
     .nf-container .nf-rest {
         display: none;
@@ -412,6 +413,46 @@
         margin-left: 0;
 
 
+    }
+}
+
+/* IPAD PRO portrait mode */
+@media(min-height:1100px) and (orientation:portrait) {
+    .nf-container .nf-rest {
+        display: none;
+    }
+
+    .nf-feeds{
+        width: initial;
+    }
+    .nf-post-conatiner .nfp-portfolio-preview{
+        height: 55vw;
+    }
+
+    .nf-container .nf-feeds .nf-post-conatiner .pf-grid {
+        max-width: 100%;
+    }
+    .nf-container .camera-cover{
+        right: 1.2rem !important;
+    }
+    .nf-container .nf-feeds {
+        width: 100%;
+        margin-left: 0;
+
+
+    }
+    .nf-user-menulist .nf-menu-tokens, .nf-user-menu .m-display-name{
+        font-size: 1.1rem;
+    }
+    .nf-user-edit .nf-user-img .cube-user-img{
+        height: 6rem;
+        width: 6rem;
+    }
+    .nf-user-menu .m-display-name .m-adj{
+        font-size: 0.9rem;
+    }
+    .nf-user-menu .edit-btn{
+        font-size: 0.9rem;
     }
 }
 

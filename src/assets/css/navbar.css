@@ -166,6 +166,49 @@
 
 }
 
+@media(min-height:1100px) and (orientation:portrait){
+    .side-bar-view-active{
+        width: 100vw;
+    }
+
+    .left-menu{
+        opacity: 1;
+        visibility: 1;
+        cursor: pointer
+    }
+
+    .side-nfuser-menu .nf-user-menu{
+        height: 100%;
+        width: 100%;
+        top: 0
+    }
+
+    .side-nfuser-menu .nf-user-menu .nf-user-menu-overlay{
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100% !important;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        -moz-backdrop-filter: blur(8px);
+        -o-backdrop-filter: blur(8px);
+        -ms-backdrop-filter: blur(8px);
+
+    }
+    .side-nfuser-menu .nf-user-menu .nf-user-edit{
+        padding: 1rem 0
+    }
+
+    .side-nfuser-menu .hide-left-menu{
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        z-index: 1;
+        height: 1.5rem !important;
+        width: 1.5rem !important;
+    } 
+}
 
 
 

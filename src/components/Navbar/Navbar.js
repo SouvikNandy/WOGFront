@@ -136,13 +136,13 @@ export class UserNavBar extends Component{
     }
 
     displaySidePanel = (key) =>{
-        if (window.innerWidth < 800){
+        // if (window.innerWidth < 800){
             this.setState({
                 showSideView: true,
                 sideViewContent: this.sideNFMenu()
             })
 
-        }
+        // }
             
     }
     displaySideView = ({content, sureVal}) =>{
