@@ -37,7 +37,8 @@
 }
 
 .rev-box:hover {
-    background: var(--grad-two);
+    /* background: var(--grad-chat); */
+    background: var(--grad-chat-text);
 
 }
 
