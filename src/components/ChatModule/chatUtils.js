@@ -1,6 +1,7 @@
 import { retrieveFromStorage, saveInStorage } from "../../utility/Utility";
 
 const InitializeChatHistory =() =>{
+    
     if(!('chatHistory' in localStorage)){
         saveInStorage("chatHistory", JSON.stringify([]))
     }
@@ -67,7 +68,14 @@ export const StoreChat = (messageBody, sockRoom, chatWithUser, is_seen) =>{
 }
 
 export const GetOpenChats =()=>{
-    return JSON.parse(retrieveFromStorage("openChats"))
+    if(!('openChats' in localStorage)){
+        saveInStorage("openChats", JSON.stringify([]))
+        return []
+    }
+    else{
+        return JSON.parse(retrieveFromStorage("openChats"))
+    }
+    
 }
 export const UpdateOpenChat =(recordSet) =>{
     saveInStorage("openChats", JSON.stringify(recordSet))
