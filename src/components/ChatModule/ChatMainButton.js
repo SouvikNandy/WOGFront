@@ -37,7 +37,7 @@ export class ChatMainButton extends Component {
                 delete data.data.room
                 delete data.data.user_details
 
-                StoreChat(data.data, sockRoom, userDetails)
+                StoreChat(data.data, sockRoom, userDetails, false)
             }
 
             

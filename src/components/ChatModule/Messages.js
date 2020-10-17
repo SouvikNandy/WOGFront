@@ -6,13 +6,23 @@ import ReactEmoji from 'react-emoji';
 import '../../assets/css/ChatModule/message.css'
 import { ChatTime } from '../../utility/Utility';
 
-const Messages = ({ messages, name }) => (
+const Messages = ({ messages, name, is_seen }) => (
     <ScrollToBottom className="messages-container">
-        {messages.map((message, i) => <div key={i}><Message message={message} name={name}/></div>)}
+        {messages.map((message, i) => <div key={i}>{
+            <React.Fragment>
+                <Message message={message} name={name} is_seen={is_seen}/>
+                {message.user === name && is_seen?
+                    <span className="sentText seen-text">seen</span>
+                    :
+                    ""
+                }
+            </React.Fragment>
+            
+            }</div>)}
     </ScrollToBottom>
 );
 
-const Message = ({ message: { text, user, created_at }, name }) => {
+const Message = ({ message: { text, user, created_at }, name, is_seen }) => {
     let isSentByCurrentUser = false;
   
     const trimmedName = name.trim().toLowerCase();
@@ -24,12 +34,19 @@ const Message = ({ message: { text, user, created_at }, name }) => {
     return (
         isSentByCurrentUser? 
         (
-            <div className="messageContainer justifyEnd">
-                <span className="sentText pr-10">{ChatTime(created_at)}</span>
-                <div className="messageBox backgroundBlue">
-                    <span className="messageText colorWhite">{ReactEmoji.emojify(text)}</span>
+            <React.Fragment>
+                <div className="messageContainer justifyEnd">
+                    <span className="sentText pr-10">{ChatTime(created_at)}</span>
+                    <div className="messageBox backgroundBlue">
+                        <span className="messageText colorWhite">{ReactEmoji.emojify(text)}</span>
+                    </div>
                 </div>
-            </div>
+                {/* {is_seen?
+                <span className="sentText">seen</span>
+                    :
+                    ""
+                } */}
+            </React.Fragment>
         )
         : 
         (

@@ -159,4 +159,16 @@ export const SearchOnFriendsAPI = (searchKey, callBackFunc) =>{
     console.log("url", url)
     HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
 }
+
+// Chat APIs
+export const ChatListAPI =(username, callBackFunc) =>{
+    let url = "api/v1/chat-list/"+username+"/"
+    HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
+}
+
+export const RoomMessagesAPI =(roomName, callBackFunc) =>{
+    let url = "api/v1/room-messages/"+roomName+"/"
+    HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
+}
+
 export default {LoginAPI}

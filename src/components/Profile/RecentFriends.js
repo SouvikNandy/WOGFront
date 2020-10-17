@@ -78,7 +78,7 @@ export class RecentFriends extends Component {
             delete data.data.room
             delete data.data.user_details
 
-            StoreChat(data.data, sockRoom, userDetails)
+            StoreChat(data.data, sockRoom, userDetails, false)
             this.setState({openChats: newOpenChat})
             UpdateOpenChat(newOpenChat);
         }

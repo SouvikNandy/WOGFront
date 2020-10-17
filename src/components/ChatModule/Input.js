@@ -1,5 +1,5 @@
 import React from 'react';
-import { AiOutlineSend } from 'react-icons/ai';
+import { FaRegPaperPlane } from 'react-icons/fa';
 
 import '../../assets/css/ChatModule/input.css';
 
@@ -15,7 +15,8 @@ const Input = ({ setMessage, sendMessage, message }) => {
                 onKeyPress={event => event.key === 'Enter' ? sendMessage(event) : null}
             />
             <div className="send-button" onClick={e => sendMessage(e)}>
-                <AiOutlineSend className="send-icon"/>
+                {/* <AiOutlineSend className="send-icon"/> */}
+                <FaRegPaperPlane className="send-icon" />
             </div>
         </form>
     )

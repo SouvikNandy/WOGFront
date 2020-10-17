@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import SocketInterface from '../../utility/SocketInterface'
 import getUserData from '../../utility/userData'
-import { generateId, getCurrentTimeInMS, isAuthenticated, retrieveFromStorage, saveInStorage } from '../../utility/Utility'
+import { generateId, getCurrentTimeInMS, isAuthenticated } from '../../utility/Utility'
 import InfoBar, { InfoImage } from './InfoBar'
 import Input from './Input'
 import Messages from './Messages'
 import '../../assets/css/ChatModule/chatbox.css'
-import { GetChatRoomName, GetPreviousChats, StoreChat } from './chatUtils'
+import { GetChatRoomName, GetPreviousChats, StoreChat, UpdateSeenChat } from './chatUtils'
 
 /* 
 we are goin gto maintain a chatHistory in localstorage
@@ -29,6 +29,7 @@ export class Chatbox extends Component {
         sockUser: '',
         message: '',
         allMessage: [],
+        is_seen: false
     }
     componentDidMount(){
         let sockRoom = null
@@ -44,16 +45,26 @@ export class Chatbox extends Component {
                     }
                 })
             this.socket.receiveMessage(message => {
-                this.setState({allMessage : [ ...this.state.allMessage, message ]});
-                StoreChat(message, this.state.sockRoom, this.props.chatBoxUser);
+                if ('seen_alert' in message){
+                    // update room as seen
+                    UpdateSeenChat(message["room"])
+                    this.setState({is_seen: true})
+
+                }
+                else{
+                    this.setState({allMessage : [ ...this.state.allMessage, message ], is_seen: message.is_seen});
+                    StoreChat(message, this.state.sockRoom, this.props.chatBoxUser, message.is_seen);
+                }
+                
             });
             this.socket.roomUser(()=>{});
         }
         
         // retrieve previous messages
-        let existingChats = GetPreviousChats(sockRoom, this.props.chatBoxUser)
+        let [existingChats, is_seen] = GetPreviousChats(sockRoom, this.props.chatBoxUser)
+
         this.setState({
-            sockUser: sockUser, sockRoom: sockRoom, allMessage: existingChats
+            sockUser: sockUser, sockRoom: sockRoom, allMessage: existingChats, is_seen: is_seen
         })
     }
 
@@ -71,27 +82,6 @@ export class Chatbox extends Component {
         }
     }
 
-    storeInCache = (messageBody) =>{
-        let chatHistory = JSON.parse( retrieveFromStorage('chatHistory'))
-        if (chatHistory) {
-            chatHistory.map(ele => {
-                if(ele.room === this.state.sockRoom){
-                    ele.chats.push(messageBody);
-                    // console.log("chats length", ele.chats.length)
-                    if(ele.chats.length > 10){
-                        ele.chats = ele.chats.slice(-10)
-                    }
-                }
-                return ele
-            })
-        }
-        else{
-            chatHistory = [{room: this.state.sockRoom , chats: [messageBody], otherUser: this.props.chatBoxUser} ]
-        }
-        saveInStorage("chatHistory", JSON.stringify(chatHistory))
-
-    }
-
     componentWillUnmount() {
         // leave sock room
         if(this.socket) this.socket.leaveRoom(getUserData().username)
@@ -102,7 +92,7 @@ export class Chatbox extends Component {
         return (
             <div className="chat-container">
                 <InfoBar user={this.props.chatBoxUser} closeChat={this.props.closeChat} moveToOpenChats={this.props.moveToOpenChats}/>
-                <Messages messages={this.state.allMessage} name={this.state.sockUser} />
+                <Messages messages={this.state.allMessage} name={this.state.sockUser} is_seen={this.state.is_seen} />
                 <Input message={this.state.message} setMessage={this.setMessage} sendMessage={this.sendMessage} />
             </div> 
         )
