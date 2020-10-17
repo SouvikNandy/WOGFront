@@ -22,7 +22,7 @@ export class NotificationButton extends Component{
             this.setState({unreadMsg: this.state.notificationHandler.isUnreadExists()})
             
         }
-        console.log("notificationHandler from NotificationButton", this.state.notificationHandler)
+        // console.log("notificationHandler from NotificationButton", this.state.notificationHandler)
         // update on new notification
         this.state.notificationHandler.registerCallbackList(this.state.handlerId, this.onNewNotification)
     }

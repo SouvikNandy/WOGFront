@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import SocketInterface from '../../utility/SocketInterface'
 import getUserData from '../../utility/userData'
-import { getCurrentTimeInMS, isAuthenticated, retrieveFromStorage, saveInStorage } from '../../utility/Utility'
+import { generateId, getCurrentTimeInMS, isAuthenticated, retrieveFromStorage, saveInStorage } from '../../utility/Utility'
 import InfoBar, { InfoImage } from './InfoBar'
 import Input from './Input'
 import Messages from './Messages'
@@ -58,7 +58,7 @@ export class Chatbox extends Component {
     }
 
     setMessage = (val) => {
-        let messageBody = {user: this.state.sockUser, text: val, created_at: getCurrentTimeInMS()};
+        let messageBody = {user: this.state.sockUser, text: val, created_at: getCurrentTimeInMS(), id: generateId()};
         this.setState({ message: messageBody})
     }
 
