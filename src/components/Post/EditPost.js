@@ -93,7 +93,7 @@ export class EditPost extends Component {
 
     updatePostDetails =(requestBody)=>{
         if(checkNotEmptyObject(requestBody)){
-            console.log("processing request")
+            // console.log("processing request")
             let url = 'api/v1/add-post/';
             requestBody['portfolio_id']= this.state.shot.id; 
             HTTPRequestHandler.put(
@@ -101,7 +101,7 @@ export class EditPost extends Component {
                 callBackFunc: this.successfulUpdate, errNotifierTitle:"Uplading failed !"})
         }
         else{
-            console.log("put request not fired")
+            // console.log("put request not fired")
         }
 
     }

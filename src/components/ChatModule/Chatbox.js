@@ -53,7 +53,7 @@ export class Chatbox extends Component {
                 }
                 else{
                     this.setState({allMessage : [ ...this.state.allMessage, message ], is_seen: message.is_seen});
-                    StoreChat(message, this.state.sockRoom, this.props.chatBoxUser, message.is_seen);
+                    StoreChat(message, this.state.sockRoom, this.props.chatBoxUser, [], getCurrentTimeInMS());
                 }
                 
             });

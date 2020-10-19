@@ -47,7 +47,7 @@ export class ReportContent extends Component {
         this.setState({tcApproved: !this.state.tcApproved})
     }
     onSubmit = () =>{
-        console.log("onsubmit called")
+        // console.log("onsubmit called")
         if (!this.state.reason){
             createFloatingNotification('error', "Please provide a reason to report", "You must provide a reason why are you reporting this")
             return false

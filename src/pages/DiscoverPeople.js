@@ -108,7 +108,6 @@ export class DiscoverPeople extends Component {
             // console.log(this.state.people)
             this.state.people.map(ele => 
                 {
-                    console.log(ele)
                     resultList.push(<FollowUserCubeAlt key={ele.username} data={ele} isFollowing={ele.is_following} 
                     startFollowing={this.startFollowing.bind(this, ele)} stopFollowing={this.stopFollowing.bind(this, ele)} />)
                 return ele

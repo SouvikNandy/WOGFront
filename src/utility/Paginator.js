@@ -22,7 +22,7 @@ export default class Paginator{
 
     }
     getPrevPage(){
-        console.log("getPrevPage called")
+        // console.log("getPrevPage called")
     }
 
 }

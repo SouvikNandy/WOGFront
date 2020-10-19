@@ -70,7 +70,7 @@ export class UserReview extends Component {
 
     render() {
         let resultList = this.getCompomentData()
-        console.log("result List ", resultList);
+        // console.log("result List ", resultList);
         return (
             <React.Fragment>
                 <div className="profile-tags-selector">

@@ -191,9 +191,9 @@ class TextInput extends React.Component {
     };
 
     onExtractData = () => {
-        const contentState = this.state.editorState.getCurrentContent();
-        const raw = convertToRaw(contentState);
-        console.log(raw);
+        // const contentState = this.state.editorState.getCurrentContent();
+        // const raw = convertToRaw(contentState);
+        // console.log(raw);
     };
 
     onExtractMentions = () => {
@@ -206,7 +206,7 @@ class TextInput extends React.Component {
                 mentionedUsers.push(ent.data.mention);
             }
         }
-        console.log(mentionedUsers);
+        // console.log(mentionedUsers);
     };
 
     getAreaId = () =>{

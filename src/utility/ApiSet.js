@@ -160,8 +160,8 @@ export const SearchOnFriendsAPI = (searchKey, callBackFunc) =>{
 }
 
 // Chat APIs
-export const ChatListAPI =(username, callBackFunc) =>{
-    let url = "api/v1/chat-list/"+username+"/"
+export const ChatListAPI =(callBackFunc) =>{
+    let url = "api/v1/chat-list/"
     HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
 }
 
@@ -170,8 +170,13 @@ export const RoomMessagesAPI =(roomName, callBackFunc) =>{
     HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
 }
 
-export const SearchOnChatListAPI = (username, searchKey, callBackFunc) =>{
-    let url = "api/v1/chat-list/"+username+"/?search="+searchKey
+export const SearchOnChatListAPI = (searchKey, callBackFunc) =>{
+    let url = "api/v1/chat-list/?search="+searchKey
+    HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
+}
+
+export const CheckIfUnreadChats =(callBackFunc)=>{
+    let url = "api/v1/unread-chat/"
     HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
 }
 export default {LoginAPI}

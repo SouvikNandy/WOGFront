@@ -1,4 +1,26 @@
-import { retrieveFromStorage, saveInStorage } from "../../utility/Utility";
+import { getCurrentTimeInMS, retrieveFromStorage, saveInStorage } from "../../utility/Utility";
+
+let chatHistoryPaginator = {paginator: null, last_updated: null}
+
+let roomTextpaginationHandler = {}
+
+export const SetChatHistoryPaginator = (paginatorObj) =>{
+    chatHistoryPaginator = {paginator: paginatorObj, last_updated: getCurrentTimeInMS()} 
+}
+
+export const GetChatHistoryPaginator = () =>{
+    return chatHistoryPaginator
+}
+
+export const SetRoomTextPaginator = (roomName, paginatiorObj) =>{
+    roomTextpaginationHandler[roomName] ={paginator: paginatiorObj, updated: getCurrentTimeInMS()}
+
+}
+
+export const GetRoomTextPaginator = (roomName)=>{
+    if (roomName in roomTextpaginationHandler) return roomTextpaginationHandler[roomName]
+    else return null
+}
 
 const InitializeChatHistory =() =>{
     
@@ -57,21 +79,19 @@ export const GetPreviousChats =(sockRoom, chatWithUser) =>{
 
 }
 
-export const StoreChat = (messageBody, sockRoom, chatWithUser, is_seen) =>{
+export const StoreChat = (messageBody, sockRoom, chatWithUser, seen_by, last_updated) =>{
     let chatHistory = JSON.parse(retrieveFromStorage('chatHistory'))
     if (chatHistory) {
         chatHistory.map(ele => {
             if(ele.room === sockRoom){
                 ele.chats.push(messageBody);
-                if(ele.chats.length > 10){
-                    ele.chats = ele.chats.slice(-10)
-                }
+                ele.last_updated = getCurrentTimeInMS()
             }
             return ele
         })
     }
     else{
-        chatHistory = [{room: sockRoom , chats: [messageBody], otherUser: chatWithUser, is_seen: is_seen} ]
+        chatHistory = [{room: sockRoom , chats: [messageBody], otherUser: chatWithUser, seen_by: seen_by, last_updated: last_updated} ]
     }
     saveInStorage("chatHistory", JSON.stringify(chatHistory))
 

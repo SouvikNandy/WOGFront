@@ -3,6 +3,7 @@ import { getNotificationHandler } from '../../utility/userData';
 import { FaRegPaperPlane } from "react-icons/fa";
 import { generateId } from '../../utility/Utility';
 import { GetOpenChats, StoreChat } from './chatUtils';
+import { CheckIfUnreadChats } from '../../utility/ApiSet';
 
 export class ChatMainButton extends Component {
     state={
@@ -11,16 +12,14 @@ export class ChatMainButton extends Component {
         handlerId: generateId()
     }
     componentDidMount(){
-        // set initial state
-        // if(this.props.pthName==="user-notifications"){
-        //     this.setState({unreadMsg: false})
-        // }
-        // else{
-        //     this.setState({unreadMsg: this.state.notificationHandler.isUnreadExists("CHAT")})
-            
-        // }
+        // check if unread chat exists
+        CheckIfUnreadChats(this.InitialAPICall)
         // update on new message
         this.state.notificationHandler.registerCallbackList(this.state.handlerId, this.onNewMessage)
+    }
+
+    InitialAPICall = (data) =>{
+        this.setState({unreadMsg: data.data})
     }
 
     onNewMessage = (data) =>{
@@ -34,10 +33,14 @@ export class ChatMainButton extends Component {
                 // store received data
                 let sockRoom = data.data.room
                 let userDetails = data.data.user_details
+                let last_updated = data.data.last_updated
+                let seen_by = data.data.seen_by 
                 delete data.data.room
                 delete data.data.user_details
+                delete data.data.last_updated
+                delete data.data.seen_by
 
-                StoreChat(data.data, sockRoom, userDetails, false)
+                StoreChat(data.data, sockRoom, userDetails, seen_by, last_updated)
             }
 
             

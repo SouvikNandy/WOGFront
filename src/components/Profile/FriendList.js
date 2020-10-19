@@ -75,10 +75,10 @@ export class FriendList extends Component {
 
     ShowSearchedResult = (searchKey, data) =>{
         let prevUsernames = this.state.allFriends.map(ele => ele.username)
-        console.log("prevUsernames", prevUsernames)
-        console.log("received", data.results)
+        // console.log("prevUsernames", prevUsernames)
+        // console.log("received", data.results)
         let dataset = data.results.filter(ele=> !prevUsernames.includes(ele.username))
-        console.log("filtered dataset", dataset)
+        // console.log("filtered dataset", dataset)
         this.setState({
             allFriends: [...this.state.allFriends, ...dataset],
             output: data.results,
