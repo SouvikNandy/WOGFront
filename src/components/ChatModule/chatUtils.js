@@ -9,7 +9,17 @@ const InitializeChatHistory =() =>{
         saveInStorage("openChats", JSON.stringify([]))
     }
 }
-    
+
+
+export const GetChatHistory = () =>{
+    if(!('chatHistory' in localStorage)){
+        saveInStorage("chatHistory", JSON.stringify([]))
+        return []
+    }
+    else{
+        return JSON.parse( retrieveFromStorage('chatHistory'));
+    }
+}
 
 export const GetChatRoomName = (usernames) =>{
     let allusers = usernames.sort();
@@ -19,7 +29,7 @@ export const GetChatRoomName = (usernames) =>{
 export const GetPreviousChats =(sockRoom, chatWithUser) =>{
     let existingChats = []
     let is_seen = false
-    let chatHistory = JSON.parse( retrieveFromStorage('chatHistory'));
+    let chatHistory = GetChatHistory();
     if (chatHistory.length> 0){
         let targetRoom = chatHistory.filter(ele => ele.room === sockRoom)[0]
         if (targetRoom){

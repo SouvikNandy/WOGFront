@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import getUserData, { getNotificationHandler, UserRecentFriends } from '../../utility/userData';
 import OwlLoader from '../OwlLoader';
-import { SearchOnFriendsAPI } from '../../utility/ApiSet';
+import { ChatListAPI, SearchOnFriendsAPI } from '../../utility/ApiSet';
 import { UserFlat } from './UserView';
 import SearchBar from '../Search/SearchBar';
 import '../../assets/css/discoverPeople.css';
@@ -10,7 +10,7 @@ import { FiArrowRightCircle, FiSearch } from 'react-icons/fi';
 import Chatbox, { OpenChatRecord } from '../ChatModule/Chatbox';
 import { ChatTime, generateId, getCurrentTimeInMS, retrieveFromStorage } from '../../utility/Utility';
 import { FaShare } from 'react-icons/fa';
-import { GetOpenChats, StoreChat, UpdateOpenChat } from '../ChatModule/chatUtils';
+import { GetChatHistory, GetOpenChats, StoreChat, UpdateOpenChat } from '../ChatModule/chatUtils';
 
 export class RecentFriends extends Component {
     state = {
@@ -214,7 +214,7 @@ export class RecentChats extends Component{
     
     componentDidMount(){
         // check on chat history. if chat history exists and chethistory length == 10 then call backend api
-        let chatHistory = JSON.parse( retrieveFromStorage('chatHistory'))
+        let chatHistory = GetChatHistory()
         if(chatHistory && chatHistory.length < 10){
             this.setState({
                 allChats: chatHistory,
@@ -224,7 +224,7 @@ export class RecentChats extends Component{
         }
         else{
             // get user recent chats
-            UserRecentFriends(this.updateStateOnAPIcall);
+            ChatListAPI(this.updateStateOnAPIcall);
         }
         
     }
@@ -255,7 +255,7 @@ export class RecentChats extends Component{
         }
 
         let matchedRecords = this.state.allChats.filter(item => 
-            (item.name.toLowerCase().startsWith(phase) || item.username.toLowerCase().startsWith(phase))
+            (item.otherUser.name.toLowerCase().startsWith(phase) || item.otherUser.username.toLowerCase().startsWith(phase))
             );
 
         if (this.state.totalFriendsCount <= this.state.allChats.length ){
@@ -293,7 +293,7 @@ export class RecentChats extends Component{
     }
 
     ReloadChats = (room, record)=>{
-        let chatHistory = JSON.parse( retrieveFromStorage('chatHistory'))
+        let chatHistory = GetChatHistory()
         if(chatHistory){
             this.setState({
                 allChats: chatHistory,

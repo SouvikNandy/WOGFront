@@ -156,7 +156,6 @@ export const ReportContentAPI = (requestBody, callBackFunc) =>{
 
 export const SearchOnFriendsAPI = (searchKey, callBackFunc) =>{
     let url = searchKey? "api/v1/search-friends/?search="+searchKey : "api/v1/search-friends/"
-    console.log("url", url)
     HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
 }
 
@@ -171,4 +170,8 @@ export const RoomMessagesAPI =(roomName, callBackFunc) =>{
     HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
 }
 
+export const SearchOnChatListAPI = (username, searchKey, callBackFunc) =>{
+    let url = "api/v1/chat-list/"+username+"/?search="+searchKey
+    HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
+}
 export default {LoginAPI}
