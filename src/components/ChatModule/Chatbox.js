@@ -6,7 +6,9 @@ import InfoBar, { InfoImage } from './InfoBar'
 import Input from './Input'
 import Messages from './Messages'
 import '../../assets/css/ChatModule/chatbox.css'
-import { GetChatRoomName, GetPreviousChats, StoreChat, UpdateSeenChat } from './chatUtils'
+import { AppendChatBlock, GetChatRoomName, GetPreviousChats, GetRoomTextPaginator, SetRoomTextPaginator, StoreChat, StoreChatBlock, UpdateSeenChat } from './chatUtils'
+import { RoomMessagesAPI } from '../../utility/ApiSet'
+import Paginator from '../../utility/Paginator'
 
 /* 
 we are goin gto maintain a chatHistory in localstorage
@@ -17,7 +19,6 @@ chatHistory : [
     {room: room1 , chats: [...last 10 messages]},
     {room: room2 , chats: [...last 10 messages]},
     ....
-    store last 8 chat room records
 ]
 */
 
@@ -29,7 +30,9 @@ export class Chatbox extends Component {
         sockUser: '',
         message: '',
         allMessage: [],
-        is_seen: false
+        is_seen: false,
+        paginator: null,
+        isFetching: false,
     }
     componentDidMount(){
         let sockRoom = null
@@ -52,8 +55,15 @@ export class Chatbox extends Component {
 
                 }
                 else{
-                    this.setState({allMessage : [ ...this.state.allMessage, message ], is_seen: message.is_seen});
-                    StoreChat(message, this.state.sockRoom, this.props.chatBoxUser, [], getCurrentTimeInMS());
+                    let is_seen = false
+                    message.seen_by.map(ele=> {
+                        if(ele===this.props.chatBoxUser.username){
+                            is_seen = true
+                        }
+                        return ele
+                    })
+                    this.setState({allMessage : [ ...this.state.allMessage, message ], is_seen: is_seen});
+                    StoreChat(message, sockRoom, this.props.chatBoxUser, message.seen_by, message.last_updated);
                 }
                 
             });
@@ -61,11 +71,38 @@ export class Chatbox extends Component {
         }
         
         // retrieve previous messages
-        let [existingChats, is_seen] = GetPreviousChats(sockRoom, this.props.chatBoxUser)
+        /*
+        if room text fetched from backend with in last 15 minutes(900 seconds) then fetch data from cache 
+        else fetch and store from backend 
+        */
+       let rommPaginator = GetRoomTextPaginator(sockRoom)
+       let currTime = getCurrentTimeInMS()
+       if (!rommPaginator || !rommPaginator.last_updated || currTime - rommPaginator.last_updated >=900){
+            RoomMessagesAPI(sockRoom, this.UpdateOnAPICall.bind(this, sockRoom, sockUser))
+       }
+       else{
+            let [existingChats, seen_by] = GetPreviousChats(sockRoom, this.props.chatBoxUser)
 
+            this.setState({
+                sockUser: sockUser, sockRoom: sockRoom, allMessage: existingChats, seen_by: seen_by, paginator: rommPaginator.paginator
+            })
+
+        }
+    }
+
+    UpdateOnAPICall = (sockRoom, sockUser, data) =>{
+        // paginated response
+        let paginator = data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null
         this.setState({
-            sockUser: sockUser, sockRoom: sockRoom, allMessage: existingChats, is_seen: is_seen
+            sockUser: sockUser, 
+            sockRoom: sockRoom,
+            allMessage: data.results,
+            seen_by: data.seen_by,
+            paginator: paginator
         })
+        SetRoomTextPaginator(sockRoom, paginator)
+        let chatBlock = {room: sockRoom , chats: data.results, otherUser: data.otherUser, seen_by: data.seen_by, last_updated: data.last_updated}
+        StoreChatBlock(chatBlock)
     }
 
     setMessage = (val) => {
@@ -81,6 +118,26 @@ export class Chatbox extends Component {
             });
         }
     }
+    
+    handleScroll = (e) =>{
+        // console.log(" handleScroll called ", e.scrollTop)
+        if(e.scrollTop !== 0) return;
+        if(this.state.isFetching) return;
+        if(this.state.paginator && this.state.paginator.next){
+            let res = this.state.paginator.getNextPage(this.updateStateOnPagination, false)
+            if (res !== false){
+                this.setState({isFetching: true})
+            }  
+        }
+    }
+    updateStateOnPagination = (data) =>{
+        let newMessageList = [...this.state.allMessage, ...data.results]
+        this.setState({
+            allMessage: newMessageList,
+            isFetching: false
+        })
+        AppendChatBlock(this.state.sockRoom, newMessageList)
+    }
 
     componentWillUnmount() {
         // leave sock room
@@ -92,7 +149,7 @@ export class Chatbox extends Component {
         return (
             <div className="chat-container">
                 <InfoBar user={this.props.chatBoxUser} closeChat={this.props.closeChat} moveToOpenChats={this.props.moveToOpenChats}/>
-                <Messages messages={this.state.allMessage} name={this.state.sockUser} is_seen={this.state.is_seen} />
+                <Messages messages={this.state.allMessage} name={this.state.sockUser} is_seen={this.state.is_seen} handleScroll={this.handleScroll}/>
                 <Input message={this.state.message} setMessage={this.setMessage} sendMessage={this.sendMessage} />
             </div> 
         )

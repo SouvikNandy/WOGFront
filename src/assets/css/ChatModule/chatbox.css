@@ -133,6 +133,11 @@
 .chat-user-container .chat-full-length .messageBox{
   padding: 0.6rem 0.8rem;
 }
+
+.unread-msg {
+  background: var(--cream);
+}
+
 @media(max-width: 900px){
   .chat-user-container .chat-full-length{
     width: 100vw;

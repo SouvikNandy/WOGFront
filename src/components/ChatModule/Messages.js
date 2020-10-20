@@ -1,29 +1,48 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-import ScrollToBottom from 'react-scroll-to-bottom';
+import ScrollToBottom, {useObserveScrollPosition} from 'react-scroll-to-bottom';
 import ReactEmoji from 'react-emoji';
 
 import '../../assets/css/ChatModule/message.css'
-import { ChatTime, getCurrentTimeInMS } from '../../utility/Utility';
+import { ChatTime, getCurrentTimeInMS, SortByCreatedTimeASC } from '../../utility/Utility';
 
-const Messages = ({ messages, name, is_seen }) => (
-    <ScrollToBottom className="messages-container">
-        {messages.length < 1?
-        <div className="empty-message"><span>Send hi, start a conversation</span></div>
-        :""}
-        {messages.map((message, i) => <div key={i}>{
-            <React.Fragment>
-                <Message message={message} name={name} is_seen={is_seen}/>
-                {message.user === name && is_seen?
-                    <span className="sentText seen-text">seen</span>
-                    :
-                    ""
-                }
-            </React.Fragment>
-            
-            }</div>)}
-    </ScrollToBottom>
-);
+class Messages extends Component{
+    render(){
+        let messages = this.props.messages
+        let name = this.props.name
+        let is_seen = this.props.is_seen
+        return(
+            <ScrollToBottom className="messages-container">
+            <MessagesContainer messages={messages} name={name} is_seen={is_seen} handleScroll={this.props.handleScroll}/>
+            </ScrollToBottom>
+        )
+    }
+}
+
+
+const MessagesContainer = ({ messages, name, is_seen, handleScroll }) => {
+    const observer = useObserveScrollPosition(handleScroll);
+    return(
+        <div useObserveScrollPosition={observer}>
+            {messages.length < 1?
+            <div className="empty-message"><span>Send hi, start a conversation</span></div>
+            :""}
+            {messages.sort(SortByCreatedTimeASC).map((message, i) => <div key={i}>{
+                <React.Fragment>
+                    <Message message={message} name={name} is_seen={is_seen}/>
+                    {message.user === name && is_seen?
+                        <span className="sentText seen-text">seen</span>
+                        :
+                        ""
+                    }
+                </React.Fragment>
+                
+                }</div>)}
+        </div>
+
+    )
+    
+}
 
 const Message = ({ message: { text, user, created_at }, name, is_seen }) => {
     let isSentByCurrentUser = false;

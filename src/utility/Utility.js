@@ -311,6 +311,30 @@ export const GetCookie = (cname) =>{
     return null;
   }
 
+export const SortByUpdatedTimeDESC = (a, b) =>{
+    // desc order:  to be used in map sort
+    let comparison = 0;
+    if(a.last_updated >= b.last_updated){
+        comparison = -1
+    }
+    else{
+        comparison = 1
+    }
+    return comparison
+}
+
+export const SortByCreatedTimeASC = (a, b) =>{
+    // asc order:  to be used in map sort
+    let comparison = 0;
+    if(a.created_at >= b.created_at){
+        comparison = 1
+    }
+    else{
+        comparison = -1
+    }
+    return comparison
+}
+
 export default {
     isSelfUser,
     generateId,

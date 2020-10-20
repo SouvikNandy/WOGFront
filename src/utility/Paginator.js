@@ -7,18 +7,24 @@ export default class Paginator{
         this.next = next;
         this.fetched =fetched
     }
-    getNextPage(callBackFunc){
+    getNextPage(callBackFunc, resultsOnly=true){
         if(this.fetched >= this.count || !this.next){
             return false
         }
-        HTTPRequestHandler.get({url:this.next, completeUrl: true, includeToken: true, callBackFunc: this.onNextCallback.bind(this, callBackFunc) })
+        HTTPRequestHandler.get({url:this.next, completeUrl: true, includeToken: true, callBackFunc: this.onNextCallback.bind(this, callBackFunc, resultsOnly) })
     }
-    onNextCallback = (callBackFunc, data) =>{
+    onNextCallback = (callBackFunc, resultsOnly, data) =>{
         this.count = data.count
         this.next = data.next
         this.prev = data.previous
         this.fetched = this.fetched + data.results.length
-        callBackFunc(data.results)
+        if(resultsOnly){
+            callBackFunc(data.results)
+        }
+        else{
+            callBackFunc(data)
+        }
+        
 
     }
     getPrevPage(){

@@ -23,7 +23,7 @@ export class ChatMainButton extends Component {
     }
 
     onNewMessage = (data) =>{
-        console.log("onNewMessage called", data)
+        // console.log("onNewMessage called", data)
         if(data && data.key==="CHAT"){
             // if chat is not opnchat then only turn it as true
             let openChats= GetOpenChats();

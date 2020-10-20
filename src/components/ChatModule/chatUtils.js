@@ -13,7 +13,7 @@ export const GetChatHistoryPaginator = () =>{
 }
 
 export const SetRoomTextPaginator = (roomName, paginatiorObj) =>{
-    roomTextpaginationHandler[roomName] ={paginator: paginatiorObj, updated: getCurrentTimeInMS()}
+    roomTextpaginationHandler[roomName] ={paginator: paginatiorObj, last_updated: getCurrentTimeInMS()}
 
 }
 
@@ -50,31 +50,24 @@ export const GetChatRoomName = (usernames) =>{
 
 export const GetPreviousChats =(sockRoom, chatWithUser) =>{
     let existingChats = []
-    let is_seen = false
+    let seen_by = []
     let chatHistory = GetChatHistory();
     if (chatHistory.length> 0){
         let targetRoom = chatHistory.filter(ele => ele.room === sockRoom)[0]
         if (targetRoom){
-            let targetIndex = chatHistory.findIndex(ele => ele.room === sockRoom)
             existingChats = targetRoom.chats
-            is_seen = targetRoom.is_seen
-            chatHistory.splice(targetIndex, 1)
-            chatHistory.unshift({room: sockRoom , chats: existingChats, otherUser: chatWithUser, is_seen: is_seen})
-
+            seen_by = targetRoom.seen_by
         }
         else{
-            chatHistory.unshift({room: sockRoom , chats: [], otherUser: chatWithUser, is_seen: false})
+            chatHistory.unshift({room: sockRoom , chats: [], otherUser: chatWithUser, seen_by: [], last_updated: getCurrentTimeInMS()})
         }
     }
     else{
-        chatHistory = [{room: sockRoom , chats: [], otherUser: chatWithUser, is_seen: false}]
-    }
-    if (chatHistory.length > 8){
-        chatHistory = chatHistory.slice(0, 8)
+        chatHistory = [{room: sockRoom , chats: [], otherUser: chatWithUser, seen_by: [], last_updated: getCurrentTimeInMS()}]
     }
     // save in localstorage
     saveInStorage("chatHistory", JSON.stringify(chatHistory))
-    return [existingChats, is_seen]
+    return [existingChats, seen_by]
 
 
 }
@@ -95,6 +88,48 @@ export const StoreChat = (messageBody, sockRoom, chatWithUser, seen_by, last_upd
     }
     saveInStorage("chatHistory", JSON.stringify(chatHistory))
 
+}
+
+export const StoreChatBlock = (roomData) =>{
+    let chatHistory = JSON.parse(retrieveFromStorage('chatHistory'))
+    let keyFound = false
+    if (chatHistory){
+        chatHistory.map(ele=>{
+            if(ele.room === roomData.room){
+                keyFound = true
+                return roomData
+                
+            }
+            else{
+                return ele
+            }
+            
+        })
+
+       if (!(keyFound)){
+           chatHistory.unshift(roomData)
+       }
+    }
+    else{
+        chatHistory= [roomData]
+    }
+    saveInStorage("chatHistory", JSON.stringify(chatHistory))
+}
+
+export const AppendChatBlock = (roomName, newChats) =>{
+    // pagination purpose
+    let chatHistory = JSON.parse(retrieveFromStorage('chatHistory'))
+    if (chatHistory){
+        chatHistory.map(ele=>{
+            if(ele.room === roomName){
+                ele.chats = [...newChats, ...ele.chats]                
+            }
+            
+            return ele  
+        })
+
+    }
+    saveInStorage("chatHistory", JSON.stringify(chatHistory))
 }
 
 export const GetOpenChats =()=>{

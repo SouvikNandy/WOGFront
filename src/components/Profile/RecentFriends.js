@@ -8,7 +8,7 @@ import '../../assets/css/discoverPeople.css';
 import '../../assets/css/ChatModule/chatbox.css'
 import { FiArrowRightCircle, FiSearch } from 'react-icons/fi';
 import Chatbox, { OpenChatRecord } from '../ChatModule/Chatbox';
-import { ChatTime, generateId, GetCookie, saveInStorage, SetCookie } from '../../utility/Utility';
+import { ChatTime, generateId, GetCookie, retrieveFromStorage, saveInStorage, SetCookie, SortByUpdatedTimeDESC } from '../../utility/Utility';
 import { FaShare } from 'react-icons/fa';
 import { GetChatHistory, GetOpenChats, StoreChat, UpdateOpenChat, GetChatHistoryPaginator, SetChatHistoryPaginator, GetChatRoomName } from '../ChatModule/chatUtils';
 import Paginator from '../../utility/Paginator';
@@ -247,7 +247,7 @@ export class RecentChats extends Component{
 
     onNewMessage = (data) =>{
         if(data && data.key==="CHAT"){
-            console.log("RecentChats onNewMessage called", data)
+            // console.log("RecentChats onNewMessage called", data)
             if (data.key === "CHAT"){
                 let roomName = GetChatRoomName([this.state.currUser, data.data.user])
                 console.log(this.state.allChats)
@@ -272,8 +272,25 @@ export class RecentChats extends Component{
             paginator: paginator
         })
         SetChatHistoryPaginator(paginator)
-        saveInStorage("chatHistory", JSON.stringify(data.results))
+        this.maintainCache(data.results)
         SetCookie("chatListExist", 'true', 15)
+    }
+
+    maintainCache = (recordset) =>{
+        let chatHistory = JSON.parse(retrieveFromStorage("chatHistory"))
+        let prevChatLength = {}
+        chatHistory.map(ele=>{
+            prevChatLength[ele.room] = ele.chats.length
+            return ele
+        })
+
+        recordset.map(ele=>{
+            if(ele.room in prevChatLength && prevChatLength[ele.room]> ele.chats.length){
+                ele.chats = chatHistory.filter(item => item.room ===ele.room)[0].chats
+            }
+            return ele
+        })
+        saveInStorage("chatHistory", JSON.stringify(recordset))
     }
 
     handleScroll() {
@@ -353,7 +370,6 @@ export class RecentChats extends Component{
 
     ReloadChats = ()=>{
         let chatHistory = GetChatHistory()
-        console.log("on reload  ", chatHistory)
         if(chatHistory){
             this.setState({
                 allChats: chatHistory,
@@ -362,21 +378,10 @@ export class RecentChats extends Component{
         }
 
     }
-
-    sortByUpdatedTime = (a, b) =>{
-        let comparison = 0;
-        if(a.last_updated >= b.last_updated){
-            comparison = -1
-        }
-        else{
-            comparison = 1
-        }
-        return comparison
-    }
-
+    
     render(){
         return(
-            <React.Fragment>
+            <div onScroll={this.handleScroll}>
                 <div className="messagebox-head">
                     <div className="dark-overlay"></div>
                     <div className="header-conatiner">
@@ -398,7 +403,7 @@ export class RecentChats extends Component{
                 
 
                 <div className="new-friends-container chat-user-container">
-                    {this.state.output.sort(this.sortByUpdatedTime).map(ele =>{
+                    {this.state.output.sort(SortByUpdatedTimeDESC).map(ele =>{
                         let chatEle = ele.chats[ele.chats.length -1]
                         let created_at = ele.last_updated
                         let altText = ""
@@ -413,8 +418,10 @@ export class RecentChats extends Component{
                             altText = <span className="sent-text">{chatEle.text}</span>
                         }
 
+                        let is_seen = ele.seen_by.includes(this.state.currUser)
+
                         return(
-                            <div className="discover-list" key={ele.otherUser.id} onClick={this.updateChatboxState.bind(this, ele.otherUser)}>
+                            <div className={is_seen?"discover-list":"discover-list unread-msg"} key={"chat"+ele.otherUser.id} onClick={this.updateChatboxState.bind(this, ele.otherUser)}>
                                 <UserFlat data={ele.otherUser} redirectPage={false} tagText={altText}/>
                                 <span className="chat-time">{ChatTime(created_at)}</span>
                             </div>
@@ -435,7 +442,7 @@ export class RecentChats extends Component{
                     }
                 </div>
 
-            </React.Fragment>
+            </div>
         )
     }
 
