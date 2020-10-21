@@ -47,7 +47,7 @@ export class ModalComments extends CommentsBase {
 
     updateStateOnAPIcall = (data)=>{
         let result = data.results
-        // console.log("comments", result)
+
         result.map(ele=> {
             if(ele.comment){
                 ele["comment"] = JSONToEditState(JSON.parse(ele.comment))
@@ -69,7 +69,7 @@ export class ModalComments extends CommentsBase {
                 })
             this.socket.receiveMessage(message => {
                 let newrecv = message.text
-                console.log("new received", newrecv)
+                // console.log("new received", newrecv)
                 newrecv["comment"] = JSONToEditState(JSON.parse(newrecv.comment))
                 this.setState({ data: [newrecv, ...this.state.data], count: this.state.count + 1 }, ()=>{
                     this.scrollToBottom("m-comments-view");
@@ -78,14 +78,28 @@ export class ModalComments extends CommentsBase {
             this.socket.roomUser(()=>{});
         }
         // paginated response
-        this.setState({
-            data: result,
-            paginator: data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null,
-            count: data.count, 
-            sockRoom: sockRoom,
-            sockUser: sockUser
-        })
+        try{
+            this.setState({
+                data: result,
+                paginator: data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null,
+                count: data.count, 
+                sockRoom: sockRoom,
+                sockUser: sockUser
+            })
 
+        }
+        catch(err){
+            // console.log("ERROR=====>", err)
+            this.setState({
+                data: [],
+                paginator: null,
+                count: 0, 
+                sockRoom: sockRoom,
+                sockUser: sockUser
+            })
+
+        }
+        
     }
 
     addOnlyReplies = (commnetId, dataSet, replyPaginator) => {
