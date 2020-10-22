@@ -42,7 +42,7 @@ export class Explore extends Component {
         if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
         if(this.state.isFetching) return;
         if(this.state.paginator){
-            let res = this.state.paginator.getNextPage(this.updateStateOnPagination)
+            let res = this.state.paginator.getNextPage(this.updateStateOnPagination, true, false)
             if (res !== false){
                 this.setState({isFetching: true})
             }  

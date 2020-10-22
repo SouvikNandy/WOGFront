@@ -5,8 +5,7 @@ import axios from 'axios';
 // AUTH TOKEN MANAGEMENT
 
 export const LogOutUser = () =>{
-    localStorage.removeItem("tx");
-    localStorage.removeItem("refresh_token");
+    localStorage.clear();
 }
 
 export const storeAuthToken = (token) => {

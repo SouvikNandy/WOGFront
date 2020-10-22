@@ -28,6 +28,7 @@ import Paginator from '../utility/Paginator';
 import { AddUserReviewsAPI, BlockUser, UpdateUserReviewsAPI } from '../utility/ApiSet';
 import ReportContent from '../components/Post/ReportContent';
 import { ConfirmationPopup } from '../components/Settings/SecurityOptions';
+import Chatbox from '../components/ChatModule/Chatbox';
 
 
 
@@ -977,6 +978,7 @@ function ProfileHead(props) {
     const [userActions, showUserActions] = useState(false);
     const [blockModal, showBlockModal] = useState(false);
     const [reportModal, showReportModal] = useState(false);
+    const [chatBox, showChatBox] = useState(false);
 
     if (!props.data){
         return(
@@ -984,8 +986,11 @@ function ProfileHead(props) {
             <OwlLoader />
         </div>
         )
-    }    
+    }
+    console.log("chatBox status", chatBox)    
     let coverpic = data.profile_data && data.profile_data.cover_pic ? data.profile_data.cover_pic: defaultCoverPic();
+    let chatBoxUser ={id: data.username, username: data.username, name: data.name, 
+        profile_pic: data.profile_data && data.profile_data.profile_pic? data.profile_data.profile_pic: null}
     return (
         <React.Fragment>
             <div className="profile-top">
@@ -1030,7 +1035,7 @@ function ProfileHead(props) {
                                 <div className="pf-otheruser-btns">
                                     {data.is_following?
                                         props.isAuth?
-                                            <button className="btn m-fuser"><FaPaperPlane className="ico"/> Message</button>
+                                            <button className="btn m-fuser" onClick={()=>showChatBox(true)}><FaPaperPlane className="ico"/> Message</button>
                                             :
                                             <Link className="btn m-fuser" to={{
                                                 pathname: `/m-auth/`,
@@ -1054,8 +1059,17 @@ function ProfileHead(props) {
                                             }}
                                             ><FaPlus className="ico"/> Follow</Link>
                                     }
+                                    {props.isAuth?
                                     <button className="btn m-fuser" onClick={()=> showUserActions(!userActions)}>
-                                        <AiFillSetting className="ico"/> Actions</button>
+                                    <AiFillSetting className="ico"/> Actions</button>
+                                    :
+                                    <Link className="btn m-fuser" to={{
+                                        pathname: `/m-auth/`,
+                                        state: { modal: true, currLocation: props.currLocation }
+                                    }}
+                                    ><AiFillSetting className="ico"/> Actions</Link>
+                                    }
+                                    
                                     {userActions?
                                         <div className="user-action-menu">
                                             {data.is_following?
@@ -1065,6 +1079,7 @@ function ProfileHead(props) {
                                                 UpdateRecentFriends("unfollow", ConstructUserRecord(data))
                                             }}>Unfollow</div> : ""
                                             }
+                                            <div className="a-opt" onClick={()=>showChatBox(true)}>Message</div>
                                             {data.is_blocked?
                                                 <div className="a-opt" 
                                                 onClick={()=> BlockUser(data.username, ()=>{props.BlockUnblock()})}>Unblock</div>
@@ -1103,6 +1118,14 @@ function ProfileHead(props) {
                                 }) }}
                                 />
                             </div> 
+                            :
+                            ""
+                        }
+                        {chatBox?
+                            <div className="chat-short">
+                                <Chatbox chatBoxUser={chatBoxUser} moveToOpenChats={null} 
+                                closeChat={()=>showChatBox(false)}/>
+                            </div>
                             :
                             ""
                         }

@@ -28,6 +28,7 @@ import { JSONToEditState, EditorSpan } from '../components/TextInput';
 import { ExplorePreview } from './Explore';
 import { DiscoverUserFlat } from './DiscoverPeople';
 import { RecentFriends } from '../components/Profile/RecentFriends';
+import { RiUserHeartLine } from 'react-icons/ri';
 
 export class NewsFeeds extends Component {
     render() {
@@ -161,6 +162,10 @@ export class NewsFeedUserMenu extends Component{
                                 <BsClockHistory className="ico" />
                                 <span>Your Activities</span>
                             </div>
+                            <Link className="link nf-menu-tokens" to={`/all-friends/`} >
+                                <RiUserHeartLine className="ico" />
+                                <span>Following & Followers</span>
+                            </Link>
                             <Link className="link nf-menu-tokens" to={`/discover-people/${username}`} >
                                 <AiOutlineUsergroupAdd className="ico" />
                                 <span>Discover People</span>
@@ -230,17 +235,22 @@ export function NewsFeedSuggestions (props){
                         
                         <ExplorePreview counter={2}/>
                     </div>
-                    <div className="nf-discover">
-                        <div className="s-label">
-                            <h4>Discover</h4>
-                            <span className="s-tag">People around you</span>
+                    {props.discoverSuggestion=== false?
+                        ""
+                        :
+                        <div className="nf-discover">
+                            <div className="s-label">
+                                <h4>Discover</h4>
+                                <span className="s-tag">People around you</span>
+                            </div>
+                            <DiscoverUserFlat counter={2}/>
+                            <div className="see-more">
+                                <Link className="link" to={`/discover-people/${props.username}`}>See more</Link>
+                            </div>
+                            
                         </div>
-                        <DiscoverUserFlat counter={2}/>
-                        <div className="see-more">
-                            <Link className="link" to={`/discover-people/${props.username}`}>See more</Link>
-                        </div>
-                        
-                    </div>
+                    }
+                    
                     <div className="nf-active">
                         <div className="s-label">
                             <h4>Say Hi</h4>

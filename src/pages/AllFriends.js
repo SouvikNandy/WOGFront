@@ -1,25 +1,24 @@
 import React, { Component } from 'react';
-import {FollowUnfollowUser, FollowUserCubeAlt, UserFlat, ConstructUserRecord} from '../components/Profile/UserView';
+import {FollowUserCubeAlt} from '../components/Profile/UserView';
 import DummyShots from '../components/Post/DummyShots';
 import '../assets/css/profile.css';
 import {NewsFeedUserMenu, NewsFeedSuggestions} from './NewsFeeds';
 import '../assets/css/newsfeeds.css';
 import '../assets/css/discoverPeople.css';
 import {UserNavBar} from "../components/Navbar/Navbar";
-import { DiscoverPeopleAPI } from '../utility/ApiSet';
+import { AllFollowingAndFollowers } from '../utility/ApiSet';
 import OwlLoader from '../components/OwlLoader';
-import {getUserData, UpdateRecentFriends} from '../utility/userData';
+import {getUserData} from '../utility/userData';
 
-export class DiscoverPeople extends Component {
+export class AllFriends extends Component {
     state ={
         people: null,
         paginator: null,
         isFetching: false,
         eventListnerRef: null,
     }
-
     componentDidMount(){
-        DiscoverPeopleAPI(this.updateStateOnAPIcall.bind(this, 'people'));
+        AllFollowingAndFollowers(this.updateStateOnAPIcall.bind(this, 'people'));
         let eventListnerRef = this.handleScroll.bind(this);
         this.setState({eventListnerRef: eventListnerRef});
         window.addEventListener('scroll', eventListnerRef);
@@ -76,7 +75,6 @@ export class DiscoverPeople extends Component {
     }
 
     startFollowing =(record, res) =>{
-        console.log(" startFollowing called", record)
         this.setState({
             people: this.state.people.map(ele =>{
                 if(ele.username===record.username){
@@ -124,14 +122,14 @@ export class DiscoverPeople extends Component {
                     <NewsFeedUserMenu {...this.props}/>
                     <div className="nf-feeds">
                         <div className="discover-people-container">
-                            <div className="headline">People you may know</div>
+                            <div className="headline">People You Follow And Your Followers</div>
                             <div className="profile-user-grid">
                                 {resultList}
                             </div>
                         </div>
                     </div>
                     
-                    <NewsFeedSuggestions discoverSuggestion={false}/>
+                    <NewsFeedSuggestions discoverSuggestion={false} />
             </div>
 
             </React.Fragment>
@@ -140,79 +138,4 @@ export class DiscoverPeople extends Component {
     }
 }
 
-export class DiscoverUserFlat extends Component{
-    state={
-        people: null
-    }
-    componentDidMount(){
-        DiscoverPeopleAPI(this.updateStateOnAPIcall.bind(this, 'people'));
-    }
-
-    updateStateOnAPIcall = (key, data)=>{
-        // paginated response
-        this.setState({
-            [key]: data.results
-        })
-        
-    }
-    startFollowing =(record, res) =>{
-        this.setState({
-            people: this.state.people.map(ele =>{
-                if(ele.username===record.username){
-                    ele.is_following = true;
-                }
-                return ele
-            })
-        })
-        
-    }
-
-    stopFollowing =(record, res) =>{
-        this.setState({
-            people: this.state.people.map(ele =>{
-                if(ele.username===record.username){
-                    ele.is_following = false;
-                }
-                return ele
-            })
-        })
-    }
-    render(){
-        let resultList = [];
-        if (!this.state.people){
-            return(<div className="profile-user-grid"> <OwlLoader /></div>)
-        }
-        else{
-            this.state.people.map(ele => 
-                {resultList.push(
-                    <div className="discover-list" key={ele.username}>
-                        <UserFlat data={ele}/>
-                        {ele.is_following?
-                            <span className="text-button" onClick={() => {
-                                FollowUnfollowUser(ele, this.stopFollowing.bind(this, ele))
-                                UpdateRecentFriends("unfollow", ConstructUserRecord(ele))
-                                
-                            }}> Remove</span>
-                            :
-                            <span className="text-button" onClick={() => {
-                                FollowUnfollowUser(ele, this.startFollowing.bind(this, ele))
-                                UpdateRecentFriends("follow", ConstructUserRecord(ele))
-                            }}> Add</span>
-                        }
-                    </div>
-                        
-                    )
-                return ele
-            })
-        }
-        resultList = resultList.slice(0, this.props.counter)
-        return(
-            <React.Fragment>
-                {resultList}
-            </React.Fragment>
-        )
-    }
-}
-
-
-export default DiscoverPeople
+export default AllFriends

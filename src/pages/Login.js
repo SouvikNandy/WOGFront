@@ -8,6 +8,7 @@ import Dropdown from '../components/Dropdown';
 import {LoginAPI, SignupAPI} from '../utility/ApiSet';
 import {AiFillCloseCircle } from 'react-icons/ai';
 import { setNotificationHandler } from '../utility/userData';
+import InitializeChatHistory from '../components/ChatModule/chatUtils';
 
 
 export function Login(props) {
@@ -99,6 +100,8 @@ export class SignIn extends Component {
         silentRefresh();
         // initialize notification handler
         setNotificationHandler(data.data.username);
+        // initialize blank chat history
+        InitializeChatHistory();
                 
         // reset 
         document.getElementById("login-form").reset();

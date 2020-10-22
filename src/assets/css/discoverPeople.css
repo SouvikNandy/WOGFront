@@ -78,17 +78,6 @@
     font-size: 0.9rem;
 }
 
-.new-friends-container .chat-short{
-    position: fixed;
-    bottom: 0.4rem;
-    right: 8vw;
-    width: 20vw;
-    height: 45vh;
-    border-radius: 0.9rem;
-    box-shadow: var(--shadow);
-    overflow: hidden;
-
-}
 
 .new-friends-container .open-chats{
     position: fixed;

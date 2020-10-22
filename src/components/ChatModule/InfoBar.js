@@ -9,7 +9,12 @@ import { defaultProfilePic } from '../../utility/userData';
 const InfoBar = ({ user , closeChat, moveToOpenChats}) => (
     <div className="infoBar">
         <div className="leftInnerContainer">
+            {moveToOpenChats?
             <FiArrowLeftCircle className="icons" onClick={moveToOpenChats}/>
+            :
+            ""
+            }
+            
             <AiOutlineCloseCircle className="icons" onClick={closeChat}/>
         </div>
         <div className="rightInnerContainer">

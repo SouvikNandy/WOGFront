@@ -18,6 +18,10 @@ export const FollowRequestAPI = (username, requestBody, callBackFunc) =>{
     HTTPRequestHandler.post({url: url, requestBody: requestBody, includeToken:true, callBackFunc: callBackFunc})
 }
 
+export const AllFollowingAndFollowers = (callBackFunc) =>{
+    let url = 'api/v1/all-friends/'
+    HTTPRequestHandler.get({url: url, includeToken:true, callBackFunc: callBackFunc })
+}
 export const DiscoverPeopleAPI = (callBackFunc) =>{
     let url = 'api/v1/discover-people/'
     HTTPRequestHandler.get({url: url, includeToken:true, callBackFunc: callBackFunc })

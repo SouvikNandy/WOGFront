@@ -18,6 +18,7 @@ import LogOutPromptModal from './components/LogOutPromptModal';
 import EditPost from './components/Post/EditPost';
 import getUserData, { setNotificationHandler } from './utility/userData';
 import InitializeChatHistory from './components/ChatModule/chatUtils';
+import AllFriends from './pages/AllFriends';
 
 export default class App extends Component {
     componentDidMount(){
@@ -78,6 +79,7 @@ function ShotModalUrl() {
             <PrivateRoute exact path="/user-profile/:username" component={Profile} AuthenticatedOnly={true} />
             <PrivateRoute exact path="/user-notifications/:username" component={Notifications} />
             <PrivateRoute exact path="/discover-people/:username" component={DiscoverPeople} />
+            <PrivateRoute exact path="/all-friends/" component={AllFriends} />
             <PrivateRoute exact path="/log-out/" component={LogOutPromptModal} />
             <PrivateRoute exact path="/edit-shot/:id" component={EditPost} />
             <Route exact path="/guidelines" component={CommmunityGuidelines} />

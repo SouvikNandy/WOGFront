@@ -4,7 +4,7 @@ import {RiArrowDropDownLine} from 'react-icons/ri';
 import {AiFillPlusCircle} from 'react-icons/ai';
 import TagUser from '../Profile/TagUser';
 import {getCurrentTimeInMS} from '../../utility/Utility';
-import w1 from '../../assets/images/wedding_1.jpg'
+import w1 from '../../assets/images/wedding1.jpg'
 
 // PRIVACY MENU OPTIONS
 

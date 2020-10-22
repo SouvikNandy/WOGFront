@@ -493,6 +493,18 @@ ul {
     color: var(--hover-one);
 }
 
+
+.chat-short{
+    position: fixed;
+    bottom: 0.4rem;
+    right: 8vw;
+    width: 20vw;
+    height: 45vh;
+    border-radius: 0.9rem;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+
+}
 @media(max-width:900px) {
     .side-bar-view-active {
         width: 100vw;

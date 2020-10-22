@@ -389,8 +389,8 @@ export class RecentChats extends Component{
                         <span className="title-text">Messages</span>
                     </div>
                     
-                    <a href="https://www.pexels.com/photo/assorted-map-pieces-2859169/" className="link img-credits">
-                    Shot by <span className="contributor-name">Andrew Neel</span>
+                    <a href="https://www.pexels.com/photo/shalow-focus-photography-of-mailed-letters-3059854/" className="link img-credits">
+                    Shot by <span className="contributor-name">Roman Koval</span>
                     </a>
                     <div className="friends-search">
                         <SearchBar className="srch-bar" searchPlaceHolder={"Search friends ..."} 
