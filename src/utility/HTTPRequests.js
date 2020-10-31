@@ -26,7 +26,7 @@ const getHeader = (includeToken, uploadType) =>{
 
 }
 export default class HTTPRequestHandler{
-    static get = ({url, includeToken=false, callBackFunc=null, errNotifierTitle='Something went wrong', completeUrl=false}) =>{
+    static get = ({url, includeToken=false, callBackFunc=null, errCallBackFunc=null, errNotifierTitle='Something went wrong', completeUrl=false}) =>{
         let burl= url
         if (completeUrl === false){
             burl = backendHost + url;
@@ -40,10 +40,11 @@ export default class HTTPRequestHandler{
         .catch(err =>{
             console.log("err", err)
             handleErrorResponse(err, errNotifierTitle);
+            if(errCallBackFunc) errCallBackFunc(err)
         }) 
 
     }
-    static post = ({url, requestBody, includeToken=false, callBackFunc=null, errNotifierTitle='Something went wrong', uploadType=null}) =>{
+    static post = ({url, requestBody, includeToken=false, callBackFunc=null, errCallBackFunc=null, errNotifierTitle='Something went wrong', uploadType=null}) =>{
         
         axios.post( backendHost + url, requestBody, { headers: getHeader(includeToken, uploadType)})
         .then(res => {
@@ -54,10 +55,11 @@ export default class HTTPRequestHandler{
         .catch(err =>{
             console.log("err", err)
             handleErrorResponse(err, errNotifierTitle);
+            if(errCallBackFunc) errCallBackFunc(err)
         }) 
 
     }
-    static put = ({url, requestBody, includeToken=false, callBackFunc=null, errNotifierTitle='Something went wrong', uploadType=null}) =>{
+    static put = ({url, requestBody, includeToken=false, callBackFunc=null, errCallBackFunc=null, errNotifierTitle='Something went wrong', uploadType=null}) =>{
         axios.put( backendHost + url, requestBody, { headers: getHeader(includeToken, uploadType)})
         .then(res => {
             if(callBackFunc){
@@ -67,9 +69,10 @@ export default class HTTPRequestHandler{
         .catch(err =>{
             console.log("err", err)
             handleErrorResponse(err, errNotifierTitle);
+            if(errCallBackFunc) errCallBackFunc(err)
         }) 
     }
-    static delete = ({url, includeToken=true, callBackFunc=null, errNotifierTitle='Something went wrong'}) =>{
+    static delete = ({url, includeToken=true, callBackFunc=null, errCallBackFunc=null, errNotifierTitle='Something went wrong'}) =>{
         axios.delete( backendHost + url, { 
             headers: getHeader(includeToken),
         })
@@ -81,6 +84,7 @@ export default class HTTPRequestHandler{
         .catch(err =>{
             console.log("err", err)
             handleErrorResponse(err, errNotifierTitle);
+            if(errCallBackFunc) errCallBackFunc(err)
         }) 
 
     }

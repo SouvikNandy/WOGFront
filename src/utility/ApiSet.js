@@ -1,14 +1,14 @@
 import HTTPRequestHandler from '../utility/HTTPRequests';
 import { isAuthenticated } from './Utility';
 
-export const LoginAPI = (requestBody, callBackFunc) =>{
+export const LoginAPI = (requestBody, callBackFunc, errCallBack) =>{
     let url = 'api/v1/user-authentication/?r='+ window.innerWidth;
-    HTTPRequestHandler.post({url: url, requestBody: requestBody, callBackFunc: callBackFunc, errNotifierTitle: "Authentication failed!"})
+    HTTPRequestHandler.post({url: url, requestBody: requestBody, callBackFunc: callBackFunc,errCallBackFunc:errCallBack, errNotifierTitle: "Authentication failed!"})
 }
 
-export const SignupAPI = (requestBody, callBackFunc) =>{
+export const SignupAPI = (requestBody, callBackFunc, errCallBack) =>{
     let url  = 'api/v1/user-registration/';
-    HTTPRequestHandler.post({url: url, requestBody: requestBody, callBackFunc: callBackFunc, errNotifierTitle: "Signup failed!"})
+    HTTPRequestHandler.post({url: url, requestBody: requestBody, callBackFunc: callBackFunc, errCallBackFunc:errCallBack, errNotifierTitle: "Signup failed!"})
 
 }
 

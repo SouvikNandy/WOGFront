@@ -74,6 +74,7 @@ export class SignIn extends Component {
     state = {
         email: "",
         password : "",
+        isLoading: false,
         isLoggedIn : false,
         loggedinUser: '',
     }
@@ -90,7 +91,11 @@ export class SignIn extends Component {
 
 
         let requestBody = { email: this.state.email, password: this.state.password }
-        LoginAPI(requestBody, this.onSuccessfulLogin)
+        this.setState({isLoading: true})
+        LoginAPI(requestBody, this.onSuccessfulLogin, this.onAPIError)
+    }
+    onAPIError = (message) =>{
+        this.setState({isLoading: false})
     }
 
     onSuccessfulLogin = (data) => {
@@ -105,7 +110,7 @@ export class SignIn extends Component {
                 
         // reset 
         document.getElementById("login-form").reset();
-        this.setState({ email: '', password:'', isLoggedIn: true, loggedinUser: data.data.username });
+        this.setState({ email: '', password:'', isLoggedIn: true, loggedinUser: data.data.username, isLoading: false });
         createFloatingNotification("success", "Successful Login", data.message);
     }
 
@@ -141,7 +146,7 @@ export class SignIn extends Component {
             <React.Fragment>
                 <h1 className="large text-primary">Sign In</h1>
                 <p className="lead"><FaUser />Sign into Your Account</p>
-                <form className="login-form" id="login-form" onSubmit={this.onSubmit}>
+                <form className="login-form" id="login-form">
                     <div className="form-group">
                         <input type="email" name="email" placeholder="Email" onChange={this.onChange} required />
                     </div>
@@ -149,7 +154,16 @@ export class SignIn extends Component {
                         <input type="password" name="password" placeholder="Password" onChange={this.onChange} required/>
                     </div>
                     <div className="apply-section">
-                        <input type="submit" value="Sign In" className="btn btn-primary" />
+                        {this.state.isLoading?
+                            <button className="btn btn-loading" disabled={true}>
+                                Signing In ...
+                            </button>
+                            :
+                            <button className="btn btn-primary" onClick={this.onSubmit}>
+                                Sign In
+                            </button>
+                        }
+                        
                     </div>
                     
                 </form>
@@ -176,6 +190,7 @@ export class SignUp extends Component {
         confirmPassword: "",
         user_type: "",
 
+        isLoading: false,
         signupSuccesful : false
     }
 
@@ -214,8 +229,13 @@ export class SignUp extends Component {
             email: this.state.email, 
             password: this.state.password
         }
-        SignupAPI(requestBody, this.onSuccess)
+        this.setState({isLoading: true})
+        SignupAPI(requestBody, this.onSuccess, this.onAPIError)
 
+    }
+
+    onAPIError = (message) =>{
+        this.setState({isLoading: false})
     }
 
     onSuccess = (data) => {
@@ -228,6 +248,7 @@ export class SignUp extends Component {
             confirmPassword: "",
             user_type: "",
             signupSuccesful : true,
+            isLoading: false,
         
         })
         createFloatingNotification("success", "Successful Signup", data.message);
@@ -256,7 +277,7 @@ export class SignUp extends Component {
             <React.Fragment>
                 <h1 className="large text-primary">Sign up</h1>
                 <p className="lead"><FaUser />Create Your Account</p>
-                <form className="login-form" id="signup-form" onSubmit={this.onSubmit}>
+                <form className="login-form" id="signup-form">
                     <div className="form-group f-flex">
                         <input type="text" placeholder="Username" name="username" onChange={this.onChange} maxlength="20" required />
                         <div className="i-am">
@@ -276,7 +297,15 @@ export class SignUp extends Component {
                         <input type="password" placeholder="Confirm Password" name="confirmPassword" onChange={this.onChange} required />
                     </div>
                     <div className="apply-section">
-                        <input type="submit" value="Create Account" className="btn btn-primary" />
+                        {this.state.isLoading?
+                            <button className="btn btn-loading" disabled={true}>
+                                Creating ...
+                            </button>
+                            :
+                            <button className="btn btn-primary" onClick={this.onSubmit}>
+                                Create Account
+                            </button>
+                        }
                     </div>
                     
                 </form>
