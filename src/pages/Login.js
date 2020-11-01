@@ -155,11 +155,11 @@ export class SignIn extends Component {
                     </div>
                     <div className="apply-section">
                         {this.state.isLoading?
-                            <button className="btn btn-loading" disabled={true}>
+                            <button className="main-btn btn-loading" disabled={true}>
                                 Signing In ...
                             </button>
                             :
-                            <button className="btn btn-primary" onClick={this.onSubmit}>
+                            <button className="main-btn btn-primary" onClick={this.onSubmit}>
                                 Sign In
                             </button>
                         }
@@ -298,11 +298,11 @@ export class SignUp extends Component {
                     </div>
                     <div className="apply-section">
                         {this.state.isLoading?
-                            <button className="btn btn-loading" disabled={true}>
+                            <button className="main-btn btn-loading" disabled={true}>
                                 Creating ...
                             </button>
                             :
-                            <button className="btn btn-primary" onClick={this.onSubmit}>
+                            <button className="main-btn btn-primary" onClick={this.onSubmit}>
                                 Create Account
                             </button>
                         }

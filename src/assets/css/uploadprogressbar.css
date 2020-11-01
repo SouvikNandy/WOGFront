@@ -1,0 +1,46 @@
+@import url('config.css');
+
+#p-container {
+    position: absolute;
+    z-index: 9;
+    background-color: #f1f1f1;
+    border: 1px solid #d3d3d3;
+    text-align: center;
+    padding: 0.4rem 0.7rem;
+    width: 20vw;
+    box-shadow: var(--shadow);
+    border-radius: 0.7rem;
+  }
+  
+#p-container-header {
+    padding: 0.2rem;
+    cursor: move;
+    z-index: 10;
+    /* background-color: #2196F3; */
+    background: var(--grad-chat);
+    color: #fff;
+    font-size: 0.9rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+
+.progress-status{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+}
+
+.progress-status .p-bar-identity{
+    width: 78%;
+    box-shadow: var(--shadow);
+    border-radius: 0.5rem;
+}
+
+.progress-status .cancel-upload{
+    width: 22%;
+    padding: 0.3rem 0.5rem;
+    background: transparent;
+    font-size: 0.85rem;
+    font-weight: bold;
+}

@@ -604,8 +604,8 @@ export class EditProfile extends Component {
                         {this.pageContent()}
                     </div>
                     <div className="edit-actions">
-                        <button className="btn cancel-btn" onClick={this.props.closeModal}>close</button>
-                        <button className="btn apply-btn" onClick={this.UpdateDetails}>save</button>
+                        <button className="main-btn cancel-btn" onClick={this.props.closeModal}>close</button>
+                        <button className="main-btn apply-btn" onClick={this.UpdateDetails}>save</button>
 
                     </div>
 

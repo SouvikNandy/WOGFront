@@ -148,12 +148,12 @@ export class StickyNotes extends Component{
                             </div>
                             :
                             this.props.data.delete_perm?
-                            <button className="btn pin-btn" onClick={this.showDeleteConfirmation}>Remove</button>
+                            <button className="main-btn pin-btn" onClick={this.showDeleteConfirmation}>Remove</button>
                             :
                             ""
                         :
                         this.props.isAuth? 
-                        <button className="btn pin-btn" onClick={this.pinNote}>Pin</button>
+                        <button className="main-btn pin-btn" onClick={this.pinNote}>Pin</button>
                         :
                         ""
                     }

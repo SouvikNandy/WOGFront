@@ -55,7 +55,7 @@ ul {
     display: none !important;
 }
 
-.btn {
+.main-btn {
     cursor: pointer;
     display: flex;
     justify-content: center;
