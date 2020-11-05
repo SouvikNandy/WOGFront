@@ -1030,14 +1030,14 @@ function ProfileHead(props) {
                             {(data.profile_data && data.profile_data.profession)? data.profile_data.profession:""}
                                 </span>
                             {props.isSelf?
-                                <button className="btn m-fuser" onClick={props.editProfile}>< TiEdit className="ico"/>Edit Profile</button>
+                                <button className="main-btn m-fuser" onClick={props.editProfile}>< TiEdit className="ico"/>Edit Profile</button>
                             :
                                 <div className="pf-otheruser-btns">
                                     {data.is_following?
                                         props.isAuth?
-                                            <button className="btn m-fuser" onClick={()=>showChatBox(true)}><FaPaperPlane className="ico"/> Message</button>
+                                            <button className="main-btn m-fuser" onClick={()=>showChatBox(true)}><FaPaperPlane className="ico"/> Message</button>
                                             :
-                                            <Link className="btn m-fuser" to={{
+                                            <Link className="main-btn m-fuser" to={{
                                                 pathname: `/m-auth/`,
                                                 state: { modal: true, currLocation: props.currLocation }
                                             }}
@@ -1045,7 +1045,7 @@ function ProfileHead(props) {
                                     :
                                         props.isAuth?
                                             !data.is_blocked?
-                                                <button className="btn m-fuser" onClick={() => {
+                                                <button className="main-btn m-fuser" onClick={() => {
                                                     FollowUnfollowUser(data, props.startStopFollowingProfile)
                                                     UpdateRecentFriends("follow", ConstructUserRecord(data))
                                                     }}>
@@ -1053,17 +1053,17 @@ function ProfileHead(props) {
                                                 :
                                                 ""
                                             :
-                                            <Link className="btn m-fuser" to={{
+                                            <Link className="main-btn m-fuser" to={{
                                                 pathname: `/m-auth/`,
                                                 state: { modal: true, currLocation: props.currLocation }
                                             }}
                                             ><FaPlus className="ico"/> Follow</Link>
                                     }
                                     {props.isAuth?
-                                    <button className="btn m-fuser" onClick={()=> showUserActions(!userActions)}>
+                                    <button className="main-btn m-fuser" onClick={()=> showUserActions(!userActions)}>
                                     <AiFillSetting className="ico"/> Actions</button>
                                     :
-                                    <Link className="btn m-fuser" to={{
+                                    <Link className="main-btn m-fuser" to={{
                                         pathname: `/m-auth/`,
                                         state: { modal: true, currLocation: props.currLocation }
                                     }}

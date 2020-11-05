@@ -130,7 +130,7 @@ export class ChangePassword extends Component{
                     }
                 </div>
                 <div className="submit-div">
-                    <button className="btn submit-btn">Submit</button>
+                    <button className="main-btn submit-btn">Submit</button>
 
                 </div>
             </form>

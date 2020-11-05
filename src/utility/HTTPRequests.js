@@ -44,9 +44,19 @@ export default class HTTPRequestHandler{
         }) 
 
     }
-    static post = ({url, requestBody, includeToken=false, callBackFunc=null, errCallBackFunc=null, errNotifierTitle='Something went wrong', uploadType=null}) =>{
-        
-        axios.post( backendHost + url, requestBody, { headers: getHeader(includeToken, uploadType)})
+    static post = ({url, requestBody, includeToken=false, callBackFunc=null, 
+        errCallBackFunc=null, errNotifierTitle='Something went wrong', uploadType=null, onUploadProgress=null}) =>{
+        let options ={ headers: getHeader(includeToken, uploadType)}
+        if(onUploadProgress){
+            options ={
+                headers: getHeader(includeToken, uploadType),
+                onUploadProgress: (progressEvent)=>{
+                    onUploadProgress(progressEvent)
+                }
+            }
+        }
+
+        axios.post( backendHost + url, requestBody, options)
         .then(res => {
             if(callBackFunc){
                 callBackFunc(res.data);
@@ -59,8 +69,20 @@ export default class HTTPRequestHandler{
         }) 
 
     }
-    static put = ({url, requestBody, includeToken=false, callBackFunc=null, errCallBackFunc=null, errNotifierTitle='Something went wrong', uploadType=null}) =>{
-        axios.put( backendHost + url, requestBody, { headers: getHeader(includeToken, uploadType)})
+    static put = ({url, requestBody, includeToken=false, callBackFunc=null, 
+        errCallBackFunc=null, errNotifierTitle='Something went wrong', uploadType=null, onUploadProgress=null}) =>{
+
+        let options ={ headers: getHeader(includeToken, uploadType)}
+        if(onUploadProgress){
+            options ={
+                headers: getHeader(includeToken, uploadType),
+                onUploadProgress: (progressEvent)=>{
+                    onUploadProgress(progressEvent)
+                }
+            }
+        }
+
+        axios.put( backendHost + url, requestBody, options)
         .then(res => {
             if(callBackFunc){
                 callBackFunc(res.data);

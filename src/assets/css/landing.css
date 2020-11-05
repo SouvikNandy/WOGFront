@@ -220,7 +220,7 @@
 
 }
 
-.shots-reminder .btn {
+.shots-reminder .main-btn {
     display: inline-block;
     color: var(--light);
     padding: 0.4rem 1.3rem;

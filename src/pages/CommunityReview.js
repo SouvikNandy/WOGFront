@@ -177,9 +177,9 @@ class AddReviewForm extends Component{
                         </section>
                         <section className="doc-btn">
                             <input type="button"
-                                className="btn cancel-btn" value="Cancel"
+                                className="main-btn cancel-btn" value="Cancel"
                                 onClick={this.props.showModal} />
-                            <input type="submit" className="btn apply-btn" value={this.props.previousReview? "Update":"Create"} />
+                            <input type="submit" className="main-btn apply-btn" value={this.props.previousReview? "Update":"Create"} />
                         </section>
                     </form>
 
