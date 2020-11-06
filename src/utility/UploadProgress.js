@@ -19,13 +19,14 @@ class UploadProgressTracker{
     }
 }
 
-export const GetUploadTracker = () =>{
+export const GetUploadTrackerList = () =>{
     return UploadTrackerObjList
 }
 
-export const SetUploadTracker = () =>{
-    UploadTrackerObjList.push(UploadProgressTracker())
-    return UploadTrackerObjList
+export const AddUploadTracker = () =>{
+    let newObj = UploadProgressTracker()
+    UploadTrackerObjList.push(newObj)
+    return newObj
 }
 
-export default GetUploadTracker;
+export default GetUploadTrackerList;
