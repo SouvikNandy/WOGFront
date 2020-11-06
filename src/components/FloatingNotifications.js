@@ -62,19 +62,19 @@ class Example extends React.Component {
   render() {
     return (
       <div>
-        <button className='main-btn btn-info'
+        <button className='btn btn-info'
           onClick={createNotificationBtnClick('info')}>Info
         </button>
         <hr/>
-        <button className='main-btn btn-success'
+        <button className='btn btn-success'
           onClick={createNotificationBtnClick('success')}>Success
         </button>
         <hr/>
-        <button className='main-btn btn-warning'
+        <button className='btn btn-warning'
           onClick={createNotificationBtnClick('warning')}>Warning
         </button>
         <hr/>
-        <button className='main-btn btn-danger'
+        <button className='btn btn-danger'
           onClick={createNotificationBtnClick('error')}>Error
         </button>
  

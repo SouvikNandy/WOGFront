@@ -31,8 +31,8 @@ body {
 }
 
 a {
-    cursor: pointer;
-    text-decoration: none;
+    cursor: pointer !important;
+    text-decoration: none !important;
 }
 
 ul {
@@ -55,7 +55,7 @@ ul {
     display: none !important;
 }
 
-.main-btn {
+.btn {
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -216,6 +216,10 @@ ul {
 }
 
 
+.btn-primary-wog {
+    font-size: 0.8rem;
+    font-weight: bold;
+}
 .btn-loading{
     position: relative;
     font-size: 0.8rem;
@@ -225,6 +229,21 @@ ul {
     overflow: hidden;
     color: var(--light);
     text-shadow: 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+
+.info-mssg{
+    background: var(--border-grey);
+    /* color: var(--light); */
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0.5rem;
+    padding: 0.8rem;
+    border-radius: 0.9rem;
+
 }
 
 @keyframes rotate_around {
@@ -553,6 +572,14 @@ ul {
     border-radius: 0.9rem;
     box-shadow: var(--shadow);
     overflow: hidden;
+
+}
+
+.parallax-cover {
+    background-attachment: fixed ;
+    background-position: center ;
+    background-repeat: no-repeat ;
+    background-size: cover ;
 
 }
 @media(max-width:900px) {

@@ -2,7 +2,7 @@
 
 #p-container {
     position: absolute;
-    z-index: 9;
+    z-index: 12;
     background-color: #f1f1f1;
     border: 1px solid #d3d3d3;
     text-align: center;
@@ -10,19 +10,28 @@
     width: 20vw;
     box-shadow: var(--shadow);
     border-radius: 0.7rem;
-  }
+    /* initial position */
+    top: 80vh;
+    left: 1rem;
+
+}
   
 #p-container-header {
-    padding: 0.2rem;
-    cursor: move;
-    z-index: 10;
-    /* background-color: #2196F3; */
-    background: var(--grad-chat);
-    color: #fff;
-    font-size: 0.9rem;
-    border-radius: 0.5rem 0.5rem 0 0;
-  }
+  padding: 0.3rem;
+  cursor: move;
+  z-index: 10;
+  /* background-color: #2196F3; */
+  background: var(--grad-chat);
+  color: #fff;
+  font-size: 0.8rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  font-weight: bold;
+}
 
+#p-container-header span{
+  font-size: 0.72rem;
+  font-weight: normal !important;
+}
 .progress-status{
     width: 100%;
     display: flex;
@@ -32,15 +41,15 @@
 }
 
 .progress-status .p-bar-identity{
-    width: 78%;
+    width: 82%;
     box-shadow: var(--shadow);
     border-radius: 0.5rem;
 }
 
 .progress-status .cancel-upload{
-    width: 22%;
+    width: 18%;
     padding: 0.3rem 0.5rem;
     background: transparent;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: bold;
 }

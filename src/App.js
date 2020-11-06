@@ -37,11 +37,8 @@ export default class App extends Component {
         return (
             <Router>
                 <div className="App">
-
-                <ShotModalUrl />
-
-                <NotificationContainer/>
-                
+                    <ShotModalUrl />
+                    <NotificationContainer/>
                 </div>
             </Router>
       

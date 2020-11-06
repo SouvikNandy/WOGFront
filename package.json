@@ -14,7 +14,6 @@
     "draft-js-mention-plugin": "^3.1.5",
     "draft-js-plugins-editor": "^3.0.0",
     "react": "^16.13.1",
-    "react-bootstrap": "^1.4.0",
     "react-datetime-picker": "^3.0.2",
     "react-dom": "^16.13.1",
     "react-emoji": "^0.5.0",

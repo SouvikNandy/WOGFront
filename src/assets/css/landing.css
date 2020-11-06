@@ -23,7 +23,9 @@
     grid-column: 1/2;
     width: 100%;
     height: inherit;
+
 }
+
 
 
 .dark-overlay {
@@ -220,7 +222,7 @@
 
 }
 
-.shots-reminder .main-btn {
+.shots-reminder .btn {
     display: inline-block;
     color: var(--light);
     padding: 0.4rem 1.3rem;

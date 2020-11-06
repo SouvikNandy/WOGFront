@@ -16,7 +16,7 @@ export class TagUser extends Component{
                 
                 {this.props.allowFollow?
                     <span className="m-follow">
-                        <button className="main-btn m-fuser" onClick={this.props.allowFollow.bind(this, data.id? data.id: data.username)}>< FaPlus /> Follow</button>
+                        <button className="btn m-fuser" onClick={this.props.allowFollow.bind(this, data.id? data.id: data.username)}>< FaPlus /> Follow</button>
                     </span>
                     :
                     ""
@@ -24,7 +24,7 @@ export class TagUser extends Component{
 
                 {this.props.allowUnblock?
                     <span className="m-follow">
-                        <button className="main-btn m-fuser dark-btn" onClick={this.props.allowUnblock.bind(this, data.id? data.id: data.username)}> Unblock </button>
+                        <button className="btn m-fuser dark-btn" onClick={this.props.allowUnblock.bind(this, data.id? data.id: data.username)}> Unblock </button>
                     </span>
                     :
                     ""

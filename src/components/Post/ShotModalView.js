@@ -323,10 +323,10 @@ export class ShotModalView extends Component {
                             :
                             <span className="m-follow">
                                 {this.state.shot.user.is_following?
-                                <button className="main-btn green-btn m-fuser" onClick={this.followUser}>
+                                <button className="btn green-btn m-fuser" onClick={this.followUser}>
                                     < FaCheckDouble /> Following</button>
                                 :
-                                <button className="main-btn m-fuser" onClick={this.followUser}>< FaPlus /> Follow</button>
+                                <button className="btn m-fuser" onClick={this.followUser}>< FaPlus /> Follow</button>
                                 }
                                 
                             </span>

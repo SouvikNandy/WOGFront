@@ -19,7 +19,6 @@ import videoThumbnail from '../../assets/images/icons/demo-logo.png';
 import { createFloatingNotification } from '../FloatingNotifications';
 import TextInput, { ExtractToJSON } from '../TextInput';
 import getUserData from '../../utility/userData';
-import UploadProgressBar from '../UploadProgressBar';
 
 // Add post button
 export class AddPost extends Component {
@@ -72,7 +71,7 @@ export class AddDocumentForm extends Component {
         pricingContainer: {},
 
         // uploading progress
-        uploadInProgress: true
+        uploadProgress: 0
 
     }
     componentDidMount(){
@@ -173,6 +172,7 @@ export class AddDocumentForm extends Component {
         const {loaded, total} = progressEvent;
         let percent = Math.floor((loaded* 100)/ total)
         console.log( `uploading: ${loaded}kb of ${total}kb | ${percent}%` )
+
     }
 
     displaySideView = ({content, sureVal, altHeadText=null}) =>{
@@ -477,9 +477,9 @@ export class AddDocumentForm extends Component {
                         </section>
                         <section className="doc-btn">
                             <input type="button"
-                                className="main-btn cancel-btn" value="Cancel"
+                                className="btn cancel-btn" value="Cancel"
                                 onClick={this.props.showModal} />
-                            <input type="submit" className="main-btn apply-btn" value={this.props.updatePostDetails?"Update":"Create"} 
+                            <input type="submit" className="btn apply-btn" value={this.props.updatePostDetails?"Update":"Create"} 
                             onClick={this.props.updatePostDetails?this.onUpdate: this.onSubmit}/>
                         </section>
                     </form>
@@ -492,11 +492,6 @@ export class AddDocumentForm extends Component {
                 </div>
                 :
                 <div className="form-side-bar-view"></div>
-                }
-                {this.state.uploadInProgress?
-                    <UploadProgressBar />
-                    :
-                    ""
                 }
                 
             </React.Fragment >

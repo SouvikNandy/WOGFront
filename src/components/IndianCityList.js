@@ -90,7 +90,7 @@ export class IndianCityList extends Component {
                 ))}
                 </React.Fragment>
                 :
-                ""
+                <div className='info-mssg'>Enter First 3 letters of the place you are searching for / add your custom location</div>
                 }
                 
             </React.Fragment>

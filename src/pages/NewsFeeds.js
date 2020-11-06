@@ -153,7 +153,7 @@ export class NewsFeedUserMenu extends Component{
                                 {(userData.profile_data && userData.profile_data.profession)?
                                 userData.profile_data.profession:""}</span>
                         </span>
-                        <button className="main-btn edit-btn" onClick={this.editProfile}><TiEdit  className="ico" />Edit Profile</button>
+                        <button className="btn edit-btn" onClick={this.editProfile}><TiEdit  className="ico" />Edit Profile</button>
 
                     </div>
                     <div className="nf-user-menulist">

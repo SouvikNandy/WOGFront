@@ -153,9 +153,9 @@ export class ReportContent extends Component {
                 <DisclaimerBox approveTC={this.approveTC} tcApproved={this.state.tcApproved}/>
                 <div className="submission-box">
                     {this.state.tcApproved?
-                    <button className="main-btn s-btn" onClick={this.onSubmit}>Proceed</button>
+                    <button className="btn s-btn" onClick={this.onSubmit}>Proceed</button>
                     :
-                    <button className="main-btn s-btn" disabled>Proceed</button>
+                    <button className="btn s-btn" disabled>Proceed</button>
                     }
                         
                 </div>

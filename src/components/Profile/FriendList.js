@@ -127,6 +127,8 @@ export class FriendList extends Component {
     render() {
         if(!this.state.allFriends) return(<React.Fragment><OwlLoader /></React.Fragment>)
         let tagged_users = this.state.allFriends.filter(ele=> ele.is_mentioned && ele.is_mentioned===true)
+        // let tagged_users = []
+        let output = this.state.output
         return (
             <React.Fragment>
                 <SideBarHead 
@@ -135,12 +137,20 @@ export class FriendList extends Component {
                 searchOnChange={this.findFriends}
                 focusSearchBar={true}
                 />
-                {tagged_users.map(item =>(
-                    <TagUser key={item.id} data={item} onRemoveMember={this.onRemoveMember}/>
-                ))}
-                {this.state.output.map(item =>(
-                    <TagUser key={item.id} data={item} onAddMember={this.onAddMember}/>
-                ))}
+                {tagged_users.length<1 && output.length <1 ?
+                    <div className='info-mssg'>You can only search for people you follow or people following you</div>
+                    :
+                    <React.Fragment>
+                        {tagged_users.map(item =>(
+                            <TagUser key={item.id} data={item} onRemoveMember={this.onRemoveMember}/>
+                        ))}
+                        {output.map(item =>(
+                            <TagUser key={item.id} data={item} onAddMember={this.onAddMember}/>
+                        ))}
+                    </React.Fragment>
+
+                }
+                
             </React.Fragment>
         )
     }

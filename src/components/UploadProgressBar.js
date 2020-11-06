@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import {ProgressBar} from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import "../assets/css/uploadprogressbar.css";
 
 export class UploadProgressBar extends Component {
@@ -55,22 +53,57 @@ export class UploadProgressBar extends Component {
     }
     render() {
         // let uploadPercent = this.getPercentage()
-        let uploadPercent = 60;
+        let uploadPercent = 100;
         return (
             <div className="p-container" id="p-container">
                 <div id="p-container-header">Uploading ... <span>(drag to move)</span></div>
                 <div className="progress-status">
                     <div className="p-bar-identity">
-                        <ProgressBar striped now={uploadPercent} label={`${uploadPercent}%`} />
+                        <ProgressBar completed={uploadPercent} />
                     </div>
-                    <button className="main-btn cancel-upload"> cancel</button>
-                    
-
+                    <button className="btn cancel-upload"> cancel</button>
                 </div>
                 
             </div>
         )
     }
+}
+
+
+const ProgressBar = (props) => {
+    const { completed } = props;
+    const containerStyles = {
+        // height: 20,
+        width: '100%',
+        backgroundColor: "#e0e0de",
+        borderRadius: '0.5rem',
+    }
+    
+    const fillerStyles = {
+        height: '100%',
+        width: `${completed}%`,
+        background: 'linear-gradient(315deg, #726cf8 0%, #e975a8 74%)',
+        borderRadius: 'inherit',
+        textAlign: 'right',
+        transition: 'width 1s ease-in-out',
+      }
+    
+    const labelStyles = {
+        padding: '0.1rem 0.5rem',
+        color: 'white',
+        fontSize: '0.7rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end'
+    }
+
+    return (
+        <div style={containerStyles}>
+            <div style={fillerStyles}>
+                <span style={labelStyles}>{`${completed}%`}</span>
+            </div>
+        </div>
+    );
 }
 
 export default UploadProgressBar
