@@ -258,6 +258,12 @@
     margin-left: 0;
 }
 
+.doc-btn .apply-btn ,
+.doc-btn .cancel-btn{
+    font-weight: bold !important;
+    font-size: 0.9rem;
+}
+
 /* Add member */
 .member-list {
     width: 100%;

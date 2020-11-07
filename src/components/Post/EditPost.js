@@ -9,14 +9,17 @@ import { withRouter, Redirect } from 'react-router-dom';
 import { createFloatingNotification } from '../FloatingNotifications';
 import ImgCompressor from '../../utility/ImgCompressor';
 import { checkNotEmptyObject } from '../../utility/Utility';
+import UploadProgressBar from '../UploadProgressBar';
 
 
 export class EditPost extends Component {
     state ={
         shot: null,
         showSideView : false,
-        portfolioDeleted: false
+        portfolioDeleted: false,
 
+        // upload progress
+        uploadPercent: 0,
     }
     componentDidMount(){
         let param = this.props.match.params.id
@@ -50,9 +53,15 @@ export class EditPost extends Component {
         formData.append('attachments', compressedFile); 
         formData.append('portfolio_id', this.state.shot.id); 
         HTTPRequestHandler.put(
-            {url:url, requestBody: formData, includeToken:true, uploadType: 'file', callBackFunc: this.addFileToState, errNotifierTitle:"Uploading failed !"})
+            {url:url, requestBody: formData, includeToken:true, uploadType: 'file', callBackFunc: this.addFileToState, 
+            errNotifierTitle:"Uploading failed !", onUploadProgress:this.onUploadProgress})
         createFloatingNotification('warning', 'New shot is being uploaded', 
         "Your new shot is being uploaded, on completion will be added to your portfolio")
+    }
+    onUploadProgress =(progressEvent) =>{
+        const {loaded, total} = progressEvent;
+        let percent = Math.floor((loaded* 100)/ total)
+        this.setState({uploadPercent: percent})
     }
     addFileToState = (data) =>{
         let shot = {...this.state.shot}
@@ -121,28 +130,35 @@ export class EditPost extends Component {
                 <div className="bg-modal full-width"><OwlLoader /></div>
                 )
         }
-        // console.log("pricing_container", this.state.shot.pricing_container)
+        
         return (
-            <div className={this.state.showSideView?"bg-modal with-side-width": "bg-modal full-width"}>
-                <div className={this.state.showSideView?"edit-container edit-container-resize": "edit-container"} >
-                    <div className={this.state.showSideView?"edit-container-top-hide": "edit-container-top"}>
-                        <div className="modal-imgbox">
-                            <ImageSlider attachments={this.state.shot.attachments} actionBtn={true} 
-                            addShot={this.uploadPicture} deleteShot={this.deleteShot} deletePortfolio={this.deletePortfolio}
-                            pricingContainer={this.state.shot.pricing_container}/>
+            <React.Fragment>
+                <div className={this.state.showSideView?"bg-modal with-side-width": "bg-modal full-width"}>
+                    <div className={this.state.showSideView?"edit-container edit-container-resize": "edit-container"} >
+                        <div className={this.state.showSideView?"edit-container-top-hide": "edit-container-top"}>
+                            <div className="modal-imgbox">
+                                <ImageSlider attachments={this.state.shot.attachments} actionBtn={true} 
+                                addShot={this.uploadPicture} deleteShot={this.deleteShot} deletePortfolio={this.deletePortfolio}
+                                pricingContainer={this.state.shot.pricing_container}/>
+                            </div>
+                        </div>
+                        <div className={this.state.showSideView?"edit-container-bottom edit-container-bottom-resize": "edit-container-bottom"}>
+                            <AddDocumentForm sideViewOnChange={this.activeSideView} showModal={this.gotoPrev} 
+                            portfolio_name={this.state.shot.portfolio_name} description={this.state.shot.description} 
+                            location={this.state.shot.location} 
+                            members ={this.state.shot.members}
+                            updatePostDetails={this.updatePostDetails} 
+                            FileList={this.state.shot.attachments} pricingContainer={this.state.shot.pricing_container}/>
                         </div>
                     </div>
-                    <div className={this.state.showSideView?"edit-container-bottom edit-container-bottom-resize": "edit-container-bottom"}>
-                        <AddDocumentForm sideViewOnChange={this.activeSideView} showModal={this.gotoPrev} 
-                        portfolio_name={this.state.shot.portfolio_name} description={this.state.shot.description} 
-                        location={this.state.shot.location} 
-                        members ={this.state.shot.members}
-                        updatePostDetails={this.updatePostDetails} 
-                        FileList={this.state.shot.attachments} pricingContainer={this.state.shot.pricing_container}/>
-                    </div>
                 </div>
+                {this.state.uploadPercent > 0 && this.state.uploadPercent< 100?
+                    <UploadProgressBar now={this.state.uploadPercent}/>
+                    :
+                    ""
+                }
                 
-            </div>
+            </React.Fragment>
         )
     }
 }

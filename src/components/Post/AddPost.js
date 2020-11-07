@@ -19,6 +19,7 @@ import videoThumbnail from '../../assets/images/icons/demo-logo.png';
 import { createFloatingNotification } from '../FloatingNotifications';
 import TextInput, { ExtractToJSON } from '../TextInput';
 import getUserData from '../../utility/userData';
+import { AddUploadTracker } from '../../utility/UploadProgress';
 
 // Add post button
 export class AddPost extends Component {
@@ -28,6 +29,9 @@ export class AddPost extends Component {
 
     showModal = () => {
         this.setState({ isModalOpen: !this.state.isModalOpen })
+        if(this.props.toggleAddPostModal){
+            this.props.toggleAddPostModal()
+        }
     }
 
 
@@ -71,7 +75,7 @@ export class AddDocumentForm extends Component {
         pricingContainer: {},
 
         // uploading progress
-        uploadProgress: 0
+        uploadProgressBar: AddUploadTracker()
 
     }
     componentDidMount(){
@@ -165,13 +169,15 @@ export class AddDocumentForm extends Component {
             successCallBAck(data.data)
         }
         createFloatingNotification('success' ,'Your shots have been posted!', data.message);
+        this.state.uploadProgressBar.removeTask()
 
     }
 
     onUploadProgress =(progressEvent) =>{
         const {loaded, total} = progressEvent;
         let percent = Math.floor((loaded* 100)/ total)
-        console.log( `uploading: ${loaded}kb of ${total}kb | ${percent}%` )
+        // console.log( `uploading: ${loaded}kb of ${total}kb | ${percent}%` )
+        this.state.uploadProgressBar.UpdateValue(percent)
 
     }
 

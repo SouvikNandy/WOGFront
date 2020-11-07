@@ -46,14 +46,14 @@ export class UploadProgressBar extends Component {
           }
 
     }
-    getPercentage = ()=>{
-        let {loaded, total} = this.props.progressEvent;
-        let percent = Math.floor((loaded* 100)/ total)
-        return percent
-    }
+    // getPercentage = ()=>{
+    //     let {loaded, total} = this.props.progressEvent;
+    //     let percent = Math.floor((loaded* 100)/ total)
+    //     return percent
+    // }
     render() {
         // let uploadPercent = this.getPercentage()
-        let uploadPercent = 100;
+        let uploadPercent = this.props.now;
         return (
             <div className="p-container" id="p-container">
                 <div id="p-container-header">Uploading ... <span>(drag to move)</span></div>

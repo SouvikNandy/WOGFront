@@ -29,11 +29,40 @@ import { ExplorePreview } from './Explore';
 import { DiscoverUserFlat } from './DiscoverPeople';
 import { RecentFriends } from '../components/Profile/RecentFriends';
 import { RiUserHeartLine } from 'react-icons/ri';
+import GetUploadTrackerList, { RegisterForProgressUpdates } from '../utility/UploadProgress';
+import UploadProgressBar from '../components/UploadProgressBar';
 
 export class NewsFeeds extends Component {
+    state = {
+        uploadTrackers : GetUploadTrackerList()
+    }
+    componentDidMount(){
+        RegisterForProgressUpdates('NF', this.ProgressBarUpdates)
+    }
+
+    toggleAddPostModal = ()=>{
+
+        this.setState({uploadTrackers: GetUploadTrackerList()})
+    }
+    ProgressBarUpdates = (id, val) =>{
+        let updatedTrackers = this.state.uploadTrackers.map(ele => {
+            if(ele.id === id){
+                ele.value = val
+            }
+            return ele
+        })
+
+        this.setState({uploadTrackers: updatedTrackers})
+
+    }
+
     render() {
         let userData = getUserData();
-
+        let currently_uploadloading = this.state.uploadTrackers.filter(ele => ele.isUploading)
+        // console.log("currently_uploadloading", currently_uploadloading)
+        let uploadBars = currently_uploadloading.map(ele=>{
+            return (<UploadProgressBar now={ele.value} />)
+        })
         return (
             <React.Fragment>
                 <UserNavBar selectedMenu={"feeds"} username={userData.username}/>
@@ -44,8 +73,9 @@ export class NewsFeeds extends Component {
                     </div>
                     {window.innerWidth >900? <NewsFeedSuggestions  username={userData.username}/>: ""}
                     
-                    <AddPost />
+                    <AddPost toggleAddPostModal={this.toggleAddPostModal}/>
                 </div>
+                {uploadBars}
             </React.Fragment>
         )
     }
@@ -64,7 +94,7 @@ export class NewsFeedUserMenu extends Component{
         altHeadText : null,
         editProf: false,
     }
-
+    
     editProfile = () =>{
         this.setState({editProf: !this.state.editProf})
     }
