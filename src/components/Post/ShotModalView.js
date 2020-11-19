@@ -3,7 +3,7 @@ import '../../assets/css/settings.css';
 import '../../assets/css/shotmodalview.css';
 
 import { FaPlus, FaCheckDouble } from "react-icons/fa";
-import { AiFillLeftCircle, AiFillRightCircle, AiOutlineCopyright } from "react-icons/ai";
+import { AiFillLeftCircle, AiFillRightCircle, AiOutlineCopyright, AiOutlineTag } from "react-icons/ai";
 import {BsThreeDotsVertical} from "react-icons/bs";
 import {GoReport} from "react-icons/go";
 import ModalLikes from './ModalLikes';
@@ -19,9 +19,9 @@ import {msToDateTime, isSelfUser, retrieveFromStorage, isAuthenticated} from '..
 import HTTPRequestHandler from '../../utility/HTTPRequests';
 import OwlLoader from '../OwlLoader';
 import { Link } from 'react-router-dom';
-import { LikePostAPI, SavePostAPI } from '../../utility/ApiSet';
+import { LikePostAPI, RemoveTagAPI, SavePostAPI } from '../../utility/ApiSet';
 import { EditorSpan, JSONToEditState } from '../TextInput';
-import { defaultProfilePic } from '../../utility/userData';
+import getUserData, { defaultProfilePic } from '../../utility/userData';
 
 
 export class ShotModalView extends Component {
@@ -47,7 +47,7 @@ export class ShotModalView extends Component {
         let [username, portfolio_id, shot_id] = param.split("-");
         // get portfolio details
         let url = "api/v1/view-post/" + username + '/?q='+portfolio_id+'&r='+ window.innerWidth
-        HTTPRequestHandler.get({url:url, includeToken:false, callBackFunc: this.updateStateOnAPIcall.bind(this, shot_id, username)})
+        HTTPRequestHandler.get({url:url, includeToken:isAuthenticated(), callBackFunc: this.updateStateOnAPIcall.bind(this, shot_id, username)})
     }
 
     getShotData = () =>{
@@ -169,6 +169,18 @@ export class ShotModalView extends Component {
     showReportOptions = () =>{
         this.setState({reportBox : !this.state.reportBox})
     }
+
+    removeTag = () =>{
+        let pid = this.state.shot.id
+        let currentUser = getUserData()
+        let updatedShot = this.state.shot
+        let updatedMembers = updatedShot.members.filter(ele=> ele.username !==currentUser.username)
+        updatedShot.members = updatedMembers
+        this.setState({
+            shot: updatedShot
+        })
+        RemoveTagAPI(pid, currentUser.username, null)
+    }
     
     render() {
         // if component not loaded yet return
@@ -226,6 +238,13 @@ export class ShotModalView extends Component {
             }
         }
 
+        //  check if user is tagged
+        let currentUser = getUserData()
+        let isUserTagged = false
+        if(this.state.shot.members.filter(ele=> ele.username ===currentUser.username).length> 0){
+            isUserTagged = true
+        }
+
         return (
             <React.Fragment>
                 
@@ -265,6 +284,17 @@ export class ShotModalView extends Component {
                                                     </React.Fragment>
                                                     :
                                                     <React.Fragment>
+                                                        {isUserTagged?
+                                                            <div className="r-opt"
+                                                            onClick={this.removeTag}
+                                                            >
+                                                                <AiOutlineTag className="close-btn" />
+                                                                <span>Remove Tag</span>
+                                                            </div>
+                                                            :
+                                                            ""
+                                                        
+                                                        }
                                                         <div className="r-opt"
                                                         onClick={this.displaySideView.bind(this, 
                                                             {content: <ReportContent contentId={this.state.shot.id}/>, sureVal: true})}

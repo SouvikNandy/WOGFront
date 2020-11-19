@@ -5,7 +5,7 @@ import { AiFillCloseCircle, AiFillSetting } from 'react-icons/ai';
 import SearchHead from '../components/Search/SearchHead';
 import Subnav from '../components/Navbar/Subnav';
 import UserAbout from '../components/Profile/UserAbout';
-import {Shot, ShotPalette} from '../components/Post/Shot';
+import {Shot} from '../components/Post/Shot';
 import Portfolio from '../components/Profile/Portfolio';
 import AddPost from '../components/Post/AddPost';
 import Footer from '../components/Footer';
@@ -25,7 +25,7 @@ import { createFloatingNotification } from '../components/FloatingNotifications'
 import { Redirect, Link } from 'react-router-dom';
 import OwlLoader from '../components/OwlLoader';
 import Paginator from '../utility/Paginator';
-import { AddUserReviewsAPI, BlockUser, UpdateUserReviewsAPI } from '../utility/ApiSet';
+import { AddUserReviewsAPI, ApproveTagAPI, BlockUser, RemoveTagAPI, UpdateUserReviewsAPI } from '../utility/ApiSet';
 import ReportContent from '../components/Post/ReportContent';
 import { ConfirmationPopup } from '../components/Settings/SecurityOptions';
 import Chatbox from '../components/ChatModule/Chatbox';
@@ -56,12 +56,12 @@ const PublicNav = [
 
 const StateSubmenuMap = {
     'Shots': 'userPortFolio', 'Portfolios': 'userPortFolio', 'Saved': 'userSaved', 'Followers': 'userFollower', 
-    'Following': 'userFollowing', 'About': 'userAbout'
+    'Following': 'userFollowing', 'About': 'userAbout', 'TagApproved': 'tagApproved', 'TagRequests': 'tagRequests'
     }
 
 const StatePaginatorMap = {
     'Shots': 'portfolioPaginator', 'Portfolios': 'portfolioPaginator', 'Saved': 'savedPaginator', 'Followers': 'followerPaginator', 
-    'Following': 'followingPaginator', 'TagApproved': 'tagApprovedPaginator', 'TagRequest':'tagRequestPaginator'
+    'Following': 'followingPaginator', 'TagApproved': 'tagApprovedPaginator', 'TagRequests':'tagRequestPaginator'
     }
 
 export default class Profile extends Component {
@@ -76,16 +76,8 @@ export default class Profile extends Component {
         userFollower: null,
         userFollowing: null,
         userSaved : null,
-        userTag:{
-            approved : [
-                // {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: pl2, is_liked: false}, 
-                // {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: w1, is_liked: false}, 
-            ],
-            requests: [
-                // {id: 1, shot: w1, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: pl2, is_liked: false}, 
-                // {id: 2, shot: pl2, name: "John Doe", username: "johndoe", likes: 100, comments: 100, shares:0, profile_pic: w1, is_liked: false}, 
-            ]
-        },
+        tagApproved :null,
+        tagRequests : null,
         userAbout: null, 
         isAuth: false,
         isSelf : null,
@@ -230,7 +222,15 @@ export default class Profile extends Component {
             
             case 'About':
                 return 'api/v1/user-profile/?q='+ this.props.match.params.username+'&r='+ window.innerWidth;
-
+            
+            //tag cases
+            case 'TagApproved':
+                return  'api/v1/view-tags/'+ this.props.match.params.username + '/?q=approved';
+            
+            //tag cases
+            case 'TagRequests':
+                return  'api/v1/view-tags/'+ this.props.match.params.username + '/?q=requests';
+            
             default: return null
 
         }
@@ -238,8 +238,13 @@ export default class Profile extends Component {
     }
 
     retrieveDataFromAPI = (selectedMenu, callbackFunc, isAuth=null)=>{
+        if (selectedMenu === "Tags"){
+            selectedMenu = 'Tag'+ this.state.tagNavOptions.filter(ele=> ele.isActive===true)[0].title
+        }
+        
         let url = this.getAPIUrl(selectedMenu)
         let stateKey = this.getStateKeyFromSubmenuName(selectedMenu)
+        // console.log("retrieveDataFromAPI", stateKey, selectedMenu)
         // don't make calls if user is blocked
         if (this.state.userAbout && stateKey === "userAbout"){
             return true
@@ -276,7 +281,7 @@ export default class Profile extends Component {
     } 
 
     updateStateOnAPIcall = (key, menuTitle, data)=>{
-        // console.log("updateStateOnAPIcall", key, data)
+        // console.log("updateStateOnAPIcall", key, menuTitle, data)
         if('count' in data && 'next' in data && 'previous' in data){
             // paginated response
             let paginatorKey = this.getPaginatorFromSubmenuName(menuTitle)
@@ -320,6 +325,7 @@ export default class Profile extends Component {
             tagNavOptions: this.state.tagNavOptions.map(item=>{
                 if(key=== item.key){
                     item.isActive = true;
+                    this.retrieveDataFromAPI('Tags', this.updateStateOnAPIcall)
                 }
                 else{
                     item.isActive = false;
@@ -329,28 +335,29 @@ export default class Profile extends Component {
         })
     }
     
-    likeTagRequestShot = (idx) => {
+    likeTagRequestShot = (key, idx) => {
         // api call to update likes
         // also increase the count
-        let updatedUserTag = {...this.state.userTag}
-
-        updatedUserTag.requests.map(ele => ele.id === idx? ele.is_liked=true : '') 
-
         this.setState({
-            userTag: updatedUserTag
+            [key]: this.state[key].map(ele =>{
+                if(ele.id === idx) {
+                    ele.is_liked=true 
+                }
+                return ele
+            })
         })
     }
 
-    unLikeTagRequestShot = (idx) => {
+    unLikeTagRequestShot = (key, idx) => {
         // api call to update likes
         // also decrease the count
-
-        let updatedUserTag = {...this.state.userTag}
-
-        updatedUserTag.requests.map(ele => ele.id === idx? ele.is_liked=false : '')
-        
         this.setState({
-            userTag: updatedUserTag
+            [key]: this.state[key].map(ele =>{
+                if(ele.id === idx) {
+                    ele.is_liked=false 
+                }
+                return ele
+            })
         })
     }
     
@@ -386,24 +393,17 @@ export default class Profile extends Component {
     }
 
     approveTag = (idx) =>{
-        let newUsertag = {...this.state.userTag};
         //  get item
-        let item = newUsertag.requests.filter(ele=> ele.id===idx)[0];
-        // remove from request list
-        newUsertag.requests = [...newUsertag.requests.filter(ele=> ele.id!== idx)]
-        // add to approve list
-        item.id = generateId();
-        newUsertag.approved.push(item);
+        let item = this.state.tagRequests.filter(ele=> ele.id===idx)[0];
         // update state
-        this.setState({ userTag: newUsertag})
+        this.setState({ tagRequests: this.state.tagRequests.filter(ele=> ele.id!==idx), tagApproved: [...this.state.tagApproved, item]})
+        ApproveTagAPI(idx, this.state.userAbout.username, null)
        
     }
     rejectTag = (idx) =>{
-        let newUsertag = {...this.state.userTag};
-        // remove from request list
-        newUsertag.requests = [...newUsertag.requests.filter(ele=> ele.id!== idx)]
         // update state
-        this.setState({ userTag: newUsertag})
+        this.setState({ tagRequests: this.state.tagRequests.filter(ele=> ele.id!== idx)})
+        RemoveTagAPI(idx, this.state.userAbout.username, null)
     }
 
     startFollowing =(record, response) =>{
@@ -674,11 +674,11 @@ export default class Profile extends Component {
                 // get requested or approve tab
                 let getSelectedTab = this.state.tagNavOptions.filter(ele => ele.isActive === true)[0]
                 // getSelectedTab.toLowerCase()
-                getSelectedTab = getSelectedTab.title.toLowerCase();
+                getSelectedTab = 'tag'+getSelectedTab.title;
                 // console.log("selected tab ", getSelectedTab);
                 
 
-                if(!this.state.userTag[getSelectedTab]){
+                if(!this.state[getSelectedTab]){
                     return(
                         <div key={item.title} className="profile-portfolio-grid">
                             {this.getLoaderDIv()}                        
@@ -690,38 +690,49 @@ export default class Profile extends Component {
                     let msg = "You need to signIn to view this !!!"
                     resultList = this.getNoContentDiv(msg)
                 }
-                else if (getSelectedTab === "approved"){
-                    if(this.state.userTag[getSelectedTab] && this.state.userTag[getSelectedTab].length === 0){
+                else if (getSelectedTab === "tagApproved"){
+                    if(this.state[getSelectedTab] && this.state[getSelectedTab].length === 0){
                         let msg = "No tags made it upto here !!!"
                         resultList = this.getNoContentDiv(msg)
 
                     }
                     else{
-                        resultList = <ShotPalette shotData={this.state.userTag[getSelectedTab]} currLocation={this.props.location}/>
+                        // resultList = <ShotPalette shotData={this.state[getSelectedTab]} currLocation={this.props.location}/>
+                        this.state[getSelectedTab].map(ele => 
+                            {resultList.push(<Portfolio key={ele.id} data={ele} currLocation={this.props.location} 
+                                likePortfolio={this.likeTagRequestShot.bind(this, getSelectedTab)} 
+                                unLikePortfolio={this.unLikeTagRequestShot.bind(this, getSelectedTab)} />)
+                            return ele
+                        })
+                        resultList = this.padDummyShot(resultList, this.state.userPortFolio.length, 5)
+                        if(this.state.isFetching){
+                            resultList = this.padLoaderShot(resultList)
+                        }
                     }
                 }
                 else{
                     
-                    if(this.state.userTag[getSelectedTab].length === 0){
+                    if(this.state[getSelectedTab].length === 0){
                         let msg = "No tag requests received !!!"
                         resultList = this.getNoContentDiv(msg)
 
                     }
                     else{
-                        this.state.userTag[getSelectedTab].map(ele => 
+                        this.state[getSelectedTab].map(ele => 
                             {resultList.push(
                                 <div className="tag-req" key={ele.id}>
                                     <div className="tag-decision">
                                         <FaCheckCircle className="tag-decision-btn" onClick={this.approveTag.bind(this, ele.id)}/>
                                         <AiFillCloseCircle className="tag-decision-btn" onClick={this.rejectTag.bind(this, ele.id)} />
                                     </div>
-                                    <Shot  id={ele} data={ele} currLocation={this.props.location} likeShot={this.likeTagRequestShot} 
-                                    unLikeShot={this.unLikeTagRequestShot}/>
+                                    <Portfolio key={ele.id} data={ele} currLocation={this.props.location} 
+                                    likePortfolio={this.likeTagRequestShot.bind(this, getSelectedTab)} 
+                                    unLikePortfolio={this.unLikeTagRequestShot.bind(this, getSelectedTab)} />
                                 </div>
                             )
                             return ele
                         })
-                        resultList = this.padDummyShot(resultList, this.state.userTag[getSelectedTab].length, 5)
+                        resultList = this.padDummyShot(resultList, this.state[getSelectedTab].length, 5)
                         if(this.state.isFetching){
                             resultList = this.padLoaderShot(resultList)
                         }
@@ -987,7 +998,7 @@ function ProfileHead(props) {
         </div>
         )
     }
-    console.log("chatBox status", chatBox)    
+    // console.log("chatBox status", chatBox)    
     let coverpic = data.profile_data && data.profile_data.cover_pic ? data.profile_data.cover_pic: defaultCoverPic();
     let chatBoxUser ={id: data.username, username: data.username, name: data.name, 
         profile_pic: data.profile_data && data.profile_data.profile_pic? data.profile_data.profile_pic: null}

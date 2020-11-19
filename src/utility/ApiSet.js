@@ -81,6 +81,16 @@ export const CommentLikedByUsersAPI = (pid, cid, callBackFunc) =>{
     HTTPRequestHandler.get({url:url, includeToken: false, callBackFunc: callBackFunc})
 }
 
+// user-tags
+export const ApproveTagAPI = (pid, username, callBackFunc) =>{
+    let url = "api/v1/view-tags/"+username+"/?pid="+pid+"&action=approve"
+    HTTPRequestHandler.post({url:url, requestBody:{}, includeToken: true, callBackFunc: callBackFunc})
+}
+
+export const RemoveTagAPI = (pid, username, callBackFunc) =>{
+    let url = "api/v1/view-tags/"+username+"/?pid="+pid+"&action=remove"
+    HTTPRequestHandler.post({url:url, requestBody:{}, includeToken: true, callBackFunc: callBackFunc})
+}
 // user - reviews
 export const UserReviewsAPI = (username, callBackFunc) =>{
     let url = "api/v1/user-review/"+username+'/'
