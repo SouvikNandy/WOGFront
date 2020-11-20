@@ -5,7 +5,18 @@ import {AiFillPlusCircle} from 'react-icons/ai';
 import TagUser from '../Profile/TagUser';
 import {getCurrentTimeInMS} from '../../utility/Utility';
 import w1 from '../../assets/images/wedding1.jpg'
+import { UpdateUserPrivacyAPI, GetBlockedUserListAPI } from '../../utility/ApiSet';
+import { retrieveFromStorage,  saveInStorage} from '../../utility/Utility';
 
+const option_to_bool = {"enable": true, "disable": false}
+const bool_to_option = {true: "enable", false: "disable" }
+
+const updateOption = (key, value) =>{
+    UpdateUserPrivacyAPI(key, value, null)
+    let newPrivacy = JSON.parse (retrieveFromStorage("user_privacy"))
+    newPrivacy[key]=value
+    saveInStorage("user_privacy", JSON.stringify(newPrivacy));
+}
 // PRIVACY MENU OPTIONS
 
 // INTERACTIONS
@@ -16,20 +27,17 @@ export class Comments extends Component{
         allowComments: [
             {id: 1, option: "Everyone", selected: true},
             {id: 2, option: "Followers & Following", selected: false},
-            {id: 3, option: "People You Follow", selected: false},
-            {id: 4, option: "Your Followers", selected: false},
         ],
         allowCommentsDropdown: false,
+        parentState : null
     }
 
-    showAllowCommentsDropDown = () =>{
-        this.setState({allowCommentsDropdown : !this.state.allowCommentsDropdown})
-    }
-
-    selectfromAllowComments = (idx) => {
+    componentDidMount(){
+        let selectedOpt = this.props.selected;
         this.setState({
-            allowComments : this.state.allowComments.map(ele =>{
-                if(ele.id === idx){
+            allowComments:this.state.allowComments.map(ele=>{
+                if (ele.option.toLowerCase() === selectedOpt){
+                    console.log("matched with", ele.option)
                     ele.selected = true
                 }
                 else{
@@ -37,7 +45,36 @@ export class Comments extends Component{
                 }
                 return ele
             })
+        
         })
+        
+    }
+
+
+    showAllowCommentsDropDown = () =>{
+        this.setState({allowCommentsDropdown : !this.state.allowCommentsDropdown})
+    }
+
+    selectfromAllowComments = (idx) => {
+        let selectedOpt = null
+        this.setState({
+            allowComments : this.state.allowComments.map(ele =>{
+                if(ele.id === idx){
+                    ele.selected = true
+                    selectedOpt = ele.option.toLowerCase()
+                }
+                else{
+                    ele.selected = false
+                }
+                return ele
+            })
+        })
+
+        if (selectedOpt){
+
+            updateOption("allow_comnets", selectedOpt)
+        }
+
     }
 
     render(){
@@ -66,8 +103,6 @@ export class Comments extends Component{
                             : 
                             ""
                         }
-                        
-                        
                     </div>
             </React.Fragment>
         )
@@ -90,7 +125,31 @@ export class Tags extends Component{
         ],
         approveManuallyDropdown: false,
 
+    }
 
+    componentDidMount(){
+        console.log("allow_tags_manual", this.props.allow_tags_manual)
+        this.setState({
+            allowTags: this.state.allowTags.map(ele=>{
+                if (ele.option.toLowerCase() === this.props.allow_tags){
+                    ele.selected = true
+                }
+                else{
+                    ele.selected = false
+                }
+                return ele
+            }),
+            approveManually: this.state.approveManually.map(ele=>{
+                if (ele.option.toLowerCase() === bool_to_option[this.props.allow_tags_manual]){
+                    ele.selected = true
+                }
+                else{
+                    ele.selected = false
+                }
+                return ele
+            })
+        
+        })
     }
 
     showDropDown = (key) =>{
@@ -104,10 +163,12 @@ export class Tags extends Component{
     }
 
     selectfromAllowTags = (idx) => {
+        let selectedOpt = null
         this.setState({
             allowTags : this.state.allowTags.map(ele =>{
                 if(ele.id === idx){
                     ele.selected = true
+                    selectedOpt = ele.option.toLowerCase()
                 }
                 else{
                     ele.selected = false
@@ -115,13 +176,20 @@ export class Tags extends Component{
                 return ele
             })
         })
+
+        if (selectedOpt){
+
+            updateOption("allow_tags", selectedOpt)
+        }
     }
 
     switchManualApprove = (idx) => {
+        let selectedOpt = null
         this.setState({
             approveManually : this.state.approveManually.map(ele =>{
                 if(ele.id === idx){
                     ele.selected = true
+                    selectedOpt = ele.option.toLowerCase()
                 }
                 else{
                     ele.selected = false
@@ -129,6 +197,11 @@ export class Tags extends Component{
                 return ele
             })
         })
+        if (selectedOpt){
+
+            updateOption("allow_tags_manual", option_to_bool[selectedOpt])
+        }
+
     }
     render(){
         return(
@@ -193,14 +266,11 @@ export class Mentions extends Component{
         ],
         openDropdown: false
     }
-    showDropDown = () =>{
-        this.setState({openDropdown : !this.state.openDropdown})
-    }
 
-    selectoption = (idx) => {
+    componentDidMount(){
         this.setState({
-            mentionOpt : this.state.mentionOpt.map(ele =>{
-                if(ele.id === idx){
+            mentionOpt: this.state.mentionOpt.map(ele=>{
+                if (ele.option.toLowerCase() === this.props.selected){
                     ele.selected = true
                 }
                 else{
@@ -209,6 +279,29 @@ export class Mentions extends Component{
                 return ele
             })
         })
+    }
+    showDropDown = () =>{
+        this.setState({openDropdown : !this.state.openDropdown})
+    }
+
+    selectoption = (idx) => {
+        let selectedOpt = null;
+        this.setState({
+            mentionOpt : this.state.mentionOpt.map(ele =>{
+                if(ele.id === idx){
+                    ele.selected = true
+                    selectedOpt = ele.option.toLowerCase()
+                }
+                else{
+                    ele.selected = false
+                }
+                return ele
+            })
+        })
+        if (selectedOpt){
+
+            updateOption("allow_mentions", selectedOpt)
+        }
     }
     render(){
         return(
@@ -254,14 +347,11 @@ export class AccountPrivacy extends Component{
         ],
         openDropdown: false
     }
-    showDropDown = () =>{
-        this.setState({openDropdown : !this.state.openDropdown})
-    }
 
-    selectoption = (idx) => {
+    componentDidMount(){
         this.setState({
-            options : this.state.options.map(ele =>{
-                if(ele.id === idx){
+            options: this.state.options.map(ele=>{
+                if (ele.option.toLowerCase() === bool_to_option[this.props.selected]){
                     ele.selected = true
                 }
                 else{
@@ -270,6 +360,30 @@ export class AccountPrivacy extends Component{
                 return ele
             })
         })
+    }
+
+    showDropDown = () =>{
+        this.setState({openDropdown : !this.state.openDropdown})
+    }
+
+    selectoption = (idx) => {
+        let selectedOpt = null
+        this.setState({
+            options : this.state.options.map(ele =>{
+                if(ele.id === idx){
+                    ele.selected = true
+                    selectedOpt = ele.option.toLowerCase()
+                }
+                else{
+                    ele.selected = false
+                }
+                return ele
+            })
+        })
+        if (selectedOpt){
+
+            updateOption("is_private_ac", option_to_bool[selectedOpt] )
+        }
     }
     render(){
         return(
@@ -312,6 +426,14 @@ export class BlockedAccounts extends Component{
             {id:2, name: "Jane Doe", username: "Johndoe", designation: "makeup artist", profile_pic: w1}
         ]
     }
+
+    componentDidMount(){
+        GetBlockedUserListAPI(this.updateStateOnAPICall)
+    }
+    updateStateOnAPICall = (data) =>{
+
+    }
+    
 
     unBolockRequest = (idx) =>{
         // unblock user if blocked

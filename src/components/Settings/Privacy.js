@@ -5,6 +5,7 @@ import {GoMention, GoCircleSlash, GoMail} from 'react-icons/go';
 import {FiUnlock} from 'react-icons/fi';
 import {AiOutlineHeart} from 'react-icons/ai';
 import {Comments, Tags, Mentions, AccountPrivacy, BlockedAccounts, CloseFriends, ManageMails} from './PrivacyOptions';
+import { retrieveFromStorage } from '../../utility/Utility';
 
 
 export class Privacy extends Component {
@@ -20,31 +21,42 @@ export class Privacy extends Component {
             {id: 'p8', name: "Manage Mails", isActive: false},
             {id: 'p6', name: "Blocked Accounts", isActive: false},
             {id: 'p7', name: "Close Friends", isActive: false},
-        ]
+        ],
 
     }
+
 
     selectMenu = (idx) =>{
         let newMenulist = [...this.state.interactions, ...this.state.connections] ;
         let newContentblock = null
         let headText = ''
+        let storedPrivacy = JSON.parse (retrieveFromStorage("user_privacy"))
         newMenulist.map(ele =>{
             if(ele.id === idx){
                 ele.isActive = true
                 headText = ele.name
                 // interactions
                 if(ele.name === "Comments"){
-                    newContentblock = <Comments prvBtnClick={this.prvBtnClick}/>
+                    newContentblock = <Comments prvBtnClick={this.prvBtnClick}  
+                    selected={storedPrivacy.allow_comnets}
+                    />
                 }
                 else if (ele.name === "Tags"){
-                    newContentblock = <Tags  prvBtnClick={this.prvBtnClick}/>
+                    newContentblock = <Tags  prvBtnClick={this.prvBtnClick} 
+                    allow_tags={storedPrivacy.allow_tags}
+                    allow_tags_manual={storedPrivacy.allow_tags_manual}
+                    />
                 }
                 else if (ele.name === "Mentions"){
-                    newContentblock = <Mentions  prvBtnClick={this.prvBtnClick}/>
+                    newContentblock = <Mentions  prvBtnClick={this.prvBtnClick} 
+                    selected={storedPrivacy.allow_mentions}
+                    />
                 }
                 // connections
                 else if (ele.name === "Account Privacy"){
-                    newContentblock = <AccountPrivacy  prvBtnClick={this.prvBtnClick}/>
+                    newContentblock = <AccountPrivacy  prvBtnClick={this.prvBtnClick} 
+                    selected={storedPrivacy.is_private_ac}
+                    />
                 }
                 else if (ele.name === "Manage Mails"){
                     newContentblock = <ManageMails  prvBtnClick={this.prvBtnClick}/>

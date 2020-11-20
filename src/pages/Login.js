@@ -5,7 +5,7 @@ import { Link, Redirect, withRouter } from 'react-router-dom';
 import { createFloatingNotification } from '../components/FloatingNotifications';
 import {saveInStorage, storeAuthToken, silentRefresh } from '../utility/Utility';
 import Dropdown from '../components/Dropdown';
-import {LoginAPI, SignupAPI} from '../utility/ApiSet';
+import {GetUserPrivacyAPI, LoginAPI, SignupAPI} from '../utility/ApiSet';
 import {AiFillCloseCircle } from 'react-icons/ai';
 import { setNotificationHandler } from '../utility/userData';
 import InitializeChatHistory from '../components/ChatModule/chatUtils';
@@ -107,6 +107,10 @@ export class SignIn extends Component {
         setNotificationHandler(data.data.username);
         // initialize blank chat history
         InitializeChatHistory();
+
+        // get and store user privacy
+        GetUserPrivacyAPI(this.storePrivacySettings)
+
                 
         // reset 
         document.getElementById("login-form").reset();
@@ -121,6 +125,10 @@ export class SignIn extends Component {
         // store user basic details in localstorage
         saveInStorage("user_data", JSON.stringify(data.data));
 
+    }
+
+    storePrivacySettings = (data)=>{
+        saveInStorage("user_privacy", JSON.stringify(data.data));
     }
 
     onSubmit = (e) => {

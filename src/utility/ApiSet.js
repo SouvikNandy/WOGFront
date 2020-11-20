@@ -113,6 +113,18 @@ export const DeleteUserReviewsAPI = (username, revID, callBackFunc) =>{
     HTTPRequestHandler.delete({url:url, includeToken: true, callBackFunc: callBackFunc})
 }
 
+// User Privacy
+export const GetUserPrivacyAPI = (callBackFunc) =>{
+    let url = "api/v1/user-privacy/"
+    HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
+}
+
+export const UpdateUserPrivacyAPI = (key, value, callBackFunc) =>{
+    let url = "api/v1/user-privacy/"
+
+    HTTPRequestHandler.post({url:url, requestBody: {[key]: value}, includeToken: true, callBackFunc: callBackFunc})
+}
+
 // platform suggestions
 export const UserSuggestionAPI = (callBackFunc) =>{
     let url = "api/v1/user-suggestion/"
@@ -161,6 +173,11 @@ export const RemoveNotification =(nid, callBackFunc) =>{
 export const BlockUser = (username, callBackFunc) =>{
     let url = "api/v1/block-profile/"
     HTTPRequestHandler.post({url:url, requestBody:{username: username}, includeToken: true, callBackFunc: callBackFunc})
+}
+
+export const GetBlockedUserListAPI = (username, callBackFunc) =>{
+    let url = "api/v1/block-profile/"
+    HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
 }
 
 export const ReportContentAPI = (requestBody, callBackFunc) =>{
