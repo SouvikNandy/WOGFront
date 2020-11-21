@@ -117,7 +117,7 @@ export class Settings extends Component {
 
     render() {
         return (
-            <div className="settings-container">
+            <div className="settings-container" id="settings-container">
                 {this.getHead()}
                 {this.getContent()}
             </div>

@@ -5,8 +5,10 @@ import {AiFillPlusCircle} from 'react-icons/ai';
 import TagUser from '../Profile/TagUser';
 import {getCurrentTimeInMS} from '../../utility/Utility';
 import w1 from '../../assets/images/wedding1.jpg'
-import { UpdateUserPrivacyAPI, GetBlockedUserListAPI } from '../../utility/ApiSet';
+import { UpdateUserPrivacyAPI, GetBlockedUserListAPI, UnBlockUserAPI } from '../../utility/ApiSet';
 import { retrieveFromStorage,  saveInStorage} from '../../utility/Utility';
+import Paginator, {FillParentContainerSpace} from '../../utility/Paginator';
+import OwlLoader from '../OwlLoader';
 
 const option_to_bool = {"enable": true, "disable": false}
 const bool_to_option = {true: "enable", false: "disable" }
@@ -421,17 +423,50 @@ export class AccountPrivacy extends Component{
 // Blocked Accounts
 export class BlockedAccounts extends Component{
     state ={
-        blockedUsers:[
-            {id:1, name: "John Doe", username: "Johndoe", designation: "photographer", profile_pic: w1},
-            {id:2, name: "Jane Doe", username: "Johndoe", designation: "makeup artist", profile_pic: w1}
-        ]
+        blockedUsers: null,
+        paginator: null,
+        isFetching: false
     }
 
     componentDidMount(){
-        GetBlockedUserListAPI(this.updateStateOnAPICall)
+        GetBlockedUserListAPI(this.updateStateOnAPIcall)
     }
-    updateStateOnAPICall = (data) =>{
 
+    updateStateOnAPIcall = (data)=>{
+        // paginated response
+        this.setState({
+            blockedUsers: data.results,
+            paginator: data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null,
+        },
+        ()=>{FillParentContainerSpace("side-bar-content", "settings-container", this.state.paginator, this.checkIfFetching, this.updateIfFeching)}
+        )
+    }
+
+    checkIfFetching = () => {
+        return this.state.isFetching
+    }
+
+    updateIfFeching = (val) =>{
+        this.setState({isFetching: val})
+    }
+
+    handleScroll() {
+        if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+        if(this.state.isFetching) return;
+        if(this.state.paginator && this.state.paginator.next){
+            let res = this.state.paginator.getNextPage(this.updateStateOnPagination)
+            if (res !== false){
+                this.setState({isFetching: true})
+            }  
+        }
+        
+    }
+
+    updateStateOnPagination = (results) =>{
+        this.setState({
+            blockedUsers:[...this.state.data, ...results],
+            isFetching: false
+        })
     }
     
 
@@ -440,9 +475,11 @@ export class BlockedAccounts extends Component{
         this.setState({
             blockedUsers : this.state.blockedUsers.filter(ele=> ele.id!==idx)
         })
+        UnBlockUserAPI(idx)
     }
 
     render(){
+        if(!this.state.blockedUsers) return(<React.Fragment><OwlLoader /></React.Fragment>)
         let userList = []
         this.state.blockedUsers.map( item =>{
             userList.push(<TagUser key={item.id} data={item} allowUnblock={this.unBolockRequest}/>)

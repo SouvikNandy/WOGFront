@@ -7,7 +7,8 @@ import {msToDateTime} from '../../utility/Utility';
 import EditProfile from '../Profile/EditProfile';
 import {RecentSearchPalette} from '../Search/SearchHead'
 
-import w1 from '../../assets/images/wedding1.jpg';
+import {ChangePasswordAPI} from '../../utility/ApiSet';
+
 import pl2 from '../../assets/images/people/2.jpg';
 // SECURITY MENU OPTIONS
 
@@ -39,6 +40,10 @@ export class ChangePassword extends Component{
             createFloatingNotification("error", "Inavlid Request!", "Please fill all 3 fields to continue");
             return false
         }
+        else if(this.state.oldPass === this.state.confirmPass){
+            createFloatingNotification("error", "Inavlid Request!", "Old are new password are identical");
+            return false
+        }
         else if (this.state.newPass !== this.state.confirmPass){
             createFloatingNotification("error", "Inavlid Request!", "Your new password and re-entered password didn't match");
             return false
@@ -52,7 +57,11 @@ export class ChangePassword extends Component{
         let is_validated = this.validate();
         if(is_validated){
             // axios call
-            createFloatingNotification("success", "Password Changed!", "Your pasword has been updated.");
+            let requestBody ={
+                "old_password": this.state.oldPass,
+                "new_password": this.state.newPass
+            }
+            ChangePasswordAPI(requestBody, this.onSuccessfulUpdate)
             document.getElementById("change-pass-form").reset();
             this.setState({
                 oldPass: '',
@@ -65,6 +74,11 @@ export class ChangePassword extends Component{
             })
         }
     }
+
+    onSuccessfulUpdate =()=>{
+        createFloatingNotification("success", "Password Changed!", "Your pasword has been updated.");
+    }
+
 
     render(){
         return(
@@ -173,38 +187,6 @@ export class LoginActivity extends Component{
 
 
 export class AccountData extends Component{
-    state ={
-        userAbout:{
-            // profile top
-            "name": "Jane Doe",
-            "username": "janedoe",
-            "deisgnantion": "photographer",
-            "email": "souvikpxnandy@gmail.com",
-            "profile_pic": pl2,
-            "cover_pic": w1,
-            "isFollowing": false,
-
-            // about
-            "joined": "Feb 15, 2020",
-            "bio": "A digital agency for the modern world. We challenge core assumptions, unpick legacy behaviors, and streamline complex processes. Contact us at info@bb.agency",
-            "skills": ["photography", "dashboard", "development", "web design"],
-            "hometown": "Kolkata, India",
-            "currentcity": "Kolkata, India",
-            "birthday": "1 January, 1990",
-            // team
-            "teams" : [w1, pl2, w1, pl2],
-
-            // social handles
-            social_handles : {
-                "web": "www.abc.com",
-                "facebook": "www.facebook.com/abc",
-                "instagram": "www.instagram.com/abc",
-                "youtube": "www.youtube.com/abc",
-                "pinterest": null
-            }
-            
-        }
-    }
     render(){
         return(
             <React.Fragment>

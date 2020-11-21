@@ -20,7 +20,7 @@ export class Privacy extends Component {
             {id: 'p5', name: "Account Privacy", isActive: false},
             {id: 'p8', name: "Manage Mails", isActive: false},
             {id: 'p6', name: "Blocked Accounts", isActive: false},
-            {id: 'p7', name: "Close Friends", isActive: false},
+            // {id: 'p7', name: "Close Friends", isActive: false},
         ],
 
     }

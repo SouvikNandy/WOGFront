@@ -175,7 +175,12 @@ export const BlockUser = (username, callBackFunc) =>{
     HTTPRequestHandler.post({url:url, requestBody:{username: username}, includeToken: true, callBackFunc: callBackFunc})
 }
 
-export const GetBlockedUserListAPI = (username, callBackFunc) =>{
+export const UnBlockUserAPI = (username, callBackFunc) =>{
+    let url = "api/v1/block-profile/?q="+username
+    HTTPRequestHandler.delete({url:url, includeToken: true, callBackFunc: callBackFunc})
+}
+
+export const GetBlockedUserListAPI = (callBackFunc) =>{
     let url = "api/v1/block-profile/"
     HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
 }
@@ -188,6 +193,11 @@ export const ReportContentAPI = (requestBody, callBackFunc) =>{
 export const SearchOnFriendsAPI = (searchKey, callBackFunc) =>{
     let url = searchKey? "api/v1/search-friends/?search="+searchKey : "api/v1/search-friends/"
     HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
+}
+
+export const ChangePasswordAPI = (requestBody, callBackFunc) =>{
+    let url = "api/v1/change-password/"
+    HTTPRequestHandler.post({url:url, requestBody:requestBody, includeToken: true, callBackFunc: callBackFunc})
 }
 
 // Chat APIs

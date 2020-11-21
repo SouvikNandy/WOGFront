@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { PostLikedByUsers, CommentLikedByUsersAPI } from '../../utility/ApiSet';
-import Paginator from '../../utility/Paginator';
+import Paginator, {FillParentContainerSpace} from '../../utility/Paginator';
 import OwlLoader from '../OwlLoader';
 import { UserFlat } from '../Profile/UserView';
 import '../../assets/css/likedby.css'
@@ -28,27 +28,34 @@ export class LikedBy extends Component {
             data: data.results,
             paginator: data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null,
         },
-        ()=>{this.fillParentContainerSpace()}
+        ()=>{FillParentContainerSpace("side-bar-content", "liked-container", this.state.paginator, this.checkIfFetching, this.updateIfFeching)}
         )
     }
-
-    fillParentContainerSpace = () =>{
-         // check if container height is less than parent height(i.e sidebar size)
-         let sideBar = document.getElementById("side-bar-content");
-         let localContainer = document.getElementById("liked-container")
-         while (sideBar.offsetHeight> localContainer.offsetHeight){
-             if (this.state.isFetching) continue;
-            //  console.log("localContainer.offsetHeight", localContainer.offsetHeight)
-             if(this.state.paginator && this.state.paginator.next){
-                 this.state.paginator.getNextPage(this.updateStateOnPagination)
-                 this.setState({isFetching: true})
-             }
-             else{
-                 break;
-             }
-         }
-
+    checkIfFetching = () => {
+        return this.state.isFetching
     }
+
+    updateIfFeching = (val) =>{
+        this.setState({isFetching: val})
+    }
+
+    // fillParentContainerSpace = () =>{
+    //      // check if container height is less than parent height(i.e sidebar size)
+    //      let sideBar = document.getElementById("side-bar-content");
+    //      let localContainer = document.getElementById("liked-container")
+    //      while (sideBar.offsetHeight> localContainer.offsetHeight){
+    //          if (this.state.isFetching) continue;
+    //         //  console.log("localContainer.offsetHeight", localContainer.offsetHeight)
+    //          if(this.state.paginator && this.state.paginator.next){
+    //              this.state.paginator.getNextPage(this.updateStateOnPagination)
+    //              this.setState({isFetching: true})
+    //          }
+    //          else{
+    //              break;
+    //          }
+    //      }
+
+    // }
     handleScroll() {
         if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
         if(this.state.isFetching) return;

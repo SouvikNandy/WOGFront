@@ -32,3 +32,21 @@ export default class Paginator{
     }
 
 }
+
+export const FillParentContainerSpace =(parentConatinerName, localcontainerName, storedPaginator, isFetchingFunc, updateFetchingFunc) =>{
+    // check if container height is less than parent height(i.e sidebar size)
+    let parentConainer = document.getElementById(parentConatinerName);
+    let localContainer = document.getElementById(localcontainerName)
+    while (parentConainer.offsetHeight> localContainer.offsetHeight){
+        if (isFetchingFunc()) continue;
+       //  console.log("localContainer.offsetHeight", localContainer.offsetHeight)
+        if(storedPaginator && storedPaginator.next){
+            storedPaginator.getNextPage(this.updateStateOnPagination)
+            updateFetchingFunc(true)
+        }
+        else{
+            break;
+        }
+    }
+
+}
