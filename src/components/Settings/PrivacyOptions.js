@@ -4,8 +4,7 @@ import {RiArrowDropDownLine} from 'react-icons/ri';
 import {AiFillPlusCircle} from 'react-icons/ai';
 import TagUser from '../Profile/TagUser';
 import {getCurrentTimeInMS} from '../../utility/Utility';
-import w1 from '../../assets/images/wedding1.jpg'
-import { UpdateUserPrivacyAPI, GetBlockedUserListAPI, UnBlockUserAPI } from '../../utility/ApiSet';
+import { UpdateUserPrivacyAPI, GetBlockedUserListAPI, UnBlockUserAPI, GetUserMailsAPI, SetEmailAsDefault, DeleteMailAPI, AddMailsAPI } from '../../utility/ApiSet';
 import { retrieveFromStorage,  saveInStorage} from '../../utility/Utility';
 import Paginator, {FillParentContainerSpace} from '../../utility/Paginator';
 import OwlLoader from '../OwlLoader';
@@ -434,12 +433,15 @@ export class BlockedAccounts extends Component{
 
     updateStateOnAPIcall = (data)=>{
         // paginated response
+        let paginator = data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null
         this.setState({
             blockedUsers: data.results,
-            paginator: data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null,
-        },
-        ()=>{FillParentContainerSpace("side-bar-content", "settings-container", this.state.paginator, this.checkIfFetching, this.updateIfFeching)}
-        )
+            paginator: paginator
+        })
+        if (paginator){
+            FillParentContainerSpace("side-bar-content", "settings-container", paginator, 
+            this.checkIfFetching, this.updateIfFeching, this.updateStateOnPagination)
+        }
     }
 
     checkIfFetching = () => {
@@ -501,8 +503,8 @@ export class BlockedAccounts extends Component{
 export class CloseFriends extends Component{
     state ={
         closeFriends:[
-            {id:1, name: "John Doe", username: "Johndoe", designation: "photographer", profile_pic: w1},
-            {id:2, name: "Jane Doe", username: "Johndoe", designation: "makeup artist", profile_pic: w1}
+            // {id:1, name: "John Doe", username: "Johndoe", designation: "photographer", profile_pic: w1},
+            // {id:2, name: "Jane Doe", username: "Johndoe", designation: "makeup artist", profile_pic: w1}
         ]
     }
 
@@ -533,18 +535,67 @@ export class CloseFriends extends Component{
 
 export class ManageMails extends Component{
     state ={
-        mails: [
-            {'id': 1, "email": "souvik.nandy@nevaehtech.com", "default": false},
-            {'id': 2, "email": "souvikpxnandy@gmail.com", "default": true},
-            {'id': 3, "email": "souvik.nandy@getnadat.com", "default": false},
-        ],
+        mails: null,
         addMailBox: false,
+        paginator: null,
+        isFetching: false
     }
+
+    componentDidMount (){
+        GetUserMailsAPI(this.updateStateOnAPIcall)
+    }
+
+    updateStateOnAPIcall = (data)=>{
+        // paginated response
+        let paginator = data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null
+        this.setState({
+            mails: data.results,
+            paginator: paginator,
+        })
+        if (paginator){
+            FillParentContainerSpace("side-bar-content", "settings-container", paginator, 
+            this.checkIfFetching, this.updateIfFeching, this.updateStateOnPagination)
+        }
+        
+    }
+
+    checkIfFetching = () => {
+        return this.state.isFetching
+    }
+
+    updateIfFeching = (val) =>{
+        console.log("updateIfFeching called", val)
+        this.setState({isFetching: val})
+    }
+
+    handleScroll() {
+        if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+        if(this.state.isFetching) return;
+        if(this.state.paginator && this.state.paginator.next){
+            let res = this.state.paginator.getNextPage(this.updateStateOnPagination)
+            if (res !== false){
+                this.setState({isFetching: true})
+            }  
+        }
+        
+    }
+
+    updateStateOnPagination = (results) =>{
+        console.log("updateStateOnPagination called", results)
+        this.setState({
+            mails:[...this.state.mails, ...results],
+            isFetching: false
+        })
+    }
+    
+
     setDefault = (idx) =>{
+        let defaultRequest = null
         this.setState({
             mails: this.state.mails.map(ele=>{
                 if(ele.id === idx){
                     ele.default = true
+                    defaultRequest = ele.email
                 }
                 else{
                     ele.default = false
@@ -552,15 +603,21 @@ export class ManageMails extends Component{
                 return ele
             })
         })
+
+        if (defaultRequest){
+            SetEmailAsDefault(defaultRequest, null)
+        }
     }
 
     removeMail = (idx) =>{
         this.setState({mails: this.state.mails.filter(ele => ele.id!==idx)})
+        DeleteMailAPI(idx, null)
     }
 
     allowAddMail = () =>{
         this.setState({allowAddMail: !this.state.allowAddMail})
     }
+
     addNewMail = () =>{
         let ele = document.getElementById("new-mail-id");
         if(ele.value === ""){
@@ -576,9 +633,12 @@ export class ManageMails extends Component{
         })
         ele.value = ""
 
+        AddMailsAPI(newRecord.email, null)
+
     }
 
     render(){
+        if(!this.state.mails) return(<React.Fragment><OwlLoader /></React.Fragment>)
         return(
             <React.Fragment>
                 <SideBarHead displaySideView ={this.props.prvBtnClick} searchBarRequired={false} 
@@ -611,7 +671,7 @@ export class ManageMails extends Component{
                         <div className="set-menu-label">Other Registered E-mails</div>
                         {this.state.mails.filter(ele=> ele.default!==true).map(ele=>{
                             return(
-                                <div className="non-default">
+                                <div className="non-default" key={ele.id}>
                                     <span className="email-id">{ele.email}</span>
                                     <div className="action-section">
                                         <span className="btn-anc" onClick={this.setDefault.bind(this, ele.id)}>Set Default</span>

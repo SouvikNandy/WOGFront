@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../../assets/css/landing.css';
-import DummyShots from './DummyShots';
+import DummyShots, {LoadMoreShot} from './DummyShots';
 
 
 import { Link } from "react-router-dom";
@@ -13,12 +13,13 @@ import { defaultProfilePic } from '../../utility/userData';
 
 export class ShotPalette extends Component {
     state = {
-        Shots : null
+        Shots : null,
+        paginator: null,
+        isFetching: false
     }
 
     componentDidMount(){
-        // if shotData rreceived add in state else call api
-        // console.log("received", this.props.shotData);
+        // if shotData received add in state else call api
         if(this.props.shotData){
             this.setState({
                 Shots: this.props.shotData
@@ -43,6 +44,23 @@ export class ShotPalette extends Component {
                 Shots: data.data
             })
         }
+    }
+
+    LoadShots = () =>{
+        if(this.state.isFetching) return;
+        if(this.state.paginator && this.state.paginator.next){
+            let res = this.state.paginator.getNextPage(this.updateStateOnPagination, true, false)
+            if (res !== false){
+                this.setState({isFetching: true})
+            }  
+        }
+    }
+
+    updateStateOnPagination = (results) =>{
+        this.setState({
+            Shots:[...this.state.Shots, ...results],
+            isFetching: false
+        })
     }
 
     padDummyShot = (resultList, len, maxlen=5) =>{
@@ -88,7 +106,6 @@ export class ShotPalette extends Component {
         }
         let shotList = [];
         this.state.Shots.map((portfolio, index) => {
-            // console.log("portfolio", portfolio)
             portfolio.attachments.map(ele=>{
                 let data ={
                     id: ele.id, name: portfolio.user.name, username: portfolio.user.username, profile_pic: portfolio.user.profile_pic,
@@ -104,7 +121,10 @@ export class ShotPalette extends Component {
             })
             return portfolio
         })
-        shotList = this.padDummyShot(shotList, this.state.Shots.length, 5)
+        if(shotList.length< 25 && this.state.paginator && this.state.paginator.next){
+            shotList.push(<LoadMoreShot key={ "LS1"} onClick={this.LoadShots}/>)
+        }
+        shotList = this.padDummyShot(shotList, this.state.Shots.length, 4)
 
 
         return(

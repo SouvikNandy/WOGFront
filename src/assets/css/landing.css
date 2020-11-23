@@ -19,7 +19,7 @@
 /* hero section */
 .hero {
     position: relative;
-    background: url("../images/wedding2.jpg") no-repeat center center/cover;
+    background: url("../images/hero-banner.jpg") no-repeat center center/cover;
     grid-column: 1/2;
     width: 100%;
     height: inherit;
@@ -199,6 +199,8 @@
 
 } */
 
+
+
 .shots-reminder {
     padding: 1.5rem 3.5rem;
     height: 100%;
@@ -222,6 +224,8 @@
 
 }
 
+
+
 .shots-reminder .btn {
     display: inline-block;
     color: var(--light);
@@ -234,6 +238,7 @@
     transition: all 0.2s ease-in;
     background: var(--hover-two);
     box-shadow: var(--shadow);
+    font-size: 0.85rem;
 }
 
 .shots-reminder .btn:hover {
@@ -248,6 +253,17 @@
 }
 
 /* REVIEW SECTION */
+.reviews-section{
+    position: relative;
+    background: url("../images/rev-back-img.jpg") no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.reviews-section .dark-overlay{
+    background: rgba(0,0,0,0.4)
+}
 .reviews-section .swiper-container {
     width: 90vw;
     height: 90%;
@@ -258,8 +274,8 @@
     position: relative;
     text-align: center;
     font-size: 1.12rem;
-    width: 35vw;
-    height: 70vh;
+    width: 25vw;
+    height: 60vh;
     top: 2rem;
     border-radius: 0.7rem;
 }
@@ -275,20 +291,24 @@
 }
 
 .visit-review{
+    z-index: 2;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    float: right;
-    color: var(--hover-two);
-    margin-right: 1rem;
-    /* font-size: rem; */
     font-weight: bold;
 
 }
 
 .visit-review .link{
-    color: var(--hover-two)
+    color: var(--light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: rgba(0, 0, 0, 0.4);
+}
+.visit-review .link:hover{
+    color: var(--hover-one);
 }
 
 /* FOOTER SECTION */
@@ -302,6 +322,7 @@
     padding: 0;
     margin: 0;
     font-size: 0.9rem;
+    padding-top: 1rem;
 }
 
 .f-mod-1 {
@@ -408,14 +429,40 @@
     margin: 0 0.2rem;
 }
 
+@media(max-width: 1200px){
+    .reviews-section .swiper-slide {
+        width: 40vw;
+        height: 65vh;
+    }
+}
+
 
 /* potrait tablet, e-readers, kindle */
 @media(max-width: 850px) {
+
+    .hero {
+        background: url("../images/hero-banner-small.jpg") no-repeat center center/cover;
+    }
+    .reviews-section{
+        background: url("../images/rev-back-small.jpg") no-repeat center center/cover;
+    }
+    
+    .shots-reminder .s-buttons{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .shots-reminder .btn{
+        width: 30vw;
+    }
 
     .reviews-section .swiper-button-next,
     .reviews-section .swiper-button-prev {
         display: none;
     }
+
+    
 
     .f-mod-1,
     .f-mod-2,

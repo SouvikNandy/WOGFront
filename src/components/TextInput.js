@@ -144,7 +144,7 @@ class TextInput extends React.Component {
             })
         }
 
-        else if (this.state.lastSearched && phase.includes(this.state.lastSearched) && phase.length > this.state.lastSearched.length){            
+        else if (this.state.lastSearched && phase.includes(this.state.lastSearched) && phase.length > this.state.lastSearched.length){ 
             // check if matched records found. if not searched with the new term
             if(matchedRecords.length < this.state.lastSearchedCount ){
                 // search with new term

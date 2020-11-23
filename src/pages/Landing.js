@@ -64,7 +64,7 @@ export class Landing extends Component {
                         <div className="shots-head"></div>
 
                         <div className="shots-portfolio">
-                            <ShotPalette currLocation={currLocation}/>
+                            <ShotPalette currLocation={currLocation} loadShotButton={true}/>
                         </div>
                         <div className="shots-reminder">
                             <span className="s-lead">Create your own portfolios, share shots and get connected to others of your domain  </span>
@@ -78,14 +78,15 @@ export class Landing extends Component {
                     </section>
                     {/* review section */}
                     <section className="reviews-section" id="reviews">
+                        <div className="dark-overlay"></div>
                         <ReviewSwiper />
-                        <span className="visit-review">
+                        <div className="visit-review">
                             <Link className="link" to={'/reviews'}>
                                 <span>Take Me To Reviews</span>
                                 <FaAngleRight />
                             </Link>
                             
-                            </span>
+                        </div>
                     </section>
                     
                     <Footer />

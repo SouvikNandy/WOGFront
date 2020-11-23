@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { FaPlus, FaUserCircle } from "react-icons/fa";
 import { FollowRequestAPI } from '../../utility/ApiSet';
 import { UpdateRecentFriends } from '../../utility/userData';
-// import w1 from "../assets/images/wedding1.jpg";
 
 
 export function UserFlat(props){

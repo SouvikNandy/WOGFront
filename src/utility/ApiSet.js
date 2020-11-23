@@ -125,6 +125,29 @@ export const UpdateUserPrivacyAPI = (key, value, callBackFunc) =>{
     HTTPRequestHandler.post({url:url, requestBody: {[key]: value}, includeToken: true, callBackFunc: callBackFunc})
 }
 
+// Manage mails
+
+export const GetUserMailsAPI = (callBackFunc) =>{
+    let url = "api/v1/manage-mails/"
+    HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
+}
+
+export const AddMailsAPI = (email, callBackFunc) =>{
+    let url = "api/v1/manage-mails/"
+    HTTPRequestHandler.post({url:url, requestBody: {email: email}, includeToken: true, callBackFunc: callBackFunc})
+}
+
+export const DeleteMailAPI = (email, callBackFunc) =>{
+    let url = "api/v1/manage-mails/?q="+email
+    HTTPRequestHandler.delete({url:url, includeToken: true, callBackFunc: callBackFunc})
+}
+
+export const SetEmailAsDefault = (email, callBackFunc) =>{
+    let url = "api/v1/manage-mails/"
+    HTTPRequestHandler.put({url:url, requestBody: {email: email}, includeToken: true, callBackFunc: callBackFunc})
+}
+
+
 // platform suggestions
 export const UserSuggestionAPI = (callBackFunc) =>{
     let url = "api/v1/user-suggestion/"
@@ -191,6 +214,8 @@ export const ReportContentAPI = (requestBody, callBackFunc) =>{
 }
 
 export const SearchOnFriendsAPI = (searchKey, callBackFunc) =>{
+    if(!isAuthenticated()) return;
+    console.log("SearchOnFriendsAPI", searchKey, callBackFunc)
     let url = searchKey? "api/v1/search-friends/?search="+searchKey : "api/v1/search-friends/"
     HTTPRequestHandler.get({url:url, includeToken: true, callBackFunc: callBackFunc})
 }

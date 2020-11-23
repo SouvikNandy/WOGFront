@@ -755,6 +755,12 @@ export default class Profile extends Component {
                         <div className="profile-portfolio-grid">
                             {resultList}
                         </div>
+                        {getSelectedTab === "tagApproved" && (!this.state.tagApprovedPaginator || !this.state.tagApprovedPaginator.next)?
+                            <Footer /> : ""
+                        }
+                        {getSelectedTab === "tagRequests" && (!this.state.tagRequestPaginator || !this.state.tagRequestPaginator.next)?
+                            <Footer /> : ""
+                        }
 
                     </React.Fragment>
                 )

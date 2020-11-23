@@ -24,12 +24,15 @@ export class LikedBy extends Component {
 
     updateStateOnAPIcall = (data)=>{
         // paginated response
+        let paginator = data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null
         this.setState({
             data: data.results,
-            paginator: data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null,
-        },
-        ()=>{FillParentContainerSpace("side-bar-content", "liked-container", this.state.paginator, this.checkIfFetching, this.updateIfFeching)}
-        )
+            paginator: paginator
+        })
+        if (paginator){
+            FillParentContainerSpace("side-bar-content", "liked-container", this.state.paginator, 
+            this.checkIfFetching, this.updateIfFeching, this.updateStateOnPagination)
+        }
     }
     checkIfFetching = () => {
         return this.state.isFetching

@@ -241,9 +241,13 @@ export class ShotModalView extends Component {
         //  check if user is tagged
         let currentUser = getUserData()
         let isUserTagged = false
-        if(this.state.shot.members.filter(ele=> ele.username ===currentUser.username).length> 0){
-            isUserTagged = true
+        if(currentUser !==null){
+            if(this.state.shot.members.length> 0 && this.state.shot.members.filter(ele=> ele.username ===currentUser.username).length> 0){
+                isUserTagged = true
+            }
+
         }
+        
 
         return (
             <React.Fragment>

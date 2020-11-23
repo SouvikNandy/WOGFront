@@ -81,7 +81,7 @@
     margin-top: 0.5rem;
     padding-bottom: 0.5rem;
     /* line-height: 1; */
-    font-size: 0.9rem;
+    /* font-size: 0.rem; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -89,9 +89,12 @@
 }
 
 .cube-grid .m-display-name .m-adj {
-    font-size: 0.8rem;
+    font-size: 0.65rem;
 }
-
+.cube-grid .m-display-name .username{
+    font-size: 0.7rem !important;
+    padding: 0.05rem 0;
+}
 .cube-grid .cube-user-prof {
     flex: 1;
     width: 90%;

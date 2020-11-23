@@ -55,6 +55,7 @@
     /* white-space: normal; */
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 0.9rem;
 }
 
 .rev-rec {
@@ -65,7 +66,7 @@
     margin: 0.5rem 0 0;
     padding: 0;
     transition: 0.5s;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     font-weight: 700;
     line-height: 1.25rem;
     text-transform: uppercase;
@@ -79,6 +80,7 @@
     font-size: 0.875rem;
     color: #c5c5c5;
     transition: 0.5s;
+    font-size: 0.8rem;
 }
 
 .rev-box:hover p,
@@ -503,6 +505,13 @@
 }
 
 @media(max-width:850px) {
+    .rev-box .rev-imgbox img{
+        height: 6rem;
+        width: 6rem;
+    }
+    .rev-box p{
+        font-size: 0.8rem;
+    }
     .rev-curved {
         max-width: 100%;
     }
