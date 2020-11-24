@@ -122,7 +122,13 @@ export class ShotPalette extends Component {
             return portfolio
         })
         if(shotList.length< 25 && this.state.paginator && this.state.paginator.next){
-            shotList.push(<LoadMoreShot key={ "LS1"} onClick={this.LoadShots}/>)
+            if(!this.state.isFetching){
+                shotList.push(<LoadMoreShot key={ "LS1"} onClick={this.LoadShots}/>)
+            }
+            else{
+                shotList.push(<DummyShots key={ "LS1"} loaderShot={true} />)
+            }
+            
         }
         shotList = this.padDummyShot(shotList, this.state.Shots.length, 4)
 

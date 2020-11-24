@@ -10,6 +10,9 @@ import { retrieveFromStorage } from '../../utility/Utility';
 
 export class Privacy extends Component {
     state = {
+        accounts : [
+            {id: 'p5', name: "Account Privacy", isActive: false},
+        ],
         interactions : [
             {id: 'p1', name: "Comments", isActive: false},
             {id: 'p2', name: "Tags", isActive: false},
@@ -17,7 +20,7 @@ export class Privacy extends Component {
             // {id: 'p4', name: "Activity status", isActive: false},
         ],
         connections : [
-            {id: 'p5', name: "Account Privacy", isActive: false},
+            // {id: 'p5', name: "Account Privacy", isActive: false},
             {id: 'p8', name: "Manage Mails", isActive: false},
             {id: 'p6', name: "Blocked Accounts", isActive: false},
             // {id: 'p7', name: "Close Friends", isActive: false},
@@ -27,7 +30,7 @@ export class Privacy extends Component {
 
 
     selectMenu = (idx) =>{
-        let newMenulist = [...this.state.interactions, ...this.state.connections] ;
+        let newMenulist = [...this.state.accounts, ...this.state.interactions, ...this.state.connections] ;
         let newContentblock = null
         let headText = ''
         let storedPrivacy = JSON.parse (retrieveFromStorage("user_privacy"))
@@ -52,12 +55,13 @@ export class Privacy extends Component {
                     selected={storedPrivacy.allow_mentions}
                     />
                 }
-                // connections
+                // accounts
                 else if (ele.name === "Account Privacy"){
                     newContentblock = <AccountPrivacy  prvBtnClick={this.prvBtnClick} 
                     selected={storedPrivacy.is_private_ac}
                     />
                 }
+                // connections
                 else if (ele.name === "Manage Mails"){
                     newContentblock = <ManageMails  prvBtnClick={this.prvBtnClick}/>
                 }
@@ -115,6 +119,14 @@ export class Privacy extends Component {
         return(
             <React.Fragment>
                 <SideBarHead displaySideView ={this.props.prvBtnClick} searchBarRequired={false}  altHeadText={"Privacy"} altBackBtn={true} />
+                <div className="set-menu-label">Account Privacy</div>
+                {this.state.accounts.map(ele =>{
+                    return(
+                    <div className="set-menu" key={ele.id} onClick={this.selectMenu.bind(this, ele.id)}>
+                        {this.getIcon(ele.name)}
+                        <span>{ele.name}</span>
+                    </div>)
+                })}
                <div className="set-menu-label">Interactions</div>
                 {this.state.interactions.map(ele =>{
                     return(

@@ -225,6 +225,10 @@ export const ChangePasswordAPI = (requestBody, callBackFunc) =>{
     HTTPRequestHandler.post({url:url, requestBody:requestBody, includeToken: true, callBackFunc: callBackFunc})
 }
 
+export const ForgotPasswordAPI =(requestBody, callBackFunc, errCallBackFunc) =>{
+    let url = "api/v1/forgot-password/"
+    HTTPRequestHandler.post({url:url, requestBody:requestBody, includeToken: false, callBackFunc: callBackFunc, errCallBackFunc:errCallBackFunc})
+}
 // Chat APIs
 export const ChatListAPI =(callBackFunc) =>{
     let url = "api/v1/chat-list/"

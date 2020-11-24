@@ -126,6 +126,19 @@
     color: rgb(99, 54, 221) !important
 }
 
+.forgot-password{
+    /* background: red; */
+    font-size: 0.8rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    color: var(--hover-two);
+    cursor: pointer;
+
+
+}
+
 @media (max-width:900px) {
     .img-holder {
         display: none;

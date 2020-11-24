@@ -19,6 +19,7 @@ import EditPost from './components/Post/EditPost';
 import getUserData, { setNotificationHandler } from './utility/userData';
 import InitializeChatHistory from './components/ChatModule/chatUtils';
 import AllFriends from './pages/AllFriends';
+import ForgotPass from './pages/ForgotPass';
 
 export default class App extends Component {
     componentDidMount(){
@@ -65,6 +66,7 @@ function ShotModalUrl() {
             <Route exact path="/home/" component={Landing} />
             <Route exact path="/signup/" component={Login} />
             <Route exact path="/signin/" render={props => (<Login signInReq={true} />)} />
+            <Route exact path="/forgot-pass/" component={ForgotPass} />
             <Route exact path="/m-auth/" component={LoginModal} />
             <Route exact path="/profile/:username" component={Profile} />
             <Route exact path="/shot-view/:id" component={ShotModalView} />

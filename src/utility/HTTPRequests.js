@@ -89,7 +89,7 @@ export default class HTTPRequestHandler{
             }
         })
         .catch(err =>{
-            console.log("err", err)
+            // console.log("err", err)
             handleErrorResponse(err, errNotifierTitle);
             if(errCallBackFunc) errCallBackFunc(err)
         }) 

@@ -235,7 +235,8 @@ ul {
 .info-mssg{
     background: var(--border-grey);
     /* color: var(--light); */
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+    line-height: 1.2;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -244,6 +245,24 @@ ul {
     padding: 0.8rem;
     border-radius: 0.9rem;
 
+}
+
+.settings-info-mssg{
+    background: transparent !important;
+    /* justify-content: flex-start;
+    padding: 0.8rem 0; */
+}
+
+.password-matched{
+    transition: all 0.30s ease-in-out;
+    border: 1px solid rgba(71, 209, 71, 1) !important;
+    box-shadow: 0 0 5px rgba(71, 209, 71, 1);
+}
+
+.password-not-matched{
+    transition: all 0.30s ease-in-out;
+    border: 1px solid rgba(243, 32, 19, 1) !important;
+    box-shadow: 0 0 5px rgba(243, 32, 19, 1);
 }
 
 @keyframes rotate_around {

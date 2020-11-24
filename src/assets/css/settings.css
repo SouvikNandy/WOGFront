@@ -22,6 +22,7 @@
     padding: 0.6rem;
     border-bottom: 1px solid var(--border-grey);
     cursor: pointer;
+    border-radius: 1.5rem 0;
 }
 
 .set-menu .ico {
@@ -30,7 +31,11 @@
 }
 
 .set-menu:hover {
+    font-size: 0.9rem;
     font-weight: bold;
+    /* color: var(--hover-two); */
+    transition: all 0.12s;
+    text-shadow: 1px 2px rgba(0,0,0,0.05);
 }
 
 .set-menu-label{
@@ -41,8 +46,9 @@
     align-items: center;
     font-size: 0.8rem;
     font-weight: bold;
-    padding: 0.6rem;
+    padding: 0.8rem;
     background-color: var(--border-grey);
+    border-radius: 1.5rem 0;
     
 }
 
@@ -132,6 +138,18 @@
     cursor: pointer;
 }
 
+.change-pass-container .password-inp-field .password-matched{
+    border: none !important;
+    border-bottom: 1px solid rgba(71, 209, 71, 1) !important;
+    box-shadow: 0 4px 2px -2px rgba(71, 209, 71, 1);
+
+}
+.change-pass-container .password-inp-field .password-not-matched{
+    border: none !important;
+    border-bottom: 1px solid rgba(243, 32, 19, 1) !important;
+    box-shadow: 0 4px 2px -2px rgba(243, 32, 19, 1);
+
+}
 .change-pass-container .submit-div{
     display: flex;
     justify-content: center;
@@ -243,34 +261,33 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    border-bottom: 1px solid var(--border-grey);
+    border-radius: 1.5rem 0;
+    
 }
 
-.manage-mail-conatainer .default-mail label{
-    width: 100%;
-    font-size: 0.8rem;
+.manage-mail-conatainer .default-mail .email-id{
+    padding: 0.4rem 0.5rem;
     font-weight: bold;
-    margin-bottom: 0.4rem;
 }
 
 .manage-mail-conatainer .email-id{
     width: 100%;
     font-size: 0.9rem;
     margin-bottom: 0.4rem;
+   
 }
 
 .manage-mail-conatainer .add-new{
     min-height: 6vh;
     width: 100%;
-    padding : 0.4rem 0;
+    padding : 0.5rem;
     font-size: 0.8rem;
     font-weight: bold;
     cursor: pointer;
-    border-top: 1px solid var(--border-grey) ;
-    border-bottom: 1px solid var(--border-grey) ;
     color: var(--hover-two);
     display: flex;
     justify-content: center;
-    /* align-items: flex-start; */
     flex-direction: column;
     
 }
@@ -280,6 +297,9 @@
     align-items: center;
     justify-content: space-between;
     margin: 0.5rem 0;
+    border: 1px dotted var(--hover-two);
+    border-radius: 0.5rem;
+    padding: 0.2rem 0.4rem;
 }
 
 .manage-mail-conatainer .add-email input{
@@ -299,10 +319,12 @@
 .manage-mail-conatainer .non-default{
     width: 100%;
     height: 5vh;
+    padding: 0 0.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid var(--border-grey);
+    border-radius: 1.5rem 0;
 }
 
 .manage-mail-conatainer .non-default .email-id{

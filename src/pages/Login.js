@@ -9,6 +9,7 @@ import {GetUserPrivacyAPI, LoginAPI, SignupAPI} from '../utility/ApiSet';
 import {AiFillCloseCircle } from 'react-icons/ai';
 import { setNotificationHandler } from '../utility/userData';
 import InitializeChatHistory from '../components/ChatModule/chatUtils';
+import LoadingSubmitButton from '../components/LoadingSubmitButton';
 
 
 export function Login(props) {
@@ -51,7 +52,7 @@ export class LoginModal extends Component{
             );
     }
     render(){
-        console.log("LoginModal", this.props)
+        // console.log("LoginModal", this.props)
         return(
         <div className="modal-container">
             <div className="login-container">
@@ -161,11 +162,10 @@ export class SignIn extends Component {
                     <div className="form-group">
                         <input type="password" name="password" placeholder="Password" onChange={this.onChange} required/>
                     </div>
+                    <Link className="link forgot-password" to={"/forgot-pass/"}>Forgot Password ?</Link>
                     <div className="apply-section">
                         {this.state.isLoading?
-                            <button className="btn btn-loading" disabled={true}>
-                                Signing In ...
-                            </button>
+                            <LoadingSubmitButton textVal={"Signing In ..."}/>
                             :
                             <button className="btn btn-primary-wog" onClick={this.onSubmit}>
                                 Sign In
@@ -287,7 +287,7 @@ export class SignUp extends Component {
                 <p className="lead"><FaUser />Create Your Account</p>
                 <form className="login-form" id="signup-form">
                     <div className="form-group f-flex">
-                        <input type="text" placeholder="Username" name="username" onChange={this.onChange} maxlength="20" required />
+                        <input type="text" placeholder="Username" name="username" onChange={this.onChange} maxLength="20" required />
                         <div className="i-am">
                             <Dropdown options={["Individual", "Team/Organization"]} placeHolder={"I am"} onChange={this.updateUserType} />
                         </div>
@@ -302,13 +302,16 @@ export class SignUp extends Component {
                         <input type="password" placeholder="Password" name="password" onChange={this.onChange} required/>
                     </div>
                     <div className="form-group">
-                        <input type="password" placeholder="Confirm Password" name="confirmPassword" onChange={this.onChange} required />
+                        <input className={
+                        this.state.password && this.state.confirmPassword? 
+                        this.state.password===this.state.confirmPassword?"password-matched": "password-not-matched"
+                        :
+                        ""}
+                        type="password" placeholder="Confirm Password" name="confirmPassword" onChange={this.onChange} required />
                     </div>
                     <div className="apply-section">
                         {this.state.isLoading?
-                            <button className="btn btn-loading" disabled={true}>
-                                Creating ...
-                            </button>
+                            <LoadingSubmitButton textVal={"Creating ..."}/>
                             :
                             <button className="btn btn-primary-wog" onClick={this.onSubmit}>
                                 Create Account
@@ -330,4 +333,7 @@ export class SignUp extends Component {
         )
     }
 }
+
+
+
 export default withRouter(LoginModal);

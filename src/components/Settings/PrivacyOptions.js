@@ -8,6 +8,8 @@ import { UpdateUserPrivacyAPI, GetBlockedUserListAPI, UnBlockUserAPI, GetUserMai
 import { retrieveFromStorage,  saveInStorage} from '../../utility/Utility';
 import Paginator, {FillParentContainerSpace} from '../../utility/Paginator';
 import OwlLoader from '../OwlLoader';
+import { createFloatingNotification } from '../FloatingNotifications';
+import NoContent from '../NoContent';
 
 const option_to_bool = {"enable": true, "disable": false}
 const bool_to_option = {true: "enable", false: "disable" }
@@ -83,7 +85,7 @@ export class Comments extends Component{
             <React.Fragment>
                 <SideBarHead displaySideView ={this.props.prvBtnClick} searchBarRequired={false} 
                 altHeadText={"Comments"} altBackBtn={true}
-            />
+                />
                 <div className="set-menu select-options" onClick={this.showAllowCommentsDropDown}>
                         <span>Allow Comments From</span>
                         <div className="prev-selected">
@@ -104,7 +106,9 @@ export class Comments extends Component{
                             : 
                             ""
                         }
-                    </div>
+                </div>
+                <div className='info-mssg settings-info-mssg'>Choose who can comment on your posts.<br />
+                You can also turn off comments for a specific post form the post itself.</div>
             </React.Fragment>
         )
     }
@@ -251,8 +255,10 @@ export class Tags extends Component{
                             ""
                         }
                         
-                    </div>
-
+                </div>
+                <div className='info-mssg settings-info-mssg'>Choose who can tag you in their posts.<br />
+                People can tag you only if you are following them or being followed by them.<br />
+                When people try to tag you they'll see if you don't allow tags from anyone.</div>
             </React.Fragment>
         )
     }
@@ -330,7 +336,9 @@ export class Mentions extends Component{
                         ""
                     }
                 </div>
-
+                <div className='info-mssg settings-info-mssg'>Choose who can @mention you in their posts.<br />
+                People can @mention you only if you are following them or being followed by them.<br />
+                When people try to @mention you they'll see if you don't allow tags from anyone.</div>
             </React.Fragment>
         )
     }
@@ -482,16 +490,23 @@ export class BlockedAccounts extends Component{
 
     render(){
         if(!this.state.blockedUsers) return(<React.Fragment><OwlLoader /></React.Fragment>)
+
         let userList = []
-        this.state.blockedUsers.map( item =>{
-            userList.push(<TagUser key={item.id} data={item} allowUnblock={this.unBolockRequest}/>)
-            return item
-                
-        })
+        if (this.state.blockedUsers.length < 1){
+            userList = <NoContent message={"The accounts you have blocked will apprear here"} />
+        }
+        else{
+            this.state.blockedUsers.map( item =>{
+                userList.push(<TagUser key={item.id} data={item} allowUnblock={this.unBolockRequest}/>)
+                return item
+                    
+            })
+        }
         return(
             <React.Fragment>
                 <SideBarHead displaySideView ={this.props.prvBtnClick} searchBarRequired={false} 
                 altHeadText={"Blocked Accounts"} altBackBtn={true} />
+                
                 {userList}
             </React.Fragment>
         )
@@ -552,11 +567,6 @@ export class ManageMails extends Component{
             mails: data.results,
             paginator: paginator,
         })
-        if (paginator){
-            FillParentContainerSpace("side-bar-content", "settings-container", paginator, 
-            this.checkIfFetching, this.updateIfFeching, this.updateStateOnPagination)
-        }
-        
     }
 
     checkIfFetching = () => {
@@ -564,7 +574,6 @@ export class ManageMails extends Component{
     }
 
     updateIfFeching = (val) =>{
-        console.log("updateIfFeching called", val)
         this.setState({isFetching: val})
     }
 
@@ -581,7 +590,6 @@ export class ManageMails extends Component{
     }
 
     updateStateOnPagination = (results) =>{
-        console.log("updateStateOnPagination called", results)
         this.setState({
             mails:[...this.state.mails, ...results],
             isFetching: false
@@ -619,6 +627,11 @@ export class ManageMails extends Component{
     }
 
     addNewMail = () =>{
+        if (this.state.mails.length >=3){
+            createFloatingNotification('error', "Can't add new email !", 
+            "You can register maximum of 3 emails at a time, to add a new one consider to remove one of previous registerd emails")
+            return false
+        }
         let ele = document.getElementById("new-mail-id");
         if(ele.value === ""){
             return false
@@ -645,7 +658,7 @@ export class ManageMails extends Component{
                 altHeadText={"Manage Mails"} altBackBtn={true} />
                 <div className="manage-mail-conatainer">
                     <div className="default-mail">
-                        <label>Email</label>
+                        <label className="set-menu-label">Default Email</label>
                         <span className="email-id">
                             {this.state.mails.filter(ele=> ele.default===true)[0].email}
                         </span>
@@ -682,6 +695,9 @@ export class ManageMails extends Component{
                         })}
                     </div>
                 </div>
+                <div className='info-mssg settings-info-mssg'>
+                    You will receive all your mails from Wedding O Graffitti on the email set as default.<br />
+                    You can register maximum of 3 email addresses, though only one among them can be set as default.</div>
 
             </React.Fragment>
         )

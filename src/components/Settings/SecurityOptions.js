@@ -10,6 +10,7 @@ import {RecentSearchPalette} from '../Search/SearchHead'
 import {ChangePasswordAPI} from '../../utility/ApiSet';
 
 import pl2 from '../../assets/images/people/2.jpg';
+import LoadingSubmitButton from '../LoadingSubmitButton';
 // SECURITY MENU OPTIONS
 
 // CHANGE PASSWORD
@@ -21,6 +22,7 @@ export class ChangePassword extends Component{
         viewOldpass: false,
         viewNewPass: false,
         viewconfirmPass: false,
+        isLoading: false,
     }
 
     onChange = (e) => this.setState({
@@ -54,6 +56,7 @@ export class ChangePassword extends Component{
 
     onSubmit = (e) =>{
         e.preventDefault();
+        this.setState({isLoading: true})
         let is_validated = this.validate();
         if(is_validated){
             // axios call
@@ -73,9 +76,13 @@ export class ChangePassword extends Component{
 
             })
         }
+        else{
+            this.setState({isLoading: false})
+        }
     }
 
     onSuccessfulUpdate =()=>{
+        this.setState({isLoading: false})
         createFloatingNotification("success", "Password Changed!", "Your pasword has been updated.");
     }
 
@@ -130,13 +137,25 @@ export class ChangePassword extends Component{
                     
                     {!this.state.viewconfirmPass?
                         <React.Fragment>
-                            <input type="password" placeholder="Re-Enter your new password" defaultValue={this.state.confirmPass} 
+                            <input className={
+                                this.state.newPass && this.state.confirmPass? 
+                                this.state.newPass===this.state.confirmPass?"password-matched": "password-not-matched"
+                                :
+                                ""
+                                } 
+                            type="password" placeholder="Re-Enter your new password" defaultValue={this.state.confirmPass} 
                             name="confirmPass" onChange={this.onChange}></input>
                             <AiOutlineEye className="show-hide-icon" onClick={this.showHidePass.bind(this, "viewconfirmPass")} />
                         </React.Fragment>
                         : 
                         <React.Fragment>
-                           <input type="text" placeholder="Re-Enter your new password" defaultValue={this.state.confirmPass}
+                           <input className={
+                                this.state.newPass && this.state.confirmPass? 
+                                this.state.newPass===this.state.confirmPass?"password-matched": "password-not-matched"
+                                :
+                                ""
+                                } 
+                            type="text" placeholder="Re-Enter your new password" defaultValue={this.state.confirmPass}
                             name="confirmPass" onChange={this.onChange}></input>
                             <AiOutlineEyeInvisible className="show-hide-icon" onClick={this.showHidePass.bind(this, "viewconfirmPass")} />
                         </React.Fragment>
@@ -144,7 +163,11 @@ export class ChangePassword extends Component{
                     }
                 </div>
                 <div className="submit-div">
-                    <button className="btn submit-btn">Submit</button>
+                    {this.state.isLoading?
+                        <LoadingSubmitButton textVal={"Processing ..."}/>
+                        :
+                        <button className="btn submit-btn">Submit</button>
+                        }
 
                 </div>
             </form>
