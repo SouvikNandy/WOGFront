@@ -18,8 +18,8 @@ import { UserNavBar } from '../components/Navbar/Navbar';
 import { TiEdit } from 'react-icons/ti';
 import EditProfile from '../components/Profile/EditProfile';
 import ImgCompressor from '../utility/ImgCompressor';
-import {defaultCoverPic, UpdateRecentFriends} from '../utility/userData';
-import { retrieveFromStorage, saveInStorage } from '../utility/Utility';
+import getUserData, {defaultCoverPic, UpdateRecentFriends} from '../utility/userData';
+import { saveInStorage } from '../utility/Utility';
 import HTTPRequestHandler from '../utility/HTTPRequests';
 import { createFloatingNotification } from '../components/FloatingNotifications';
 import { Redirect, Link } from 'react-router-dom';
@@ -29,6 +29,7 @@ import { AddUserReviewsAPI, ApproveTagAPI, BlockUser, RemoveTagAPI, UpdateUserRe
 import ReportContent from '../components/Post/ReportContent';
 import { ConfirmationPopup } from '../components/Settings/SecurityOptions';
 import Chatbox from '../components/ChatModule/Chatbox';
+import { Context } from '../GlobalStorage/Store';
 
 
 
@@ -65,6 +66,7 @@ const StatePaginatorMap = {
     }
 
 export default class Profile extends Component {
+    static contextType = Context
     state = {
         subNavList:[],
 
@@ -104,7 +106,13 @@ export default class Profile extends Component {
         let isAuth = false
         if (isAuthenticated()){
             isAuth = true
-            userAbout = JSON.parse(retrieveFromStorage("user_data"))
+            userAbout = this.context[0].user_data
+            if (!userAbout) { 
+                userAbout = getUserData()
+                this.context[1]({type: 'SET_USER', payload: userAbout})
+            }
+
+            
         }
         if(isAuth && isSelfUser(userAbout.username, this.props.match.params.username)){
             subnav = AuthUserNav;
@@ -512,6 +520,7 @@ export default class Profile extends Component {
             
             userAbout.profile_data.profile_pic = data.data.profile_data.profile_pic
             this.setState({userAbout: userAbout})
+
             noti_key = "Profile picture updated"
             noti_msg = "Here comes your new profile picture. Cheers!"
         }
@@ -527,6 +536,7 @@ export default class Profile extends Component {
     onSuccessfulUpdate = (data) =>{
         // console.log(data.data)
         saveInStorage("user_data",JSON.stringify(data.data));
+        this.context[1]({type: 'SET_USER', payload: data.data})
     }
 
     addNewPortfolioToState = (newRecord) =>{
@@ -543,7 +553,7 @@ export default class Profile extends Component {
                 // USER ABOUT
                 return (
                     <React.Fragment key={item.title}>
-                        <UserAbout key={item.title} data={this.state.userAbout}/>
+                        <UserAbout key={item.title} data={this.isSelf? this.context[0].user_data: this.state.userAbout}/>
                         <Footer />
                     </React.Fragment>
                 
@@ -946,13 +956,20 @@ export default class Profile extends Component {
             this.forceRerenderOnce(this.props.location.state.rerender)
             
         }
-        if(!this.state.userAbout){
+        if(!this.state.userAbout || !this.context[0].user_data){
             return(<React.Fragment>
                     <OwlLoader />
                     <Footer />
                 </React.Fragment>)
         }
         let resultBlock = this.getCompomentData()
+        let userAbout = ""
+        if(this.state.isSelf){
+            userAbout = this.context[0].user_data
+        }
+        else{
+            userAbout = this.state.userAbout
+        }
         return (
             <React.Fragment>
                 {this.state.editProf?
@@ -965,19 +982,19 @@ export default class Profile extends Component {
                 ""
                 :
                 this.props.isAuthenticated || this.state.isSelf?
-                    <UserNavBar selectedMenu={"profile"} username={this.state.userAbout.username}/>
+                    <UserNavBar selectedMenu={"profile"} username={userAbout.username}/>
                     :
                     <SearchHead />
                 }
                 
                 {/* profile top section */}
-                <ProfileHead data={this.state.userAbout} isSelf={this.state.isSelf} editProfile={this.editProfile} 
+                <ProfileHead data={userAbout} isSelf={this.state.isSelf} editProfile={this.editProfile} 
                 uploadPicture={this.uploadPicture} isAuth={this.state.isAuth} currLocation={this.props.location}
                 startStopFollowingProfile={this.startStopFollowingProfile} BlockUnblock={this.BlockUnblock}
                  />
                  {/* intor div */}
                 {!this.state.isSelf && ['Shots', 'Portfolios'].includes(this.state.subNavList.filter(ele => ele.isActive)[0].title)? 
-                <UserIntro data={this.state.userAbout} isAuth={this.state.isAuth} updateReview={this.updateReaction} /> : ""}
+                <UserIntro data={userAbout} isAuth={this.state.isAuth} updateReview={this.updateReaction} /> : ""}
                 {/* subnav menu */}
                 <Subnav subNavList={this.state.subNavList} selectSubMenu={this.selectSubMenu}  getMenuCount={this.getMenuCount}/>
                 {/* result Component */}

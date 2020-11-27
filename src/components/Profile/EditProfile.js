@@ -15,12 +15,14 @@ import FriendList from './FriendList';
 import TagUser from '../Profile/TagUser';
 import {defaultCoverPic} from '../../utility/userData';
 import HTTPRequestHandler from '../../utility/HTTPRequests';
-import { saveInStorage, retrieveFromStorage, dateObjToReadable } from '../../utility/Utility';
+import { saveInStorage, dateObjToReadable } from '../../utility/Utility';
 import { createFloatingNotification } from '../FloatingNotifications';
 import OwlLoader from '../OwlLoader';
+import { Context } from '../../GlobalStorage/Store';
 
 
 export class EditProfile extends Component {
+    static contextType = Context
     state ={
         SubNavOptions:[
             {key: "E-1", title: "Basic", isActive: true},
@@ -67,7 +69,7 @@ export class EditProfile extends Component {
     }
 
     componentDidMount(){
-        let dataset = JSON.parse(retrieveFromStorage("user_data"))
+        let dataset = this.context[0].user_data
         let skills = [];
         let teams = [];
         let social = {}
@@ -582,6 +584,7 @@ export class EditProfile extends Component {
     onSuccessfulUpdate = (data) =>{
         // console.log(data.data)
         saveInStorage("user_data",JSON.stringify(data.data));
+        this.context[1]({type: 'SET_USER', payload: data.data})
         createFloatingNotification("success", "Updated !", "Profile updated");
     }
 

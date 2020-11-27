@@ -33,7 +33,13 @@ export class ModalComments extends CommentsBase {
     }
 
     componentDidMount(){
-        GetCommentsAPI(this.props.post_id, this.updateStateOnAPIcall)
+        if(!this.props.comments_enable){
+            this.setState({data: []})
+            
+        }
+        else{
+            GetCommentsAPI(this.props.post_id, this.updateStateOnAPIcall)
+        }
     }
 
     componentWillUnmount() {
@@ -180,6 +186,18 @@ export class ModalComments extends CommentsBase {
           )}
 
         let allComments = <span className="m-no-comments"><NoContent message={"No comments yet"}/></span>
+        if(!this.props.comments_enable){
+            allComments = <span className="m-no-comments"><NoContent message={"Comments are turned off"}/></span>
+            return(
+                <React.Fragment>
+                    <section className="m-show-all-coments"><span className="count-txt">Comments are turned off</span></section>
+                    <section className="m-comments-view" id="m-comments-view">
+                        {allComments}
+                    </section>
+
+                </React.Fragment>
+            )
+        }
         if (this.state.data.length > 0) {
             if (this.state.showAll) {
                 allComments = this.state.data

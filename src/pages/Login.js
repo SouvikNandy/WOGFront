@@ -10,6 +10,7 @@ import {AiFillCloseCircle } from 'react-icons/ai';
 import { setNotificationHandler } from '../utility/userData';
 import InitializeChatHistory from '../components/ChatModule/chatUtils';
 import LoadingSubmitButton from '../components/LoadingSubmitButton';
+import {Context} from '../GlobalStorage/Store'
 
 
 export function Login(props) {
@@ -72,6 +73,8 @@ export class LoginModal extends Component{
 }
 
 export class SignIn extends Component {
+    static contextType = Context
+
     state = {
         email: "",
         password : "",
@@ -125,6 +128,8 @@ export class SignIn extends Component {
         saveInStorage("refresh_token", data.token.refresh);
         // store user basic details in localstorage
         saveInStorage("user_data", JSON.stringify(data.data));
+        const dispatch = this.context[1]
+        dispatch({type: 'SET_USER', payload: data.data});
 
     }
 

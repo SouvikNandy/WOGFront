@@ -19,7 +19,7 @@ import EditProfile from '../components/Profile/EditProfile';
 import NoContent from '../components/NoContent';
 import OwlLoader from '../components/OwlLoader';
 import HTTPRequestHandler from '../utility/HTTPRequests';
-import {saveInStorage, retrieveFromStorage, ControlledEventFire, msToDateTime} from '../utility/Utility';
+import {saveInStorage, ControlledEventFire, msToDateTime} from '../utility/Utility';
 import AddPost from '../components/Post/AddPost';
 import { createFloatingNotification } from '../components/FloatingNotifications';
 import { UserFeedsAPI, SavePostAPI, LikePostAPI } from '../utility/ApiSet';
@@ -31,6 +31,7 @@ import { RecentFriends } from '../components/Profile/RecentFriends';
 import { RiUserHeartLine } from 'react-icons/ri';
 import GetUploadTrackerList, { RegisterForProgressUpdates } from '../utility/UploadProgress';
 import UploadProgressBar from '../components/UploadProgressBar';
+import {Context} from '../GlobalStorage/Store'
 
 export class NewsFeeds extends Component {
     state = {
@@ -82,9 +83,10 @@ export class NewsFeeds extends Component {
 }
 
 export class NewsFeedUserMenu extends Component{
+    static contextType = Context
     state ={
         // userdata 
-        userData : JSON.parse(retrieveFromStorage('user_data')),
+        // userData : JSON.parse(retrieveFromStorage('user_data')),
 
         // sidebar states
         showSideView: false,
@@ -93,6 +95,12 @@ export class NewsFeedUserMenu extends Component{
         sideViewContent: [],
         altHeadText : null,
         editProf: false,
+    }
+
+    componentDidMount(){
+        if (!this.context[0].user_data){ 
+            this.context[1]({type: 'SET_USER', payload: getUserData()});
+        }
     }
     
     editProfile = () =>{
@@ -114,11 +122,12 @@ export class NewsFeedUserMenu extends Component{
 
     addFileToState = (compressedFile, imgKey, data) =>{
         this.onSuccessfulUpdate(data);
-        let updatedUserData = this.state.userData
+        let updatedUserData = this.context[0].user_data
         if (imgKey === "profile_pic"){
             updatedUserData.profile_data.profile_pic = data.data.profile_data.profile_pic
             // this.setState({profile_pic: URL.createObjectURL(compressedFile)})
-            this.setState({userData: updatedUserData})
+            // this.setState({userData: updatedUserData})
+            this.context[1]({type: 'SET_USER', payload: getUserData()});
         }
         let noti_key = "Profile picture updated"
         let noti_msg = "Here comes your new profile picture. Cheers!"
@@ -148,7 +157,8 @@ export class NewsFeedUserMenu extends Component{
         
     }
     render(){
-        let userData = this.state.userData;
+        let userData = this.context[0].user_data;
+        if(!userData) return(<React.Fragment></React.Fragment>)
         let username = userData.username;
         return(
             <React.Fragment>
@@ -495,6 +505,7 @@ export class NewsFeedPost extends Component{
                         doUnLike={this.props.unLikePortfolio.bind(this, pf.id)}
                         isLiked={pf.is_liked}
                         isSaved={pf.is_saved}
+                        isAuth={true}
                         savePost={this.props.savePost.bind(this, pf.id)}
                         feedCommentBox={this.feedCommentBox.bind(this, "npf-"+ pf.id )}
                         responsecounts={pf.interactions} />
@@ -504,7 +515,13 @@ export class NewsFeedPost extends Component{
                     <div className="m-dt" onClick={this.feedCommentBox.bind(this, "npf-"+ pf.id )}>{msToDateTime(pf.created_at)}</div>
                     <div className="m-description">{EditorSpan(pf.description)}</div>
                     <div className="cmnt-count" onClick={this.feedCommentBox.bind(this, "npf-"+ pf.id )}>
-                        {pf.interactions.comments>0? <span>view all {pf.interactions.comments} comments</span>: <span>Be the first to comment</span> }
+                        {!pf.interactions.comments_enable?
+                            ""
+                            :
+                            pf.interactions.comments>0? 
+                            <span>view all {pf.interactions.comments} comments</span>
+                            :
+                            <span>Be the first to comment</span> }
                     
                     </div>
 

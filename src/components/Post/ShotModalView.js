@@ -4,6 +4,7 @@ import '../../assets/css/shotmodalview.css';
 
 import { FaPlus, FaCheckDouble } from "react-icons/fa";
 import { AiFillLeftCircle, AiFillRightCircle, AiOutlineCopyright, AiOutlineTag } from "react-icons/ai";
+import { FiBellOff, FiBell } from 'react-icons/fi';
 import {BsThreeDotsVertical} from "react-icons/bs";
 import {GoReport} from "react-icons/go";
 import ModalLikes from './ModalLikes';
@@ -19,9 +20,10 @@ import {msToDateTime, isSelfUser, retrieveFromStorage, isAuthenticated} from '..
 import HTTPRequestHandler from '../../utility/HTTPRequests';
 import OwlLoader from '../OwlLoader';
 import { Link } from 'react-router-dom';
-import { LikePostAPI, RemoveTagAPI, SavePostAPI } from '../../utility/ApiSet';
+import { LikePostAPI, RemoveTagAPI, SavePostAPI, turnCommentsOnOffAPI } from '../../utility/ApiSet';
 import { EditorSpan, JSONToEditState } from '../TextInput';
 import getUserData, { defaultProfilePic } from '../../utility/userData';
+
 
 
 export class ShotModalView extends Component {
@@ -181,6 +183,12 @@ export class ShotModalView extends Component {
         })
         RemoveTagAPI(pid, currentUser.username, null)
     }
+    toggleCommentsSettings = () =>{
+        let shot = this.state.shot
+        shot.interactions.comments_enable = !shot.interactions.comments_enable
+        this.setState({shot: shot})
+        turnCommentsOnOffAPI(shot.id, null)
+    }
     
     render() {
         // if component not loaded yet return
@@ -284,6 +292,18 @@ export class ShotModalView extends Component {
                                                             <GoReport className="close-btn" />
                                                             <span>Edit Portfolio</span>
                                                         </Link>
+                                                        {this.state.shot.interactions.comments_enable?
+                                                            <div className="r-opt" onClick={this.toggleCommentsSettings}>
+                                                                <FiBellOff className="close-btn" />
+                                                                <span>Turn off comments</span>
+                                                            </div>
+                                                            :
+                                                            <div className="r-opt" onClick={this.toggleCommentsSettings}>
+                                                                <FiBell className="close-btn" />
+                                                                <span>Turn on comments</span>
+                                                            </div>
+                                                        }
+                                                        
 
                                                     </React.Fragment>
                                                     :
@@ -393,7 +413,7 @@ export class ShotModalView extends Component {
 
                             </div>
                             <div className="m-comments">
-                                <ModalComments post_id={this.state.shot.id} displaySideView={this.displaySideView} 
+                                <ModalComments comments_enable={this.state.shot.interactions.comments_enable} post_id={this.state.shot.id} displaySideView={this.displaySideView} 
                                 isAuth={this.state.isAuth} 
                                 currLocation={currLocation} />
                             </div>

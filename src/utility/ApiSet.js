@@ -48,6 +48,11 @@ export const SavePostAPI = (requestBody, callBackFunc) =>{
 
 }
 
+export const turnCommentsOnOffAPI = (pid, callBackFunc) =>{
+    let url = 'api/v1/toggle-comment-settings/'+pid+'/'
+    HTTPRequestHandler.post({url:url, requestBody: {}, includeToken: true, callBackFunc: callBackFunc})
+}
+
 export const RegularShotsAPI = (callBackFunc) =>{
     let url = 'api/v1/regular-shots/'
     HTTPRequestHandler.get({url: url, includeToken:isAuthenticated()?true: false, callBackFunc: callBackFunc })

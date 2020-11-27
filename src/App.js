@@ -20,6 +20,7 @@ import getUserData, { setNotificationHandler } from './utility/userData';
 import InitializeChatHistory from './components/ChatModule/chatUtils';
 import AllFriends from './pages/AllFriends';
 import ForgotPass from './pages/ForgotPass';
+import Store from './GlobalStorage/Store';
 
 export default class App extends Component {
     componentDidMount(){
@@ -60,6 +61,7 @@ function ShotModalUrl() {
     );
     return (
         <React.Fragment>
+        <Store>
         <Switch location={isModal ? previousLocation : location}>
             {/* <Switch location={previousLocation || location}> */}
             <Route exact path="/" component={Landing} />
@@ -82,7 +84,9 @@ function ShotModalUrl() {
             <PrivateRoute exact path="/log-out/" component={LogOutPromptModal} />
             <PrivateRoute exact path="/edit-shot/:id" component={EditPost} />
             <Route exact path="/guidelines" component={CommmunityGuidelines} />
+            
             <Route> <Page404 /> </Route>
+            
         </Switch>
         {isModal
             ? <Route exact path="/shot-view/:id" component={ShotModalView} />
@@ -96,7 +100,7 @@ function ShotModalUrl() {
             ? <Route exact path="/m-auth/" component={LoginModal} />
             : null
         }
-
+        </Store>
         </React.Fragment>
     )
 
