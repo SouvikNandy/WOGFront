@@ -19,7 +19,7 @@ import EditProfile from '../components/Profile/EditProfile';
 import NoContent from '../components/NoContent';
 import OwlLoader from '../components/OwlLoader';
 import HTTPRequestHandler from '../utility/HTTPRequests';
-import {saveInStorage, ControlledEventFire, msToDateTime} from '../utility/Utility';
+import {saveInStorage, ControlledEventFire, msToDateTime, getFrontendHost} from '../utility/Utility';
 import AddPost from '../components/Post/AddPost';
 import { createFloatingNotification } from '../components/FloatingNotifications';
 import { UserFeedsAPI, SavePostAPI, LikePostAPI } from '../utility/ApiSet';
@@ -311,6 +311,8 @@ export function NewsFeedSuggestions (props){
 }
 
 export class NewFeedPalette extends Component{
+    static contextType = Context
+    
     state= {
         feeds:null,
         paginator: null,
@@ -486,6 +488,12 @@ export class NewsFeedPost extends Component{
     feedCommentBox = (eleID) => {
         ControlledEventFire(document.getElementById(eleID), 'click')
     }
+    
+    getPortFolioLink = () =>{
+        let data = this.props.data;
+        
+        return getFrontendHost()+'/shot-view/'+ data.user.username +'-'+ data.id +'-'+ data.attachments[0].id
+    }
 
     render(){
         let pf = this.props.data;
@@ -508,7 +516,9 @@ export class NewsFeedPost extends Component{
                         isAuth={true}
                         savePost={this.props.savePost.bind(this, pf.id)}
                         feedCommentBox={this.feedCommentBox.bind(this, "npf-"+ pf.id )}
-                        responsecounts={pf.interactions} />
+                        responsecounts={pf.interactions}
+                        copyLink={this.getPortFolioLink}
+                        />
                 </div>
                 <div className="nfp-details">
                     <div className="m-display-name" onClick={this.feedCommentBox.bind(this, "npf-"+ pf.id )}>{pf.portfolio_name}</div>

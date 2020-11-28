@@ -15,7 +15,7 @@ import TagUser from '../Profile/TagUser';
 import SideBar from '../SideBar';
 import ReportContent from './ReportContent'
 
-import {msToDateTime, isSelfUser, retrieveFromStorage, isAuthenticated} from '../../utility/Utility'
+import {msToDateTime, isSelfUser, retrieveFromStorage, isAuthenticated, getFrontendHost} from '../../utility/Utility'
 
 import HTTPRequestHandler from '../../utility/HTTPRequests';
 import OwlLoader from '../OwlLoader';
@@ -188,6 +188,11 @@ export class ShotModalView extends Component {
         shot.interactions.comments_enable = !shot.interactions.comments_enable
         this.setState({shot: shot})
         turnCommentsOnOffAPI(shot.id, null)
+    }
+
+    getPortFolioLink = () =>{
+        let data = this.state.shot
+        return getFrontendHost()+'/shot-view/'+ data.user.username +'-'+ data.id +'-'+ data.attachments[0].id
     }
     
     render() {
@@ -409,6 +414,7 @@ export class ShotModalView extends Component {
                                     post_id={this.state.shot.id}
                                     isAuth={this.state.isAuth}
                                     currLocation={currLocation}
+                                    copyLink={this.getPortFolioLink}
                                 />
 
                             </div>

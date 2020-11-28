@@ -1,7 +1,7 @@
 import React from 'react';
 import '../assets/css/landing.css';
 import { Link } from 'react-router-dom';
-import { FaHeart, FaFacebookSquare, FaInstagram, FaYoutubeSquare } from "react-icons/fa";
+import { FaHeart, FaFacebookSquare, FaInstagram, FaYoutube } from "react-icons/fa";
 
 export default function Footer() {
     return (
@@ -17,7 +17,7 @@ export default function Footer() {
                         <div className="social-links">
                             <button className="btn-anc"><FaFacebookSquare className="icons" /></button>
                             <button className="btn-anc"><FaInstagram className="icons" /></button>
-                            <button className="btn-anc"><FaYoutubeSquare className="icons" /></button>
+                            <button className="btn-anc"><FaYoutube className="icons" /></button>
                         </div>
                     </div>
                     <div className="f-mod-2">
