@@ -55,6 +55,45 @@ export function UserFlat(props){
         )
 }
 
+export function UserLogoWithUserName(props){
+    const ele = props.data
+    return(
+            <div className="user-flat-div" >
+                {props.redirectPage === false?
+                <React.Fragment>
+                    <div className="link" key={ele.username}>
+                        {ele.profile_pic?
+                            <img className="tag-img" src={ele.profile_pic} alt={ele.username}/>
+                            :
+                            <FaUserCircle className="tag-img default-user-logo" />
+                        }
+                    </div>
+                    <div className="link m-display-name" >
+                        <div className="head-name">
+                            <span className="main-title">{ele.username}</span> 
+                        </div>
+                    </div>
+                </React.Fragment>
+                :
+                <React.Fragment>
+                    <Link to={{pathname: `/profile/${ele.username}`}} className="link" key={ele.username}>
+                        {ele.profile_pic?
+                            <img className="tag-img" src={ele.profile_pic} alt={ele.username}/>
+                            :
+                            <FaUserCircle className="tag-img default-user-logo" />
+                        }
+                    </Link>
+                    <Link className="link m-display-name" to={{pathname: `/profile/${ele.username}`}}>
+                        <div className="head-name">
+                            <span className="main-title">{ele.username}</span> 
+                        </div>
+                    </Link>
+                </React.Fragment>
+                }
+            </div>
+    )
+}
+
 
 export const FollowUnfollowUser =(ele, callBackFunc)=>{
     FollowRequestAPI(ele.username, {}, callBackFunc)

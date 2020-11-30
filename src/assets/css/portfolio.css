@@ -14,7 +14,13 @@
     flex-direction: column;
     cursor: pointer;
     max-width: 50vw;
+    position: relative;
 
+}
+
+
+.pf-grid .attachment-user-identity{
+    top: 2vh
 }
 
 .pf-container-3 {

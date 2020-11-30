@@ -583,4 +583,284 @@ export function TandCTemplate(){
         </React.Fragment>
     )
 }
+
+
+
+export class ShareDocumentForm extends Component {
+    state = {
+        currUser : getUserData(),
+        // sidebar states
+        showSideView: false,
+        sideBarHead: true,
+        searchBarRequired: false,
+        sideViewContent: [],
+        altHeadText : null,
+
+        // diabled fields
+        disabledFields: [],
+        
+        description: '',
+        taggedMembers: [],
+
+
+    }
+
+    onSubmit =(e) =>{
+        e.preventDefault();
+        if (!document.getElementById("tc-checked").checked === true){
+            createFloatingNotification("error", "You must accept the terms!", "Your can click on Terms and Conditions to know more.")
+            return false
+        }
+        document.getElementById("tc-checked").checked = false
+        let requestBody ={}
+        requestBody["pref"] = this.props.prentPostId
+        if (this.state.description){
+            requestBody["description"] = JSON.stringify(ExtractToJSON(this.state.description))
+        }
+        if (this.state.taggedMembers){
+            requestBody["members"] = this.state.taggedMembers.map(ele=> ele.username)
+        }
+
+        let location = document.getElementById("location").value
+        if(location && location!=="" && location!==this.props.location){
+            requestBody["location"] = location
+        }
+        
+        let url = 'api/v1/add-post/'
+        HTTPRequestHandler.post(
+            {url:url, requestBody: requestBody, includeToken:true, 
+            callBackFunc: this.successfulUpload.bind(this, this.props.onSuccessfulUpload), 
+            errNotifierTitle:"Unable to share !", onUploadProgress:this.onUploadProgress})
+        
+        // close modal and notify user 
+        this.props.showModal();
+    }
+
+    successfulUpload = (successCallBAck, data) =>{
+        if(successCallBAck){
+            successCallBAck(data.data)
+        }
+        createFloatingNotification('success' ,'Shared post can be viewd on your feeds!', data.message);
+
+    }
+
+    displaySideView = ({content, sureVal, altHeadText=null}) =>{
+        let stateVal = !this.state.showSideView
+        // console.log("displaySideView called")
+        if (sureVal){
+            stateVal = sureVal
+        }
+
+        this.setState({
+            showSideView: stateVal,
+            sideBarHead: true,
+            altHeadText: altHeadText,
+            
+
+        })
+
+        if(content){
+            this.setState({
+                sideViewContent: content
+            })
+        }
+
+        // on close clear diabled fields
+        this.clearDisabledFields();
+        if (this.props.sideViewOnChange){
+            this.props.sideViewOnChange(stateVal)
+        }
+        
+    }
+
+    clearDisabledFields = () =>{
+        if (this.state.disabledFields){
+            this.state.disabledFields.map(name =>{
+                document.getElementById(name).disabled = false
+                return name
+            })
+    
+            this.setState({
+                // on close also clear the diasble fields
+                disabledFields: []
+            })
+        } 
+    }
+
+
+    onRemoveMember = (idx, removeTagOnly=false) => {
+        if(removeTagOnly===true){
+            this.setState({
+                taggedMembers: [...this.state.taggedMembers.filter(item => item.id !== idx)],
+            });
+        }
+        else{
+            this.setState({
+                taggedMembers: [...this.state.taggedMembers.filter(item => item.id !== idx)],
+                sideViewContent: [...this.state.sideViewContent.filter(item => item.props.data.id !== idx)]
+            });
+        }
+        
+
+    }
+
+    onChange = (e) => this.setState({
+        [e.target.name]: e.target.value
+
+    });
+    onChangeDescription = (key, val) => this.setState({
+        [key] : val
+    })
+
+    chooseOptions =(fieldID, content) =>{
+        // clear previous disabled
+        this.clearDisabledFields();
+
+        // display content in sidebaer with searchable content 
+        document.getElementById(fieldID).disabled = true;
+        this.setState({
+            showSideView: true,
+            sideBarHead: false,
+            sideViewContent: content,
+            disabledFields: [fieldID],
+        })
+        if (this.props.sideViewOnChange){
+            this.props.sideViewOnChange(true)
+        }
+    }
+
+    tagMembers = (record) =>{
+        this.setState({
+            taggedMembers : [...this.state.taggedMembers, record]
+        })
+
+    }
+
+
+    render() {
+        let memberlist = [];
+        let alltaggedMembers = [];
+        let existingList = [];
+        let maxCouunt = window.innerWidth > 1100? 4: 3;
+        if (this.state.taggedMembers.length > maxCouunt) {
+            alltaggedMembers = this.state.taggedMembers.slice(0, maxCouunt);
+            alltaggedMembers.push("Show All (" + this.state.taggedMembers.length +") ")
+            // add all taggedMembers to show
+            this.state.taggedMembers.map( item =>{
+                existingList.push(<TagUser key={item.id} data={item} onRemoveMember={this.onRemoveMember}/>)
+                return existingList
+                    
+            })
+        }
+        else {
+            alltaggedMembers = this.state.taggedMembers;
+        }
+
+        alltaggedMembers.map(item => {
+
+            if (typeof item === 'string' && item.includes("Show All")) {
+                memberlist.push(
+                    <span className="item-span item-span-anc" key="ShowAll" onClick={this.displaySideView.bind(this, {content:existingList, sureVal: true})}>
+                        {item}
+                    </span>
+                )
+            }
+            else {
+                memberlist.push(
+                    <span className="item-span" key={item.id}>
+                        <span>{item.username}</span>
+                        <AiFillCloseCircle className="close-btn close-img " onClick={this.onRemoveMember.bind(this, item.id, true)} />
+
+                    </span>)
+
+            }
+            return true
+        })
+
+
+        return (
+            <React.Fragment>
+                <div className={this.state.showSideView?"doc-form with-side-width": "doc-form full-width"}>
+                    <form className="img-upload-form" id="img-upload-form">
+                        <section className="doc-head">
+                            <div className="top-logo">
+                                <FaCameraRetro className="cam-logo" />
+                            </div>
+
+                        </section>
+                        <section className="doc-body">
+                            <div className="pf-loc">
+                                
+                                <span className="loc-div">
+                                    <label>Add Location <span className="imp-field"></span></label>
+                                    <input type="text" id="location" name="location" placeholder="Search Location" 
+                                    defaultValue={this.props.location}
+                                    onSelect={this.chooseOptions.bind(
+                                        this, 
+                                        'location',
+                                        <IndianCityList 
+                                            displaySideView={this.displaySideView} searchPlaceHolder={"Find a location ..."} 
+                                            populateOnDestinationID={'location'}
+                                        />
+                                    )}/>
+                                </span>
+                            </div>
+                            
+                            <label>Description</label>
+                            <TextInput  id="description" onChange={this.onChangeDescription.bind(this, 'description')} editorState={this.props.description}/>
+                            <label>Members / Contributes</label>
+                            {this.state.taggedMembers.length > 0 ?
+                                <div className="member-list">
+                                    {memberlist}
+                                </div>
+                                :
+                                ''
+                            }
+                            <input type="text" id="memo" name="memo" placeholder="Search Members / Contributes" 
+                            onSelect={this.chooseOptions.bind(
+                                this, 
+                                'memo',
+                                <FriendList 
+                                    displaySideView={this.displaySideView} searchPlaceHolder={"Search For Friends ..."} 
+                                    populateOnDestinationID={'memo'} tagMembers={this.tagMembers}
+                                    currentTags={this.state.taggedMembers}
+                                    currentTagIDs={this.state.taggedMembers.map(ele => ele.id )}
+                                    onRemoveMember={this.onRemoveMember}
+                                />
+                            )}/>
+                            
+
+                            <div className="check-t-c">
+                                <input type="checkbox" className="check-box" id="tc-checked" />
+                                <span className="t-c-line">I have read and accepted the following 
+                                    <div className="btn-anc t-c-highlight" onClick={this.displaySideView.bind(this, {content: <TandCTemplate />, sureVal: true, altHeadText: "Terms of use"})}> Terms and Conditions</div>
+                                </span>
+                                
+                            </div>
+                        </section>
+                        <section className="doc-btn">
+                            <input type="button"
+                                className="btn cancel-btn" value="Cancel"
+                                onClick={this.props.showModal} />
+                            <input type="submit" className="btn apply-btn" value={"Share"} 
+                            onClick={this.onSubmit}/>
+                        </section>
+                    </form>
+                </div>
+                {this.state.showSideView?
+                <div className="form-side-bar-view side-bar-view-active">
+                    <SideBar displaySideView={this.displaySideView} content={this.state.sideViewContent} 
+                    searchPlaceHolder={this.state.searchPlaceHolder} sideBarHead={this.state.sideBarHead}
+                    searchBarRequired={this.state.searchBarRequired} altHeadText={this.state.altHeadText}/>
+                </div>
+                :
+                <div className="form-side-bar-view"></div>
+                }
+                
+            </React.Fragment >
+        )
+    }
+}
+
+
 export default AddPost;

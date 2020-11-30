@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../../assets/css/portfolio.css';
 import { ShotFooterLikePreview } from '../Post/Shot';
 import { Link } from 'react-router-dom';
+import { UserLogoShared } from '../Post/ShotModalView';
 
 
 export class Portfolio extends Component{
@@ -9,9 +10,11 @@ export class Portfolio extends Component{
         let data = this.props.data;
         let contained = data.attachments.length;
         let redirect_key = data.user.username +'-'+ data.id +'-'+ data.attachments[0].id
+        console.log("portfolio-data", data)
     return(
         <React.Fragment>
             <div className="pf-grid">
+                {data.is_shared_content? <UserLogoShared user={data.user}/>:""}
                 {contained < 5?
                     (contained < 3)?
                         <Link className="pf-container-1" key={data.id} to={{

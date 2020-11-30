@@ -138,6 +138,7 @@
         width: 45vw !important;
         height: 60vh !important;
     }
+
     
 
     .edit-container .modal-imgbox{
@@ -216,9 +217,13 @@
         padding: 0;
     }
 
-    .edit-container-top .modal-imgbox .image-overlay .attachment-counter{
+    .edit-container-top .modal-imgbox .image-overlay .attachment-counter,
+    .attachment-user-identity{
         top: 1rem;
         font-size: 0.6rem;
+    }
+    .attachment-user-identity .user-flat-div .m-display-name{
+        font-size: 0.6rem !important;
     }
 
     .edit-container-top .modal-imgbox .image-overlay .price-counter{

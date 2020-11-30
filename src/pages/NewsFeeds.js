@@ -489,10 +489,15 @@ export class NewsFeedPost extends Component{
         ControlledEventFire(document.getElementById(eleID), 'click')
     }
     
-    getPortFolioLink = () =>{
+    getPortFolioLink = (onlyKey=false) =>{
         let data = this.props.data;
+        if (onlyKey){
+            return data.user.username +'-'+ data.id +'-'+ data.attachments[0].id
+        }
+        else{
+            return getFrontendHost()+'/shot-view/'+ data.user.username +'-'+ data.id +'-'+ data.attachments[0].id
+        }
         
-        return getFrontendHost()+'/shot-view/'+ data.user.username +'-'+ data.id +'-'+ data.attachments[0].id
     }
 
     render(){
@@ -517,6 +522,7 @@ export class NewsFeedPost extends Component{
                         savePost={this.props.savePost.bind(this, pf.id)}
                         feedCommentBox={this.feedCommentBox.bind(this, "npf-"+ pf.id )}
                         responsecounts={pf.interactions}
+                        currLocation={this.props.currLocation}
                         copyLink={this.getPortFolioLink}
                         />
                 </div>

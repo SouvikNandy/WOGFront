@@ -10,7 +10,7 @@ import {GoReport} from "react-icons/go";
 import ModalLikes from './ModalLikes';
 import ModalComments from './ModalComments';
 import GoBack from "../GoBack";
-import { UserFlat } from '../Profile/UserView';
+import { UserFlat, UserLogoWithUserName } from '../Profile/UserView';
 import TagUser from '../Profile/TagUser';
 import SideBar from '../SideBar';
 import ReportContent from './ReportContent'
@@ -190,9 +190,14 @@ export class ShotModalView extends Component {
         turnCommentsOnOffAPI(shot.id, null)
     }
 
-    getPortFolioLink = () =>{
+    getPortFolioLink = (onlyKey=false) =>{
         let data = this.state.shot
-        return getFrontendHost()+'/shot-view/'+ data.user.username +'-'+ data.id +'-'+ data.attachments[0].id
+        if (onlyKey){
+            return data.user.username +'-'+ data.id +'-'+ data.attachments[0].id
+        }
+        else{
+            return getFrontendHost()+'/shot-view/'+ data.user.username +'-'+ data.id +'-'+ data.attachments[0].id
+        }
     }
     
     render() {
@@ -556,6 +561,7 @@ export class ImageSlider extends Component{
                         <div className="slide-middle-view"></div>
                         <AiFillRightCircle className ="slide-btn" onClick={this.getNextShot}/>
                         <div className="attachment-counter">{this.state.currIndex + 1}/{this.props.attachments.length}</div>
+                        {this.props.showUser? <UserLogoShared user={this.props.showUser}/>: ""}
                         {this.props.pricingContainer?
                             this.props.pricingContainer.hasOwnProperty(this.state.currIndex + 1)?
                                 <div className="price-counter"><span className="rupee-sym">&#8377;</span> {this.props.pricingContainer[this.state.currIndex + 1]}</div>
@@ -609,5 +615,11 @@ export class ImageSlider extends Component{
     }
 }
 
+
+export const UserLogoShared = ({user}) =>{
+    return(
+        <div className="attachment-user-identity"><UserLogoWithUserName key={user.username} data={user}/></div>
+    )
+}
 
 export default ShotModalView;

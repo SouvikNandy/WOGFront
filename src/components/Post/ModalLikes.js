@@ -11,6 +11,7 @@ import {IoInfiniteSharp} from "react-icons/io5";
 import LikedBy from './LikedBy';
 import { Redirect } from 'react-router-dom';
 import { createFloatingNotification } from '../FloatingNotifications';
+import { Link } from 'react-router-dom';
 
 const ModalLikes = (props) => {
     const [redirectAction, redirectToSignin] = useState(false)
@@ -43,7 +44,15 @@ const ModalLikes = (props) => {
                     {shareOptions?
                         <div className="share-opt">
                             <div className="s-opt" onClick={()=>CopyStringToClipboard(props.copyLink())}><AiFillCopy className="s-icons"/><span>Copy Link</span></div>
-                            <div className="s-opt"><IoMdShareAlt className="s-icons"/><span>Share</span></div>
+                            <Link className="link s-opt" onClick={()=>showShareOptions(!shareOptions)}
+                            to={{
+                                pathname: `/share-shot/${props.copyLink(true)}`,
+                                // This is the trick! This link sets
+                                // the `background` in location state.
+                                state: { modal: true, currLocation: props.currLocation }
+                            }}
+                            
+                            ><IoMdShareAlt className="s-icons"/><span>Share</span></Link>
                         </div>
                         :
                         ""
