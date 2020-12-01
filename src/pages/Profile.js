@@ -602,9 +602,11 @@ export default class Profile extends Component {
                             }
                             let data ={
                                 id: ele.id, name: portfolio.user.name, username: portfolio.user.username, content: ele.content, 
-                                interactions: portfolio.interactions, portfolio_id: portfolio.id, price : price
+                                interactions: portfolio.interactions, portfolio_id: portfolio.id, price : price,
+                                is_shared_content: portfolio.is_shared_content, 
+                                actual_post:  portfolio.is_shared_content?  portfolio.actual_post: {}
                             }
-                            resultList.push(<Shot key={data.id} id={data.id} onlyShot={true} 
+                            resultList.push(<Shot key={data.id+generateId()} id={data.id} onlyShot={true} 
                                 data={data} currLocation={this.props.location} />)
                             return ele
                         })
@@ -615,8 +617,8 @@ export default class Profile extends Component {
                         resultList = this.padLoaderShot(resultList)
                     }
                     return(
-                        <React.Fragment key={item.title}>
-                            <div key={item.title} className="profile-shots">
+                        <React.Fragment key={item.title+generateId()}>
+                            <div className="profile-shots">
                                 {resultList}
                                 {this.state.isSelf?
                                 <AddPost onSuccessfulUpload={this.addNewPortfolioToState} />

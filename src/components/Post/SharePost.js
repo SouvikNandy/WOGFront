@@ -6,14 +6,18 @@ import OwlLoader from '../OwlLoader';
 import HTTPRequestHandler from '../../utility/HTTPRequests';
 import {ShareDocumentForm} from './AddPost';
 import { withRouter, Redirect } from 'react-router-dom';
+import { createFloatingNotification } from '../FloatingNotifications';
 
 
 export class SharePost extends Component {
     state ={
         shot: null,
-        showSideView : false
+        showSideView : false,
+        portfolioDeleted: false,
+        isEditing: false
     }
     componentDidMount(){
+        console.log("path", this.props.path)
         let param = this.props.match.params.id
         param = param.split("-");
         let username = param[0]
@@ -24,7 +28,8 @@ export class SharePost extends Component {
     }
 
     updateStateOnAPIcall = (data) =>{
-        this.setState({shot: data.data })
+        let isEditing = this.props.path.startsWith("/edit")?true: false
+        this.setState({shot: data.data, isEditing:isEditing })
     }
 
     activeSideView = (stateVal) =>{
@@ -34,6 +39,19 @@ export class SharePost extends Component {
         // e.stopPropagation();
         this.props.history.goBack()
     }
+
+    deletePortfolio =()=>{
+        let url = 'api/v1/add-post/?pid='+this.state.shot.id;
+        HTTPRequestHandler.delete(
+            {url:url, includeToken: true, callBackFunc: this.succesOnDelete, })
+        createFloatingNotification('warning', 'portfolio getting deleted!', "Your portfolio will be deleted soon")
+    }
+    succesOnDelete = (data) =>{
+        // portfolio deleted
+        this.setState({portfolioDeleted: true})
+        createFloatingNotification('success', "Portfolio deleted", data.message)
+    }
+    
 
     render() {
         if(this.state.portfolioDeleted){
@@ -48,7 +66,7 @@ export class SharePost extends Component {
                 )
         }
 
-        console.log("state", this.state.shot)
+        // console.log("state", this.state.shot)
         let prentPostId = this.state.shot.is_shared_content?this.state.shot.actual_post.id: this.state.shot.id
         
         return (
@@ -57,11 +75,15 @@ export class SharePost extends Component {
                     <div className={this.state.showSideView?"edit-container edit-container-resize": "edit-container"} >
                         <div className={this.state.showSideView?"edit-container-top-hide": "edit-container-top"}>
                             <div className="modal-imgbox modal-imgbox-fullwidth">
-                                <ImageSlider attachments={this.state.shot.attachments} actionBtn={false} showUser={this.state.shot.user}/>
+                                <ImageSlider attachments={this.state.shot.attachments} actionBtn={this.state.isEditing?true:false} showUser={this.state.shot.user}
+                                deletePortfolio={this.deletePortfolio}/>
                             </div>
                         </div>
                         <div className={this.state.showSideView?"edit-container-bottom edit-container-bottom-resize": "edit-container-bottom"}>
-                            <ShareDocumentForm sideViewOnChange={this.activeSideView} showModal={this.gotoPrev} prentPostId={prentPostId}/>
+                            <ShareDocumentForm sideViewOnChange={this.activeSideView} showModal={this.gotoPrev} prentPostId={prentPostId}
+                            description={this.state.isEditing?this.state.shot.description:""} members={this.state.isEditing?this.state.shot.members:[]}
+                            location={this.state.isEditing?this.state.shot.location:""} isEditing={this.state.isEditing} portfolio_id={this.state.shot.id}
+                            />
                         </div>
                     </div>
                 </div>

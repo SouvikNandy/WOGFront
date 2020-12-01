@@ -43,6 +43,7 @@ export class SocketInterface{
     }
 
     sendMessage = (message, callBack) =>{
+        console.log("message before send", message)
         this.socket.emit('message', message, callBack);
     }
 

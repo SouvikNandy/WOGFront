@@ -605,6 +605,12 @@ export class ShareDocumentForm extends Component {
 
     }
 
+    componentDidMount(){
+        if (this.props.members){
+            this.setState({taggedMembers: this.props.members})
+        }
+    }
+
     onSubmit =(e) =>{
         e.preventDefault();
         if (!document.getElementById("tc-checked").checked === true){
@@ -613,7 +619,7 @@ export class ShareDocumentForm extends Component {
         }
         document.getElementById("tc-checked").checked = false
         let requestBody ={}
-        requestBody["pref"] = this.props.prentPostId
+        
         if (this.state.description){
             requestBody["description"] = JSON.stringify(ExtractToJSON(this.state.description))
         }
@@ -627,20 +633,30 @@ export class ShareDocumentForm extends Component {
         }
         
         let url = 'api/v1/add-post/'
-        HTTPRequestHandler.post(
-            {url:url, requestBody: requestBody, includeToken:true, 
-            callBackFunc: this.successfulUpload.bind(this, this.props.onSuccessfulUpload), 
-            errNotifierTitle:"Unable to share !", onUploadProgress:this.onUploadProgress})
+
+        if(this.props.isEditing){
+            requestBody["portfolio_id"]= this.props.portfolio_id
+            HTTPRequestHandler.put(
+                {url:url, requestBody: requestBody, includeToken:true, 
+                callBackFunc: this.successfulUpload.bind(this, "Post updated!"), 
+                errNotifierTitle:"Unable to share !"})
+
+        }
+        else{
+            requestBody["pref"] = this.props.prentPostId
+            HTTPRequestHandler.post(
+                {url:url, requestBody: requestBody, includeToken:true, 
+                callBackFunc: this.successfulUpload.bind(this, 'Shared post can be viewd on your feeds!'), 
+                errNotifierTitle:"Unable to share !"})
+
+        }
         
         // close modal and notify user 
         this.props.showModal();
     }
 
-    successfulUpload = (successCallBAck, data) =>{
-        if(successCallBAck){
-            successCallBAck(data.data)
-        }
-        createFloatingNotification('success' ,'Shared post can be viewd on your feeds!', data.message);
+    successfulUpload = (successMsg, data) =>{
+        createFloatingNotification('success' ,successMsg, data.message);
 
     }
 
@@ -842,7 +858,7 @@ export class ShareDocumentForm extends Component {
                             <input type="button"
                                 className="btn cancel-btn" value="Cancel"
                                 onClick={this.props.showModal} />
-                            <input type="submit" className="btn apply-btn" value={"Share"} 
+                            <input type="submit" className="btn apply-btn" value={this.props.isEditing?"Update":"Share"} 
                             onClick={this.onSubmit}/>
                         </section>
                     </form>

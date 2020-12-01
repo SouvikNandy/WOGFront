@@ -28,9 +28,35 @@ input:focus, textarea:focus, select:focus{
   cursor: pointer;
 }
 
+.add-attachments{
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+  cursor: pointer;
+  position: relative;
+}
+
+.add-attachments .add-attachments-text{
+  /* position: absolute; */
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+.add-attachments .add-shot-input{
+  opacity: 0;
+  width: 100%;
+  position: absolute;
+}
+
 .send-button .send-circle .send-icon{
   font-size: 1.6rem;
-  font-size: bold;
+  font-weight: bold;
   padding: 0.2rem;
 }
 

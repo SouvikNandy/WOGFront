@@ -85,6 +85,7 @@ function ShotModalUrl() {
             <PrivateRoute exact path="/log-out/" component={LogOutPromptModal} />
             <PrivateRoute exact path="/edit-shot/:id" component={EditPost} />
             <PrivateRoute exact path="/share-shot/:id" component={SharePost} />
+            <PrivateRoute exact path="/edit-shared/:id" component={SharePost} />
             <Route exact path="/guidelines" component={CommmunityGuidelines} />
             
             <Route> <Page404 /> </Route>
@@ -100,6 +101,10 @@ function ShotModalUrl() {
         }
         {isModal
             ? <PrivateRoute exact path="/share-shot/:id" component={SharePost} />
+            : null
+        }
+        {isModal
+            ? <PrivateRoute exact path="/edit-shared/:id" component={SharePost} />
             : null
         }
         {isModal

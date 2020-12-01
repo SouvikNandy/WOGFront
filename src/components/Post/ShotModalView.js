@@ -49,7 +49,13 @@ export class ShotModalView extends Component {
         let [username, portfolio_id, shot_id] = param.split("-");
         // get portfolio details
         let url = "api/v1/view-post/" + username + '/?q='+portfolio_id+'&r='+ window.innerWidth
-        HTTPRequestHandler.get({url:url, includeToken:isAuthenticated(), callBackFunc: this.updateStateOnAPIcall.bind(this, shot_id, username)})
+        HTTPRequestHandler.get({url:url, includeToken:isAuthenticated(), 
+            callBackFunc: this.updateStateOnAPIcall.bind(this, shot_id, username),
+            errCallBackFunc: this.onErrCallBack.bind(this, username)
+        })
+    }
+    onErrCallBack = (username, err) =>{
+        this.props.history.goBack();
     }
 
     getShotData = () =>{
@@ -129,7 +135,7 @@ export class ShotModalView extends Component {
     }
 
     displaySideView = ({content, sureVal, altHeadText=null}) =>{
-        console.log("displaySideView evoked", content, sureVal)
+        // console.log("displaySideView evoked", content, sureVal)
         let stateVal = !this.state.showSideView
         if (sureVal){
             stateVal = sureVal
@@ -266,7 +272,6 @@ export class ShotModalView extends Component {
 
         }
         
-
         return (
             <React.Fragment>
                 
@@ -293,7 +298,7 @@ export class ShotModalView extends Component {
                                                     <React.Fragment>
                                                         <Link className="link r-opt"
                                                         to={{
-                                                            pathname: `/edit-shot/${this.props.match.params.id}`,
+                                                            pathname: this.state.shot.is_shared_content?`/edit-shared/${this.props.match.params.id}`: `/edit-shot/${this.props.match.params.id}`,
                                                             // This is the trick! This link sets
                                                             // the `background` in location state.
                                                             state: { modal: true, currLocation: currLocation }
@@ -358,7 +363,8 @@ export class ShotModalView extends Component {
                             </div>
                             {/* preview image */}
                             <ImageSlider attachments={this.state.shot.attachments} selected_shot_id={this.state.selected_shot_id} 
-                            pricingContainer={this.state.shot.pricing_container}/>
+                            pricingContainer={this.state.shot.pricing_container} 
+                            showUser={this.state.shot.is_shared_content?this.state.shot.actual_post: false}/>
 
                             <div className="m-img-attribute fade-up">
                                 <span className="p-attr-name">
@@ -583,16 +589,30 @@ export class ImageSlider extends Component{
                     </div>
                 </div>
                 {this.props.actionBtn?
-                <div className="btn-space">
-                    <div className="btn">
-                        <span className="add-shot-text">Add Shot</span>
-                        <input type="file" className="add-shot-input" onChange={this.props.addShot} />
+                    
+                    <div className="btn-space">
+                        {this.props.addShot?
+                            <div className="btn">
+                                <span className="add-shot-text">Add Shot</span>
+                                <input type="file" className="add-shot-input" onChange={this.props.addShot} />
+                            </div>
+                            :
+                            ""
+                        }
+                        {this.props.deleteShot?
+                        <button className="btn" onClick={this.activateDeletePopup.bind(this, this.deleteShot)}>Remove Shot</button>
+                        :
+                        ""
+                        }
+                        {this.props.deletePortfolio?
+                        <button className="btn" onClick={this.activateDeletePopup.bind(this, this.deletePortfolio)}>Remove Portfolio</button>
+                        :
+                        ""
+                        }
+                        
                     </div>
-                    <button className="btn" onClick={this.activateDeletePopup.bind(this, this.deleteShot)}>Remove Shot</button>
-                    <button className="btn" onClick={this.activateDeletePopup.bind(this, this.deletePortfolio)}>Remove Portfolio</button>
-                </div>
-                :
-                ""
+                    :
+                    ""
                 }
                 {this.state.deletePopup?
                 <div className="user-input-popup-container">

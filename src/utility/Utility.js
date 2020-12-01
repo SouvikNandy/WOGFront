@@ -342,6 +342,30 @@ export const SortByCreatedTimeASC = (a, b) =>{
     return comparison
 }
 
+
+export const convertImagetoBinary =(blob, callBackFunc) =>{
+    console.log("blob", blob, "callBackFunc", callBackFunc)
+    let reader = new FileReader();
+    reader.readAsDataURL(blob); 
+    reader.onloadend = function() {
+    let base64data = reader.result;
+    callBackFunc(base64data);
+    // console.log(base64data);
+    }
+}
+
+export const BinaryToBlob =(binaryData, dataType)=>{
+    let byteString = atob(binaryData.split(',')[1]);
+    let ab = new ArrayBuffer(byteString.length);
+    let ia = new Uint8Array(ab);
+
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: dataType });
+
+}
+
 export default {
     isSelfUser,
     generateId,

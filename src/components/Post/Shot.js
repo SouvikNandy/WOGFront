@@ -10,6 +10,7 @@ import Paginator from '../../utility/Paginator';
 import OwlLoader from '../OwlLoader';
 import { isAuthenticated } from '../../utility/Utility';
 import { defaultProfilePic } from '../../utility/userData';
+import { UserLogoShared } from './ShotModalView';
 
 export class ShotPalette extends Component {
     state = {
@@ -150,6 +151,8 @@ export class Shot extends Component {
         return (
             <React.Fragment>
                 <div className={shotClass}>
+                    {data.is_shared_content?<UserLogoShared user={data.actual_post}/>:""}
+                    
                     <Link className="sp-img"
                         key={data.id}
                         to={{

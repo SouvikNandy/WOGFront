@@ -12,6 +12,7 @@ import { ChatTime, generateId, GetCookie, retrieveFromStorage, saveInStorage, Se
 import { FaShare } from 'react-icons/fa';
 import { GetChatHistory, GetOpenChats, StoreChat, UpdateOpenChat, GetChatHistoryPaginator, SetChatHistoryPaginator, GetChatRoomName } from '../ChatModule/chatUtils';
 import Paginator from '../../utility/Paginator';
+import {HiOutlinePhotograph} from 'react-icons/hi'
 
 export class RecentFriends extends Component {
     state = {
@@ -405,6 +406,7 @@ export class RecentChats extends Component{
                 <div className="new-friends-container chat-user-container">
                     {this.state.output.sort(SortByUpdatedTimeDESC).map(ele =>{
                         let chatEle = ele.chats[ele.chats.length -1]
+                        // console.log("chatEle", chatEle)
                         let created_at = ele.last_updated
                         let altText = ""
                         
@@ -412,10 +414,25 @@ export class RecentChats extends Component{
                             altText = <span className="suggested-text">Send hi, start a conversation</span>
                         }
                         else if(chatEle.user===this.state.currUser){
-                            altText = <span className="sent-text"><FaShare className="self-sent"/> {chatEle.text}</span>
+                            altText = <span className="sent-text">
+                                <FaShare className={ele.seen_by.filter(ele=> ele!==this.state.currUser).length> 0? "self-sent seen-sent": "self-sent"}/> {
+                                chatEle.attachment? 
+                                <React.Fragment>
+                                    <HiOutlinePhotograph className="chat-attachment-identifier" /> 
+                                    <span>Image</span>
+                                </React.Fragment>
+                                 :chatEle.text
+                                }</span>
                         }
                         else{
-                            altText = <span className="sent-text">{chatEle.text}</span>
+                            altText = <span className="sent-text">{
+                                chatEle.attachment? 
+                                <React.Fragment>
+                                    <HiOutlinePhotograph className="chat-attachment-identifier" /> 
+                                    <span>Image</span>
+                                </React.Fragment>
+                                 :chatEle.text
+                                 }</span>
                         }
 
                         let is_seen = ele.seen_by.includes(this.state.currUser)

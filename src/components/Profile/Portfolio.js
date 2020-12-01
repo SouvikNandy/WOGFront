@@ -10,11 +10,10 @@ export class Portfolio extends Component{
         let data = this.props.data;
         let contained = data.attachments.length;
         let redirect_key = data.user.username +'-'+ data.id +'-'+ data.attachments[0].id
-        console.log("portfolio-data", data)
     return(
         <React.Fragment>
             <div className="pf-grid">
-                {data.is_shared_content? <UserLogoShared user={data.user}/>:""}
+                {data.is_shared_content? <UserLogoShared user={data.actual_post}/>:""}
                 {contained < 5?
                     (contained < 3)?
                         <Link className="pf-container-1" key={data.id} to={{
