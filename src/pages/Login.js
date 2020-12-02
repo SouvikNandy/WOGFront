@@ -55,7 +55,7 @@ export class LoginModal extends Component{
     render(){
         // console.log("LoginModal", this.props)
         return(
-        <div className="modal-container">
+        <div className={this.props.location.state?"modal-container":"modal-container bg-dark"}>
             <div className="login-container">
                 <AiFillCloseCircle className="close-btn close-container" onClick={this.gotoPrev}/>
                 {this.state.signInPage?

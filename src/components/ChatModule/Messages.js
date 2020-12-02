@@ -63,14 +63,16 @@ const Message = ({ message, name, is_seen, viewImageFullSize }) => {
     if(!text && !user){
         return(<div className="empty-message"><span>Send hi, start a conversation</span></div>)
     }
-  
+    
+    let messageBoxPrefix = message.attachment?" messageBox-transaparent": ""
+    let messageTextPrefix = message.attachment && text? isSentByCurrentUser?" messageText-Highlight backgroundBlue": " messageText-Highlight backgroundLight": ""
     return (
         isSentByCurrentUser? 
         (
             <React.Fragment>
                 <div className="messageContainer justifyEnd">
                     <span className="sentText pr-10">{created_at?ChatTime(created_at): ChatTime(getCurrentTimeInMS())}</span>
-                    <div className="messageBox backgroundBlue">
+                    <div className={"messageBox backgroundBlue"+messageBoxPrefix}>
                         {message.attachment?
 
                         <img className="messageImg" 
@@ -78,7 +80,7 @@ const Message = ({ message, name, is_seen, viewImageFullSize }) => {
                         onClick={()=>viewImageFullSize(message.attachment, message.attachmentType) }
                         />:""
                         }
-                        <span className="messageText colorWhite">{ReactEmoji.emojify(text)}</span>
+                        <span className={"messageText colorWhite"+messageTextPrefix}>{ReactEmoji.emojify(text)}</span>
                     </div>
                 </div>
 
@@ -87,14 +89,14 @@ const Message = ({ message, name, is_seen, viewImageFullSize }) => {
         : 
         (
             <div className="messageContainer justifyStart">
-                <div className="messageBox backgroundLight">
+                <div className={"messageBox backgroundLight"+messageBoxPrefix}>
                     {message.attachment?
                         <img className="messageImg" 
                         alt="" src={URL.createObjectURL(BinaryToBlob(message.attachment, message.attachmentType))}
                         onClick={()=>viewImageFullSize(message.attachment, message.attachmentType)}
                         />:""
                     }
-                    <p className="messageText colorDark">{ReactEmoji.emojify(text)}</p>
+                    <p className={"messageText colorDark"+messageTextPrefix}>{ReactEmoji.emojify(text)}</p>
                 </div>
                 <span className="sentText pl-10 ">{created_at?ChatTime(created_at): ChatTime(getCurrentTimeInMS())}</span>
             </div>

@@ -155,7 +155,7 @@
 .chat-attachment-preview .chat-attach-img{
   height: 75%;
   width: 75%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .chat-attachment-preview .remove-attach-img{

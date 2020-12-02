@@ -45,6 +45,7 @@ export class ShotModalView extends Component {
     }
 
     componentDidMount(){
+        // console.log("ShotModalView", this.props)
         let param = this.props.match.params.id
         let [username, portfolio_id, shot_id] = param.split("-");
         // get portfolio details
@@ -216,9 +217,12 @@ export class ShotModalView extends Component {
         catch{
             currLocation = this.props.location
         }
+
+        let classNamePrefix = this.props.location.state?"bg-modal" : "bg-modal bg-dark"
+
         if(!this.state.shot){
             return(
-                <div className="bg-modal full-width"><OwlLoader /></div>
+                <div className={classNamePrefix+" full-width"}><OwlLoader /></div>
                 )
         }
         let maxCount = window.innerWidth > 700? 3: 2;
@@ -271,11 +275,12 @@ export class ShotModalView extends Component {
             }
 
         }
+
         
         return (
             <React.Fragment>
                 
-                <div className={this.state.showSideView?"bg-modal with-side-width": "bg-modal full-width"}>
+                <div className={this.state.showSideView? classNamePrefix+" with-side-width": classNamePrefix+" full-width"}>
                 
                     <div className={this.state.showSideView?"modal-content-grid modal-grid-only-img": "modal-content-grid"}>
                         {/* Modal Image */}

@@ -125,15 +125,16 @@ export class EditPost extends Component {
                 state: {rerender: 'Shots'}
          }} />
         }
+        let classNamePrefix = this.props.location.state?"bg-modal" : "bg-modal bg-dark"
         if(!this.state.shot){
             return(
-                <div className="bg-modal full-width"><OwlLoader /></div>
+                <div className={classNamePrefix+" full-width"}><OwlLoader /></div>
                 )
         }
         
         return (
             <React.Fragment>
-                <div className={this.state.showSideView?"bg-modal with-side-width": "bg-modal full-width"}>
+                <div className={this.state.showSideView?classNamePrefix+" with-side-width": classNamePrefix+" full-width"}>
                     <div className={this.state.showSideView?"edit-container edit-container-resize": "edit-container"} >
                         <div className={this.state.showSideView?"edit-container-top-hide": "edit-container-top"}>
                             <div className="modal-imgbox">

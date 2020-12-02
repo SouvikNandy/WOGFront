@@ -6,12 +6,13 @@ import { FaHeart, FaRegEye, FaRegHeart, FaRegComment } from "react-icons/fa";
 // import { FiSend} from "react-icons/fi";
 import {BsBookmarkPlus, BsBookmarkFill} from "react-icons/bs";
 import {AiFillCopy} from "react-icons/ai";
-import {IoMdShareAlt} from "react-icons/io";
+import {RiShareFill} from "react-icons/ri";
 import {IoInfiniteSharp} from "react-icons/io5";
 import LikedBy from './LikedBy';
 import { Redirect } from 'react-router-dom';
 import { createFloatingNotification } from '../FloatingNotifications';
 import { Link } from 'react-router-dom';
+import { FiSend } from 'react-icons/fi';
 
 const ModalLikes = (props) => {
     const [redirectAction, redirectToSignin] = useState(false)
@@ -52,7 +53,8 @@ const ModalLikes = (props) => {
                                 state: { modal: true, currLocation: props.currLocation }
                             }}
                             
-                            ><IoMdShareAlt className="s-icons"/><span>Share</span></Link>
+                            ><RiShareFill className="s-icons"/><span>Share</span></Link>
+                            <div className="link s-opt"><FiSend className="s-icons"/>Send To</div>
                         </div>
                         :
                         ""

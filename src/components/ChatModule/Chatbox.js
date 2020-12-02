@@ -248,8 +248,9 @@ export class Chatbox extends Component {
         if(this.socket) this.socket.leaveRoom(getUserData().username)
         let roomData = this.context[0][this.state.sockRoom]
         if(this.props.onUnmount && roomData) {
-            roomData.chats = [roomData.chats[roomData.chats.length -1]]
-            this.props.onUnmount(this.state.sockRoom, roomData)
+            let ourData = {...roomData}
+            ourData.chats = [roomData.chats[roomData.chats.length -1]]
+            this.props.onUnmount(this.state.sockRoom, ourData)
         }
     }
 

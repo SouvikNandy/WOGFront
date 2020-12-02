@@ -7,6 +7,7 @@ import HTTPRequestHandler from '../../utility/HTTPRequests';
 import {ShareDocumentForm} from './AddPost';
 import { withRouter, Redirect } from 'react-router-dom';
 import { createFloatingNotification } from '../FloatingNotifications';
+import SearchBar from '../Search/SearchBar';
 
 
 export class SharePost extends Component {
@@ -60,9 +61,10 @@ export class SharePost extends Component {
                 state: {rerender: 'Shots'}
          }} />
         }
+        let classNamePrefix = this.props.location.state?"bg-modal" : "bg-modal bg-dark"
         if(!this.state.shot){
             return(
-                <div className="bg-modal full-width"><OwlLoader /></div>
+                <div className={classNamePrefix+" full-width"}><OwlLoader /></div>
                 )
         }
 
@@ -71,7 +73,7 @@ export class SharePost extends Component {
         
         return (
             <React.Fragment>
-                <div className={this.state.showSideView?"bg-modal with-side-width": "bg-modal full-width"}>
+                <div className={this.state.showSideView?classNamePrefix+" with-side-width": classNamePrefix+" full-width"}>
                     <div className={this.state.showSideView?"edit-container edit-container-resize": "edit-container"} >
                         <div className={this.state.showSideView?"edit-container-top-hide": "edit-container-top"}>
                             <div className="modal-imgbox modal-imgbox-fullwidth">
@@ -91,6 +93,27 @@ export class SharePost extends Component {
             </React.Fragment>
         )
     }
+}
+
+
+export class SendAsMessage extends Component{
+    state ={
+        text: '',
+        
+    }
+    render(){
+        return(
+            <React.Fragment>
+                <div className="friends-search">
+                    <SearchBar className="srch-bar" searchPlaceHolder={"Search friends ..."} 
+                        focusSearchBar ={false}
+                        searchOnChange={this.findFriends}/>
+                </div>
+            </React.Fragment>
+        )
+    }
+
+
 }
 
 export default withRouter(SharePost);

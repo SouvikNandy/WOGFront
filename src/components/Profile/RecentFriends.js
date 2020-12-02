@@ -235,7 +235,6 @@ export class RecentFriends extends Component {
 }
 
 export class RecentChats extends Component{
-    static contextType = Context
     state = {
         allChats: null,
         apiFetchedChats: null,

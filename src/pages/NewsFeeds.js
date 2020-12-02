@@ -296,7 +296,6 @@ export function NewsFeedSuggestions (props){
                             <h4>Say Hi</h4>
                             <span className="s-tag">Send hi, start a conversation</span>
                         </div>
-                        {/* <RecentFriendsPallette /> */}
                         <RecentFriends />
                     </div>
 
