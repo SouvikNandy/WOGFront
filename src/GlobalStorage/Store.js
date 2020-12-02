@@ -7,6 +7,7 @@ const initialState = {
     posts: [],
     user_data: null,
     error: null,
+    // also chat data to be stored dynamically
 
 };
 

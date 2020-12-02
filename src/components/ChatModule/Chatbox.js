@@ -1,18 +1,19 @@
 import React, { Component } from 'react'
 import SocketInterface from '../../utility/SocketInterface'
 import getUserData from '../../utility/userData'
-import { BinaryToBlob, convertImagetoBinary, generateId, getCurrentTimeInMS, isAuthenticated } from '../../utility/Utility'
+import { BinaryToBlob, checkNotEmptyObject, convertImagetoBinary, generateId, getCurrentTimeInMS, isAuthenticated } from '../../utility/Utility'
 import InfoBar, { InfoImage } from './InfoBar'
 import Input from './Input'
 import Messages from './Messages'
 import '../../assets/css/ChatModule/chatbox.css'
-import { AppendChatBlock, GetChatRoomName, GetPreviousChats, GetRoomTextPaginator, SetRoomTextPaginator, StoreChat, StoreChatBlock, UpdateSeenChat } from './chatUtils'
+import { GetChatRoomName, GetRoomTextPaginator, SetRoomTextPaginator } from './chatUtils'
 import { RoomMessagesAPI } from '../../utility/ApiSet'
 import Paginator from '../../utility/Paginator'
 import ImgCompressor from '../../utility/ImgCompressor'
+import { Context } from '../../GlobalStorage/Store'
 
 /* 
-we are goin gto maintain a chatHistory in localstorage
+we are going to maintain a chatHistory in localstorage
 ChatHistory will contain last 8 chat room details with last 10 chat messages of each room.
 the structure is as follows
 
@@ -25,6 +26,7 @@ chatHistory : [
 
 
 export class Chatbox extends Component {
+    static contextType = Context
     socket = null
     state ={
         sockRoom: '',
@@ -57,7 +59,7 @@ export class Chatbox extends Component {
             this.socket.receiveMessage(message => {
                 if ('seen_alert' in message){
                     // update room as seen
-                    UpdateSeenChat(message["room"])
+                    this.UpdateSeenChat(message["room"], message["seen_by"])
                     this.setState({is_seen: true})
 
                 }
@@ -69,10 +71,24 @@ export class Chatbox extends Component {
                         }
                         return ele
                     })
+
+                    let updatedMessaes = [ ...this.state.allMessage, message ]
+                    let seen_by = message.seen_by
+                    
                     this.setState({allMessage : [ ...this.state.allMessage, message ], is_seen: is_seen});
-                    StoreChat(message, sockRoom, this.props.chatBoxUser, message.seen_by, message.last_updated);
-                }
+                    
+                    // update global data
+                    let roomData = this.context[0][sockRoom]
+                    if( roomData){
+                        roomData.chats = updatedMessaes 
+                        roomData.seen_by.concat(seen_by)
+                        roomData.last_updated = getCurrentTimeInMS()
+                        // update global data
+                        // console.log("received",this.props.chatBoxUser.username,  is_seen, roomData.seen_by)
+                        this.updateGlobalChatRoomData(roomData)
+                    }
                 
+                }    
             });
             this.socket.roomUser(()=>{});
         }
@@ -86,11 +102,19 @@ export class Chatbox extends Component {
        let currTime = getCurrentTimeInMS()
        if (!rommPaginator || !rommPaginator.last_updated || currTime - rommPaginator.last_updated >=900){
             RoomMessagesAPI(sockRoom, this.UpdateOnAPICall.bind(this, sockRoom, sockUser))
+            // console.log("Call from Backend")
        }
        else{
-            let [existingChats, seen_by] = GetPreviousChats(sockRoom, this.props.chatBoxUser)
+            let prevChatRecord = this.context[0][sockRoom]
+            let existingChats = []
+            let seen_by = []
+            if(checkNotEmptyObject(prevChatRecord)){
+                existingChats = prevChatRecord.chats
+                seen_by = prevChatRecord.seen_by
+            }
             
-            // console.log("chat records", seen_by)
+            // console.log("Call from previous chat", prevChatRecord)
+
             this.setState({
                 sockUser: sockUser, sockRoom: sockRoom, allMessage: existingChats, 
                 // seen_by: seen_by, 
@@ -101,10 +125,11 @@ export class Chatbox extends Component {
         }
     }
 
+
     UpdateOnAPICall = (sockRoom, sockUser, data) =>{
         // paginated response
         let paginator = data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null
-        console.log("data", data.seen_by.filter(ele=> ele!==sockUser).length> 0? true : false)
+        // console.log("data",data.seen_by, data.seen_by.filter(ele=> ele!==sockUser).length> 0? true : false)
         this.setState({
             sockUser: sockUser, 
             sockRoom: sockRoom,
@@ -115,7 +140,26 @@ export class Chatbox extends Component {
         })
         SetRoomTextPaginator(sockRoom, paginator)
         let chatBlock = {room: sockRoom , chats: data.results, otherUser: data.otherUser, seen_by: data.seen_by, last_updated: data.last_updated}
-        StoreChatBlock(chatBlock)
+
+        // store initial data in chatroom
+        this.updateGlobalChatRoomData(chatBlock)
+
+    }
+
+    UpdateSeenChat = (room, seen_by) =>{
+        let roomData = this.context[0][room]
+        if( roomData && !roomData.chats[roomData.chats.length -1].seen_by.includes(seen_by) ){
+            roomData.seen_by.concat(seen_by)
+            // update global data
+            this.updateGlobalChatRoomData(roomData)
+            
+        }
+
+    }
+
+    updateGlobalChatRoomData = (data) =>{
+        const dispatch = this.context[1]
+        dispatch({type: 'SET_CHATROOM', payload: data });
     }
 
     setMessage = (val) => {
@@ -135,7 +179,7 @@ export class Chatbox extends Component {
     }
 
     updateStateOnAttachmentAddition =(binaryVal) =>{
-        console.log("binaryval",binaryVal)
+        // console.log("binaryval",binaryVal)
         this.setState({
             attachment: binaryVal,
             
@@ -195,13 +239,18 @@ export class Chatbox extends Component {
             allMessage: newMessageList,
             isFetching: false
         })
-        AppendChatBlock(this.state.sockRoom, newMessageList)
+        const dispatch = this.context[1]
+        dispatch({type: 'ADD_RECORD_TO_CHATROOM', payload: {room: this.state.sockRoom, chats: data.results} });
     }
 
     componentWillUnmount() {
         // leave sock room
         if(this.socket) this.socket.leaveRoom(getUserData().username)
-        if(this.props.onUnmount) this.props.onUnmount()
+        let roomData = this.context[0][this.state.sockRoom]
+        if(this.props.onUnmount && roomData) {
+            roomData.chats = [roomData.chats[roomData.chats.length -1]]
+            this.props.onUnmount(this.state.sockRoom, roomData)
+        }
     }
 
     render() {
@@ -229,7 +278,7 @@ export class Chatbox extends Component {
 
 
 const ImageUploadView = (props)=>{
-    console.log("fileObj",props.fileObj)
+    // console.log("fileObj",props.fileObj)
     return(
         <div className="chat-attachment-preview">
             <div className="remove-attach-img" onClick={props.removeAttachment}>close</div>

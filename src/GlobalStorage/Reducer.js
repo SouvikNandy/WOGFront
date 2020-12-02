@@ -25,6 +25,27 @@ const Reducer = (state, action) => {
                 ...state,
                 user_data: action.payload
             };
+        
+        case 'SET_CHATROOM':
+            return{
+                ...state,
+                [action.payload.room]: action.payload
+            }
+        case 'ADD_RECORD_TO_CHATROOM':
+            let updated = state[action.payload.room]
+            updated.chats = updated.chats.concat(action.payload.chats)
+            return{
+                ...state,
+                [action.payload.room]: updated
+            }
+
+        case 'ADD_RECORD_TO_CHATROOM_BEGINNING':
+            updated = state[action.payload.room]
+            updated.chats = [...action.payload.chats, ...updated.chats]
+            return{
+                ...state,
+                [action.payload.room]: updated
+            }
         default:
             return state;
     }

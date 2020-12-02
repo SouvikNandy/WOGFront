@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { getNotificationHandler } from '../../utility/userData';
 import { FaRegPaperPlane } from "react-icons/fa";
 import { generateId } from '../../utility/Utility';
-import { GetOpenChats, StoreChat } from './chatUtils';
+import { GetOpenChats } from './chatUtils';
 import { CheckIfUnreadChats } from '../../utility/ApiSet';
+import { Context } from '../../GlobalStorage/Store';
 
 export class ChatMainButton extends Component {
+    static contextType = Context
     state={
         unreadMsg: false,
         notificationHandler : getNotificationHandler(),
@@ -40,11 +42,25 @@ export class ChatMainButton extends Component {
                 delete data.data.last_updated
                 delete data.data.seen_by
 
-                StoreChat(data.data, sockRoom, userDetails, seen_by, last_updated)
+                let roomData = this.context[0][sockRoom]
+                if( roomData){
+                    roomData.chats = data.data 
+                    roomData.seen_by.concat(seen_by)
+                    roomData.last_updated = last_updated
+                    // update global data
+                    this.updateGlobalChatRoomData(roomData)
+                }
+                else{
+                    let initialRecord = {room: sockRoom , chats: [data.data], otherUser: userDetails, seen_by: seen_by, last_updated: last_updated}
+                    this.updateGlobalChatRoomData(initialRecord)
+                }
             }
-
-            
         }
+    }
+
+    updateGlobalChatRoomData = (data) =>{
+        const dispatch = this.context[1]
+        dispatch({type: 'SET_CHATROOM', payload: data });
     }
 
     showHideMessageBox = ()=>{

@@ -8,13 +8,15 @@ import '../../assets/css/discoverPeople.css';
 import '../../assets/css/ChatModule/chatbox.css'
 import { FiArrowRightCircle, FiSearch } from 'react-icons/fi';
 import Chatbox, { OpenChatRecord } from '../ChatModule/Chatbox';
-import { ChatTime, generateId, GetCookie, retrieveFromStorage, saveInStorage, SetCookie, SortByUpdatedTimeDESC } from '../../utility/Utility';
+import { ChatTime, generateId, SortByUpdatedTimeDESC } from '../../utility/Utility';
 import { FaShare } from 'react-icons/fa';
-import { GetChatHistory, GetOpenChats, StoreChat, UpdateOpenChat, GetChatHistoryPaginator, SetChatHistoryPaginator, GetChatRoomName } from '../ChatModule/chatUtils';
+import { GetOpenChats, UpdateOpenChat, GetChatRoomName } from '../ChatModule/chatUtils';
 import Paginator from '../../utility/Paginator';
 import {HiOutlinePhotograph} from 'react-icons/hi'
+import { Context } from '../../GlobalStorage/Store';
 
 export class RecentFriends extends Component {
+    static contextType = Context
     state = {
         allFriends: null,
         totalFriendsCount: 0,
@@ -84,11 +86,35 @@ export class RecentFriends extends Component {
             delete data.last_updated
             delete data.seen_by
 
-            StoreChat(data.data, sockRoom, userDetails, seen_by, last_updated)
+            this.StoreChatsToGlobal(data, sockRoom, userDetails, seen_by, last_updated)
             this.setState({openChats: newOpenChat})
             UpdateOpenChat(newOpenChat);
         }
     }
+    onNewMessageWhileChatOpen = (record) =>{
+        this.setState({apiFetchedChats: [...this.state.apiFetchedChats, record]})
+    }
+
+    StoreChatsToGlobal = (data, sockRoom, userDetails, seen_by, last_updated) =>{
+        let roomData = this.context[0][sockRoom]
+        if( roomData){
+            roomData.chats = [...roomData.chats, data.data] 
+            roomData.seen_by.concat(seen_by)
+            roomData.last_updated = last_updated
+            // update global data
+            this.updateGlobalChatRoomData(roomData)
+        }
+        else{
+            let initialRecord = {room: sockRoom , chats: [data.data], otherUser: userDetails, seen_by: seen_by, last_updated: last_updated}
+            this.updateGlobalChatRoomData(initialRecord)
+        }
+    }
+
+    updateGlobalChatRoomData = (data) =>{
+        const dispatch = this.context[1]
+        dispatch({type: 'SET_CHATROOM', payload: data });
+    }
+
 
     updateChatboxState = (chatUser=null) =>{
         let showChatBox = !this.state.showChatBox;
@@ -176,8 +202,10 @@ export class RecentFriends extends Component {
 
                     {this.state.showChatBox?
                         <div className="chat-short">
-                            <Chatbox chatBoxUser={this.state.chatBoxUser} moveToOpenChats={this.moveToOpenChats.bind(this, this.state.chatBoxUser)} 
-                            closeChat={this.updateChatboxState}/>
+                            <Chatbox 
+                            chatBoxUser={this.state.chatBoxUser} moveToOpenChats={this.moveToOpenChats.bind(this, this.state.chatBoxUser)} 
+                            closeChat={this.updateChatboxState}
+                            />
                         </div>
                     
                         :
@@ -207,8 +235,10 @@ export class RecentFriends extends Component {
 }
 
 export class RecentChats extends Component{
+    static contextType = Context
     state = {
         allChats: null,
+        apiFetchedChats: null,
         output: [],
         paginator: null,
         isFetching: false,
@@ -222,27 +252,7 @@ export class RecentChats extends Component{
     }
     
     componentDidMount(){
-
-        let chatpaginator = GetChatHistoryPaginator()
-        let chatHistory = GetChatHistory()
-
-        let cookieFound = GetCookie("chatListExist")
-        // console.log(chatpaginator, chatHistory.length, cookieFound)
-        if(!cookieFound|| !chatpaginator.last_updated){
-            ChatListAPI(this.updateStateOnAPIcall);
-        }
-
-        else if (!chatpaginator.last_updated && !chatHistory.length>0) {
-            ChatListAPI(this.updateStateOnAPIcall);
-        }
-        else{
-            this.setState({
-                allChats: chatHistory,
-                output: chatHistory,
-                paginator: chatpaginator.paginator
-            })
-        
-        }
+        ChatListAPI(this.updateStateOnAPIcall);
         this.state.notificationHandler.registerCallbackList(this.state.handlerId, this.onNewMessage)
     }
 
@@ -251,7 +261,7 @@ export class RecentChats extends Component{
             // console.log("RecentChats onNewMessage called", data)
             if (data.key === "CHAT"){
                 let roomName = GetChatRoomName([this.state.currUser, data.data.user])
-                console.log(this.state.allChats)
+                // console.log(this.state.allChats)
                 this.setState({
                     allChats: this.state.allChats.map(ele=> {
                         if(ele.room === roomName){
@@ -269,29 +279,10 @@ export class RecentChats extends Component{
         let paginator = data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null
         this.setState({
             allChats: data.results,
+            apiFetchedChats: data.results,
             output: data.results,
             paginator: paginator
         })
-        SetChatHistoryPaginator(paginator)
-        this.maintainCache(data.results)
-        SetCookie("chatListExist", 'true', 15)
-    }
-
-    maintainCache = (recordset) =>{
-        let chatHistory = JSON.parse(retrieveFromStorage("chatHistory"))
-        let prevChatLength = {}
-        chatHistory.map(ele=>{
-            prevChatLength[ele.room] = ele.chats.length
-            return ele
-        })
-
-        recordset.map(ele=>{
-            if(ele.room in prevChatLength && prevChatLength[ele.room]> ele.chats.length){
-                ele.chats = chatHistory.filter(item => item.room ===ele.room)[0].chats
-            }
-            return ele
-        })
-        saveInStorage("chatHistory", JSON.stringify(recordset))
     }
 
     handleScroll() {
@@ -309,6 +300,7 @@ export class RecentChats extends Component{
     updateStateOnPagination = (results) =>{
         this.setState({
             allChats:[...this.state.allChats, ...results],
+            apiFetchedChats: [...this.state.apiFetchedChats, ...results],
             output: [...this.state.output, ...results],
             isFetching: false
         })
@@ -369,14 +361,20 @@ export class RecentChats extends Component{
         })
     }
 
-    ReloadChats = ()=>{
-        let chatHistory = GetChatHistory()
-        if(chatHistory){
-            this.setState({
-                allChats: chatHistory,
-                output: chatHistory,
-            })
-        }
+    ReloadChats = (roomName, lastMesage)=>{
+        // console.log("ReloadChats", roomName, lastMesage)
+        let updatedMsg = this.state.apiFetchedChats.map(ele=>{
+            if (ele.room ===  roomName){
+                ele = lastMesage
+            }
+            return ele
+        })
+        this.setState({
+            apiFetchedChats: updatedMsg,
+            allChats: updatedMsg,
+            output: updatedMsg,
+        })
+        
 
     }
     
