@@ -361,7 +361,11 @@ export class RecentChats extends Component{
     }
 
     ReloadChats = (roomName, lastMesage)=>{
-        // console.log("ReloadChats", roomName, lastMesage)
+        // console.log("lastMesage", lastMesage.seen_by, this.state.currUser)
+        if (!lastMesage.seen_by.includes(this.state.currUser)){
+            lastMesage.seen_by = [...lastMesage.seen_by, this.state.currUser]
+            // console.log("lastMesage seenby updated", lastMesage.seen_by)
+        }
         let updatedMsg = this.state.apiFetchedChats.map(ele=>{
             if (ele.room ===  roomName){
                 ele = lastMesage
@@ -378,6 +382,9 @@ export class RecentChats extends Component{
     }
     
     render(){
+        if(!this.state.allChats){
+            return(<React.Fragment><OwlLoader /></React.Fragment>)
+        }
         return(
             <div onScroll={this.handleScroll}>
                 <div className="messagebox-head">
@@ -402,6 +409,7 @@ export class RecentChats extends Component{
 
                 <div className="new-friends-container chat-user-container">
                     {this.state.output.sort(SortByUpdatedTimeDESC).map(ele =>{
+                        
                         let chatEle = ele.chats[ele.chats.length -1]
                         // console.log("chatEle", chatEle)
                         let created_at = ele.last_updated

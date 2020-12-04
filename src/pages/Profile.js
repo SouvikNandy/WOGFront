@@ -993,6 +993,7 @@ export default class Profile extends Component {
                 <ProfileHead data={userAbout} isSelf={this.state.isSelf} editProfile={this.editProfile} 
                 uploadPicture={this.uploadPicture} isAuth={this.state.isAuth} currLocation={this.props.location}
                 startStopFollowingProfile={this.startStopFollowingProfile} BlockUnblock={this.BlockUnblock}
+                innerWidth={window.innerWidth}
                  />
                  {/* intor div */}
                 {!this.state.isSelf && ['Shots', 'Portfolios'].includes(this.state.subNavList.filter(ele => ele.isActive)[0].title)? 
@@ -1158,10 +1159,20 @@ function ProfileHead(props) {
                             ""
                         }
                         {chatBox?
-                            <div className="chat-short">
-                                <Chatbox chatBoxUser={chatBoxUser} moveToOpenChats={null} 
-                                closeChat={()=>showChatBox(false)}/>
-                            </div>
+                            props.innerWidth < 850?
+                                <div className="chat-user-container">
+                                    <div className="chat-short chat-full-length" >
+                                        <Chatbox chatBoxUser={chatBoxUser} moveToOpenChats={null} 
+                                        closeChat={()=>showChatBox(false)}/>
+                                    </div>
+
+                                </div>
+                                :
+                                <div className="chat-short" >
+                                        <Chatbox chatBoxUser={chatBoxUser} moveToOpenChats={null} 
+                                        closeChat={()=>showChatBox(false)}/>
+                                </div>
+                            
                             :
                             ""
                         }

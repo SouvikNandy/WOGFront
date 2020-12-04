@@ -104,11 +104,16 @@
   height: 100vh;
   z-index: 3;
   overflow: hidden;
+  border-radius: initial;
 }
 
+.chat-user-container .chat-full-length .chat-container{
+  border-radius: initial;
+}
 .chat-user-container .chat-full-length .infoBar{
   height: 10vh;
   padding: 0.5rem 0;
+  border-radius: initial;
 }
 
 .chat-user-container .chat-full-length .leftInnerContainer .icons{
