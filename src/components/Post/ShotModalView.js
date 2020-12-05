@@ -23,10 +23,12 @@ import { Link } from 'react-router-dom';
 import { LikePostAPI, RemoveTagAPI, SavePostAPI, turnCommentsOnOffAPI } from '../../utility/ApiSet';
 import { EditorSpan, JSONToEditState } from '../TextInput';
 import getUserData, { defaultProfilePic } from '../../utility/userData';
+import { Context } from '../../GlobalStorage/Store';
 
 
 
 export class ShotModalView extends Component {
+    static contextType= Context
     state = {
         shot: null,
         selected_shot_id: '',
@@ -83,7 +85,28 @@ export class ShotModalView extends Component {
         shot.interactions.likes++;
         this.setState({ shot });
         let requestBody = {post_id: shot.id}
+        // update in feeds cache
+        this.likeInCache(shot.id)
+
         LikePostAPI(requestBody, null)
+    }
+
+    likeInCache = (idx)=>{
+        let feed_id = null
+        let updatedFeeds = this.context[0].feeds
+        let paginator = this.context[0].paginator
+
+        updatedFeeds.map(ele =>{
+            if(ele.id === idx){
+                ele.is_liked = true;
+                ele.interactions.likes++;
+                feed_id= ele.id;
+            }
+            return ele
+        })
+        if(feed_id){
+            this.context[1]({type: 'SET_POSTS', payload: {feeds: updatedFeeds, paginator: paginator, feeds_updated: this.context[0].feeds_updated}});
+        }
     }
 
     doUnLike = () => {
@@ -94,7 +117,27 @@ export class ShotModalView extends Component {
         updatedshot.interactions.likes--;
         this.setState({ shot: updatedshot })
         let requestBody = {post_id: updatedshot.id}
+        // update in feeds cache
+        this.likeInCache(updatedshot.id)
         LikePostAPI(requestBody, null)
+    }
+
+    dislikeInCache = (idx)=>{
+        let feed_id = null
+        let updatedFeeds = this.context[0].feeds
+        let paginator = this.context[0].paginator
+
+        updatedFeeds.map(ele =>{
+            if(ele.id === idx){
+                ele.is_liked = true;
+                ele.interactions.likes--;
+                feed_id= ele.id;
+            }
+            return ele
+        })
+        if(feed_id){
+            this.context[1]({type: 'SET_POSTS', payload: {feeds: updatedFeeds, paginator: paginator, feeds_updated: this.context[0].feeds_updated}});
+        }
     }
 
     savePost = () =>{
@@ -108,7 +151,34 @@ export class ShotModalView extends Component {
         this.setState({ shot : shot });
         
         let requestBody = {post_id: shot.id}
+        this.saveInCache(shot.id)
         SavePostAPI(requestBody, null)
+    }
+
+    saveInCache = (idx) =>{
+        let feed_id = null
+        let updatedFeeds = this.context[0].feeds
+        let paginator = this.context[0].paginator
+        
+        updatedFeeds.map(ele =>{
+            if(ele.id === idx){
+                if(!ele.is_saved){
+                    ele.is_saved = true;
+                }
+                else{
+                    ele.is_saved = !ele.is_saved;
+                    
+                }
+                feed_id= ele.id;
+            }
+            return ele
+        })
+
+        if(feed_id){
+            this.context[1]({type: 'SET_POSTS', payload: {feeds: updatedFeeds, paginator: paginator, feeds_updated: this.context[0].feeds_updated}});
+
+        }
+        
     }
 
     followUser = () =>{

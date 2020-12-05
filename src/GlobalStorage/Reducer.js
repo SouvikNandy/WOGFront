@@ -1,19 +1,24 @@
+import { getCurrentTimeInMS } from "../utility/Utility";
+
 const Reducer = (state, action) => {
     switch (action.type) {
         case 'SET_POSTS':
             return {
                 ...state,
-                posts: action.payload
+                feeds: action.payload["feeds"],
+                feeds_paginator: action.payload["paginator"],
+                feeds_updated: action.payload["feeds_updated"],
             };
         case 'ADD_POST':
             return {
                 ...state,
-                posts: state.posts.concat(action.payload)
+                feeds: state.feeds.concat(action.payload),
+                feeds_updated: getCurrentTimeInMS(),
             };
         case 'REMOVE_POST':
             return {
                 ...state,
-                posts: state.posts.filter(post => post.id !== action.payload)
+                feeds: state.feeds.filter(post => post.id !== action.payload)
             };
         case 'SET_ERROR':
             return {

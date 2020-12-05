@@ -19,7 +19,7 @@ import EditProfile from '../components/Profile/EditProfile';
 import NoContent from '../components/NoContent';
 import OwlLoader from '../components/OwlLoader';
 import HTTPRequestHandler from '../utility/HTTPRequests';
-import {saveInStorage, ControlledEventFire, msToDateTime, getFrontendHost} from '../utility/Utility';
+import {saveInStorage, ControlledEventFire, msToDateTime, getFrontendHost, getCurrentTimeInMS} from '../utility/Utility';
 import AddPost from '../components/Post/AddPost';
 import { createFloatingNotification } from '../components/FloatingNotifications';
 import { UserFeedsAPI, SavePostAPI, LikePostAPI } from '../utility/ApiSet';
@@ -319,12 +319,15 @@ export class NewFeedPalette extends Component{
         eventListnerRef: null,
     }
     componentDidMount(){
-        UserFeedsAPI(this.updateStateOnAPIcall.bind(this, 'feeds'))
-        let eventListnerRef = this.handleScroll.bind(this);
-        this.setState({
-            eventListnerRef: eventListnerRef
-        })
-        window.addEventListener('scroll', eventListnerRef);
+        if(!this.context[0].feeds_updated || getCurrentTimeInMS() - this.context[0].feeds_updated  < 300 ){
+            UserFeedsAPI(this.updateStateOnAPIcall.bind(this, 'feeds'))
+            let eventListnerRef = this.handleScroll.bind(this);
+            this.setState({
+                eventListnerRef: eventListnerRef
+            })
+            window.addEventListener('scroll', eventListnerRef);
+        }
+        
     }
     
     componentWillUnmount(){
@@ -332,31 +335,27 @@ export class NewFeedPalette extends Component{
         
     }
     updateStateOnAPIcall = (key, data)=>{
-        if('count' in data && 'next' in data && 'previous' in data){
-            let result = data.results
-            result.map(ele=> {
-                if(ele.description){
-                    ele["description"] = JSONToEditState(JSON.parse(ele.description))
-                }
-                return ele
-            })
-            // paginated response
-            this.setState({
-                [key]: result,
-                paginator: data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null
-            })
-        }
-        else{
-            this.setState({
-                [key]: data.data
-            })
-        }
+        let result = data.results
+        result.map(ele=> {
+            if(ele.description){
+                ele["description"] = JSONToEditState(JSON.parse(ele.description))
+            }
+            return ele
+        })
+        let feeds = result;
+        let paginator= data.results.length < data.count? new Paginator(data.count, data.previous, data.next, data.results.length): null
+        this.context[1]({type: 'SET_POSTS', payload: {feeds: feeds, paginator: paginator, feeds_updated: getCurrentTimeInMS()}});
     }
+
+    getPaginator =()=>{
+        return this.context[0].feeds_paginator
+    }
+
     handleScroll() {
         if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
         if(this.state.isFetching) return;
-        if(this.state.paginator){
-            let res = this.state.paginator.getNextPage(this.updateStateOnPagination)
+        if(this.getPaginator()){
+            let res = this.getPaginator().getNextPage(this.updateStateOnPagination)
             if (res !== false){
                 this.setState({isFetching: true})
             }  
@@ -372,8 +371,9 @@ export class NewFeedPalette extends Component{
                 }
                 return ele
             })
+        
+        this.context[1]({type: 'ADD_POST', payload: newResult})
         this.setState({
-            feeds:[...this.state.feeds, ...newResult],
             isFetching: false
         })
     }
@@ -381,22 +381,25 @@ export class NewFeedPalette extends Component{
 
     savePost = (idx) =>{
         let feed_id = null
-        this.setState({
-            feeds: this.state.feeds.map(ele =>{
-                if(ele.id === idx){
-                    if(!ele.is_saved){
-                        ele.is_saved = true;
-                    }
-                    else{
-                        ele.is_saved = !ele.is_saved;
-                        
-                    }
-                    feed_id= ele.id;
+        let updatedFeeds = this.context[0].feeds
+        let paginator = this.getPaginator()
+        
+        updatedFeeds.map(ele =>{
+            if(ele.id === idx){
+                if(!ele.is_saved){
+                    ele.is_saved = true;
                 }
-                return ele
-            })
+                else{
+                    ele.is_saved = !ele.is_saved;
+                    
+                }
+                feed_id= ele.id;
+            }
+            return ele
         })
+
         if(feed_id){
+            this.context[1]({type: 'SET_POSTS', payload: {feeds: updatedFeeds, paginator: paginator, feeds_updated: this.context[0].feeds_updated}});
             let requestBody = {post_id: feed_id}
             SavePostAPI(requestBody, null)
 
@@ -406,17 +409,20 @@ export class NewFeedPalette extends Component{
 
     likePortfolio = (idx) =>{
         let feed_id = null
-        this.setState({
-            feeds: this.state.feeds.map(ele =>{
-                if(ele.id === idx){
-                    ele.is_liked = true;
-                    ele.interactions.likes++;
-                    feed_id= ele.id;
-                }
-                return ele
-            })
+        let updatedFeeds = this.context[0].feeds
+        let paginator = this.getPaginator()
+
+
+        updatedFeeds.map(ele =>{
+            if(ele.id === idx){
+                ele.is_liked = true;
+                ele.interactions.likes++;
+                feed_id= ele.id;
+            }
+            return ele
         })
         if(feed_id){
+            this.context[1]({type: 'SET_POSTS', payload: {feeds: updatedFeeds, paginator: paginator, feeds_updated: this.context[0].feeds_updated}});
             let requestBody = {post_id: feed_id}
             LikePostAPI(requestBody, null)
 
@@ -425,17 +431,19 @@ export class NewFeedPalette extends Component{
     }
     unLikePortfolio = (idx) =>{
         let feed_id=null
-        this.setState({
-            feeds: this.state.feeds.map(ele =>{
-                if(ele.id === idx){
-                    ele.is_liked = false;
-                    ele.interactions.likes--;
-                    feed_id= ele.id;
-                }
-                return ele
-            })
+        let updatedFeeds = this.context[0].feeds
+        let paginator = this.getPaginator()
+
+        updatedFeeds.map(ele =>{
+            if(ele.id === idx){
+                ele.is_liked = false;
+                ele.interactions.likes--;
+                feed_id= ele.id;
+            }
+            return ele
         })
         if(feed_id){
+            this.context[1]({type: 'SET_POSTS', payload: {feeds: updatedFeeds, paginator: paginator, feeds_updated: this.context[0].feeds_updated}});
             let requestBody = {post_id: feed_id}
             LikePostAPI(requestBody, null)
 
@@ -443,15 +451,14 @@ export class NewFeedPalette extends Component{
     }
     render(){
         let feedList = [];
-        if(!this.state.feeds){
+        if(!this.context[0].feeds){
             return(
                 <div className="empty-feeds" key={'def'}>
                     <OwlLoader />
                 </div>
             )
-
         }
-        if (this.state.feeds.length<1){
+        if (this.context[0].feeds.length<1){
             feedList.push(
                 <div className="empty-feeds" key={'def'}>
                     <NoContent message={"Start following people to view their post on your feeds."}/>
@@ -460,7 +467,7 @@ export class NewFeedPalette extends Component{
 
         }
         else{
-            this.state.feeds.map(ele=>{
+            this.context[0].feeds.map(ele=>{
                 feedList.push(<NewsFeedPost key={ele.id} data={ele} currLocation={this.props.currLocation}
                     likePortfolio={this.likePortfolio} unLikePortfolio={this.unLikePortfolio}
                     savePost={this.savePost} addComment={this.addComment}/>)

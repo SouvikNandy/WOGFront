@@ -4,7 +4,9 @@ import Reducer from './Reducer'
 
 
 const initialState = {
-    posts: [],
+    feeds: null,
+    feeds_paginator: null,
+    feeds_updated: null,
     user_data: null,
     error: null,
     // also chat data to be stored dynamically
