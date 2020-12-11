@@ -22,6 +22,7 @@ import AllFriends from './pages/AllFriends';
 import ForgotPass from './pages/ForgotPass';
 import Store from './GlobalStorage/Store';
 import { SharePost } from './components/Post/SharePost';
+import Commun from './pages/Commun';
 
 export default class App extends Component {
     componentDidMount(){
@@ -87,6 +88,7 @@ function ShotModalUrl() {
             <PrivateRoute exact path="/share-shot/:id" component={SharePost} />
             <PrivateRoute exact path="/edit-shared/:id" component={SharePost} />
             <Route exact path="/guidelines" component={CommmunityGuidelines} />
+            <Route exact path="/commun" component={Commun} />
             
             <Route> <Page404 /> </Route>
             

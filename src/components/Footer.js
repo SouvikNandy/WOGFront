@@ -1,6 +1,7 @@
 import React from 'react';
 import '../assets/css/landing.css';
 import { Link } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 import { FaHeart, FaFacebookSquare, FaInstagram, FaYoutube } from "react-icons/fa";
 
 export default function Footer() {
@@ -23,16 +24,18 @@ export default function Footer() {
                     <div className="f-mod-2">
                         <ul>
                             <h4>Information</h4>
-                            <li><Link className="link" to={"/"}>About</Link></li>
-                            <li><Link className="link" to={"/"}>Privacy</Link></li>
+                            <li><HashLink className="link" to={"/commun/#top"}>About</HashLink></li>
+                            <li><HashLink className="link" to={"/commun/#how-it-works"}
+                            scroll={(el) => el.scrollIntoView({ behavior: 'instant', block: 'end' })}
+                            >How It Works</HashLink></li>
+                            <li><Link className="link" to={"/"}>Privacy Policy</Link></li>
                             <li><Link className="link" to={"/"}>Terms</Link></li>
-                            <li><Link className="link" to={"/"}>Guidelines</Link></li>
+                            
                         </ul>
                         <ul>
                             <h4>Reach Us</h4>
-                            <li><Link className="link" to={"/"}>Contact us</Link></li>
+                            <li><HashLink className="link" to={"/commun/#contact-us"}>Contact us</HashLink></li>
                             <li><Link className="link" to={"/"}>FAQ</Link></li>
-                            <li><Link className="link" to={"/"}>Community</Link></li>
                             <li><Link className="link" to={"/reviews/"}>Add a Feedback</Link></li>
                         </ul>
                     </div>

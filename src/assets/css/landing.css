@@ -319,11 +319,11 @@
 
 /* FOOTER SECTION */
 .footer {
-    /* background-color: rgba(99, 54, 221, 1); */
-    /* background-color: var(--royal-red); */
     border-top: 1px solid var(--border-grey);
-    display: grid;
-    grid-template-rows: auto 3rem;
+    /* display: grid;
+    grid-template-rows: auto 3rem; */
+    display: flex;
+    flex-direction: column;
     color: var(--dark);
     padding: 0;
     margin: 0;
@@ -351,10 +351,12 @@
 
 .footer .f-upper {
     display: grid;
-    /* grid-template-columns: repeat(3, minmax(250px, 1fr)); */
     grid-template-areas:
         'f-mod-1 f-mod-2 f-mod-3';
     grid-gap: 2rem;
+    /* display: flex;
+    justify-content: space-between;
+    align-items: flex-start; */
 }
 
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import Navbar from '../components/Navbar/Navbar';
+import { PublicNavBar } from '../components/Navbar/Navbar';
 import '../assets/css/landing.css';
 import {ReviewSwiper} from '../components/Review/Reviews';
 import Footer from '../components/Footer';
@@ -12,12 +12,6 @@ import getUserData from '../utility/userData';
 
 export class Landing extends Component {
     state = {
-        navLinks: [
-            { key: 1, label: "Home", link: '/', isActive: true },
-            { key: 2, label: "Explore", link: '/explore/', isActive: false},
-            { key: 3, label: "Register", link: '/signup/', isActive: false},
-            { key: 4, label: "Login", link: '/signin/', isActive: false},
-        ],
         loggedInUser: null
     }
     componentDidMount(){
@@ -51,7 +45,7 @@ export class Landing extends Component {
         return (
             <React.Fragment>
                 <div className="landig-nav">
-                    <Navbar key="nvlinks" navLinks={this.state.navLinks} selectMenu={this.selectMenu} />
+                    <PublicNavBar />
                 </div>
                 
                 <div className="landing-layout">

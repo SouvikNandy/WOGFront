@@ -1,0 +1,141 @@
+@import url('config.css');
+
+.commun-container{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    overflow-y: hidden !important;
+    /* margin-top: 15vh; */
+}
+
+.doodle,
+.text-container{
+    width: 50%;
+    height: 100%;
+    padding: 0 0.5rem;
+    
+}
+
+
+.doodle{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.about-us-container,
+.how-it-works-container, 
+.contact-us-container{
+    width: 100%;
+    /* background: red; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 1.5rem;
+    border-bottom: 1px solid var(--border-grey);
+}
+
+
+.text-container .header-text{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-decoration: underline;
+    padding: 0.5rem 1rem;
+
+}
+.text-container .detailed-text{
+    font-size: 0.92rem;
+}
+
+.doodle .tut-video{
+    width: 25vw;
+    height: 20vw;
+    border: none;
+}
+
+.contact-us-container .text-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.contact-us-container .contact-us-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* background: red; */
+    background: var(--grad-chat-text);
+    width: 25vw;
+    padding: 1rem;
+    border-radius: 0.9rem;
+}
+.contact-us-container .contact-us-form .title-text{
+    font-size: 1.2rem;
+    color: var(--light);
+    font-weight: bold;
+}
+
+.contact-us-container .contact-us-form input,
+.contact-us-container .contact-us-form textarea{
+    border: none;
+    outline: none;
+    resize: none;
+    background: transparent;
+    border-bottom: 1px solid var(--border-grey);
+    font-size: 0.85rem;
+    width: 90%;
+    padding: 0.8rem 0;
+    color: var(--light);
+}
+
+
+.contact-us-container .contact-us-form textarea{
+    height: 10vh;
+}
+.contact-us-form input::-webkit-input-placeholder,
+.contact-us-form textarea::-webkit-input-placeholder{
+    color: var(--light) !important;
+}
+.contact-us-form input::-moz-placeholder,
+.contact-us-form textarea::-moz-placeholder{
+    color: var(--light) !important;
+}
+.contact-us-form input:-moz-placeholder,
+.contact-us-form textarea:-moz-placeholder{
+    color: var(--light) !important;
+}
+.contact-us-form input:-ms-input-placeholder,
+.contact-us-form textarea:-ms-input-placeholder{
+    color: var(--light) !important;
+}
+
+.contact-us-container .contact-us-form .btn{
+    margin-top: 0.8rem;
+    padding: 0.2rem 1.2rem;
+    font-size: 0.8rem;
+}
+
+
+@media (max-width:900px){
+    .about-us-container,
+    .how-it-works-container,
+    .contact-us-container{
+        flex-direction: column;
+    }
+    .doodle,
+    .text-container{
+        width: 100%;
+    }
+    .doodle .tut-video{
+        width: 90vw;
+        height: 90vw;
+    }
+}

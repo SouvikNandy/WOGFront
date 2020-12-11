@@ -71,6 +71,38 @@ export class Navbar extends Component {
 }
 
 
+export class PublicNavBar extends Component{
+    state = {
+        navLinks: [
+            { key: 1, label: "Home", link: '/', isActive: true },
+            { key: 2, label: "Explore", link: '/explore/', isActive: false},
+            { key: 3, label: "Register", link: '/signup/', isActive: false},
+            { key: 4, label: "Login", link: '/signin/', isActive: false},
+        ],
+    }
+    selectMenu = (key) =>{
+        this.setState({
+            navLinks: this.state.navLinks.map(item=>{
+                if(key=== item.key){
+                    item.isActive = true;
+                }
+                else{
+                    item.isActive = false;
+                }
+                return item
+            })
+        })
+
+    }
+    render(){
+        return(
+            <React.Fragment>
+                <Navbar navLinks={this.state.navLinks} selectMenu={this.selectMenu} />
+            </React.Fragment>
+        )
+    }
+}
+
 export class UserNavBar extends Component{
     state = {
         navLinks: [],
