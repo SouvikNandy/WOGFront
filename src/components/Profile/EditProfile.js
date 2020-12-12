@@ -13,7 +13,7 @@ import SideBar from "../SideBar";
 import IndianCityList from '../IndianCityList';
 import FriendList from './FriendList';
 import TagUser from '../Profile/TagUser';
-import {defaultCoverPic} from '../../utility/userData';
+import {defaultCoverPic, defaultProfilePic} from '../../utility/userData';
 import HTTPRequestHandler from '../../utility/HTTPRequests';
 import { saveInStorage, dateObjToReadable } from '../../utility/Utility';
 import { createFloatingNotification } from '../FloatingNotifications';
@@ -444,7 +444,7 @@ export class EditProfile extends Component {
                     for(let i=0; i<maxCount; i++){
                         tagList.push(
                         <span key={tagUsers[i].id} className="img-span">
-                            <img className="tag-img" src={tagUsers[i].profile_pic} alt={tagUsers[i].username}/>
+                            <img className="tag-img" src={tagUsers[i].profile_pic?tagUsers[i].profile_pic: defaultProfilePic()} alt={tagUsers[i].username}/>
                         </span>)
                     }
                     tagList.push(<span key="tag-img-count" className="tag-img-count" 
@@ -455,7 +455,7 @@ export class EditProfile extends Component {
                     this.state.teams.map(ele => {
                         tagList.push(
                         <span key={ele.id} className="img-span">
-                            <img className="tag-img" src={ele.profile_pic} alt={ele.username}/>
+                            <img className="tag-img" src={ele.profile_pic? ele.profile_pic: defaultProfilePic()} alt=""/>
                         </span>
                         )
                         return ele
@@ -572,7 +572,11 @@ export class EditProfile extends Component {
         else if(activeTab.key === "E-3"){
             // console.log("skills page", this.state.profession, this.state.skills, this.state.teams.map(ele=> ele.id));
             requestBody['profile_data']["profession"] = this.state.profession;
-            requestBody['profile_data']["free_workshop"] = document.getElementById("free_workshop").checked;
+            try{
+                requestBody['profile_data']["free_workshop"] = document.getElementById("free_workshop").checked;
+            }
+            catch{}
+            
             requestBody['profile_data']["skills"] = this.state.skills;
             requestBody['profile_data']["teams"] = this.state.teams.map(ele=> ele.id)
         }

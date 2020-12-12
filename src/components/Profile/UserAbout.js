@@ -6,6 +6,7 @@ import {
     FaFacebookSquare, FaInstagram, FaYoutube, FaPinterest
 } from 'react-icons/fa';
 import { msToDateTime } from '../../utility/Utility';
+import { defaultProfilePic } from '../../utility/userData';
 
 export default function UserAbout(props) {
     let data = props.data
@@ -21,10 +22,10 @@ export default function UserAbout(props) {
     else{
         skillList.push(<span key={"sk-def"}>Not updated by user</span>)
     }
-    
+    console.log("teams", data.profile_data.teams)
     if(data.profile_data && data.profile_data.teams && data.profile_data.teams.length> 0){
         data.profile_data.teams.map((ele, index) =>{
-            teamList.push(<img  key={"tl-"+ index} className="tag-img" src={ele} alt=""></img>);
+            teamList.push(<img  key={"tl-"+ index} className="tag-img" src={ele.profile_data?ele: defaultProfilePic()} alt=""></img>);
             return ele
         })
     }
