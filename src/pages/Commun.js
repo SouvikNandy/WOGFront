@@ -7,7 +7,7 @@ export default function Commun() {
     return (
         <React.Fragment>
             <div className="landig-nav">
-                <PublicNavBar />
+                <PublicNavBar defaultActive={false}/>
             </div>
             <div className="commun-container">
                 <div id="about-us"></div>
@@ -52,6 +52,22 @@ const HowItWorks = () =>{
 }
 
 class ContactUs extends Component{
+    state = {
+        name: null,
+        email: null,
+        message: null
+    }
+    onChange =(e)=>{
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    onSubmit =(e)=>{
+        e.preventDefault();
+        console.log(this.state.name, this.state.email, this.state.message)
+    }
+
     render(){
         return (
             <div className="contact-us-container">
@@ -59,10 +75,10 @@ class ContactUs extends Component{
                 <div className="text-container">
                     <form className="contact-us-form" action="">
                         <div className="title-text">Get In Touch</div>
-                        <input type="text" placeholder="Name"></input>
-                        <input type="email" placeholder="Email"></input>
-                        <textarea placeholder="Message"></textarea>
-                        <button className="btn">Submit</button>
+                        <input type="text" placeholder="Name" name="name" onChange={this.onChange}></input>
+                        <input type="email" placeholder="Email" name="email" onChange={this.onChange}></input>
+                        <textarea placeholder="Message" name="message" onChange={this.onChange}></textarea>
+                        <button className="btn" onClick={this.onSubmit}>Submit</button>
                     </form>
                 </div>
             </div>

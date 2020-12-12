@@ -80,6 +80,16 @@ export class PublicNavBar extends Component{
             { key: 4, label: "Login", link: '/signin/', isActive: false},
         ],
     }
+    componentDidMount(){
+        if(this.props.defaultActive === false){
+            this.setState({
+                navLinks: this.state.navLinks.map( ele => {
+                    ele.isActive = false
+                    return ele
+                })
+            })
+        }
+    }
     selectMenu = (key) =>{
         this.setState({
             navLinks: this.state.navLinks.map(item=>{

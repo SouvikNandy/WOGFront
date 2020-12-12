@@ -633,6 +633,18 @@ ul {
     background-size: cover ;
 
 }
+
+
+/* background management on input auto complete */
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+   -webkit-transition-delay: 9999s;
+   transition-delay: 9999s;
+}
+
 @media(max-width:900px) {
     .side-bar-view-active {
         width: 100vw;

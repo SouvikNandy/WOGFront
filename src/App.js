@@ -23,6 +23,7 @@ import ForgotPass from './pages/ForgotPass';
 import Store from './GlobalStorage/Store';
 import { SharePost } from './components/Post/SharePost';
 import Commun from './pages/Commun';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 export default class App extends Component {
     componentDidMount(){
@@ -89,6 +90,7 @@ function ShotModalUrl() {
             <PrivateRoute exact path="/edit-shared/:id" component={SharePost} />
             <Route exact path="/guidelines" component={CommmunityGuidelines} />
             <Route exact path="/commun" component={Commun} />
+            <Route exact path="/privacy-policy" component={PrivacyPolicy} />
             
             <Route> <Page404 /> </Route>
             

@@ -124,6 +124,38 @@
 }
 
 
+/* privacy policy */
+.privacy-policy{
+    margin: 0.8rem 0;
+    width: 40vw;
+    padding: 1.8rem;
+    border: 2px solid var(--hover-one);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.privacy-policy .text-container{
+    width: 100%;
+}
+
+.privacy-policy .text-container .boldtext{
+    font-weight: bold;
+    font-size: 0.78rem;
+}
+
+.privacy-policy .text-container .lighttext{
+    font-size: 0.8rem;
+}
+
+.romanlines{
+    padding: 0 1.5rem;
+}
+
+.romanlines div{
+    margin-bottom: 0.5rem;
+}
+
 @media (max-width:900px){
     .about-us-container,
     .how-it-works-container,
@@ -134,8 +166,13 @@
     .text-container{
         width: 100%;
     }
-    .doodle .tut-video{
+    .doodle .tut-video,
+    .contact-us-container .contact-us-form{
         width: 90vw;
         height: 90vw;
+    }
+
+    .privacy-policy{
+        width: 85vw;
     }
 }
