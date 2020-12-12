@@ -22,10 +22,14 @@ export default function UserAbout(props) {
     else{
         skillList.push(<span key={"sk-def"}>Not updated by user</span>)
     }
-    console.log("teams", data.profile_data.teams)
+    // console.log("teams", data.profile_data.teams)
     if(data.profile_data && data.profile_data.teams && data.profile_data.teams.length> 0){
         data.profile_data.teams.map((ele, index) =>{
-            teamList.push(<img  key={"tl-"+ index} className="tag-img" src={ele.profile_data?ele: defaultProfilePic()} alt=""></img>);
+            teamList.push(
+                <div className="team-users">
+                    <img  key={"tl-"+ index} className="tag-img" src={ele.profile_data?ele: defaultProfilePic()} alt=""></img>
+                </div>
+            );
             return ele
         })
     }

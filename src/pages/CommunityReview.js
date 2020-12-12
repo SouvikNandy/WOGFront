@@ -364,7 +364,7 @@ export class CommunityReview extends Component{
                 
             }
             else if(item.title === "Suggest Us" && item.isActive=== true){
-                revList = <StickyBoard username={this.state.currUser.username} isAuth={this.state.isAuth}/>
+                revList = <StickyBoard username={this.state.currUser? this.state.currUser.username: ''} isAuth={this.state.isAuth}/>
 
             }
             return item

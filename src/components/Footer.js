@@ -28,8 +28,8 @@ export default function Footer() {
                             <li><HashLink className="link" to={"/commun/#how-it-works"}
                             scroll={(el) => el.scrollIntoView({ behavior: 'instant', block: 'end' })}
                             >How It Works</HashLink></li>
-                            <li><Link className="link" to={"/"}>Privacy Policy</Link></li>
-                            <li><Link className="link" to={"/"}>Terms</Link></li>
+                            <li><Link className="link" to={"/privacy-policy"}>Privacy Policy</Link></li>
+                            <li><Link className="link" to={"/service-terms"}>Terms</Link></li>
                             
                         </ul>
                         <ul>

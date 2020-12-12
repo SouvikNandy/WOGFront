@@ -221,6 +221,7 @@ export class EditProfile extends Component {
 
 
     tagMembers = (record) =>{
+        // console.log("tagMember", record)
         this.setState({
             teams : [...this.state.teams, record]
         })
@@ -229,12 +230,12 @@ export class EditProfile extends Component {
     onRemoveMember = (idx, removeTagOnly=false) => {
         if(removeTagOnly===true){
             this.setState({
-                teams: [...this.state.teams.filter(item => item.id !== idx)],
+                teams: [...this.state.teams.filter(item => item.username !== idx)],
             });
         }
         else{
             this.setState({
-                teams: [...this.state.teams.filter(item => item.id !== idx)],
+                teams: [...this.state.teams.filter(item => item.username !== idx)],
                 sideViewContent: [...this.state.sideViewContent.filter(item => item.props.data.id !== idx)]
             });
         }
@@ -430,10 +431,12 @@ export class EditProfile extends Component {
                 let existingList = [];
                 let maxCount = 5;
 
+                // console.log("teams", this.state.teams)
+
                 // all members list
                 this.state.teams.map(item=>{
                     existingList.push(
-                        <TagUser key={item.id} data={item} onRemoveMember={this.onRemoveMember}/>
+                        <TagUser key={item.username} data={item} onRemoveMember={this.onRemoveMember}/>
                     )
                     return item
                 })
@@ -454,7 +457,7 @@ export class EditProfile extends Component {
                 else{
                     this.state.teams.map(ele => {
                         tagList.push(
-                        <span key={ele.id} className="img-span">
+                        <span key={ele.username} className="img-span">
                             <img className="tag-img" src={ele.profile_pic? ele.profile_pic: defaultProfilePic()} alt=""/>
                         </span>
                         )
@@ -521,7 +524,7 @@ export class EditProfile extends Component {
                                     displaySideView={this.displaySideView} searchPlaceHolder={"Search For Affiliates ..."} 
                                     populateOnDestinationID={'memo'} tagMembers={this.tagMembers}
                                     currentTags={this.state.teams}
-                                    currentTagIDs={this.state.teams.map(ele => ele.id )}
+                                    currentTagIDs={this.state.teams.map(ele => ele.username )}
                                     onRemoveMember={this.onRemoveMember}
                                 />)}
                             />
@@ -578,7 +581,7 @@ export class EditProfile extends Component {
             catch{}
             
             requestBody['profile_data']["skills"] = this.state.skills;
-            requestBody['profile_data']["teams"] = this.state.teams.map(ele=> ele.id)
+            requestBody['profile_data']["teams"] = this.state.teams.map(ele=> ele.username)
         }
         
         HTTPRequestHandler.post(

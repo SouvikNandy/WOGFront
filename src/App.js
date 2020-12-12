@@ -13,7 +13,6 @@ import NewsFeeds from './pages/NewsFeeds';
 import Notifications from './pages/Notifications'
 import DiscoverPeople from './pages/DiscoverPeople';
 import Page404 from './pages/Page404';
-import CommmunityGuidelines from './pages/CommunityGuidelines';
 import LogOutPromptModal from './components/LogOutPromptModal';
 import EditPost from './components/Post/EditPost';
 import getUserData, { setNotificationHandler } from './utility/userData';
@@ -24,6 +23,8 @@ import Store from './GlobalStorage/Store';
 import { SharePost } from './components/Post/SharePost';
 import Commun from './pages/Commun';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import CommunityGuidelines, { CopyrightPolicy } from './pages/CommunityGuidelines';
+import TermsOfServices from './pages/TermsOfServices';
 
 export default class App extends Component {
     componentDidMount(){
@@ -88,9 +89,11 @@ function ShotModalUrl() {
             <PrivateRoute exact path="/edit-shot/:id" component={EditPost} />
             <PrivateRoute exact path="/share-shot/:id" component={SharePost} />
             <PrivateRoute exact path="/edit-shared/:id" component={SharePost} />
-            <Route exact path="/guidelines" component={CommmunityGuidelines} />
+            <Route exact path="/guidelines" component={CommunityGuidelines} />
             <Route exact path="/commun" component={Commun} />
             <Route exact path="/privacy-policy" component={PrivacyPolicy} />
+            <Route exact path="/copyright-policy" component={CopyrightPolicy} />
+            <Route exact path="/service-terms" component={TermsOfServices} />
             
             <Route> <Page404 /> </Route>
             

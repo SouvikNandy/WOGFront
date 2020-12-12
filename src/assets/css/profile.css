@@ -273,6 +273,10 @@
     line-height: 1.2;
 }
 
+.u-content-datadiv .team-users{
+    cursor: pointer;
+}
+
 .u-des .u-content-datadiv{
     flex-direction: column;
     ;

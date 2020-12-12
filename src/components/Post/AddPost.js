@@ -9,7 +9,7 @@ import SideBar from "../SideBar";
 import { TagUser } from '../Profile/TagUser';
 import IndianCityList from '../IndianCityList';
 import FriendList from '../Profile/FriendList';
-import CommmunityGuidelines from '../../pages/CommunityGuidelines';
+import {CodeOfConduct} from '../../pages/CommunityGuidelines';
 import ImgCompressor from '../../utility/ImgCompressor';
 import HTTPRequestHandler from '../../utility/HTTPRequests';
 
@@ -579,7 +579,7 @@ class UploadedSlider extends Component {
 export function TandCTemplate(){
     return(
         <React.Fragment>
-            <CommmunityGuidelines />
+            <CodeOfConduct fullContext={true}/>
         </React.Fragment>
     )
 }
